@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class DmitriTest {
+public class DmitriTestTest {
 
     @Test
     public void testFirst() {
