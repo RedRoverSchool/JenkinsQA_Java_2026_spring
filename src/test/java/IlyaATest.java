@@ -7,10 +7,10 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class IlyaAlekseevTest {
+public class IlyaATest {
 
     @Test
-    public void IlyaAlekseevTest() {
+    public void IlyaATest() {
 
         WebDriver driver = new FirefoxDriver();
 
