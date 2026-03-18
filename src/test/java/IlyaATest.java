@@ -10,7 +10,7 @@ import java.time.Duration;
 public class IlyaATest {
 
     @Test
-    public void IlyaATest() {
+    public void firstSeleniumTest() {
 
         WebDriver driver = new FirefoxDriver();
 
