@@ -21,7 +21,6 @@ public class NMTest {
         Assert.assertEquals(text.getText(), "JavaScript Tutorial");
 
             driver.quit();
-
         }
     }
 
