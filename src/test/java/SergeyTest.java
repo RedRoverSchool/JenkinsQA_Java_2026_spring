@@ -66,4 +66,25 @@ public class SergeyTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testWebInput() {
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://practice.expandtesting.com/inputs");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.findElement(By.id("input-text")).sendKeys("Test");
+        driver.findElement(By.id("btn-display-inputs")).click();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+
+        WebElement output = driver.findElement(By.xpath("//*[@id=\"output-text\"]"));
+
+        Assert.assertEquals(output.getText(), "Test");
+
+        driver.close();
+        driver.quit();
+
+    }
+
 }
