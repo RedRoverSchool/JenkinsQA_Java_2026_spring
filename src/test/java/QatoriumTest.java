@@ -65,4 +65,24 @@ public class QatoriumTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testSliders () {
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://practice-automation.com/slider/");
+
+        WebElement slider = driver.findElement(By.id("slideMe"));
+
+        slider.click();
+
+        Actions actions = new Actions(driver);
+
+        actions.clickAndHold(slider).moveByOffset(50, 0).release().build().perform();
+
+        WebElement value = driver.findElement(By.id("value"));
+
+        Assert.assertEquals(value.getText(), "55");
+    }
 }
