@@ -8,10 +8,10 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class DmitriTestTest {
+public class A1vengoTest {
 
     @Test
-    public void testFirst() {
+    public void testA1vengo() {
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.selenium.dev/selenium/web/web-form.html");
