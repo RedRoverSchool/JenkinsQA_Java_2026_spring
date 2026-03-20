@@ -148,4 +148,34 @@ public class BestiesGroupTest {
 
         driver.quit();
     }
+
+    @Test
+    public void sauceDemoTest() {
+        WebDriver driver1 = new ChromeDriver();
+
+        driver1.get("https://www.saucedemo.com");
+        driver1.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+        WebElement userLogin = driver1.findElement(By.id("user-name"));
+        userLogin.sendKeys("error_user");
+
+        WebElement submitButton = driver1.findElement(By.name("login-button"));
+        submitButton.click();
+        WebElement errorMessage = driver1.findElement(By.xpath("//h3[@data-test='error']"));
+        Assert.assertEquals(errorMessage.getText(), "Epic sadface: Password is required");
+
+        WebElement errorButton = driver1.findElement(By.xpath("//button[@data-test='error-button']"));
+        errorButton.click();
+
+        WebElement passwordInput = driver1.findElement(By.id("password"));
+        passwordInput.sendKeys("secret_sauce");
+        submitButton.click();
+
+        driver1.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+        String newUrl = driver1.getCurrentUrl();
+        Assert.assertEquals(newUrl, "https://www.saucedemo.com/inventory.html");
+
+        driver1.quit();
+
+    }
 }
