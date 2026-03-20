@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class JavaQaRedRoverSpring2026 {
+public class JavaQaRedRoverSpring2026Test {
 
     @Test
     public void testVitaliyKonstantinov() {
