@@ -6,8 +6,33 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
+import java.util.List;
 
 public class ElenaGTest {
+
+    @Test
+    public void testSearchSuggestionsContent() {
+        WebDriver driver = new ChromeDriver();
+        final String productName = "now";
+
+        driver.get("https://www.apteka.ru");
+
+        driver.findElement(By.className("Modal__close")).click();
+
+        WebElement searchInput = driver.findElement(By.id("apteka-search"));
+        searchInput.click();
+        searchInput.sendKeys(productName);
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(2000));
+        List<WebElement> actualSearchSuggestionsList = driver.findElements(By.className("SearchBoxSuggest__suggest"));
+
+        Assert.assertNotEquals(actualSearchSuggestionsList.size(), 0);
+        for (WebElement element : actualSearchSuggestionsList) {
+            Assert.assertTrue(element.getText().contains(productName));
+        }
+
+        driver.quit();
+    }
 
     @Test
     public void testSearchProduct() {
