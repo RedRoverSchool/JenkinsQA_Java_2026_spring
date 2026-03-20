@@ -25,7 +25,7 @@ public class DmitriTest {
 
         WebElement message = driver.findElement(By.id("message"));
 
-        Assert.assertEquals(message.getText(), "Received!");
+        Assert.assertEquals(message.getText(), "Received!!!");
 
         driver.quit();
     }
