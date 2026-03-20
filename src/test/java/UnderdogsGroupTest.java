@@ -10,7 +10,6 @@ public class UnderdogsGroupTest {
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://demoqa.com/");
-//        driver.findElement(By.id("close-fixedban")).click();
         driver.findElement(By.xpath("//div[@class='category-cards']/a[1]")).click();
         driver.findElement(By.xpath("//span[text()='Text Box']")).click();
         String name = "test";
