@@ -29,4 +29,27 @@ public class JavaQaRedRoverSpring2026Test {
 
         driver.quit();
     }
+
+    @Test
+    public void testEnzhe() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.saucedemo.com/");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+        WebElement textEmail = driver.findElement(By.xpath("//input[@id='user-name']"));
+        WebElement textPassword = driver.findElement(By.xpath("//input[@id='password']"));
+        WebElement submitButton = driver.findElement(By.xpath("//input[@value='Login']"));
+
+        textEmail.sendKeys("eni@mail.ru");
+        textPassword.sendKeys("12345678");
+        submitButton.click();
+
+        WebElement message = driver.findElement(By.xpath("//h3[@data-test='error']"));
+
+        Assert.assertEquals(message.getText(),"Epic sadface: Username and password do not match any user in this service");
+
+        driver.quit();
+    }
 }
