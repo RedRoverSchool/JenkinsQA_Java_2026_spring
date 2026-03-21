@@ -13,7 +13,7 @@ public class AsiyaZTest {
             driver.findElement(By.xpath("//input[@id='password]")).sendKeys("WrongPassword");
             driver.findElement(By.xpath("//button[@id=submit-login]")).click();
             String errorReal = driver.findElement(By.xpath("//*[@id='flash']")).getText();
-            String error = "Invalid name";
+            String error = "Invalid username";
             Assert.assertEquals(errorReal, error);
             driver.quit();
         }
