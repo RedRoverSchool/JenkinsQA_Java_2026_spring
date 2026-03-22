@@ -85,4 +85,15 @@ public class QatoriumTest {
 
         Assert.assertEquals(value.getText(), "55");
     }
+
+    @Test
+    public void testNadiaSergeeva () {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://practice-automation.com");
+
+        String title = driver.findElement(By.xpath("//h1/strong")).getText();
+        Assert.assertEquals(title, "Welcome to your software automation practice website!");
+
+        driver.quit();
+    }
 }
