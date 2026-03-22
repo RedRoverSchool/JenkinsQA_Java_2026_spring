@@ -180,16 +180,22 @@ public class BestiesGroupTest {
     }
 
     @Test
-    public void testSeleniumDev() {
+    public void testVVSearchBar() {
+        String testStr = "Индейка";
+
         WebDriver driver = new ChromeDriver();
-        driver.get("https://www.selenium.dev");
+        driver.get("https://vkusvill.ru/");
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-        driver.findElement(By.xpath("//button[@class=\"navbar-toggler\"]")).click();
-        driver.findElement(By.xpath("//div[@id=\"main_navbar\"]//a[@href=\"/documentation\"]")).click();
+        driver.findElement(By.xpath("//button[@data-place=\"header_top\"]")).click();
+        WebElement searchInput = driver.findElement(By.xpath("//input[@id=\"js-vv21-search__search-input\"]"));
+        searchInput.sendKeys(testStr);
+        searchInput.sendKeys(Keys.ENTER);
 
-        WebElement title = driver.findElement(By.xpath("//div[@class=\"td-content\"]/h1"));
-        Assert.assertEquals(title.getText(), "The Selenium Browser Automation Project");
+        WebElement text = driver.findElement(By.xpath("//div[@id=\"search-result-general-container\"]//h1"));
+        Assert.assertEquals(text.getText(), testStr);
+
         driver.quit();
     }
+
 }
