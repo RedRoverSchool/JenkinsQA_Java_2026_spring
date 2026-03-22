@@ -11,6 +11,7 @@ public class NatashaTest {
 
         @Test
         public void testFirst() {
+
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.selenium.dev/selenium/web/web-form.html");
