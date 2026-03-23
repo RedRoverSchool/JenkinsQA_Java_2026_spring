@@ -57,7 +57,18 @@ public class LilTest {
 
         driver.quit();
     }
+    @Test
+    public  void test () {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.wikipedia.org/");
+        WebElement findInput = driver.findElement(By.xpath("//*[@id=\"searchInput\"]"));
+        findInput.sendKeys("Selenium");//findInput возвращает элемент (WebElement), sendKeys(...) — метод для ввода текста в этот элемент, ничего не возвращает
+
+        driver.findElement(By.xpath("//button[@type=\"submit\"]")).click();
+        WebElement text = driver.findElement(By.xpath("//*[@id=\"firstHeading\"]/span"));
+        Assert.assertEquals(text.getText(), "Selenium");
+        driver.quit();
+    }
 
 }
-
 
