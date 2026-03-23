@@ -1,6 +1,4 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -31,4 +29,30 @@ public class StudyTimeGroupTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testDocPageJenkinsCodeOfConduct() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.jenkins.io/doc/");
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        WebElement shadowHost = driver.findElement(By.xpath("//*[@id='ji-toolbar']"));
+        SearchContext shadowRoot = shadowHost.getShadowRoot();
+
+        WebElement hiddenBtnAbout = shadowRoot.findElement(By.cssSelector("button[data-idx='8']"));
+        js.executeScript("arguments[0].click();", hiddenBtnAbout);
+
+        WebElement shadowSecondHost = shadowRoot.findElement(By.cssSelector("jio-navbar-link[href='/project/conduct/']"));
+        SearchContext shadowSecondRoot = shadowSecondHost.getShadowRoot();
+        WebElement conductLink = shadowSecondRoot.findElement(By.cssSelector("a.nav-link"));
+        js.executeScript("arguments[0].click();", conductLink);
+
+        Assert.assertEquals(driver.getTitle(), "Jenkins Code of Conduct");
+
+        driver.quit();
+    }
+
 }
