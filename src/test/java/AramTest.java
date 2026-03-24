@@ -12,6 +12,7 @@ public class AramTest {
     @Test
     public void testDownloadPageSecondLevelHeaders() {
         WebDriver driver = new ChromeDriver();
+
         driver.get("https://www.jenkins.io/doc/book/");
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
