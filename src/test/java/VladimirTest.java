@@ -22,4 +22,17 @@ public class VladimirTest {
 
         driver.quit();
     }
+    @Test
+    public void VladimirTestAuth(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://postupi.online/158/?num=6");
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        driver.findElement(By.id("enter_email")).sendKeys("br33@gmail.com");
+        driver.findElement(By.id("user_pswrdNew")).sendKeys("1234567");
+        driver.findElement(By.xpath("//*[@id=\"regent-form\"]/div/div/div[4]/div[1]/button")).click();
+        WebElement massage = driver.findElement(By.xpath("//*[@id=\"regent-form\"]/div/div/div[6]/div/p/b"));
+        Assert.assertEquals(massage.getText(),"Подтверди что ты не робот: собери пазл");
+         driver.quit();
+
+    }
 }
