@@ -1,5 +1,6 @@
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -10,7 +11,7 @@ import java.time.Duration;
 
 public class VladimirTest {
     @Test
-    public void Vladimirtest() {
+    public void vladimirFirstTest() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.bluestacks.com/ru/index.html");
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
@@ -23,7 +24,7 @@ public class VladimirTest {
         driver.quit();
     }
     @Test
-    public void VladimirTestAuth(){
+    public void vladimirAuthTest(){
         WebDriver driver = new ChromeDriver();
         driver.get("https://postupi.online/158/?num=6");
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
@@ -32,7 +33,18 @@ public class VladimirTest {
         driver.findElement(By.xpath("//*[@id=\"regent-form\"]/div/div/div[4]/div[1]/button")).click();
         WebElement massage = driver.findElement(By.xpath("//*[@id=\"regent-form\"]/div/div/div[6]/div/p/b"));
         Assert.assertEquals(massage.getText(),"Подтверди что ты не робот: собери пазл");
-         driver.quit();
+        driver.quit();
+
+    }
+    @Test
+    public void vladimirByclassTest(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://pagespeed.web.dev/");
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(2000));
+        driver.findElement(By.xpath("//*[@id=\"i2\"]")).sendKeys("www.google.com", Keys.ENTER);
+        WebElement result = driver.findElement(By.className("gSBk9c"));
+        Assert.assertEquals(result.getText(),("PageSpeed Insights"));
+        driver.quit();
 
     }
 }
