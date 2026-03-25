@@ -33,22 +33,23 @@ public class SergeyTest {
 
 
     @Test
-    public void testGoogle() {
+    public void testGoogle() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://www.google.com");
 
-        driver.get("https://www.google.com");
+            WebElement textInput = driver.findElement(By.id("APjFqb"));
+            textInput.sendKeys("selenium");
 
-        WebElement textInput = driver.findElement(By.id("APjFqb"));
-        textInput.sendKeys("selenium");
+            WebElement aiButton = driver.findElement(By.xpath("//button[@jsname='B6rgad']"));
+            aiButton.click();
 
-        WebElement aiButton = driver.findElement(By.xpath("//button[@jsname='B6rgad']"));
-        aiButton.click();
+            WebElement text = driver.findElement(By.xpath("//div[@role='heading'][1]/strong"));
 
-        WebElement text = driver.findElement(By.xpath("//div[@role='heading'][1]/strong"));
-
-        Assert.assertEquals(text.getText(), "1. Selenium as a Software Framework");
-
-        driver.quit();
+            Assert.assertEquals(text.getText(), "1. Selenium as a Software Framework");
+        } finally {
+            driver.quit();
+        }
     }
 
     @Test
