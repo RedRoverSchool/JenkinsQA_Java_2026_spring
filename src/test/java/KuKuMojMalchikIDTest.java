@@ -27,6 +27,6 @@ public class KuKuMojMalchikIDTest {
         WebElement message = driver.findElement(By.id("message"));
         Assert.assertEquals(message.getText(), "Received!");
 
-        driver.quit();
+        driver.quit(); //выход
     }
 }
