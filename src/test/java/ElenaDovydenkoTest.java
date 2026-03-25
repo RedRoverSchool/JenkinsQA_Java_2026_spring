@@ -15,8 +15,7 @@ public class ElenaDovydenkoTest {
 
         driver.getTitle();
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
+       
   
         WebElement submitButton1 = driver.findElement(By.xpath("//*[@id=\"CookiesStickyPanel\"]/div[1]/div[2]/div[2]/button[2]"));
         submitButton1.click();
