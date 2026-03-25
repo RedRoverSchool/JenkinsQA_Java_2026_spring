@@ -38,8 +38,6 @@ public class SergeyTest {
         try {
             driver.get("https://www.google.com");
 
-            Thread.sleep(1000);
-
             WebElement textInput = driver.findElement(By.id("APjFqb"));
             textInput.sendKeys("selenium");
 
