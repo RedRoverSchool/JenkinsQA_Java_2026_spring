@@ -14,6 +14,7 @@ import org.testng.Assert;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class StudyTimeGroupTest {
 
@@ -146,17 +147,47 @@ public class StudyTimeGroupTest {
             jenkinsVersions.add(headerThirdLevel.getText());
         }
 
-        List<String> expectedResults = new ArrayList<>();
+        List<String> actualResults = new ArrayList<>();
         String minJenkinsVersion = jenkinsVersions.getLast();
         String maxJenkinsVersion = jenkinsVersions.getFirst();
-        expectedResults.add(Integer.toString(jenkinsVersions.size()));
-        expectedResults.add(minJenkinsVersion);
-        expectedResults.add(maxJenkinsVersion);
+        actualResults.add(Integer.toString(jenkinsVersions.size()));
+        actualResults.add(minJenkinsVersion);
+        actualResults.add(maxJenkinsVersion);
 
-        List<String> actualResults = List.of("25", "2.452.1", "2.541.3");
+        List<String> expectedResults = List.of("25", "2.452.1", "2.541.3");
 
-        Assert.assertEquals(actualResults, expectedResults, "The list length or version numbers are not as expected.");
+        Assert.assertEquals(expectedResults, actualResults, "The list length or version numbers are not as expected.");
 
         driver.quit();
+    }
+
+    @Test
+    public void testBlogPageSocialNetworks() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.jenkins.io/blog/");
+
+        List<WebElement> cards = driver.findElements(By.xpath("//li[@class='app-card']/a"));
+        if (!cards.isEmpty()) {
+            int randomIndex = new Random().nextInt(cards.size());
+            cards.get(randomIndex).click();
+        } else {
+            System.out.println("No cards found on the 'Blog' page!");
+        }
+
+        List<WebElement> socialLinks = driver.findElements(By.xpath("//ul[@class='app-social-media-buttons']/li/a"));
+
+        List<String> socialLinksTooltips = new ArrayList<>();
+
+        for (WebElement socialLink : socialLinks) {
+            socialLinksTooltips.add(socialLink.getAttribute("data-tooltip"));
+        }
+
+        List<String> expectedResults = List.of("𝕏 (formerly Twitter)", "LinkedIn", "Mastodon", "Bluesky", "Advocacy and Outreach Lead", "GitHub", "LinkedIn");
+
+        Assert.assertEquals(socialLinksTooltips, expectedResults, "The list of social links differs from the reference one.");
+
+        driver.quit();
+
     }
 }
