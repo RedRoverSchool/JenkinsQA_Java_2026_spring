@@ -17,6 +17,7 @@ public class LidiyaTest {
         WebElement authButton = driver.findElement(By.xpath("//*[@class='w-inline-block login-header']"));
         authButton.click();
 
+
         WebElement inputEamil = driver.findElement(By.xpath("//*[@id=\"login3\"]"));
         WebElement inputPassword = driver.findElement(By.xpath("//*[@id=\"password3\"]"));
         inputEamil.sendKeys("cgvngv@ema");
