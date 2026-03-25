@@ -85,6 +85,7 @@ public class StudyTimeGroupTest {
 
         driver.quit();
     }
+
     @Test
     public void FurnitureStoreTest() {
         WebDriver driver = new ChromeDriver();
@@ -107,8 +108,9 @@ public class StudyTimeGroupTest {
         Assert.assertEquals(errorMessage.getText(), "Неверный логин или пароль");
 
         driver.quit();
+    }
 
-    
+
     @Test
     public void testContribPage() {
         WebDriver driver = new ChromeDriver();
@@ -126,6 +128,7 @@ public class StudyTimeGroupTest {
 
         driver.quit();
     }
+
     @Test
     public void testChangelogPage() {
         WebDriver driver = new ChromeDriver();
