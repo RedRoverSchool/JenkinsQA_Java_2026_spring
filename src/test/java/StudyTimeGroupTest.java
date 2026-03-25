@@ -93,7 +93,6 @@ public class StudyTimeGroupTest {
         driver.get("https://contributors.jenkins.io/");
 
         List<WebElement> weContributorNames = driver.findElements(By.xpath("//h3"));
-
         List<String> contributorNames = new ArrayList<>();
 
         for (WebElement contributorName : weContributorNames) {
@@ -101,6 +100,36 @@ public class StudyTimeGroupTest {
         }
 
         Assert.assertTrue(contributorNames.contains("Bruno Verachten"));
+
+        driver.quit();
+    }
+    @Test
+    public void testChangelogPage() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.jenkins.io/download/");
+
+        WebElement lnkChangelogStable = driver.findElement(By.xpath("//a[@href='/changelog-stable']"));
+        lnkChangelogStable.click();
+
+        List<WebElement> headersThirdLevel = driver.findElements(By.xpath("//h3"));
+
+        List<String> jenkinsVersions = new ArrayList<>();
+
+        for (WebElement headerThirdLevel : headersThirdLevel) {
+            jenkinsVersions.add(headerThirdLevel.getText());
+        }
+
+        List<String> expectedResults = new ArrayList<>();
+        String minJenkinsVersion = jenkinsVersions.getLast();
+        String maxJenkinsVersion = jenkinsVersions.getFirst();
+        expectedResults.add(Integer.toString(jenkinsVersions.size()));
+        expectedResults.add(minJenkinsVersion);
+        expectedResults.add(maxJenkinsVersion);
+
+        List<String> actualResults = List.of("25", "2.452.1", "2.541.3");
+
+        Assert.assertEquals(actualResults, expectedResults, "The list length or version numbers are not as expected.");
 
         driver.quit();
     }
