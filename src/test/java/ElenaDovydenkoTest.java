@@ -17,12 +17,12 @@ public class ElenaDovydenkoTest {
 
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-     //   WebElement textBox = driver.findElement(By.name("my-text"));
+  
         WebElement submitButton1 = driver.findElement(By.xpath("//*[@id=\"CookiesStickyPanel\"]/div[1]/div[2]/div[2]/button[2]"));
         submitButton1.click();
         WebElement submitButton2 = driver.findElement(By.xpath("//a[@href='https://www.a1.by/ru/services/other-services/perehod-na-a1/p/perehod_na_a1']"));
 
-     //   textBox.sendKeys("Selenium");
+   
         submitButton2.click();
 
         WebElement message = driver.findElement(By.xpath("//*[@id=\"page-content\"]/div[4]/div/div/div/div/div/h3"));
