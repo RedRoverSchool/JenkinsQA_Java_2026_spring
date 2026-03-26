@@ -51,7 +51,8 @@ public class VidaTest {
 
             Assert.assertEquals(driver.findElement(By.xpath(
                             "//*[@class='product-cards']/div/div/a[2]")).getText().trim(),
-                    "Блок стеновой из газобетона Б3 D350/B2.0");
+                    "Блок стеновой из газобетона Б3 D350/B2.0"
+            );
         } finally {
             driver.quit();
         }
