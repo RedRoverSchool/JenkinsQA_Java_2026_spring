@@ -13,10 +13,12 @@ import org.testng.Assert;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 import java.util.List;
 import java.util.Random;
 
 public class StudyTimeGroupTest {
+    private static final Logger logger = Logger.getLogger(StudyTimeGroupTest.class.getName());
 
     @Test
     public void testDownloadPageSecondLevelHeaders() {
@@ -182,7 +184,7 @@ public class StudyTimeGroupTest {
                 int randomIndex = new Random().nextInt(cards.size());
                 cards.get(randomIndex).click();
             } else {
-                System.out.println("No cards found on the 'Blog' page!");
+                logger.info("No cards found on the 'Blog' page!");
             }
 
             List<WebElement> socialLinks = driver.findElements(
