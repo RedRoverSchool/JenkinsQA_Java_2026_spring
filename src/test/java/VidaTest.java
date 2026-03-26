@@ -16,14 +16,13 @@ public class VidaTest {
             boolean testFlag = false;
 
             for (WebElement element : driver.findElements(By.className("text-secondary"))) {
-                if (element.getText().equals("ПРЕИМУЩЕСТВА")){
+                if (element.getText().equals("ПРЕИМУЩЕСТВА")) {
                     testFlag = true;
                 }
             }
 
             Assert.assertTrue(testFlag);
-        }
-        finally {
+        } finally {
             driver.quit();
         }
     }
@@ -35,14 +34,13 @@ public class VidaTest {
         try {
             driver.get("https://xn--55-6kc9apknedkg.xn--p1ai/");
             Assert.assertEquals(driver.findElements(By.xpath("//article/div/a")).size(), 12);
-        }
-        finally {
+        } finally {
             driver.quit();
         }
     }
 
     @Test
-    public void testStroymart3(){
+    public void testStroymart3() {
         WebDriver driver = new ChromeDriver();
 
         try {
@@ -52,10 +50,9 @@ public class VidaTest {
             driver.findElement(By.xpath("//article/a/img[1]")).click();
 
             Assert.assertEquals(driver.findElement(By.xpath(
-                    "//*[@class='product-cards']/div/div/a[2]")).getText().trim(),
+                            "//*[@class='product-cards']/div/div/a[2]")).getText().trim(),
                     "Блок стеновой из газобетона Б3 D350/B2.0");
-        }
-        finally {
+        } finally {
             driver.quit();
         }
     }
