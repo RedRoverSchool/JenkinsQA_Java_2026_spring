@@ -70,7 +70,7 @@ public class StudyTimeGroupTest {
         Actions actions = new Actions(driver);
 
         driver.get("https://plugins.jenkins.io/");
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         WebElement inpFindPlugins = driver.findElement(By.xpath("//input[@name='query']"));
         actions.moveToElement(inpFindPlugins)
