@@ -253,4 +253,24 @@ public class NoGroupTest {
             Assert.assertEquals(errPassMessage, "Password должен содержать минимум 8 символов, включая буквы и цифры");
         }
     }
+
+    @Test
+    public void testCheckFindLine() {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://wooordhunt.ru/dic/content/en_ru");
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+            WebElement findLine = driver.findElement(By.id("hunted_word"));
+            findLine.sendKeys("cat");
+            WebElement buttonFind = driver.findElement(By.id("hunted_word_submit"));
+            buttonFind.click();
+            WebElement word = driver.findElement(By.xpath("//div[@id = 'wd_title']/h1"));
+            word.getText();
+
+            Assert.assertEquals(word.getText(), "Cat");
+        } finally {
+            driver.quit();
+        }
+    }
 }
