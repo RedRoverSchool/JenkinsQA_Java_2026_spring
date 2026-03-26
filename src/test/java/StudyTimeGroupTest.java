@@ -21,70 +21,78 @@ public class StudyTimeGroupTest {
     @Test
     public void testDownloadPageSecondLevelHeaders() {
         WebDriver driver = new ChromeDriver();
-
-        driver.get("https://www.jenkins.io/download/");
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-        List<WebElement> headers = driver.findElements(By.xpath("//h2"));
+        try {
+            driver.get("https://www.jenkins.io/download/");
 
-        List<String> actualHeadersText = new ArrayList<>();
+            List<WebElement> headers = driver.findElements(By.xpath("//h2"));
+            List<String> actualHeadersText = new ArrayList<>();
+            for (WebElement header : headers) {
+                actualHeadersText.add(header.getText());
+            }
 
-        for (WebElement header : headers) {
-            actualHeadersText.add(header.getText());
+            Assert.assertEquals(
+                    actualHeadersText,
+                    List.of("Downloading Jenkins", "Deploying Jenkins in public cloud"),
+                    "The expected list of second-level headers does not match the reference list.");
+        } finally {
+            driver.quit();
         }
-
-        List<String> expectedHeadersText = List.of("Downloading Jenkins", "Deploying Jenkins in public cloud");
-        Assert.assertEquals(actualHeadersText, expectedHeadersText, "The expected list of second-level headers does not match the reference list.");
-
-        driver.quit();
     }
 
     @Test
     public void testDocPageJenkinsCodeOfConduct() {
         WebDriver driver = new ChromeDriver();
-
-        driver.get("https://www.jenkins.io/doc/");
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
-        WebElement shadowHost = driver.findElement(By.xpath("//*[@id='ji-toolbar']"));
-        SearchContext shadowRoot = shadowHost.getShadowRoot();
+        try {
+            driver.get("https://www.jenkins.io/doc/");
 
-        WebElement hiddenBtnAbout = shadowRoot.findElement(By.cssSelector("button[data-idx='8']"));
-        js.executeScript("arguments[0].click();", hiddenBtnAbout);
+            WebElement shadowHost = driver.findElement(By.xpath("//*[@id='ji-toolbar']"));
+            SearchContext shadowRoot = shadowHost.getShadowRoot();
+            js.executeScript(
+                    "arguments[0].click();",
+                    shadowRoot.findElement(By.cssSelector("button[data-idx='8']")));
 
-        WebElement shadowSecondHost = shadowRoot.findElement(By.cssSelector("jio-navbar-link[href='/project/conduct/']"));
-        SearchContext shadowSecondRoot = shadowSecondHost.getShadowRoot();
-        WebElement conductLink = shadowSecondRoot.findElement(By.cssSelector("a.nav-link"));
-        js.executeScript("arguments[0].click();", conductLink);
+            WebElement shadowSecondHost = shadowRoot.findElement(By.cssSelector("jio-navbar-link[href='/project/conduct/']"));
+            SearchContext shadowSecondRoot = shadowSecondHost.getShadowRoot();
+            js.executeScript(
+                    "arguments[0].click();",
+                    shadowSecondRoot.findElement(By.cssSelector("a.nav-link")));
 
-        Assert.assertEquals(driver.getTitle(), "Jenkins Code of Conduct");
-
-        driver.quit();
+            Assert.assertEquals(driver.getTitle(), "Jenkins Code of Conduct");
+        } finally {
+            driver.quit();
+        }
     }
 
     @Test
     public void testPluginsPageSearchCli() {
         WebDriver driver = new ChromeDriver();
         Actions actions = new Actions(driver);
-
-        driver.get("https://plugins.jenkins.io/");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        WebElement inpFindPlugins = driver.findElement(By.xpath("//input[@name='query']"));
-        actions.moveToElement(inpFindPlugins)
-                .click()
-                .sendKeys("qwertyuiop")
-                .sendKeys(Keys.ENTER)
-                .build()
-                .perform();
+        try {
+            driver.get("https://plugins.jenkins.io/");
 
-        WebElement txtNoResultsFound = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='no-results']/p")));
+            WebElement inpFindPlugins = driver.findElement(By.xpath("//input[@name='query']"));
+            actions.moveToElement(inpFindPlugins)
+                    .click()
+                    .sendKeys("qwertyuiop")
+                    .sendKeys(Keys.ENTER)
+                    .build()
+                    .perform();
 
-        Assert.assertEquals(txtNoResultsFound.getText(), "You search did not return any results. Please try changing your search criteria or reloading the browser.");
+            WebElement txtNoResultsFound = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='no-results']/p")));
 
-        driver.quit();
+            Assert.assertEquals(
+                    txtNoResultsFound.getText(),
+                    "You search did not return any results. Please try changing your search criteria or reloading the browser.");
+        } finally {
+            driver.quit();
+        }
     }
 
     @Test
@@ -111,82 +119,85 @@ public class StudyTimeGroupTest {
         driver.quit();
     }
 
-
     @Test
     public void testContribPage() {
         WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-        driver.get("https://contributors.jenkins.io/");
+        try {
+            driver.get("https://contributors.jenkins.io/");
 
-        List<WebElement> weContributorNames = driver.findElements(By.xpath("//h3"));
-        List<String> contributorNames = new ArrayList<>();
+            List<WebElement> weContributorNames = driver.findElements(By.xpath("//h3"));
+            List<String> contributorNames = new ArrayList<>();
+            for (WebElement contributorName : weContributorNames) {
+                contributorNames.add(contributorName.getText());
+            }
 
-        for (WebElement contributorName : weContributorNames) {
-            contributorNames.add(contributorName.getText());
+            Assert.assertTrue(contributorNames.contains("Bruno Verachten"));
+        } finally {
+            driver.quit();
         }
-
-        Assert.assertTrue(contributorNames.contains("Bruno Verachten"));
-
-        driver.quit();
     }
 
     @Test
     public void testChangelogPage() {
         WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-        driver.get("https://www.jenkins.io/download/");
+        try {
+            driver.get("https://www.jenkins.io/download/");
 
-        WebElement lnkChangelogStable = driver.findElement(By.xpath("//a[@href='/changelog-stable']"));
-        lnkChangelogStable.click();
+            driver.findElement(By.xpath("//a[@href='/changelog-stable']")).click();
 
-        List<WebElement> headersThirdLevel = driver.findElements(By.xpath("//h3"));
+            List<WebElement> headersThirdLevel = driver.findElements(By.xpath("//h3"));
+            List<String> jenkinsVersions = new ArrayList<>();
+            for (WebElement headerThirdLevel : headersThirdLevel) {
+                jenkinsVersions.add(headerThirdLevel.getText());
+            }
 
-        List<String> jenkinsVersions = new ArrayList<>();
+            List<String> actualResults = new ArrayList<>();
+            actualResults.add(Integer.toString(jenkinsVersions.size()));
+            actualResults.add(jenkinsVersions.getLast());
+            actualResults.add(jenkinsVersions.getFirst());
 
-        for (WebElement headerThirdLevel : headersThirdLevel) {
-            jenkinsVersions.add(headerThirdLevel.getText());
+            Assert.assertEquals(
+                    actualResults,
+                    List.of("25", "2.452.1", "2.541.3"),
+                    "The list length or version numbers are not as expected.");
+        } finally {
+            driver.quit();
         }
-
-        List<String> actualResults = new ArrayList<>();
-        String minJenkinsVersion = jenkinsVersions.getLast();
-        String maxJenkinsVersion = jenkinsVersions.getFirst();
-        actualResults.add(Integer.toString(jenkinsVersions.size()));
-        actualResults.add(minJenkinsVersion);
-        actualResults.add(maxJenkinsVersion);
-
-        List<String> expectedResults = List.of("25", "2.452.1", "2.541.3");
-
-        Assert.assertEquals(expectedResults, actualResults, "The list length or version numbers are not as expected.");
-
-        driver.quit();
     }
 
     @Test
     public void testBlogPageSocialNetworksOnTopOfArticle() {
         WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-        driver.get("https://www.jenkins.io/blog/");
+        try {
+            driver.get("https://www.jenkins.io/blog/");
 
-        List<WebElement> cards = driver.findElements(By.xpath("//li[@class='app-card']/a"));
-        if (!cards.isEmpty()) {
-            int randomIndex = new Random().nextInt(cards.size());
-            cards.get(randomIndex).click();
-        } else {
-            System.out.println("No cards found on the 'Blog' page!");
+            List<WebElement> cards = driver.findElements(By.xpath("//li[@class='app-card']/a"));
+            if (!cards.isEmpty()) {
+                int randomIndex = new Random().nextInt(cards.size());
+                cards.get(randomIndex).click();
+            } else {
+                System.out.println("No cards found on the 'Blog' page!");
+            }
+
+            List<WebElement> socialLinks = driver.findElements(
+                    By.xpath("//div[@class='app-social-media-buttons__container share-buttons__container']//li/a"));  // /ul[@class='app-social-media-buttons']
+            List<String> socialLinksTooltips = new ArrayList<>();
+            for (WebElement socialLink : socialLinks) {
+                socialLinksTooltips.add(socialLink.getAttribute("data-tooltip"));
+            }
+
+            Assert.assertEquals(
+                    socialLinksTooltips,
+                    List.of("𝕏 (formerly Twitter)", "LinkedIn", "Mastodon", "Bluesky"),
+                    "The list of social links differs from the reference one.");
+        } finally {
+            driver.quit();
         }
-
-        List<WebElement> socialLinks = driver.findElements(By.xpath("//div[@class='app-social-media-buttons__container share-buttons__container']/ul[@class='app-social-media-buttons']/li/a"));
-        List<String> socialLinksTooltips = new ArrayList<>();
-
-        for (WebElement socialLink : socialLinks) {
-            socialLinksTooltips.add(socialLink.getAttribute("data-tooltip"));
-        }
-
-        List<String> expectedResults = List.of("𝕏 (formerly Twitter)", "LinkedIn", "Mastodon", "Bluesky");
-
-        Assert.assertEquals(socialLinksTooltips, expectedResults, "The list of social links differs from the reference one.");
-
-        driver.quit();
-
     }
 }
