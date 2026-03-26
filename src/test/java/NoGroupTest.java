@@ -5,8 +5,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.Assertion;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NoGroupTest {
@@ -313,6 +315,31 @@ public class NoGroupTest {
 
             String searchResultTitle = driver.findElement(By.className("SearchResultTitle__found")).getText();
             Assert.assertTrue(searchResultTitle.contains(productName), "Product search failed");
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void testNavigationDrawerItemsList() {
+
+        List<String> expectedItemsList = List.of("QA Practices", "Front-End Testing Automation",
+                "Back-End Testing Automation", "Mobile Testing Automation",
+                "Frameworks & Libraries", "DevOps Tools", "Cross Browser Testing",
+                "Non-Functional Testing", "Programming Language");
+        List<String> actualItemsList = new ArrayList<>();
+        WebDriver driver = new ChromeDriver();
+
+        try {
+            driver.get("https://toolsqa.com/");
+            driver.findElement(By.className("navbar__tutorial-menu")).click();
+            List<WebElement> menuItemsList = driver.findElements(By.xpath("//div[@class='first-generation']/ul/li"));
+
+            for (WebElement element: menuItemsList) {
+                actualItemsList.add(element.getText());
+            }
+
+            Assert.assertTrue(expectedItemsList.containsAll(actualItemsList));
         } finally {
             driver.quit();
         }
