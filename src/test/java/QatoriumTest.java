@@ -27,58 +27,50 @@ public class QatoriumTest {
 
     @Test
     public void testPracticeForms() {
-
         WebDriver driver = new ChromeDriver();
-        driver.get("https://practice-automation.com/form-fields/");
+        try {
+            driver.get("https://practice-automation.com/form-fields/");
 
-        driver.findElement(By.id("name-input")).sendKeys("Anastasia");
+            driver.findElement(By.id("name-input")).sendKeys("Anastasia");
+            driver.findElement(By.xpath("//input[@type='password']")).sendKeys("1234");
 
-        driver.findElement(By.xpath("//input[@type='password']")).sendKeys("1234");
+            Actions actions = new Actions(driver);
+            WebElement color = driver.findElement(By.id("color3"));
+            actions.moveToElement(color).perform();
+            color.click();
 
-        driver.findElement(By.id("drink1")).click();
+            WebElement selectElement = driver.findElement(By.id("automation"));
+            Select select = new Select(selectElement);
+            select.selectByValue("yes");
 
-        Actions actions = new Actions(driver);
+            WebElement button = driver.findElement(By.id("submit-btn"));
+            actions.moveToElement(button).perform();
+            button.click();
 
-        WebElement color = driver.findElement(By.id("color3"));
-        actions.moveToElement(color).click();
+            Alert alert = driver.switchTo().alert();
 
-        WebElement selectElement = driver.findElement(By.id("automation"));
-
-        Select select = new Select(selectElement);
-        select.selectByValue("yes");
-
-        driver.findElement(By.id("email")).sendKeys("anprado21@gmail.com");
-
-        driver.findElement(By.name("message")).sendKeys("hello!");
-
-        WebElement button = driver.findElement(By.id("submit-btn"));
-        actions.moveToElement(button).click().perform();
-
-        Alert alert  = driver.switchTo().alert();
-        String textAlert = alert.getText();
-
-        Assert.assertEquals(textAlert, "Message received!");
-
-        driver.quit();
+            Assert.assertEquals(alert.getText(), "Message received!");
+        } finally {
+            driver.quit();
+        }
     }
 
     @Test
     public void testSliders() {
-
         WebDriver driver = new ChromeDriver();
-        driver.get("https://practice-automation.com/slider/");
+        try {
+            driver.get("https://practice-automation.com/slider/");
 
-        WebElement slider = driver.findElement(By.id("slideMe"));
-        slider.click();
+            WebElement slider = driver.findElement(By.id("slideMe"));
+            slider.click();
 
-        Actions actions = new Actions(driver);
-        actions.clickAndHold(slider).moveByOffset(50, 0).release().build().perform();
+            Actions actions = new Actions(driver);
+            actions.clickAndHold(slider).moveByOffset(50, 0).release().perform();
 
-        WebElement value = driver.findElement(By.id("value"));
-
-        Assert.assertEquals(value.getText(), "55");
-
-        driver.quit();
+            Assert.assertEquals(driver.findElement(By.id("value")).getText(), "55");
+        } finally {
+            driver.quit();
+        }
     }
 
     @Test
@@ -95,36 +87,25 @@ public class QatoriumTest {
     @Test
     public void testCalendar() {
         WebDriver driver = new ChromeDriver();
-        driver.get("https://practice-automation.com/calendars/");
+        try {
+            driver.get("https://practice-automation.com/calendars/");
 
-        WebElement calendar = driver.findElement(By.name("g1065-1-selectorenteradate"));
-        calendar.click();
+            driver.findElement(By.name("g1065-1-selectorenteradate")).click();
+            driver.findElement(By.xpath("//button[contains(@class,'dp-cal-month')]")).click();
+            driver.findElement(By.xpath("//button[@data-month='4']")).click();
+            driver.findElement(By.xpath("//button[contains (@class,'dp-cal-year')]")).click();
+            driver.findElement(By.xpath("//button[@data-year='1987']")).click();
+            driver.findElement(By.xpath("//button[@data-date='548546400000']")).click();
+            driver.findElement(By.xpath("//button[@class='pushbutton-wide']")).click();
 
-        WebElement month = driver.findElement(By.xpath("//button[contains(@class,'dp-cal-month')]"));
-        month.click();
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-        WebElement monthMay = driver.findElement(By.xpath("//button[@data-month='4']"));
-        monthMay.click();
+            String result = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    (By.xpath("//div[@class='field-value']")))).getText();
 
-        WebElement year = driver.findElement(By.xpath("//button[contains (@class,'dp-cal-year')]"));
-        year.click();
-
-        WebElement year1987 = driver.findElement(By.xpath("//button[@data-year='1987']"));
-        year1987.click();
-
-        WebElement date = driver.findElement(By.xpath("//button[@data-date='548546400000']"));
-        date.click();
-
-        WebElement submit = driver.findElement(By.xpath("//button[@class='pushbutton-wide']"));
-        submit.click();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-
-        String result = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                (By.xpath("//div[@class='field-value']")))).getText();
-
-        Assert.assertEquals(result, "1987-05-21");
-
-        driver.quit();
+            Assert.assertEquals(result, "1987-05-21");
+        } finally {
+            driver.quit();
+        }
     }
 }
