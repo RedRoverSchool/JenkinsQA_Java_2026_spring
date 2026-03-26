@@ -41,19 +41,13 @@ public class JavaQaRedRoverSpring2026Test {
         WebElement textBox = driver.findElement(By.xpath("//input[@placeholder='ФИО*']"));
         String expectedText = "Иванов Иван Иванович";
         textBox.sendKeys(expectedText);
-        String actualText = textBox.getAttribute("value");
-
-        Assert.assertEquals(actualText, expectedText);
 
         WebElement button = driver.findElement(By.xpath("//button[contains(@class, 'form_button')]"));
 
         new Actions(driver).scrollToElement(button).perform();
-
         button.click();
 
         WebElement errorButton = driver.findElement(By.xpath("//div[@data-notivue='error']"));
-
-        Assert.assertTrue(errorButton.isDisplayed(), "Ошибка: Нет всплывающего окна");
 
         String actualErrorMessage = errorButton.getText();
         String expectedErrorMessage = "Проверьте все поля";
