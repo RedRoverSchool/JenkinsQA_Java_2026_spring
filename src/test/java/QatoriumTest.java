@@ -106,6 +106,26 @@ public class QatoriumTest {
             Assert.assertEquals(result, "1987-05-21");
         } finally {
             driver.quit();
+        }}
+
+        @Test
+
+        public void testformfields(){
+            WebDriver driver = new ChromeDriver();
+            driver.get("https://practice-automation.com/form-fields/");
+            WebElement namefield = driver.findElement(By.xpath("//label[@for='name-input']/input[contains(@id,'name')]"));
+            namefield.sendKeys("Yulia");
+            Actions actions= new Actions(driver);
+
+            WebElement coffie = driver.findElement(By.xpath("//input[@id='drink3']"));
+            actions.moveToElement(coffie).click().perform();
+
+            WebElement button =driver.findElement(By.xpath("//button[@id='submit-btn']"));
+            actions.moveToElement(button).click().perform();
+            Alert alert = driver.switchTo().alert();
+
+            Assert.assertEquals(alert.getText(), "Message received!");
+            driver.quit();
         }
-    }
+
 }
