@@ -8,22 +8,32 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 
 public class GroupGachiteam {
+
     @Test
-    public void testOpenSite() {
+    public void testCheckTitlesNameAndNavigation() {
         WebDriver driver = new ChromeDriver();
-        driver.get("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
+        driver.get("https://commitquality.com");
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-        driver.findElement(By.xpath("//*[@ng-click='customer()']")).click();
-        WebElement userSelect = driver.findElement(By.xpath("//div[@class='form-group']"));
-        Assert.assertEquals(userSelect.getText(), "Your Name :\n" +
-                "       ---Your Name---\n" +
-                " \n" +
-                "       Hermoine Granger\n" +
-                "Harry Potter\n" +
-                "Ron Weasly\n" +
-                "Albus Dumbledore\n" +
-                "Neville Longbottom\n" +
-                "     ");
+
+        WebElement Product = driver.findElement(By.xpath("//*[@data-testid = 'navbar-products']"));
+        Assert.assertEquals("Products", Product.getText());
+        String valueOfActiveElement = driver.findElement(By.xpath("//*[@class='nav-link active']")).getAttribute("class");
+        Assert.assertTrue(valueOfActiveElement.contains("nav-link active"));
+
+        WebElement AddProduct = driver.findElement(By.xpath("//*[@data-testid = 'navbar-addproduct']"));
+        Assert.assertEquals("Add Product", AddProduct.getText());
+        AddProduct.click();
+        Assert.assertTrue(valueOfActiveElement.contains("nav-link active"));
+
+        WebElement Practice = driver.findElement(By.xpath("//*[@data-testid = 'navbar-practice']"));
+        Assert.assertEquals("Practice", Practice.getText());
+        Practice.click();
+        Assert.assertTrue(valueOfActiveElement.contains("nav-link active"));
+
+        WebElement Login = driver.findElement(By.xpath("//*[@data-testid = 'navbar-login']"));
+        Assert.assertEquals("Login", Login.getText());
+        Login.click();
+        Assert.assertTrue(valueOfActiveElement.contains("nav-link active"));
         driver.quit();
     }
 }
