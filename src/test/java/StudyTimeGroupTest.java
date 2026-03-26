@@ -162,7 +162,7 @@ public class StudyTimeGroupTest {
     }
 
     @Test
-    public void testBlogPageSocialNetworks() {
+    public void testBlogPageSocialNetworksOnTopOfArticle() {
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.jenkins.io/blog/");
@@ -175,15 +175,14 @@ public class StudyTimeGroupTest {
             System.out.println("No cards found on the 'Blog' page!");
         }
 
-        List<WebElement> socialLinks = driver.findElements(By.xpath("//ul[@class='app-social-media-buttons']/li/a"));
-
+        List<WebElement> socialLinks = driver.findElements(By.xpath("//div[@class='app-social-media-buttons__container share-buttons__container']/ul[@class='app-social-media-buttons']/li/a"));
         List<String> socialLinksTooltips = new ArrayList<>();
 
         for (WebElement socialLink : socialLinks) {
             socialLinksTooltips.add(socialLink.getAttribute("data-tooltip"));
         }
 
-        List<String> expectedResults = List.of("𝕏 (formerly Twitter)", "LinkedIn", "Mastodon", "Bluesky", "Advocacy and Outreach Lead", "GitHub", "LinkedIn");
+        List<String> expectedResults = List.of("𝕏 (formerly Twitter)", "LinkedIn", "Mastodon", "Bluesky");
 
         Assert.assertEquals(socialLinksTooltips, expectedResults, "The list of social links differs from the reference one.");
 
