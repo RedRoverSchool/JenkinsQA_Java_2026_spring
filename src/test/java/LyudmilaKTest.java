@@ -35,8 +35,7 @@ public class LyudmilaKTest {
 
         driver.get("https://ru.wikipedia.org/wiki/");
 
-        WebElement textContent = driver.findElement(By.cssSelector("#n-content > a[href='" +
-                "/wiki/%D0%92%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F:%D0%A1%D0%BE%D0%B4%D0%B5%D1%80%D0%B6%D0%B0%D0%BD%D0%B8%D0%B5']"));
+        WebElement textContent = driver.findElement(By.cssSelector("#n-content"));
         textContent.click();
 
         WebElement textOnPage = driver.findElement(By.xpath("//*[@id=\"firstHeading\"]/span[3]"));
