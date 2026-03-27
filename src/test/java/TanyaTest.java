@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -14,7 +15,7 @@ public class TanyaTest {
     @Test
     public void testAlert() {
         WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         driver.get("https://javascript.info/alert-prompt-confirm");
 
@@ -27,7 +28,7 @@ public class TanyaTest {
         alert.accept();
 
         alertRun.click();
-        System.out.println("textAlert -> " +alert.getText());
+        Assert.assertEquals(alert.getText(), "Hello");
         alert.accept();
 
         driver.quit();
