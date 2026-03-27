@@ -412,11 +412,3 @@ public class GroupFutureAqaTest {
         }
     }
 }
-
-
-
-
-
-
-
-
