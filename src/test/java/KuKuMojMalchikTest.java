@@ -37,4 +37,32 @@ public class KuKuMojMalchikTest {
 
         driver.quit();
     }
+
+    @Test
+    public void TestEditaOrlovaOnlinerCart() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.onliner.by/");
+        WebElement button = driver.findElement(By.cssSelector("a[title='Корзина']"));
+        button.click();
+
+        WebElement title = driver.findElement(By.cssSelector("div.cart-form__title"));
+
+        Assert.assertEquals(title.getText(),"Корзина");
+        driver.quit();
+    }
+
+    @Test
+    public void test99Bottels() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.99-bottles-of-beer.net/");
+        WebElement mainMenuTopList = driver.findElement(By.xpath("(//a[text()='Top Lists'])[1]"));
+        mainMenuTopList.click();
+
+        WebElement submenuTopEsoteric = driver.findElement(By.xpath("//ul[@id='submenu']//a[text() = 'Top Rated Esoteric']"));
+        submenuTopEsoteric.click();
+        WebElement h2SubmenuTopEsoteric = driver.findElement(By.xpath("//div[@id='main']/h2"));
+        Assert.assertEquals(h2SubmenuTopEsoteric.getText(), "Top Rated Esoteric Languages");
+        driver.quit();
+    }
 }

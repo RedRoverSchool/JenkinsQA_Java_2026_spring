@@ -8,17 +8,21 @@ import org.testng.annotations.Test;
 public class FedorTest {
     
     @Test
-    public void testFedorStreha() {
+    public void testSearchStreha() {
+
         WebDriver driver = new ChromeDriver();
-        driver.get("https://clck.ru/3SgiiB");
-        WebElement strk = driver.findElement(By.xpath("//input [@ id = 'searchStr']"));
-        strk.sendKeys("ккккк");
-        WebElement button = driver.findElement(By.xpath("// input [@id = 'searchButton']"));
-        button.click();
-        WebElement text = driver.findElement(By.xpath("//div/p/b"));
 
-        Assert.assertEquals(text.getText(), "По Вашему запросу ничего не найдено.");
+        try {
+            driver.get("https://clck.ru/3SgiiB");
 
-        driver.quit();
+            driver.findElement(By.xpath("//input [@ id = 'searchStr']")).sendKeys("ккккк");
+            driver.findElement(By.xpath("// input [@id = 'searchButton']")).click();
+
+            WebElement text = driver.findElement(By.xpath("//div/p/b"));
+
+            Assert.assertEquals(text.getText(), "По Вашему запросу ничего не найдено.");
+        } finally {
+            driver.quit();
+        }
     }
 }

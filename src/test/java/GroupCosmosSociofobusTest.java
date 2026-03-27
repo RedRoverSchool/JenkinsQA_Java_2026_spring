@@ -25,4 +25,22 @@ public class GroupCosmosSociofobusTest {
 
         driver.quit();
     }
+
+    @Test
+    public void gismeteoTest() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.gismeteo.ru/");
+
+        WebElement search = driver.findElement(By.xpath("//input"));
+        search.sendKeys("Новосибирск");
+
+        WebElement city = driver.findElement(By.xpath("//li[1]/a"));
+        city.click();
+
+        WebElement text = driver.findElement(By.className("page-title"));
+        Assert.assertEquals(text.getText(), "Погода в Новосибирске сегодня");
+
+        driver.quit();
+    }
 }

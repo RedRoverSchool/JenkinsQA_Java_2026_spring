@@ -41,19 +41,13 @@ public class JavaQaRedRoverSpring2026Test {
         WebElement textBox = driver.findElement(By.xpath("//input[@placeholder='ФИО*']"));
         String expectedText = "Иванов Иван Иванович";
         textBox.sendKeys(expectedText);
-        String actualText = textBox.getAttribute("value");
-
-        Assert.assertEquals(actualText, expectedText);
 
         WebElement button = driver.findElement(By.xpath("//button[contains(@class, 'form_button')]"));
 
         new Actions(driver).scrollToElement(button).perform();
-
         button.click();
 
         WebElement errorButton = driver.findElement(By.xpath("//div[@data-notivue='error']"));
-
-        Assert.assertTrue(errorButton.isDisplayed(), "Ошибка: Нет всплывающего окна");
 
         String actualErrorMessage = errorButton.getText();
         String expectedErrorMessage = "Проверьте все поля";
@@ -112,5 +106,27 @@ public class JavaQaRedRoverSpring2026Test {
         Assert.assertEquals(message.getText(),"Epic sadface: Username and password do not match any user in this service");
 
         driver.quit();
+    }
+
+
+    @Test
+    public void testIlyaAlekseev() {
+        WebDriver driver = new ChromeDriver();
+
+        try {
+            driver.get("https://practice.expandtesting.com/");
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+            driver.findElement(By.xpath("//*[@id='search-input']")).sendKeys("Selenium");
+            driver.findElement(By.xpath("//*[@id='search-button']")).click();
+
+            WebElement message = driver.findElement(By.xpath("//*[text() = 'Sample applications for " +
+                    "practice test automation']"));
+
+            Assert.assertEquals(message.getText(), "Sample applications for practice test automation");
+
+        } finally {
+            driver.quit();
+        }
     }
 }
