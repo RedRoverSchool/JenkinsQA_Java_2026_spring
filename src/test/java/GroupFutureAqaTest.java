@@ -14,7 +14,8 @@ import java.time.Duration;
 
 public class GroupFutureAqaTest {
     private WebDriver driver;
-   //коммент чтобы в комите появился измененный файл
+
+    //коммент чтобы в комите появился измененный файл
     @BeforeMethod
     public void setup() {
         ChromeOptions options = new ChromeOptions();
@@ -48,15 +49,13 @@ public class GroupFutureAqaTest {
     }
 
 
-
-
     @Test
-    public void checkMandatoryAuthorizationTest(){
+    public void checkMandatoryAuthorizationTest() {
 
         WebDriver driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
-        try{
+        try {
             driver.get("https://market.yandex.ru/");
 
             driver.findElement(By.xpath("//span[text()='Продавайте на Маркете']")).click();
@@ -143,18 +142,49 @@ public class GroupFutureAqaTest {
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", slidersButton);
 
             wait.until(ExpectedConditions.urlContains("slider"));
-            WebElement sliderMe =  wait.until(ExpectedConditions.visibilityOfElementLocated(
-                            By.id("slideMe"))
+            WebElement sliderMe = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.id("slideMe"))
             );
 
             Actions actions = new Actions(driver);
             actions.moveToElement(sliderMe, 250, 0).click().build().perform();
             int width = sliderMe.getSize().getWidth();
-            actions.moveToElement(sliderMe, (width/2) - 100, 0 ).click().build().perform();
+            actions.moveToElement(sliderMe, (width / 2) - 100, 0).click().build().perform();
 
 
         } finally {
             driver.quit();
         }
     }
+
+    @Test
+    @Description("Проверка открытия страницы Контакты сайта бассейна Сура")
+    public void testOpenContactsSwimmingPoolSura() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--ignore-certificate-errors");
+        options.addArguments("--ignore-ssl-errors");
+
+        WebDriver driver = new ChromeDriver(options);
+
+        try {
+            driver.get("https://двс-сура.рф/");
+
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+            WebElement contactsLink = wait.until(
+                    ExpectedConditions.elementToBeClickable(By.linkText("КОНТАКТЫ"))
+            );
+            contactsLink.click();
+
+            WebElement title = wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1"))
+            );
+
+            Assert.assertEquals("КОНТАКТЫ", title.getText().trim());
+
+        } finally {
+            driver.quit();
+        }
+    }
 }
+
