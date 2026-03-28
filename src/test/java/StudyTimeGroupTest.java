@@ -132,7 +132,7 @@ public class StudyTimeGroupTest {
         WebElement cookieButton = driver.findElement(By.xpath("//button[@class=\"btn btn_black cookie__ok\"]"));
         cookieButton.click();
 
-        Assert.assertEquals(driver.getTitle(),"МТС – мобильный оператор в Беларуси");
+        Assert.assertEquals(driver.getTitle(), "МТС – мобильный оператор в Беларуси");
 
         driver.quit();
     }
@@ -218,6 +218,7 @@ public class StudyTimeGroupTest {
             driver.quit();
         }
     }
+
     @Test
     public void testMtsTitleCheck1() {
         WebDriver driver = new ChromeDriver();
@@ -229,7 +230,7 @@ public class StudyTimeGroupTest {
         WebElement cookieButton = driver.findElement(By.xpath("//button[@class=\"btn btn_black cookie__ok\"]"));
         cookieButton.click();
 
-        Assert.assertEquals(driver.getTitle(),"МТС – мобильный оператор в Беларуси");
+        Assert.assertEquals(driver.getTitle(), "МТС – мобильный оператор в Беларуси");
 
         driver.quit();
     }
