@@ -5,16 +5,23 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class AsiyaZTest {
-        @Test
-        public void passwordError(){
-            WebDriver driver = new ChromeDriver();
+
+    @Test
+    public void passwordError(){
+        WebDriver driver = new ChromeDriver();
+        try {
             driver.get("https://practice.expandtesting.com/login");
+
             driver.findElement(By.xpath("//input[@id='username']")).sendKeys("practice");
             driver.findElement(By.xpath("//input[@id='password]")).sendKeys("WrongPassword");
+
             driver.findElement(By.xpath("//button[@id=submit-login]")).click();
+
             String errorReal = driver.findElement(By.xpath("//*[@id='flash']")).getText();
-            String error = "Invalid username";
-            Assert.assertEquals(errorReal, error);
+
+            Assert.assertEquals(errorReal, "Invalid username");
+        }finally {
             driver.quit();
         }
     }
+}
