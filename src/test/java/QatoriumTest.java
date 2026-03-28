@@ -12,6 +12,22 @@ import java.time.Duration;
 public class QatoriumTest {
 
     @Test
+    public void testNatalyakba(){
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://vet.md/ru/servicii.html");
+
+            WebElement btnNomenclature = driver.findElement(By.xpath("//li[@class='menu_list'][6]"));
+            btnNomenclature.click();
+
+            WebElement title = driver.findElement(By.xpath("//h1"));
+            Assert.assertEquals(title.getText(), "Номенклатура");
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
     public void testPracticeForms() {
         WebDriver driver = new ChromeDriver();
         try {
