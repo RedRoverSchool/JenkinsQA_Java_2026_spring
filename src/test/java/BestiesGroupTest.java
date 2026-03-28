@@ -42,7 +42,7 @@ public class BestiesGroupTest {
 
     @Test
     public void testWBbyOftenSearched(){
-        final Map<Integer, String> bestRecomeds = new HashMap<>();
+        Map<Integer, String> bestRecomeds = new HashMap<>();
         bestRecomeds.put(1, "кроссовки женские");
         bestRecomeds.put(2, "джинсы женские");
 
@@ -191,6 +191,25 @@ public class BestiesGroupTest {
 
             WebElement text = driver.findElement(By.xpath("//div[@id='search-result-general-container']//h1"));
             Assert.assertEquals(text.getText(), testStr);
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void testSeleniumDev() {
+        WebDriver driver = new ChromeDriver();
+
+        try {
+            driver.get("https://www.selenium.dev");
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+            driver.findElement(By.xpath("//button[@class='navbar-toggler']")).click();
+            driver.findElement(By.xpath("//a[@href='/documentation']")).click();
+
+            Assert.assertEquals(
+                    driver.findElement(By.xpath("//div[@class='td-content']/h1")).getText(),
+                    "The Selenium Browser Automation Project");
         } finally {
             driver.quit();
         }
