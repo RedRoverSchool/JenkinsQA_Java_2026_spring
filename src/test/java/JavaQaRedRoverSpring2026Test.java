@@ -15,18 +15,12 @@ public class JavaQaRedRoverSpring2026Test {
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.selenium.dev/selenium/web/web-form.html");
-
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-        WebElement textBox = driver.findElement(By.name("my-text"));
-        WebElement submitButton = driver.findElement(By.cssSelector("button"));
+        driver.findElement(By.name("my-text")).sendKeys("Selenium");;
+        driver.findElement(By.cssSelector("button")).click();
 
-        textBox.sendKeys("Selenium");
-        submitButton.click();
-
-        WebElement message = driver.findElement(By.id("message"));
-
-        Assert.assertEquals(message.getText(), "Received!");
+        Assert.assertEquals(driver.findElement(By.id("message")), "Received!");
 
         driver.quit();
     }
