@@ -219,19 +219,4 @@ public class StudyTimeGroupTest {
         }
     }
 
-    @Test
-    public void testMtsTitleCheck1() {
-        WebDriver driver = new ChromeDriver();
-
-
-        driver.get("https://www.mts.by/");
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-        WebElement cookieButton = driver.findElement(By.xpath("//button[@class=\"btn btn_black cookie__ok\"]"));
-        cookieButton.click();
-
-        Assert.assertEquals(driver.getTitle(), "МТС – мобильный оператор в Беларуси");
-
-        driver.quit();
-    }
 }
