@@ -122,6 +122,22 @@ public class StudyTimeGroupTest {
     }
 
     @Test
+    public void testMtsTitleCheck() {
+        WebDriver driver = new ChromeDriver();
+
+
+        driver.get("https://www.mts.by/");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        WebElement cookieButton = driver.findElement(By.xpath("//button[@class=\"btn btn_black cookie__ok\"]"));
+        cookieButton.click();
+
+        Assert.assertEquals(driver.getTitle(),"МТС – мобильный оператор в Беларуси");
+
+        driver.quit();
+    }
+
+    @Test
     public void testContribPage() {
         WebDriver driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
@@ -201,5 +217,20 @@ public class StudyTimeGroupTest {
         } finally {
             driver.quit();
         }
+    }
+    @Test
+    public void testMtsTitleCheck1() {
+        WebDriver driver = new ChromeDriver();
+
+
+        driver.get("https://www.mts.by/");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        WebElement cookieButton = driver.findElement(By.xpath("//button[@class=\"btn btn_black cookie__ok\"]"));
+        cookieButton.click();
+
+        Assert.assertEquals(driver.getTitle(),"МТС – мобильный оператор в Беларуси");
+
+        driver.quit();
     }
 }
