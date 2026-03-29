@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 import java.time.Duration;
 
 import static org.testng.AssertJUnit.assertEquals;
@@ -16,7 +17,7 @@ import static org.testng.AssertJUnit.assertEquals;
 public class BestiesGroupTest {
 
     @Test
-    public void testWikiSearchInput(){
+    public void testWikiSearchInput() {
 
         WebDriver driver = new ChromeDriver();
 
@@ -40,7 +41,7 @@ public class BestiesGroupTest {
     }
 
     @Test
-    public void testWBbyOftenSearched(){
+    public void testWBbyOftenSearched() {
         final String expectedRecomend = "кроссовки женские";
 
         WebDriver driver = new ChromeDriver();
@@ -63,21 +64,21 @@ public class BestiesGroupTest {
 
 
     @Test
-    public void peppaPigChannelTest() {
+    public void testCheckPeppaPigChannelHead() {
         WebDriver driver = new ChromeDriver();
 
-        // открываем официальный канал Свинки Пеппы
-        driver.get("https://www.youtube.com/@PeppaPigRussianOfficial");
+        try {
+            driver.get("https://www.youtube.com/@PeppaPigRussianOfficial");
 
-        // Находим заголовок канала
-        WebElement channelTitle = driver.findElement(
-                By.xpath("//*[@id='page-header']/yt-page-header-renderer/yt-page-header-view-model/div/div[1]/div/yt-dynamic-text-view-model/h1")
-        );
+            WebElement channelTitle = driver.findElement(
+                    By.xpath("//*[@id='page-header']//h1")
+            );
 
-        // Проверяем текст заголовка
-        assertEquals("Свинка Пеппа Русский - Официальный канал", channelTitle.getText());
+            assertEquals("Свинка Пеппа Русский - Официальный канал", channelTitle.getText());
+        } finally {
 
-        driver.quit();
+            driver.quit();
+        }
     }
 
     @Test
@@ -103,7 +104,7 @@ public class BestiesGroupTest {
             WebElement course = driver.findElement(By.xpath("//a[contains(@href,'qa-lead')]"));
 
             Assert.assertTrue(course.isDisplayed());
-        }finally {
+        } finally {
             driver.quit();
         }
     }
@@ -111,7 +112,7 @@ public class BestiesGroupTest {
     @Test
     public void testRegistrationButton() {
         WebDriver driver = new ChromeDriver();
-        try{
+        try {
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
             driver.get("https://aqa-proka4.org/sandbox/web");
@@ -141,7 +142,7 @@ public class BestiesGroupTest {
             );
 
             Assert.assertTrue(result.isDisplayed());
-        }finally {
+        } finally {
             driver.quit();
         }
     }
