@@ -22,24 +22,23 @@ public class BestiesGroupTest {
 
         WebDriver driver = new ChromeDriver();
 
-        try {
-            driver.get("https://www.wikipedia.org/");
-            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        driver.get("https://www.wikipedia.org/");
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-            WebElement textBox = driver.findElement(By.xpath("//*[@id='searchInput']"));
-            WebElement submitButton = driver.findElement(By.xpath("//*[@id='search-form']/fieldset/button/i"));
+        WebElement textBox = driver.findElement(By.xpath("//*[@id='searchInput']"));
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id='search-form']/fieldset/button/i"));
 
-            textBox.sendKeys("Козловский");
-            submitButton.click();
+        textBox.sendKeys("Козловский");
+        submitButton.click();
 
-            WebElement message = driver.findElement(By.xpath("//*[@id='firstHeading']"));
+        // Ждем загрузки страницы
+        WebElement message = driver.findElement(By.xpath("//*[@id='firstHeading']"));
 
-            String actualText = message.getText();
-            assertEquals("Козловский", actualText);
+        // Получаем текст и сравниваем
+        String actualText = message.getText();
+        assertEquals("Козловский", actualText);
 
-        } finally {
-            driver.quit();
-        }
+        driver.quit();
     }
 
     @Test
