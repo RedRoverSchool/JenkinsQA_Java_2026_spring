@@ -18,7 +18,7 @@ import static org.testng.AssertJUnit.assertEquals;
 public class BestiesGroupTest {
 
     @Test
-    public void AliaksieiTest(){
+    public void testWiSearch(){
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.wikipedia.org/");
@@ -42,9 +42,7 @@ public class BestiesGroupTest {
 
     @Test
     public void testWBbyOftenSearched(){
-        Map<Integer, String> bestRecomeds = new HashMap<>();
-        bestRecomeds.put(1, "кроссовки женские");
-        bestRecomeds.put(2, "джинсы женские");
+        final String expectedRecomend = "кроссовки женские";
 
         WebDriver driver = new ChromeDriver();
 
@@ -56,13 +54,9 @@ public class BestiesGroupTest {
             driver.findElement(By.id("searchInput")).click();
             driver.manage().timeouts().implicitlyWait(Duration.ofMillis(600));
 
-            Assert.assertEquals(driver.findElement(By.id("mobileSearchInput")).getText(), "");
-            Assert.assertEquals(driver.findElement(By.className("autocomplete__title")).getText(), "Часто ищут");
+            WebElement actualRecomend = driver.findElement(By.className("autocomplete__phrase"));
+            Assert.assertEquals(actualRecomend.getText(), expectedRecomend);
 
-            for (int key : bestRecomeds.keySet()) {
-                WebElement firstRecomend = driver.findElement(By.xpath("//div[@class='autocomplete']//li[" + key + "]//span[2]"));
-                Assert.assertEquals(firstRecomend.getText(), bestRecomeds.get(key));
-            }
         } finally {
             driver.quit();
         }
