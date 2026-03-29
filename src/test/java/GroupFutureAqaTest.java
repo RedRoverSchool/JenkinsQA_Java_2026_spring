@@ -15,6 +15,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GroupFutureAqaTest {
     private WebDriver driver;
@@ -50,6 +52,8 @@ public class GroupFutureAqaTest {
     public void tearDown() {
         driver.quit();
     }
+
+
 
 
 
@@ -91,6 +95,64 @@ public class GroupFutureAqaTest {
         }
 
     }
+
+
+
+
+    @Test
+    public void checkRouteTimeTest() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+
+        try {
+            driver.get("https://yandex.ru/maps/");
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+
+            WebElement inputFindLocation = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder = 'Поиск и выбор мест']")));
+            inputFindLocation.sendKeys("Красная площадь");
+
+            driver.findElement(By.xpath("//button[@type='submit']")).click();
+            driver.findElement(By.xpath("//button[@class='button _view_primary _ui _size_medium']")).click();
+
+
+            WebElement inputFrom = driver.findElement(By.xpath("//input[@placeholder='Откуда']"));
+            inputFrom.sendKeys("Кремлевский дворец");
+            inputFrom.sendKeys(Keys.ENTER);
+
+            driver.findElement(By.xpath("//div[@class='travel-modes-view__mode _mode_pedestrian']")).click();
+
+            List<WebElement> routeList = driver.findElements(By.xpath("//div[@class='route-list-view__list']//" +
+                    "div[starts-with(@class, 'route-snippet-view')]//div[@class='pedestrian-route-snippet-view__duration']"));
+
+
+            List<Integer> routeDuration = new ArrayList<>();
+            for (int i = 0; i < routeList.size(); i++) {
+                routeDuration.add(Integer.parseInt(routeList.get(i).getText().replaceAll("\\D+", "")));
+            }
+
+            boolean durationLessThirtyMinutes = true;
+            for (int i = 0; i < routeDuration.size(); i++) {
+                if (routeDuration.get(i) > 20){
+                    durationLessThirtyMinutes = false;
+                    break;
+                }
+            }
+
+            Assert.assertTrue(durationLessThirtyMinutes);
+
+        }
+        finally {
+            driver.quit();
+        }
+    }
+
+
+
+    
+
+
+
 
     @Test
     public void testKhairutdinovaOlgaSlider(){
