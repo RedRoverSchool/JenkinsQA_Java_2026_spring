@@ -14,18 +14,21 @@ public class KuKuMojMalchikTest {
 	@Test
 	public void testGismeteo() {
 		WebDriver driver = new ChromeDriver();
+try {
+    driver.get("https://www.gismeteo.ru/");
+    WebElement button = driver.findElement(By.xpath("/html/body/div[2]/div[2]/div[2]/div[2]/div[2]/button[1]/p"));
+    button.click();
 
-		driver.get("https://www.gismeteo.ru/");
-		WebElement button = driver.findElement(By.xpath("/html/body/div[2]/div[2]/div[2]/div[2]/div[2]/button[1]/p"));
-		button.click();
+    WebElement nameCity = driver.findElement(By.xpath("//a[contains(text(), 'Москва')]"));
+    nameCity.click();
+    WebElement text = driver.findElement(By.xpath("//h1"));
+    Assert.assertEquals(text.getText(), "Погода в Москве");
+}
+finally {
+driver.quit();
+}
 
-		WebElement nameCity = driver.findElement(By.xpath("//a[contains(text(), 'Москва')]"));
-		nameCity.click();
-		WebElement text = driver.findElement(By.xpath("//h1"));
-		Assert.assertEquals(text.getText(), "Погода в Москве");
 
-
-            driver.quit();
 
 
 	}
