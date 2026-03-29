@@ -21,7 +21,8 @@ public class JavaQaRedRoverSpring2026Test {
             driver.findElement(By.name("my-text")).sendKeys("Selenium");
             driver.findElement(By.cssSelector("button")).click();
 
-            Assert.assertEquals(driver.findElement(By.id("message")), "Received!");
+            String actualMessage = driver.findElement(By.id("message")).getText();
+            Assert.assertEquals(actualMessage, "Received!");
         } finally {
             driver.quit();
         }
