@@ -445,7 +445,6 @@ public class NoGroupTest {
 
             WebElement popup = driver.findElement(By.cssSelector(".popup__hint"));
             Assert.assertEquals(popup.getText(), "Обязательное поле", "Not found");
-
         } finally {
             driver.quit();
         }
