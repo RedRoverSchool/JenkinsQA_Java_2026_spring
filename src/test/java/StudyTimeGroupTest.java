@@ -12,9 +12,9 @@ import org.testng.Assert;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Logger;
 
 public class StudyTimeGroupTest {
     private static final Logger logger = Logger.getLogger(StudyTimeGroupTest.class.getName());
@@ -36,7 +36,9 @@ public class StudyTimeGroupTest {
             Assert.assertEquals(
                     actualHeadersText,
                     List.of("Downloading Jenkins", "Deploying Jenkins in public cloud"),
-                    "The expected list of second-level headers does not match the reference list.");
+                    "The expected list of second-level headers does not match the reference list."
+            );
+
         } finally {
             driver.quit();
         }
@@ -46,24 +48,28 @@ public class StudyTimeGroupTest {
     public void testDocPageJenkinsCodeOfConduct() {
         WebDriver driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-        JavascriptExecutor js = (JavascriptExecutor) driver;
 
         try {
             driver.get("https://www.jenkins.io/doc/");
 
             WebElement shadowHost = driver.findElement(By.xpath("//*[@id='ji-toolbar']"));
             SearchContext shadowRoot = shadowHost.getShadowRoot();
-            js.executeScript(
+            ((JavascriptExecutor) driver).executeScript(
                     "arguments[0].click();",
-                    shadowRoot.findElement(By.cssSelector("button[data-idx='8']")));
+                    shadowRoot.findElement(By.cssSelector("button[data-idx='8']"))
+            );
 
-            WebElement shadowSecondHost = shadowRoot.findElement(By.cssSelector("jio-navbar-link[href='/project/conduct/']"));
+            WebElement shadowSecondHost = shadowRoot.findElement(
+                    By.cssSelector("jio-navbar-link[href='/project/conduct/']")
+            );
             SearchContext shadowSecondRoot = shadowSecondHost.getShadowRoot();
-            js.executeScript(
+            ((JavascriptExecutor) driver).executeScript(
                     "arguments[0].click();",
-                    shadowSecondRoot.findElement(By.cssSelector("a.nav-link")));
+                    shadowSecondRoot.findElement(By.cssSelector("a.nav-link"))
+            );
 
             Assert.assertEquals(driver.getTitle(), "Jenkins Code of Conduct");
+
         } finally {
             driver.quit();
         }
@@ -78,23 +84,64 @@ public class StudyTimeGroupTest {
             driver.get("https://plugins.jenkins.io/");
 
             WebElement inpFindPlugins = wait.until(
-                    ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='query']")));
+                    ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='query']"))
+            );
             inpFindPlugins.clear();
             inpFindPlugins.sendKeys("qwertyuiop" + Keys.ENTER);
 
             WebElement txtNoResultsFound = wait.until(
-                    ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='no-results']/p")));
+                    ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='no-results']/p"))
+            );
 
             String actualText = txtNoResultsFound.getText();
             Assert.assertTrue(
                     actualText.contains("did not return any results"),
-                    "The error text does not match. Received: " + actualText);
+                    "The error text does not match. Received: " + actualText
+            );
 
         } finally {
             driver.quit();
         }
     }
 
+    @Test
+    public void testPluginsPageSearchUI() {
+        WebDriver driver = new ChromeDriver();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        try {
+            driver.get("https://plugins.jenkins.io/");
+
+            ((JavascriptExecutor) driver).executeScript(
+                    "arguments[0].click();",
+                    wait.until(ExpectedConditions.elementToBeClickable(
+                            By.xpath("//button[@class='btn btn-primary' and text()='Browse']")))
+            );
+
+            wait.until(ExpectedConditions. elementToBeClickable(By.xpath("//input[@value='ui']"))).click();
+
+            WebElement pageNumber2 = wait.until(
+                    ExpectedConditions.elementToBeClickable(
+                            By.xpath("//li[@class='page-item']/a[@aria-label='Page 2']"))
+            );
+            ((JavascriptExecutor) driver).executeScript(
+                    "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",
+                    pageNumber2
+            );
+            wait.until(ExpectedConditions.elementToBeClickable(pageNumber2)).click();
+
+            wait.until(ExpectedConditions.textToBePresentInElementLocated(
+                            By.xpath("//div[@class='nav-link SearchResultsCount']"), "51")
+            );
+
+            WebElement searchResultCount = driver.findElement(By.xpath("//div[@class='nav-link SearchResultsCount']"));
+
+            Assert.assertEquals(searchResultCount.getText(), "51 to 100 of 133");
+
+        } finally {
+            driver.quit();
+        }
+    }
 
     @Test
     public void FurnitureStoreTest() {
@@ -153,7 +200,9 @@ public class StudyTimeGroupTest {
 
             Assert.assertTrue(
                     contributorNames.contains("Bruno Verachten"),
-                    "The list does not contain 'Bruno Verachten'. Names found: " + contributorNames.size() + "/32");
+                    "The list does not contain 'Bruno Verachten'. Names found: " + contributorNames.size() + "/32"
+            );
+
         } finally {
             driver.quit();
         }
@@ -183,7 +232,9 @@ public class StudyTimeGroupTest {
             Assert.assertEquals(
                     actualResults,
                     List.of("25", "2.452.1", "2.541.3"),
-                    "The list length or version numbers are not as expected.");
+                    "The list length or version numbers are not as expected."
+            );
+
         } finally {
             driver.quit();
         }
@@ -206,7 +257,8 @@ public class StudyTimeGroupTest {
             }
 
             List<WebElement> socialLinks = driver.findElements(
-                    By.xpath("//div[@class='app-social-media-buttons__container share-buttons__container']//li/a"));  // /ul[@class='app-social-media-buttons']
+                    By.xpath("//div[@class='app-social-media-buttons__container share-buttons__container']//li/a")
+            );
             List<String> socialLinksTooltips = new ArrayList<>();
             for (WebElement socialLink : socialLinks) {
                 socialLinksTooltips.add(socialLink.getAttribute("data-tooltip"));
@@ -215,7 +267,9 @@ public class StudyTimeGroupTest {
             Assert.assertEquals(
                     socialLinksTooltips,
                     List.of("𝕏 (formerly Twitter)", "LinkedIn", "Mastodon", "Bluesky"),
-                    "The list of social links differs from the reference one.");
+                    "The list of social links differs from the reference one."
+            );
+
         } finally {
             driver.quit();
         }
