@@ -13,38 +13,49 @@ public class VladimirTest {
     @Test
     public void vladimirFirstTest() {
         WebDriver driver = new ChromeDriver();
-        driver.get("https://www.bluestacks.com/ru/index.html");
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        try {
+            driver.get("https://www.bluestacks.com/ru/index.html");
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-        driver.findElement(By.xpath("/html/body/div[1]/div[2]/section/div[2]/div/div[1]/div/form/input")).sendKeys("pifs");
-        driver.findElement(By.xpath("/html/body/div[1]/div[2]/section/div[2]/div/div[1]/div/form/button")).click();
-        WebElement message = driver.findElement(By.xpath("/html/body/div[1]/div/div/section[1]/h1"));
-        Assert.assertEquals(message.getText(), "Результаты поиска для pifs");
+            driver.findElement(By.xpath("/html/body/div[1]/div[2]/section/div[2]/div/div[1]/div/form/input")).sendKeys("pifs");
+            driver.findElement(By.xpath("/html/body/div[1]/div[2]/section/div[2]/div/div[1]/div/form/button")).click();
+            WebElement message = driver.findElement(By.xpath("/html/body/div[1]/div/div/section[1]/h1"));
 
-        driver.quit();
+            Assert.assertEquals(message.getText(), "Результаты поиска для pifs");
+        } finally {
+            driver.quit();
+        }
     }
+
     @Test
     public void vladimirAuthTest(){
         WebDriver driver = new ChromeDriver();
-        driver.get("https://postupi.online/158/?num=6");
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-        driver.findElement(By.id("enter_email")).sendKeys("br33@gmail.com");
-        driver.findElement(By.id("user_pswrdNew")).sendKeys("1234567");
-        driver.findElement(By.xpath("//*[@id=\"regent-form\"]/div/div/div[4]/div[1]/button")).click();
-        WebElement massage = driver.findElement(By.xpath("//*[@id=\"regent-form\"]/div/div/div[6]/div/p/b"));
-        Assert.assertEquals(massage.getText(),"Подтверди что ты не робот: собери пазл");
-        driver.quit();
+        try {
+            driver.get("https://postupi.online/158/?num=6");
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
+            driver.findElement(By.id("enter_email")).sendKeys("br33@gmail.com");
+            driver.findElement(By.id("user_pswrdNew")).sendKeys("1234567");
+            driver.findElement(By.xpath("//*[@id=\'regent-form\']/div/div/div[4]/div[1]/button")).click();
+            WebElement massage = driver.findElement(By.xpath("//*[@id=\'regent-form\']/div/div/div[6]/div/p/b"));
+
+            Assert.assertEquals(massage.getText(), "Подтверди что ты не робот: собери пазл");
+        } finally {
+            driver.quit();
+        }
     }
+
     @Test
     public void vladimirByclassTest(){
         WebDriver driver = new ChromeDriver();
-        driver.get("https://pagespeed.web.dev/");
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(2000));
-        driver.findElement(By.xpath("//*[@id=\"i2\"]")).sendKeys("www.google.com", Keys.ENTER);
-        WebElement result = driver.findElement(By.className("gSBk9c"));
-        Assert.assertEquals(result.getText(),("PageSpeed Insights"));
-        driver.quit();
-
+        try {
+            driver.get("https://pagespeed.web.dev/");
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(2000));
+            driver.findElement(By.xpath("//*[@id=\'i2\']")).sendKeys("www.google.com", Keys.ENTER);
+            WebElement result = driver.findElement(By.className("gSBk9c"));
+            Assert.assertEquals(result.getText(), ("PageSpeed Insights"));
+        } finally {
+            driver.quit();
+        }
     }
 }
