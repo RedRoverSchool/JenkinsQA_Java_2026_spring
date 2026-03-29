@@ -36,8 +36,8 @@ public class VladimirTest {
 
             driver.findElement(By.id("enter_email")).sendKeys("br33@gmail.com");
             driver.findElement(By.id("user_pswrdNew")).sendKeys("1234567");
-            driver.findElement(By.xpath("//*[@id=\'regent-form\']/div/div/div[4]/div[1]/button")).click();
-            WebElement massage = driver.findElement(By.xpath("//*[@id=\'regent-form\']/div/div/div[6]/div/p/b"));
+            driver.findElement(By.xpath("//*[@id='regent-form']/div/div/div[4]/div[1]/button")).click();
+            WebElement massage = driver.findElement(By.xpath("//*[@id='regent-form']/div/div/div[6]/div/p/b"));
 
             Assert.assertEquals(massage.getText(), "Подтверди что ты не робот: собери пазл");
         } finally {
@@ -51,8 +51,10 @@ public class VladimirTest {
         try {
             driver.get("https://pagespeed.web.dev/");
             driver.manage().timeouts().implicitlyWait(Duration.ofMillis(2000));
-            driver.findElement(By.xpath("//*[@id=\'i2\']")).sendKeys("www.google.com", Keys.ENTER);
+
+            driver.findElement(By.xpath("//*[@id='i2']")).sendKeys("www.google.com", Keys.ENTER);
             WebElement result = driver.findElement(By.className("gSBk9c"));
+
             Assert.assertEquals(result.getText(), ("PageSpeed Insights"));
         } finally {
             driver.quit();
