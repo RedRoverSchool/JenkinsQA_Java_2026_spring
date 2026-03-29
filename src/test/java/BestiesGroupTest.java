@@ -71,7 +71,7 @@ public class BestiesGroupTest {
             driver.get("https://www.youtube.com/@PeppaPigRussianOfficial");
 
             WebElement channelTitle = driver.findElement(
-                    By.xpath("//*[@id='page-header']/yt-page-header-renderer/yt-page-header-view-model/div/div[1]/div/yt-dynamic-text-view-model/h1")
+                    By.xpath("//*[@id='page-header']//h1")
             );
 
             assertEquals("Свинка Пеппа Русский - Официальный канал", channelTitle.getText());
