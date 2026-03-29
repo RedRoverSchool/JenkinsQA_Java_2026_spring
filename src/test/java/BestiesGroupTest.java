@@ -87,66 +87,69 @@ public class BestiesGroupTest {
     }
 
     @Test
-    public void goSearchQACourseTest() {
+    public void testSearchQACourseTest() {
 
         WebDriver driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+        try {
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
 
-        driver.get("https://otus.ru/catalog/courses");
+            driver.get("https://otus.ru/catalog/courses");
 
-        // закрыть баннер кук
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement cookieButton = wait.until(
-                ExpectedConditions.elementToBeClickable(By.xpath("//div[text()='OK']"))
-        );
-        cookieButton.click();
+            // закрыть баннер кук
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebElement cookieButton = wait.until(
+                    ExpectedConditions.elementToBeClickable(By.xpath("//div[text()='OK']"))
+            );
+            cookieButton.click();
 
-        WebElement searchInput = driver.findElement(By.xpath("//input[@type='search']"));
-        searchInput.sendKeys("QA");
-        searchInput.sendKeys(Keys.ENTER);
+            WebElement searchInput = driver.findElement(By.xpath("//input[@type='search']"));
+            searchInput.sendKeys("QA");
+            searchInput.sendKeys(Keys.ENTER);
 
-        WebElement course = driver.findElement(By.xpath("//a[contains(@href,'qa-lead')]"));
+            WebElement course = driver.findElement(By.xpath("//a[contains(@href,'qa-lead')]"));
 
-        Assert.assertTrue(course.isDisplayed());
-
-        driver.quit();
+            Assert.assertTrue(course.isDisplayed());
+        }finally {
+            driver.quit();
+        }
     }
 
     @Test
-    public void goRegistrationButton() {
-
+    public void testRegistrationButton() {
         WebDriver driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        try{
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
-        driver.get("https://aqa-proka4.org/sandbox/web");
-        WebElement userInput = driver.findElement(By.xpath("//input[@id='username']"));
-        userInput.sendKeys("userName");
+            driver.get("https://aqa-proka4.org/sandbox/web");
+            WebElement userInput = driver.findElement(By.xpath("//input[@id='username']"));
+            userInput.sendKeys("userName");
 
-        WebElement passwordInput = driver.findElement(By.xpath("//input[@id='password']"));
-        passwordInput.sendKeys("password");
+            WebElement passwordInput = driver.findElement(By.xpath("//input[@id='password']"));
+            passwordInput.sendKeys("password");
 
-        WebElement emailInput = driver.findElement(By.xpath("//input[@id='email']"));
-        emailInput.sendKeys("email@gmail.com");
+            WebElement emailInput = driver.findElement(By.xpath("//input[@id='email']"));
+            emailInput.sendKeys("email@gmail.com");
 
-        WebElement selectedCountry = driver.findElement(By.xpath("//select[@id='country']"));
-        Select select = new Select(selectedCountry);
-        select.selectByValue("ru");
+            WebElement selectedCountry = driver.findElement(By.xpath("//select[@id='country']"));
+            Select select = new Select(selectedCountry);
+            select.selectByValue("ru");
 
-        WebElement checkBox = driver.findElement(By.xpath("//input[@id='terms']"));
-        checkBox.click();
+            WebElement checkBox = driver.findElement(By.xpath("//input[@id='terms']"));
+            checkBox.click();
 
-        WebElement regButton = driver.findElement(By.xpath("//button[@id='submitBtn']"));
-        regButton.click();
+            WebElement regButton = driver.findElement(By.xpath("//button[@id='submitBtn']"));
+            regButton.click();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        WebElement result = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("formResult"))
-        );
+            WebElement result = wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(By.id("formResult"))
+            );
 
-        Assert.assertTrue(result.isDisplayed());
-
-        driver.quit();
+            Assert.assertTrue(result.isDisplayed());
+        }finally {
+            driver.quit();
+        }
     }
 
     @Test
