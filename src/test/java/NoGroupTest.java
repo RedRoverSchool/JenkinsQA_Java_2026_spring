@@ -372,9 +372,7 @@ public class NoGroupTest {
 
         WebDriver driver = new ChromeDriver();
         try{
-
         driver.get("https://www.selenium.dev/selenium/web/web-form.html");
-
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
         driver.findElement(By.cssSelector("button")).click();
@@ -393,7 +391,6 @@ public class NoGroupTest {
         WebDriver driver = new ChromeDriver();
         try{
         driver.get("https://www.selenium.dev/selenium/web/web-form.html");
-
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
         WebElement mainTitle = driver.findElement(By.xpath("//h1[@class='display-6']"));
