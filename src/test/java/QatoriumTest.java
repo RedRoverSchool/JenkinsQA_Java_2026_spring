@@ -114,19 +114,24 @@ public class QatoriumTest {
     @Test
     public void testformfields(){
         WebDriver driver = new ChromeDriver();
-        driver.get("https://practice-automation.com/form-fields/");
-        WebElement namefield = driver.findElement(By.xpath("//label[@for='name-input']/input[contains(@id,'name')]"));
-        namefield.sendKeys("Yulia");
-        Actions actions= new Actions(driver);
 
-        WebElement coffie = driver.findElement(By.xpath("//input[@id='drink3']"));
-        actions.moveToElement(coffie).click().perform();
+        try {
+            driver.get("https://practice-automation.com/form-fields/");
 
-        WebElement button =driver.findElement(By.xpath("//button[@id='submit-btn']"));
-        actions.moveToElement(button).click().perform();
-        Alert alert = driver.switchTo().alert();
+            driver.findElement(By.xpath("//label[@for='name-input']/input[contains(@id,'name')]")).sendKeys("Yulia");
+            Actions actions= new Actions(driver);
 
-        Assert.assertEquals(alert.getText(), "Message received!");
-        driver.quit();
+            WebElement coffie = driver.findElement(By.xpath("//input[@id='drink3']"));
+            actions.moveToElement(coffie).click().perform();
+
+            WebElement button =driver.findElement(By.xpath("//button[@id='submit-btn']"));
+            actions.moveToElement(button).click().perform();
+            Alert alert = driver.switchTo().alert();
+
+            Assert.assertEquals(alert.getText(), "Message received!");
+        }
+        finally {
+            driver.quit();
+        }
     }
 }
