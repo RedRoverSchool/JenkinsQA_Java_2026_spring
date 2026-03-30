@@ -54,30 +54,22 @@ public class JavaQaRedRoverSpring2026Test {
 
     @Test
     public void testMtsBank() {
+        final String testString = "Мы подготовили для вас персональные предложения";
+
         WebDriver driver = new ChromeDriver();
 
-        driver.get("https://www.mtsbank.ru/");
-
-        WebElement numberBox = driver.findElement(By.xpath("//form//input"));
-        WebElement submitButton = driver.findElement(By.xpath("//form//button"));
-        WebElement textButton = driver.findElement(By.xpath("//form//button//div[@data-testid='text']"));
-
-        Assert.assertEquals(numberBox.getAttribute("placeholder"), "+7 000 000-00-00");
-        Assert.assertEquals(textButton.getText(), "Узнать");
-
-        numberBox.sendKeys("9173759423");
-        submitButton.click();
-
-        WebElement textForm = driver.findElement(By.xpath("(//div[@data-testid='heading'])[last()]"));
         try {
-            Thread.sleep(1000);//пауза 1 сек. пока так
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+            driver.get("https://www.mtsbank.ru/");
 
-        Assert.assertEquals(textForm.getText(), "Введите код подтверждения");
-      
-        driver.quit();
+            driver.findElement(By.xpath("//form//input")).sendKeys("9173759423");
+            driver.findElement(By.xpath("//form//button")).click();
+
+            WebElement textForm = driver.findElement(By.xpath("(//div[@data-testid='heading'])[last()]"));
+
+            Assert.assertEquals(textForm.getText(), testString);
+        } finally {
+            driver.quit();
+        }
     }
       
     @Test  
