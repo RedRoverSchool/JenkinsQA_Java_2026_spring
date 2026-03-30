@@ -20,6 +20,7 @@ import java.util.List;
 
 public class GroupFutureAqaTest {
     private WebDriver driver;
+
     //коммент чтобы в комите появился измененный файл
     @BeforeMethod
     public void setup() {
@@ -54,17 +55,13 @@ public class GroupFutureAqaTest {
     }
 
 
-
-
-
-
     @Test
-    public void checkMandatoryAuthorizationTest(){
+    public void checkMandatoryAuthorizationTest() {
 
         WebDriver driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
-        try{
+        try {
             driver.get("https://market.yandex.ru/");
 
             driver.findElement(By.xpath("//span[text()='Продавайте на Маркете']")).click();
@@ -95,8 +92,6 @@ public class GroupFutureAqaTest {
         }
 
     }
-
-
 
 
     @Test
@@ -133,7 +128,7 @@ public class GroupFutureAqaTest {
 
             boolean durationLessThirtyMinutes = true;
             for (int i = 0; i < routeDuration.size(); i++) {
-                if (routeDuration.get(i) > 20){
+                if (routeDuration.get(i) > 20) {
                     durationLessThirtyMinutes = false;
                     break;
                 }
@@ -141,21 +136,14 @@ public class GroupFutureAqaTest {
 
             Assert.assertTrue(durationLessThirtyMinutes);
 
-        }
-        finally {
+        } finally {
             driver.quit();
         }
     }
 
 
-
-    
-
-
-
-
     @Test
-    public void testKhairutdinovaOlgaSlider(){
+    public void testKhairutdinovaOlgaSlider() {
         WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://practice-automation.com/slider/");
@@ -170,8 +158,9 @@ public class GroupFutureAqaTest {
             driver.quit();
         }
     }
+
     @Test
-    public void testKhairutdinovaOlgaShareWindow(){
+    public void testKhairutdinovaOlgaShareWindow() {
         WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://yandex.ru/maps/213/moscow");
@@ -196,14 +185,14 @@ public class GroupFutureAqaTest {
             WebElement text = driver.findElement(By.cssSelector(".map-share-view__title"));
 
             Assert.assertEquals(text.getText(), "Поделиться");
-        }
-        finally {
+        } finally {
             driver.quit();
         }
 
     }
+
     @Test
-    public void testKhairutdinovaOlgaRegisterFormAlert(){
+    public void testKhairutdinovaOlgaRegisterFormAlert() {
         WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://practice.expandtesting.com/register");
@@ -224,13 +213,13 @@ public class GroupFutureAqaTest {
             );
 
             Assert.assertEquals(text.getText(), "All fields are required.");
-        }
-        finally {
+        } finally {
             driver.quit();
         }
     }
+
     @Test
-    public void testKhairutdinovaOlga_YM(){
+    public void testKhairutdinovaOlga_YM() {
 
         WebDriver driver = new ChromeDriver();
         try {
@@ -278,6 +267,7 @@ public class GroupFutureAqaTest {
             driver.quit();
         }
     }
+
     @Test
     public void testKhairutdinovaOlgaSignInPageAlertMessageTextAndColor_1() {
         WebDriver driver = new ChromeDriver();
@@ -472,6 +462,27 @@ public class GroupFutureAqaTest {
 
             Assert.assertEquals("КОНТАКТЫ", title.getText().trim());
 
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void testTranslator() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        final String wordToTranslate = "hello";
+        final String wordAfterTranslate = "привет! здравствуй(те)!";
+
+        try {
+            driver.get("https://dictionary.cambridge.org/");
+
+            Thread.sleep(60);
+            driver.findElement(By.id("searchword")).sendKeys(wordToTranslate);
+            driver.findElement(By.xpath("//button[@type='submit']")).click();
+
+            Assert.assertEquals(driver
+                    .findElement(By.xpath("//span[@class='trans dtrans dtrans-se ']"))
+                    .getText(), wordAfterTranslate);
         } finally {
             driver.quit();
         }
