@@ -112,7 +112,7 @@ public class QatoriumTest {
     }
 
     @Test
-    public void testformfields(){
+    public void testFormFields(){
         WebDriver driver = new ChromeDriver();
         driver.get("https://practice-automation.com/form-fields/");
         WebElement namefield = driver.findElement(By.xpath("//label[@for='name-input']/input[contains(@id,'name')]"));
