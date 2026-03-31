@@ -451,4 +451,39 @@ public class NoGroupTest {
             driver.quit();
         }
     }
+    @Test
+    public static void testOpenPage() {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://veresk.by/catalog/khvoynye/tuya/?srsltid=AfmBOorG2UJfOGF6h5cpIpV4hgU-S9fayPXBBQ73regvlQ0YdiGnsxWS");
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+            WebElement pageTitle = driver.findElement(By.id("pagetitle"));
+
+            Assert.assertEquals(pageTitle.getText(), "Туя");
+        } finally {
+            driver.quit();
+        }
+    }
+    @Test
+    public static void testCheckSearch() {
+        WebDriver driver = new ChromeDriver();
+
+        try{
+            driver.get("https://veresk.by/catalog/khvoynye/tuya/?srsltid=AfmBOorG2UJfOGF6h5cpIpV4hgU-S9fayPXBBQ73regvlQ0YdiGnsxWS");
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+            driver.manage().window().maximize();
+
+            WebElement inputSearch = driver.findElement(By.id("title-search-input_fixed"));
+            WebElement submitButton = driver.findElement(By.xpath("//header//button[contains(@class,'btn-search')]"));
+            inputSearch.clear();
+            inputSearch.sendKeys("Страско");
+            submitButton.click();
+
+            WebElement searchResult = driver.findElement(By.xpath("//div[@class='item-title']/a/span"));
+            Assert.assertEquals(searchResult.getText(), "Туя западная Страско");
+        }
+        finally {
+            driver.quit();
+        }
+    }
 }
