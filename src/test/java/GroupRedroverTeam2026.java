@@ -3,14 +3,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
-@Ignore
-public class FedorTest {
-    
+public class GroupRedroverTeam2026 {
+
     @Test
-    public void testSearchStreha() {
+    public void testSearchFedorStreha() {
 
         WebDriver driver = new ChromeDriver();
 
