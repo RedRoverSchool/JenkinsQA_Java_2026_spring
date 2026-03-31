@@ -5,7 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class GroupRedroverTeam2026 {
+public class GroupRedroverTeam2026Test {
 
     @Test
     public void testSearchFedorStreha() {
