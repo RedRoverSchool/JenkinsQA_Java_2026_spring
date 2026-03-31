@@ -10,31 +10,6 @@ public abstract class BaseTest {
 
     private WebDriver driver;
 
-    private void startDriver() {
-        ProjectUtils.log("Browser open");
-        driver = ProjectUtils.createDriver();
-    }
-
-    private void clearData() {
-        ProjectUtils.log("Clear data");
-        JenkinsUtils.clearData();
-    }
-
-    private void loginWeb() {
-        ProjectUtils.log("Login");
-        JenkinsUtils.login(getDriver());
-    }
-
-    private void getWeb() {
-        ProjectUtils.log("Get web page");
-        ProjectUtils.get(getDriver());
-    }
-
-    private void stopDriver() {
-        JenkinsUtils.logout(getDriver());
-        closeDriver();
-    }
-
     private void closeDriver() {
         if (driver != null) {
             driver.quit();
@@ -49,16 +24,21 @@ public abstract class BaseTest {
     protected void beforeMethod(Method method) {
         ProjectUtils.log("Run %s.%s", this.getClass().getName(), method.getName());
 
-        clearData();
-        startDriver();
-        getWeb();
-        loginWeb();
+        ProjectUtils.log("Clear data");
+        JenkinsUtils.clearData();
+        ProjectUtils.log("Browser open");
+        driver = ProjectUtils.createDriver();
+        ProjectUtils.log("Get web page");
+        ProjectUtils.get(getDriver());
+        ProjectUtils.log("Login");
+        JenkinsUtils.login(getDriver());
     }
 
     @AfterMethod
     protected void afterMethod(Method method, ITestResult testResult) {
         if (ProjectUtils.isRunCI() || testResult.isSuccess() || ProjectUtils.closeIfError()) {
-            stopDriver();
+            JenkinsUtils.logout(getDriver());
+            closeDriver();
         }
 
         ProjectUtils.log("Execution time is %.3f sec", (testResult.getEndMillis() - testResult.getStartMillis()) / 1000.0);
