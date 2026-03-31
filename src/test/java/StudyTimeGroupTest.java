@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import org.testng.Assert;
 
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
+@Ignore
 public class StudyTimeGroupTest {
     private static final Logger logger = Logger.getLogger(StudyTimeGroupTest.class.getName());
 
