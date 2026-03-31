@@ -42,4 +42,16 @@ public class GroupGachiteam {
             driver.quit();
         }
     }
+    @Test
+    public void testNameOfSearchBoxFilter() {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://commitquality.com");
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+            Assert.assertEquals(driver.findElement(By.xpath("//*[@placeholder='Filter by product name']")).getAttribute("placeholder"), "Filter by product name");
+        } finally {
+            driver.quit();
+        }
+    }
 }
