@@ -15,19 +15,21 @@ public class GroupCosmosSociofobusTest {
     public void testAkvaZoomarket() {
 
         WebDriver driver = new ChromeDriver();
-        driver.get("https://akva-zoomarket.ru/");
+        try {
+            driver.get("https://akva-zoomarket.ru/");
 
-        WebElement textBox = driver.findElement(By.cssSelector("#title-search-input"));
-        WebElement button = driver.findElement(By.cssSelector("#title-search > form > button"));
+            WebElement textBox = driver.findElement(By.cssSelector("#title-search-input"));
+            WebElement button = driver.findElement(By.cssSelector("#title-search > form > button"));
 
-        textBox.sendKeys("undefined");
-        button.click();
+            textBox.sendKeys("undefined");
+            button.click();
 
-        WebElement message = driver.findElement(By.xpath("/html/body/div[1]/main/div[2]"));
+            WebElement message = driver.findElement(By.xpath("/html/body/div[1]/main/div[2]"));
 
-        Assert.assertEquals(message.getText(), "Сожалеем, но ничего не найдено.");
-
-        driver.quit();
+            Assert.assertEquals(message.getText(), "Сожалеем, но ничего не найдено.");
+        } finally {
+            driver.quit();
+        }
     }
 
     @Test
