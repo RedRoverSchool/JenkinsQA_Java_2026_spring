@@ -15,6 +15,7 @@ public class GroupCosmosSociofobusTest {
     public void testAkvaZoomarket() {
 
         WebDriver driver = new ChromeDriver();
+
         try {
             driver.get("https://akva-zoomarket.ru/");
 
