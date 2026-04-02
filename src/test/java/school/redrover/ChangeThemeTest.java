@@ -17,7 +17,6 @@ public class ChangeThemeTest extends BaseTest {
 
     @Test
     public void testChangeDarkTheme(){
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
         getDriver().findElement(By.xpath("//*[@id='root-action-UserAction']")).click();
         getDriver().findElement(By.xpath("//a[@href='/user/admin/appearance']")).click();
@@ -25,9 +24,7 @@ public class ChangeThemeTest extends BaseTest {
         getDriver().findElement
                 (By.xpath("//button[@class='jenkins-button jenkins-submit-button jenkins-button--primary ']")).click();
 
-        wait.until(driver -> "dark".equals(
-                ((JavascriptExecutor) driver).executeScript("return document.documentElement.getAttribute('data-theme')")
-        ));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
         Assert.assertEquals("dark",
                ((JavascriptExecutor) getDriver()).executeScript("return document.documentElement.getAttribute('data-theme')")
