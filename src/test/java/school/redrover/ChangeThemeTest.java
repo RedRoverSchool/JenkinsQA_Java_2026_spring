@@ -23,13 +23,7 @@ public class ChangeThemeTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='/user/admin/appearance']")).click();
         getDriver().findElement(By.xpath("//label[@for='radio-block-1']")).click();
         getDriver().findElement
-                (By.xpath("//button[@class='jenkins-button jenkins-submit-button jenkins-button--primary ']")).click();
-
-        new WebDriverWait(getDriver(), Duration.ofSeconds(2))
-                .until(driver -> ((JavascriptExecutor) driver)
-                                .executeScript("return document.documentElement.getAttribute('data-theme')")
-                                .equals("dark"));
-
+                (By.xpath("//button[@class='jenkins-button apply-button']")).click();
 
         Assert.assertEquals("dark",
                 ((JavascriptExecutor) getDriver()).executeScript("return document.documentElement.getAttribute('data-theme')")
