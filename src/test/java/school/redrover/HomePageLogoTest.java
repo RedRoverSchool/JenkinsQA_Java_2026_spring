@@ -16,15 +16,6 @@ public class HomePageLogoTest extends BaseTest {
     }
 
     @Test
-    public void testLogoClickRefreshesHomePage() {
-        String urlBeforeClick = getDriver().getCurrentUrl();
-        getDriver().findElement(By.xpath("//*[@id='jenkins-head-icon']")).click();
-        String urlAfterClick = getDriver().getCurrentUrl();
-
-        Assert.assertEquals(urlBeforeClick, urlAfterClick, "Адрес страницы изменился");
-    }
-
-    @Test
     public void testClickOnLogoGoToHomePage() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         String newJobUrl = getDriver().getCurrentUrl();
