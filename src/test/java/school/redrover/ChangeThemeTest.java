@@ -17,12 +17,7 @@ public class ChangeThemeTest extends BaseTest {
 
 
         getDriver().findElement(By.xpath("//*[@id='root-action-UserAction']")).click();
-
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@href='/user/admin/appearance']"))).click();
-
-//        getDriver().findElement(By.xpath("//a[@href='/user/admin/appearance']")).click();
+        getDriver().findElement(By.xpath("//a[contains(., 'Appearance')]")).click();
         getDriver().findElement(By.xpath("//label[@for='radio-block-1']")).click();
         getDriver().findElement
                 (By.xpath("//button[@class='jenkins-button apply-button']")).click();
