@@ -25,9 +25,9 @@ public class ChangeThemeTest extends BaseTest {
                 ((JavascriptExecutor) getDriver()).executeScript("return document.documentElement.getAttribute('data-theme')")
         );
 
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//a[@href='appearance']")).click();
         getDriver().findElement(By.xpath("//label[@for='radio-block-0']")).click();
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(20));
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("notification-bar")));
         getDriver().findElement
                 (By.xpath("//button[@class='jenkins-button apply-button']")).click();
     }
