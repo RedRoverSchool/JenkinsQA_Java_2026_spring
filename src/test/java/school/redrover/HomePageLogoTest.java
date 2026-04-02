@@ -14,5 +14,25 @@ public class HomePageLogoTest extends BaseTest {
 
         Assert.assertTrue(logo.isDisplayed(), "Логотип не отображается на главной странице");
     }
+
+    @Test
+    public void testLogoClickRefreshesHomePage() {
+        String urlBeforeClick = getDriver().getCurrentUrl();
+        getDriver().findElement(By.xpath("//*[@id='jenkins-head-icon']")).click();
+        String urlAfterClick = getDriver().getCurrentUrl();
+
+        Assert.assertEquals(urlBeforeClick, urlAfterClick, "Адрес страницы изменился");
+    }
+
+    @Test
+    public void testClickOnLogoGoToHomePage() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        String newJobUrl = getDriver().getCurrentUrl();
+
+        getDriver().findElement(By.xpath("//*[@id='jenkins-head-icon']")).click();
+        String homePageUrl = getDriver().getCurrentUrl();
+
+        Assert.assertNotEquals(newJobUrl, homePageUrl, "Нет перехода на домашнюю страницу");
+    }
 }
 
