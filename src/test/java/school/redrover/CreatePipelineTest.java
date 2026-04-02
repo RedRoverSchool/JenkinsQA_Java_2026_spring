@@ -6,7 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-public class CreatePipeline extends BaseTest {
+public class CreatePipelineTest extends BaseTest {
 
     @Test
     public void testCreatePipeline() {
