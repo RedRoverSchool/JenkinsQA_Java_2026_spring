@@ -51,9 +51,9 @@ public class CreateNewUserTest extends BaseTest {
         for (WebElement element: errorText){
             if (element.getText().equals("User name is already taken")){
                 textFound = true;
-            };
+            }
         }
-        Assert.assertEquals(textFound, true, "No message found: 'User name is already taken'");
+        Assert.assertTrue(textFound, "No message found: 'User name is already taken'");
     }
 
     @Test
@@ -69,8 +69,8 @@ public class CreateNewUserTest extends BaseTest {
         for (WebElement element : errorText) {
             if (element.getText().equals("Password didn't match")) {
                 textFound = true;
-            };
+            }
         }
-        Assert.assertEquals(textFound, true, "No message found: 'Password didn't match'");
+        Assert.assertTrue(textFound, "No message found: 'Password didn't match'");
     }
 }
