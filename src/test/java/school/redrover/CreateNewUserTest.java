@@ -73,4 +73,23 @@ public class CreateNewUserTest extends BaseTest {
         }
         Assert.assertTrue(textFound, "No message found: 'Password didn't match'");
     }
+
+    @Test
+    public void testCreateWithInvalidEmail () {
+        createUser("Barmaley",
+                "Barmaley",
+                "pass123",
+                "pass123",
+                "barmaleye-mail.com");
+
+        List<WebElement> errorText = getDriver().findElements(By.xpath("//div[@class='error jenkins-!-margin-bottom-2']"));
+        boolean textFound = false;
+        for (WebElement element : errorText) {
+            System.out.println("element = " + element.getText());
+            if (element.getText().equals("Invalid e-mail address")) {
+                textFound = true;
+            }
+        }
+        Assert.assertTrue(textFound, "No message found: 'Invalid e-mail address'");
+    }
 }
