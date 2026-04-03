@@ -6,7 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-public class ChangeTheThemeTest extends BaseTest {
+public class ChangeTheTheme2Test extends BaseTest {
 
     @Test
     public void testChangeTheTheme () {
