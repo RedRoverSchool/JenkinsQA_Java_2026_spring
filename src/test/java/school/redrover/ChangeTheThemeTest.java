@@ -17,8 +17,9 @@ public class ChangeTheThemeTest extends BaseTest {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
         wait.until(ExpectedConditions.elementToBeClickable(By.id("root-action-UserAction"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@href,'appearance')]"))).click();
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[@for='radio-block-1']"))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("tasks")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#tasks a.task-link[href*='appearance']"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("label[for='radio-block-1']"))).click();
 
         WebElement html = getDriver().findElement(By.tagName("html"));
 
