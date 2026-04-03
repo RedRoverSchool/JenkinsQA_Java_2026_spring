@@ -13,7 +13,7 @@ import school.redrover.common.JenkinsUtils;
 import java.time.Duration;
 
 @Ignore
-public class SignInPageAlertMessageText extends BaseTest {
+public class SignInPageAlertMessageTextTest extends BaseTest {
     @Test
 
     public void testSignInPageAlertMessageText (){
