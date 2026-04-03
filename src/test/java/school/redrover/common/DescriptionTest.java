@@ -13,6 +13,6 @@ public class DescriptionTest extends BaseTest{
         getDriver().findElement(By.xpath("//*[@id='description-edit-form']/form/div[1]/div[1]/textarea")).sendKeys("hi");
         getDriver().findElement(By.xpath("//*[@id='description-edit-form']/form/div[2]/button[1]")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='description-content']")).getText(),"hi");
+        Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(),"hi");
     }
 }
