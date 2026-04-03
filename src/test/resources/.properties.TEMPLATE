@@ -1,5 +1,6 @@
 jenkins.username=<username>
 jenkins.password=<password>
+jenkins.api-token=<api-token>
 jenkins.host=<host>
 jenkins.port=<port>
 
