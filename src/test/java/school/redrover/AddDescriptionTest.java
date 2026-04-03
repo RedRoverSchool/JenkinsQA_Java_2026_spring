@@ -39,6 +39,10 @@ public class AddDescriptionTest extends BaseTest {
         addDescriptionButton.click();
 
         getDriver().findElement(By.name("Submit")).click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link")));
+
         Assert.assertTrue(
                 getDriver().findElement(By.id("description-content")).getText().isEmpty(),
                 "Description has not empty content!");
