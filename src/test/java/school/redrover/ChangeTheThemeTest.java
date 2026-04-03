@@ -22,7 +22,10 @@ public class ChangeTheThemeTest extends BaseTest {
         WebElement html = getDriver().findElement(By.tagName("html"));
         String theme = html.getAttribute("data-theme");
 
-        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//*[@id='tasks']/div[5]/span/a")));
+        element.click();
 
         Assert.assertEquals(theme, "dark");
     }
