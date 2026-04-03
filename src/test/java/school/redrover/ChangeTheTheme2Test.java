@@ -12,15 +12,15 @@ import java.time.Duration;
 
 public class ChangeTheTheme2Test extends BaseTest {
     @Test
-    public void testChangeTheTheme () {
-        getDriver().findElement(By.id("root-action-UserAction")).click();
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(3));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href*='/appearance']")));
-        getDriver().findElement(By.cssSelector("a[href*='/appearance']")).click();
-        getDriver().findElement(By.xpath("//label[@for='radio-block-1']")).click();
+    public void testChangeTheTheme() {
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
-        WebElement html = getDriver().findElement(By.tagName("html"));
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("root-action-UserAction"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href$='/appearance']"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable
+                (By.xpath("//label[@for='radio-block-1']"))).click();
 
-        Assert.assertEquals(html.getAttribute("data-theme"), "dark");
+        Assert.assertTrue(wait.until(ExpectedConditions.attributeToBe
+                (By.tagName("html"), "data-theme", "dark")), "Тема сменилась на dark!");
     }
 }
