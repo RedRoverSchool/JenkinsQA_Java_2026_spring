@@ -17,16 +17,12 @@ public class ChangeTheThemeTest extends BaseTest {
 
         getDriver().findElement(By.id("root-action-UserAction")).click();
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]/span/a")).click();
-
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
-        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[@id='tasks']/div[5]/span/a")));
-        element.click();
-
         getDriver().findElement(By.xpath("//label[@for='radio-block-1']")).click();
 
         WebElement html = getDriver().findElement(By.tagName("html"));
         String theme = html.getAttribute("data-theme");
+
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
 
         Assert.assertEquals(theme, "dark");
     }
