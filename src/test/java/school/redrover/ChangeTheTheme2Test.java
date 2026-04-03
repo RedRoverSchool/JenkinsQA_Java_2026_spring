@@ -10,7 +10,7 @@ public class ChangeTheTheme2Test extends BaseTest {
     @Test
     public void testChangeTheTheme () {
         getDriver().findElement(By.id("root-action-UserAction")).click();
-        getDriver().findElement(By.cssSelector("a[href*='/appearance']")).click();
+        getDriver().findElement(By.cssSelector("a[href$='/appearance']")).click();
         getDriver().findElement(By.xpath("//label[@for='radio-block-1']")).click();
 
         WebElement html = getDriver().findElement(By.tagName("html"));
