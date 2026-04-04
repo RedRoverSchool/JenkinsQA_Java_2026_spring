@@ -21,7 +21,7 @@ public class ManageJenkinsPageTest extends BaseTest {
     public void testManageJenkinsPageItems() {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
 
-        List<WebElement> items = getDriver().findElements(By.xpath("//div[@class='jenkins-section__item'/a/dl/dt"));
+        List<WebElement> items = getDriver().findElements(By.xpath("//div[@class='jenkins-section__item']/a/dl/dt"));
 
         List<String> actualItems = new ArrayList<>();
         for (WebElement item : items) {
