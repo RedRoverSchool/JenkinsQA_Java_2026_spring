@@ -41,7 +41,6 @@ public class FullstackQaGroupTest {
             driver.quit();
         }
     }
-
     @Test
     public void vladimirFirstTest() {
         WebDriver driver = new ChromeDriver();
