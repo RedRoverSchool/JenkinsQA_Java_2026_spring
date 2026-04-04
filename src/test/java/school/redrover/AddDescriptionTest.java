@@ -11,7 +11,7 @@ import school.redrover.common.BaseTest;
 import java.time.Duration;
 
 public class AddDescriptionTest extends BaseTest {
-    final static String contentText = "TEST";
+    private final String contentText = "TEST";
 
     public void openDescription(){
         getDriver().findElement(By.cssSelector("#description-link.jenkins-button")).click();
@@ -31,6 +31,11 @@ public class AddDescriptionTest extends BaseTest {
         if(save){
             getDriver().findElement(By.name("Submit")).click();
         }
+    }
+
+    public void waitVisibility(int seconds, By locator){
+        new WebDriverWait(getDriver(), Duration.ofSeconds(seconds))
+                .until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
     @Test
@@ -59,9 +64,7 @@ public class AddDescriptionTest extends BaseTest {
         openDescription();
         getDriver().findElement(By.name("Submit")).click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#description-link.jenkins-button")));
-
+        waitVisibility(10, By.cssSelector("#description-link.jenkins-button"));
         Assert.assertTrue(
                 getDriver().findElement(By.id("description-content")).getText().isEmpty(),
                 "Description has non-empty content!");
@@ -71,9 +74,7 @@ public class AddDescriptionTest extends BaseTest {
     public void testChangeAddDescriptionButtonTitle() {
         openDescription();
         fillOutDescription(contentText, true);
-
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#description-link.jenkins-button")));
+        waitVisibility(10, By.cssSelector("#description-link.jenkins-button"));
 
         WebElement actualButton = getDriver().findElement(By.cssSelector("#description-link.jenkins-button"));
         Assert.assertTrue(
@@ -86,9 +87,7 @@ public class AddDescriptionTest extends BaseTest {
     public void testAddDescription() {
         openDescription();
         fillOutDescription(contentText, true);
-
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#description-link.jenkins-button")));
+        waitVisibility(10, By.cssSelector("#description-link.jenkins-button"));
 
         Assert.assertEquals(
                 getDriver().findElement(By.id("description-content")).getText(),
@@ -101,12 +100,11 @@ public class AddDescriptionTest extends BaseTest {
 
         openDescription();
         fillOutDescription(contentText, true);
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link")));
+        waitVisibility(10, By.id("description-link"));
 
         openDescription();
         refillDescription(changedDescription, true);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#description-link.jenkins-button")));
+        waitVisibility(10, By.cssSelector("#description-link.jenkins-button"));
 
         Assert.assertEquals(
                 getDriver().findElement(By.id("description-content")).getText(),
