@@ -7,40 +7,41 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
 import java.time.Duration;
 
 public class DescriptionOneTest extends BaseTest {
     private WebDriverWait wait;
 
     @BeforeMethod
-    public void getUp(){
+    public void getUp() {
         wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
     }
 
     @Test
     public void testCreatingDescriptionTest() {
-            getDriver().findElement(By.cssSelector("#description-link")).click();
-            getDriver().findElement(By.cssSelector("textarea[name='description']")).sendKeys("Text");
-            getDriver().findElement(By.cssSelector("button[value='Save']")).click();
+        getDriver().findElement(By.cssSelector("#description-link")).click();
+        getDriver().findElement(By.cssSelector("textarea[name='description']")).sendKeys("Text");
+        getDriver().findElement(By.cssSelector("button[value='Save']")).click();
 
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#description-content")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#description-content")));
 
-            Assert.assertEquals(getDriver().findElement(By.cssSelector("#description-content")).getText(), "Text", "Not found");
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#description-content")).getText(), "Text", "Not found");
     }
 
     @Test
     public void testPreview() {
-            getDriver().findElement(By.id("description-link")).click();
-            getDriver().findElement(By.cssSelector("textarea[name='description']")).sendKeys("Text");
-            getDriver().findElement(By.className("textarea-show-preview")).click();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.cssSelector("textarea[name='description']")).sendKeys("Text");
+        getDriver().findElement(By.className("textarea-show-preview")).click();
 
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".textarea-preview")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".textarea-preview")));
 
-            Assert.assertEquals(getDriver().findElement(By.cssSelector(".textarea-preview")).getText(),"Text","Not found");
+        Assert.assertEquals(getDriver().findElement(By.cssSelector(".textarea-preview")).getText(), "Text", "Not found");
     }
 
     @Test
-      public void testClearDescription() {
+    public void testClearDescription() {
         getDriver().findElement(By.cssSelector("#description-link")).click();
         getDriver().findElement(By.cssSelector("textarea[name='description']")).sendKeys("Text");
         getDriver().findElement(By.cssSelector("button[value='Save']")).click();
@@ -50,7 +51,7 @@ public class DescriptionOneTest extends BaseTest {
         getDriver().findElement(By.cssSelector("textarea[name='description']")).clear();
         getDriver().findElement(By.cssSelector("button[value='Save']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("#description-link")).getText(), "Add description","Not found");
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#description-link")).getText(), "Add description", "Not found");
     }
 
 }
