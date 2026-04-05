@@ -28,4 +28,17 @@ public class PipelineProjectTest extends BaseTest {
                 getDriver().findElement(By.cssSelector(".jenkins-table__link > span:first-child")).getText(),
                 pipelineName);
     }
+
+    @Test
+    public void testCreateWithoutNameShowsError() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.id("itemname-required")).getText(),
+                "» This field cannot be empty, please enter a valid name");
+
+        Assert.assertTrue(
+                getDriver().findElement(By.id("ok-button")).isDisplayed());
+    }
 }
