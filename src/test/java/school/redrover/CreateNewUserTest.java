@@ -7,6 +7,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import java.sql.SQLOutput;
 import java.util.List;
 
 public class CreateNewUserTest extends BaseTest {
@@ -29,7 +30,7 @@ public class CreateNewUserTest extends BaseTest {
         String userLogin = "Greka";
         createUser(userLogin, "Rekov Greka", "pass123", "pass123", "Greka@e-mail.com");
         String createdUser = getDriver().findElement(By.xpath("//table[@class='jenkins-table sortable']//a[@href='user/" + userLogin.toLowerCase() + "/' and @class='jenkins-table__link model-link inside']")).getText();
-
+        System.out.println("createdUser");
         Assert.assertEquals(createdUser, userLogin);
     }
 
