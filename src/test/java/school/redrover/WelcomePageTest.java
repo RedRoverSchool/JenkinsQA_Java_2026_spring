@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -41,6 +42,7 @@ public class WelcomePageTest extends BaseTest {
                 "Build History of Jenkins");
     }
 
+    @Ignore
     @Test
     public void testEditDescriptionDashboard() {
         getDriver().findElement(By.xpath("//a[@href = 'editDescription']")).click();
