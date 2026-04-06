@@ -37,4 +37,25 @@ public class NewItemPageTest extends BaseTest {
         Assert.assertEquals(actualTasks, expectedTasks);
     }
 
+    @Test
+    public void testCreateNewItemFreestyleProjectSuccess() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys("New Test Freestyle project");
+        getDriver().findElement(By.xpath(
+                "//*[@id='j-add-item-type-standalone-projects']/ul/li[@class='hudson_model_FreeStyleProject']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        List<WebElement> taskElements = getDriver().findElements(By.className("task"));
+        List<String> actualTasks = new ArrayList<>();
+        for (WebElement taskElement : taskElements) {
+            actualTasks.add(taskElement.getText());
+        }
+        List<String> expectedTasks = List.of(
+                "General", "Source Code Management", "Triggers", "Environment", "Build Steps", "Post-build Actions"
+        );
+
+        Assert.assertEquals(actualTasks, expectedTasks);
+    }
+
 }
