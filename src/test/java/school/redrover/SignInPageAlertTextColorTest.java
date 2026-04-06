@@ -15,7 +15,7 @@ import java.time.Duration;
 public class SignInPageAlertTextColorTest extends BaseTest {
     @Ignore
     @Test
-    public void testSignInPageAlertTextColor (){
+    public void testSignInPageAlertTextColor () {
         JenkinsUtils.logout(getDriver());
 
         getDriver().findElement(By.cssSelector("#j_username")).sendKeys("user");
@@ -31,4 +31,4 @@ public class SignInPageAlertTextColorTest extends BaseTest {
         String actualColor = alertText.getCssValue("color");
         Assert.assertTrue(actualColor.contains("oklch(0.6 0.2671 30)"),
                 "Цвет текста ошибки не красный: " + actualColor);
-}}
+    }}
