@@ -61,13 +61,6 @@ public class JenkinsSingOutButtonTest extends BaseTest {
         Assert.assertEquals(usernameValue, "",
                 "Поле 'Username' должно быть пустым, но содержит: '" + usernameValue + "'");
 
-//        // 5. Проверяем, что поле "Password" пустое (строгая проверка)
-//        WebElement passwordField = getDriver().findElement(By.id("j_password"));
-//        String passwordValue = passwordField.getAttribute("value");
-//        Assert.assertEquals(passwordValue, "",
-//                "Поле 'Password' должно быть пустым, но содержит: '" + passwordValue + "'");
-//
-//        System.out.println("Проверка пройдена: поля ввода логина и пароля пустые после выхода из системы");
 
     }
 
