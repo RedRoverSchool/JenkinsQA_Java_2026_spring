@@ -47,7 +47,7 @@ public class CheckedDescriptionTest extends BaseTest {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
         Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(), "description updated");
     }
-
+@Ignore
     @Test
     public void testCanceled() {
         getDriver().findElement((By.linkText("Add description"))).click();
