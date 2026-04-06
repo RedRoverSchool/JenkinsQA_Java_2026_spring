@@ -13,7 +13,7 @@ import java.time.Duration;
 
 public class AddDescriptionTest extends BaseTest {
     private final String contentText = "TEST";
-
+@Ignore
     public void openDescription(){
         getDriver().findElement(By.cssSelector("#description-link.jenkins-button")).click();
     }
