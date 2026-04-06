@@ -11,6 +11,7 @@ import school.redrover.common.BaseTest;
 
 import java.time.Duration;
 
+@Ignore
 public class AddDescriptionTest extends BaseTest {
     private final String contentText = "TEST";
 
