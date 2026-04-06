@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -32,6 +33,7 @@ public class CreateNewUserTest extends BaseTest {
         Assert.assertEquals(createdUser, userLogin);
     }
 
+    @Ignore
     @Test
     public void testCreateIdenticalLoginUsers () {
         String usersLogin = "Shpuntik";

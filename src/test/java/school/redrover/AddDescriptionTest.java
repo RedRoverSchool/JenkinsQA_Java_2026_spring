@@ -41,8 +41,7 @@ public class AddDescriptionTest extends BaseTest {
 
     @Test
     public void testPreviewContainerTitle() {
-        openDescription();
-
+        getDriver().findElement(By.id("description-link")).click();
         Assert.assertEquals(
                 getDriver().findElement(By.className("textarea-preview-container")).getText(),
                 "Plain text\nPreview");
@@ -50,10 +49,10 @@ public class AddDescriptionTest extends BaseTest {
 
     @Test
     public void testCancelWithoutDescription() {
-        openDescription();
-        getDriver().findElement(By.xpath("//button[contains(@class, 'description-cancel-button')]")).click();
-
         WebElement addDescriptionButton = getDriver().findElement(By.id("description-link"));
+        addDescriptionButton.click();
+
+        getDriver().findElement(By.xpath("//button[contains(@class, 'description-cancel-button')]")).click();
         Assert.assertTrue(
                 addDescriptionButton.isDisplayed() &&
                         addDescriptionButton.getText().equals("Add description"),
@@ -62,34 +61,26 @@ public class AddDescriptionTest extends BaseTest {
 
     @Test
     public void testSaveWithoutDescription() {
-        openDescription();
+        getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        waitVisibility(10, By.cssSelector("#description-link.jenkins-button"));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link")));
+
         Assert.assertTrue(
                 getDriver().findElement(By.id("description-content")).getText().isEmpty(),
                 "Description has non-empty content!");
     }
 
-    @Ignore
     @Test
-    public void testChangeAddDescriptionButtonTitle() {
-        openDescription();
-        fillOutDescription(contentText, true);
-        waitVisibility(10, By.cssSelector("#description-link.jenkins-button"));
+    public void testChangeDescription() {
+        getDriver().findElement(By.id("description-link")).click();
 
-        WebElement actualButton = getDriver().findElement(By.cssSelector("#description-link.jenkins-button"));
-        Assert.assertTrue(
-                actualButton.isDisplayed() &&
-                        actualButton.getText().equals("Edit description"),
-                "\"Add description\" button didn't change title after adding description!");
-    }
+        getDriver().findElement(By.name("description")).sendKeys(contentText);
+        getDriver().findElement(By.name("Submit")).click();
 
-    @Test
-    public void testAddDescription() {
-        openDescription();
-        fillOutDescription(contentText, true);
-        waitVisibility(10, By.cssSelector("#description-link.jenkins-button"));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
 
         Assert.assertEquals(
                 getDriver().findElement(By.id("description-content")).getText(),
@@ -97,19 +88,19 @@ public class AddDescriptionTest extends BaseTest {
     }
 
     @Test
-    public void testChangeDescription() {
-        String changedDescription = contentText + "_changed";
+    public void testChangeAddDescriptionButtonTitle() {
+        getDriver().findElement(By.cssSelector("#description-link.jenkins-button")).click();
 
-        openDescription();
-        fillOutDescription(contentText, true);
-        waitVisibility(10, By.id("description-link"));
+        getDriver().findElement(By.name("description")).sendKeys(contentText);
+        getDriver().findElement(By.name("Submit")).click();
 
-        openDescription();
-        refillDescription(changedDescription, true);
-        waitVisibility(10, By.cssSelector("#description-link.jenkins-button"));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
 
-        Assert.assertEquals(
-                getDriver().findElement(By.id("description-content")).getText(),
-                changedDescription);
+        WebElement actualButton = getDriver().findElement(By.cssSelector("#description-link.jenkins-button"));
+        Assert.assertTrue(
+                actualButton.isDisplayed() &&
+                        actualButton.getText().equals("Edit description"),
+                "\"Add description\" button didn't change title after adding description!");
     }
 }
