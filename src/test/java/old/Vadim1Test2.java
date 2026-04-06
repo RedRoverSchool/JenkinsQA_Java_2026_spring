@@ -19,9 +19,7 @@ public class Vadim1Test2 {
         driver.getTitle();
 
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
         WebElement textBox = driver.findElement(By.name("my-text"));
-
         WebElement submitButton = driver.findElement(By.cssSelector("button"));
         textBox.sendKeys("Selenium");
         submitButton.click();
