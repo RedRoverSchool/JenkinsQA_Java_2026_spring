@@ -11,9 +11,7 @@ public class BuildExecutorStatusTest extends BaseTest {
     @Test
     public void testBuildExecutorStatus() {
 
-        WebElement buildExecutorStatus = getDriver().findElement(By.xpath("//a[@href='/computer/']"));
-        buildExecutorStatus.click();
-
+        getDriver().findElement(By.xpath("//a[@href='/computer/']")).click();
         WebElement title = getDriver().findElement(By.xpath("//h1"));
 
         Assert.assertEquals(title.getText(), "Nodes");
