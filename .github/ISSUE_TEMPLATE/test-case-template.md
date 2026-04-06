@@ -3,7 +3,7 @@ name: New Test Case Template
 about: Template for creating a new test case.
 title: TC_XX.YYY.ZZ | Epic Name > User Story Name > Test Case Name
 labels: TC
-type: Feature
+type: Task
 ---
 **ID:** TC_XX.YYY.ZZ | Epic Name > User Story Name > Test Case Name
 
