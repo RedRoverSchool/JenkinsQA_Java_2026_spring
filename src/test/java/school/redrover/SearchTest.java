@@ -23,7 +23,6 @@ public class SearchTest extends BaseTest {
         String actualText = getDriver().findElement(By.xpath("//*[@class='jenkins-command-palette__info']")).getText();
         Assert.assertEquals(actualText, expectedText);
     }
-
     @Test
     public void testSuggestedItems() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
