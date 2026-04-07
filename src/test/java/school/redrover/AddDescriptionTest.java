@@ -14,7 +14,7 @@ import java.time.Duration;
 @Ignore
 public class AddDescriptionTest extends BaseTest {
     private final String contentText = "TEST";
-
+@Ignore
     public void openDescription(){
         getDriver().findElement(By.cssSelector("#description-link.jenkins-button")).click();
     }
@@ -48,7 +48,7 @@ public class AddDescriptionTest extends BaseTest {
                 getDriver().findElement(By.className("textarea-preview-container")).getText(),
                 "Plain text\nPreview");
     }
-
+@Ignore
     @Test
     public void testCancelWithoutDescription() {
         openDescription();

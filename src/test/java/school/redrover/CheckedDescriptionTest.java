@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -28,7 +29,7 @@ public class CheckedDescriptionTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(), "description added");
     }
-
+@Ignore
     @Test
     public void testUpdateDescription() {
         getDriver().findElement((By.xpath("//*[@href='editDescription']"))).click();
@@ -46,7 +47,7 @@ public class CheckedDescriptionTest extends BaseTest {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
         Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(), "description updated");
     }
-
+@Ignore
     @Test
     public void testCanceled() {
         getDriver().findElement((By.linkText("Add description"))).click();

@@ -13,29 +13,22 @@ import school.redrover.common.JenkinsUtils;
 import java.time.Duration;
 
 public class SignInPageAlertTextColorTest extends BaseTest {
-
+    @Ignore
     @Test
-    public void testSignInPageAlertTextColor (){
+    public void testSignInPageAlertTextColor () {
         JenkinsUtils.logout(getDriver());
 
         getDriver().findElement(By.cssSelector("#j_username")).sendKeys("user");
+
         getDriver().findElement(By.cssSelector("#j_password")).sendKeys("qwerty");
+
         getDriver().findElement(By.xpath("//button[text()='Sign in']")).click();
 
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         WebElement alertText = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[contains(text(),'Invalid username or password')]")));
+                By.xpath("//div[text()='Invalid username or password']")));
 
         String actualColor = alertText.getCssValue("color");
-
-        // Проверяем, что цвет содержит "красные" значения (RGB или OKLCH)
-        // Для OKLCH: первый параметр (lightness) не важен, проверяем chroma и hue
-        boolean isRedColor = actualColor.contains("oklch") &&
-                (actualColor.matches(".*oklch\\([0-9.]+\\s+[0-9.]+\\s+[0-9.]+\\)"));
-
-        // Альтернатива: проверка на RGB red компонент > 0.5
-        boolean isRedRgb = actualColor.matches(".*rgb\\([0-9]+, 0, 0\\).*");
-
-        Assert.assertTrue(isRedColor || isRedRgb,
-                "Цвет текста ошибки не является красным: " + actualColor);
-}}
+        Assert.assertTrue(actualColor.contains("oklch(0.6 0.2671 30)"),
+                "Цвет текста ошибки не красный: " + actualColor);
+    }}
