@@ -7,7 +7,7 @@ import school.redrover.common.BaseTest;
 
 public class CreateNewItemTest extends BaseTest {
     @Test
-    public void testCreateNewItem() throws InterruptedException {
+    public void testCreateNewItem() {
         String expectedText = "New Item - Jenkins";
         String actualText;
 
