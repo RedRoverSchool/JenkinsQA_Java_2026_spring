@@ -10,13 +10,14 @@ import school.redrover.common.BaseTest;
 public class MyFistTest extends BaseTest {
 
     @Test
-    public void newTest() {
+    public void testVerifyNewItemPageHeader() {
 
         getDriver().get("http://localhost:8080/view/all/newJob");
-        WebElement actualString = getDriver().findElement(By.xpath("//*[@id='add-item-panel']/h1"));
-        String expecytedString = "Новый Item";
+        WebElement element = getDriver().findElement(By.xpath("//*[@id='add-item-panel']/h1"));
+        String actualText = element.getText();
+        String expecytedString = "New Item";
 
-        Assert.assertEquals(actualString, expecytedString, "Текст не совпадает");
+        Assert.assertEquals(actualText, expecytedString, "Текст не совпадает");
 
     }
 
