@@ -103,4 +103,29 @@ public class NewItemPageTest extends BaseTest {
         Assert.assertEquals(actualTasks, expectedTasks);
     }
 
+    @Test
+    public void testCreateNewItemMultibranchPipelineSuccess() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys("New Test Multibranch Pipeline");
+        getDriver().findElement(By.xpath(
+                "//*[@id='j-add-item-type-nested-projects']/ul/" +
+                        "li[@class='org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        List<WebElement> taskElements = getDriver().findElements(By.className("task"));
+        List<String> actualTasks = new ArrayList<>();
+        for (WebElement taskElement : taskElements) {
+            actualTasks.add(taskElement.getText());
+        }
+        List<String> expectedTasks = List.of(
+                "General", "Branch Sources",
+                "Build Configuration", "Scan Multibranch Pipeline Triggers",
+                "Orphaned Item Strategy", "Appearance",
+                "Health metrics", "Properties"
+        );
+
+        Assert.assertEquals(actualTasks, expectedTasks);
+    }
+
 }
