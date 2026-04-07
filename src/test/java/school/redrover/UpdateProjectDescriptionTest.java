@@ -18,7 +18,7 @@ public class UpdateProjectDescriptionTest extends BaseTest {
             String expectedDescription = "The most important of this project is to return Manchester United to its former glory";
 
             getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
-            getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
+            getDriver().findElement(By.xpath("//li[contains(@class,'hudson_model_FreeStyleProject')]")).click();
             getDriver().findElement(By.id("name")).sendKeys("Best project");
             getDriver().findElement(By.id("ok-button")).click();
 
