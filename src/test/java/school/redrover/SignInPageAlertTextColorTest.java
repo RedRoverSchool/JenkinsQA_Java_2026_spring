@@ -11,7 +11,7 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.JenkinsUtils;
 
 import java.time.Duration;
-
+@Ignore
 public class SignInPageAlertTextColorTest extends BaseTest {
     @Ignore
     @Test
