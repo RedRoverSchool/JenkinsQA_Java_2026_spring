@@ -11,22 +11,30 @@ import java.time.Duration;
 
 public class PipelineProjectTest extends BaseTest {
 
-    @Test
-    public void testCreate() {
-        final String pipelineName = "PipelineName";
+    public static final String PIPELINE_NAME = "PipelineName";
 
+    private WebDriverWait getWait5() {
+        return new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+    }
+
+    private void createPipeline(String name) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(pipelineName);
+        getDriver().findElement(By.id("name")).sendKeys(name);
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
 
         getDriver().findElement(By.id("ok-button")).click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("jenkins-head-icon"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-head-icon"))).click();
+
+    }
+
+    @Test
+    public void testCreate() {
+        createPipeline(PIPELINE_NAME);
 
         Assert.assertEquals(
                 getDriver().findElement(By.cssSelector(".jenkins-table__link > span:first-child")).getText(),
-                pipelineName);
+                PIPELINE_NAME);
     }
 
     @Test
@@ -40,5 +48,23 @@ public class PipelineProjectTest extends BaseTest {
 
         Assert.assertTrue(
                 getDriver().findElement(By.id("ok-button")).isDisplayed());
+    }
+
+    @Test
+    public void testAddDescription() {
+        final String description = "SomeDescription";
+
+        createPipeline(PIPELINE_NAME);
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//td/a[@href='job/%s/']".formatted(PIPELINE_NAME)))).click();
+        getDriver().findElement(By.id("description-link")).click();
+
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
+        getDriver().findElement(By.xpath("//button[@value='Save']")).click();
+
+        Assert.assertEquals(
+                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText(),
+                description);
     }
 }
