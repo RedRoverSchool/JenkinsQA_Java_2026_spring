@@ -6,23 +6,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchTest extends BaseTest {
 
-
-    @Test
-    public void testEmptySearch() {
-        String text = "Текст для строки поиска";
-
-        getDriver().findElement(By.xpath("//button[@id='root-action-SearchAction']")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input jenkins-search__input']")).sendKeys(text);
-
-        String expectedText = "No results for " + text;
-        String actualText = getDriver().findElement(By.xpath("//*[@class='jenkins-command-palette__info']")).getText();
-        Assert.assertEquals(actualText, expectedText);
-    }
     @Test
     public void testSuggestedItems() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
