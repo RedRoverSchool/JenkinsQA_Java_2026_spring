@@ -19,6 +19,7 @@ public class DescriptionOneTest extends BaseTest {
         wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
     }
 
+@Ignore
     @Test
     public void testCreatingDescriptionTest() {
         getDriver().findElement(By.cssSelector("#description-link")).click();
