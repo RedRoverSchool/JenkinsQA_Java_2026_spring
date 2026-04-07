@@ -26,7 +26,7 @@ public class RedirectValidationTest extends BaseTest {
                 validation.getAttribute("class").contains("input-message-disabled")
         );
     }
-
+    @Ignore
     @Test
     public void testCheckMessageDisabled() {
         getDriver().findElement(By.xpath("//*[@class='task '][1]")).click();

@@ -6,13 +6,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-
 import java.time.Duration;
 
-public class PipelineTest1 extends BaseTest {
-    public final String PROJECT_NAME = "First Pipeline";
 
-    public void createPipeline(String projectname) {
+public class Pipeline1Test extends BaseTest {
+    public final static String PROJECT_NAME = "First Pipeline";
+
+    private void createPipeline(String projectname) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(projectname);
 
@@ -30,8 +30,6 @@ public class PipelineTest1 extends BaseTest {
         @Test
         public void testPipelineNewItem() {
             createPipeline(PROJECT_NAME);
-
-            String actual = getDriver().findElement(By.xpath("//h1")).getText();
-            Assert.assertEquals(actual, PROJECT_NAME);
+            Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), PROJECT_NAME);
         }
 }
