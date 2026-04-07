@@ -82,4 +82,25 @@ public class NewItemPageTest extends BaseTest {
         Assert.assertEquals(actualTasks, expectedTasks);
     }
 
+    @Test
+    public void testCreateNewItemFolderSuccess() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys("New Test Folder");
+        getDriver().findElement(By.xpath(
+                "//*[@id='j-add-item-type-nested-projects']/ul/li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        List<WebElement> taskElements = getDriver().findElements(By.className("task"));
+        List<String> actualTasks = new ArrayList<>();
+        for (WebElement taskElement : taskElements) {
+            actualTasks.add(taskElement.getText());
+        }
+        List<String> expectedTasks = List.of(
+                "General", "Health metrics", "Properties"
+        );
+
+        Assert.assertEquals(actualTasks, expectedTasks);
+    }
+
 }
