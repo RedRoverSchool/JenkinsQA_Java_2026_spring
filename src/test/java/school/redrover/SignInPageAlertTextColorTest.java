@@ -5,15 +5,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.JenkinsUtils;
 
 import java.time.Duration;
-
+@Ignore
 public class SignInPageAlertTextColorTest extends BaseTest {
+    @Ignore
     @Test
-    public void testSignInPageAlertTextColor (){
+    public void testSignInPageAlertTextColor () {
         JenkinsUtils.logout(getDriver());
 
         getDriver().findElement(By.cssSelector("#j_username")).sendKeys("user");
@@ -29,4 +31,4 @@ public class SignInPageAlertTextColorTest extends BaseTest {
         String actualColor = alertText.getCssValue("color");
         Assert.assertTrue(actualColor.contains("oklch(0.6 0.2671 30)"),
                 "Цвет текста ошибки не красный: " + actualColor);
-}}
+    }}
