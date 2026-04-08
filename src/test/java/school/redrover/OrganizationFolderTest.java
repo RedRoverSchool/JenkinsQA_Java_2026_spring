@@ -11,7 +11,7 @@ import static java.sql.DriverManager.getDriver;
 public class OrganizationFolderTest extends BaseTest {
 
     @Test
-    public void createOrganizationFolder() {
+    public void testCreateOrganizationFolder() {
         WebElement createJobButton = getDriver().findElement(By.xpath("//a[@href = 'newJob']"));
         createJobButton.click();
 
