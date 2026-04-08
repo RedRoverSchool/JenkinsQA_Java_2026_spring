@@ -66,7 +66,7 @@ public class AddDescriptionTest extends BaseTest {
         openDescription();
         getDriver().findElement(By.name("Submit")).click();
 
-        waitVisibility(10, By.cssSelector("#description-link.jenkins-button"));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#description-link.jenkins-button")));
         Assert.assertTrue(
                 getDriver().findElement(By.id("description-content")).getText().isEmpty(),
                 "Description has non-empty content!");
