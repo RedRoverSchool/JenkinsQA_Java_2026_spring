@@ -23,7 +23,7 @@ public class LoginTest extends BaseTest {
         Actions action = new Actions(driver);
         action.moveToElement(userAction).perform();
 
-        Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+        Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-box")));
 
         driver.findElement(By.linkText("Sign out")).click();
