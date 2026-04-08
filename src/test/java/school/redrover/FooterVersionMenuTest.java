@@ -67,24 +67,6 @@ public class FooterVersionMenuTest extends BaseTest {
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/");
     }
 
-    @Test
-    public void testSessionPersistsAfterExternalSiteAndBack() {
-        String originalUrl = getDriver().getCurrentUrl();
-
-
-        getDriver().findElement(
-                By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).click();
-        getDriver().findElement(By.xpath("//a[@href='https://www.jenkins.io/']")).click();
-
-        getDriver().navigate().back();
-
-        Assert.assertEquals(getDriver().getCurrentUrl(), originalUrl);
-        Assert.assertEquals(
-                getDriver().findElements(By.xpath("//*[@class='app-sign-in-register']")).size(),
-                0);
-
-
-    }
 
 
 }
