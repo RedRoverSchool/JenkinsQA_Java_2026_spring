@@ -5,7 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-public class CreatеNewItem3Test extends BaseTest {
+public class NewItemTest extends BaseTest {
 
     @Test
     public void testValidationErrorForEmptyNameWhenSelectingPipeline() {
