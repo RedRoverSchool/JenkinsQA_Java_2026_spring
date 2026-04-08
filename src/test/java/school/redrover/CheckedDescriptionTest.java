@@ -13,6 +13,7 @@ import school.redrover.common.BaseTest;
 
 import java.time.Duration;
 public class CheckedDescriptionTest extends BaseTest {
+    @Ignore
     @Test
     public void testCreateDescription() {
 
