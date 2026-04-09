@@ -3,12 +3,9 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-
-import java.time.Duration;
 
 public class AddDescriptionTest extends BaseTest {
     private static final String TEXT_CONTENT = "TEST";
@@ -31,12 +28,6 @@ public class AddDescriptionTest extends BaseTest {
         if(save){
             getDriver().findElement(By.name("Submit")).click();
         }
-    }
-
-    //Зачистить, когда появятся вейтеры
-    private void waitVisibility(int seconds, By locator){
-        new WebDriverWait(getDriver(), Duration.ofSeconds(seconds))
-                .until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
     @Test
@@ -75,7 +66,8 @@ public class AddDescriptionTest extends BaseTest {
     public void testChangeAddDescriptionButtonTitle() {
         openDescription();
         fillOutDescription(TEXT_CONTENT, true);
-        waitVisibility(10, By.cssSelector("#description-link.jenkins-button"));
+        getWait5().until(ExpectedConditions.
+                visibilityOfElementLocated(By.cssSelector("#description-link.jenkins-button")));
 
         WebElement actualButton = getDriver().findElement(By.cssSelector("#description-link.jenkins-button"));
         Assert.assertTrue(
@@ -88,7 +80,8 @@ public class AddDescriptionTest extends BaseTest {
     public void testAddDescription() {
         openDescription();
         fillOutDescription(TEXT_CONTENT, true);
-        waitVisibility(10, By.cssSelector("#description-link.jenkins-button"));
+        getWait5().until(ExpectedConditions.
+                visibilityOfElementLocated(By.cssSelector("#description-link.jenkins-button")));
 
         Assert.assertEquals(
                 getDriver().findElement(By.id("description-content")).getText(),
@@ -101,11 +94,13 @@ public class AddDescriptionTest extends BaseTest {
 
         openDescription();
         fillOutDescription(TEXT_CONTENT, true);
-        waitVisibility(10, By.id("description-link"));
+        getWait5().until(ExpectedConditions.
+                visibilityOfElementLocated(By.id("description-link")));
 
         openDescription();
         refillDescription(changedDescription, true);
-        waitVisibility(10, By.cssSelector("#description-link.jenkins-button"));
+        getWait5().until(ExpectedConditions.
+                visibilityOfElementLocated(By.cssSelector("#description-link.jenkins-button")));
 
         Assert.assertEquals(
                 getDriver().findElement(By.id("description-content")).getText(),
