@@ -16,4 +16,5 @@ public class SearchButtonVisibilityTest extends BaseTest {
                 getDriver().findElement(By.xpath("//input")).isDisplayed());
 
     }
+
 }
