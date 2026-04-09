@@ -85,4 +85,30 @@ public class SingOut2Test extends BaseTest {
         Assert.assertEquals(passwordValue, "",
                 "Поле 'Password' должно быть пустым, но содержит: '" + passwordValue + "'");
     }
+
+    @Test
+    public void testJenkinsSingOutButtonPasswordEmpty() {
+
+        WebElement userButton = getDriver().findElement(By.id("root-action-UserAction"));
+
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(userButton).perform();
+
+
+        WebElement dropdownMenu = getWait5().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']"))
+        );
+        dropdownMenu.findElement(By.xpath(".//a[@href='/logout']")).click();
+
+
+        getWait5().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='submit']"))
+        );
+
+        WebElement passwordField = getDriver().findElement(By.id("j_password"));
+        String passwordValue = passwordField.getAttribute("value");
+        Assert.assertEquals(passwordValue, "",
+                "Поле 'Password' должно быть пустым, но содержит: '" + passwordValue + "'");
+    }
+
 }
