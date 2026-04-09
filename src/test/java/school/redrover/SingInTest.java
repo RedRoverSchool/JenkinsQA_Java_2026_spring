@@ -15,13 +15,13 @@ import java.time.Duration;
 
 public class SingInTest extends BaseTest {
 
-    private void logout(WebDriver driver){
+    private void logout(){
 
-        Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
         WebElement userAction = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
 
-        Actions action = new Actions(driver);
+        Actions action = new Actions(getDriver());
         action.moveToElement(userAction).perform();
 
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/logout']"))).click();
@@ -40,7 +40,7 @@ public class SingInTest extends BaseTest {
                 "kozhemiaka@nikita.da",
                 getDriver());
 
-        logout(getDriver());
+        logout();
 
         Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("app-sign-in-register__content-inner")));
