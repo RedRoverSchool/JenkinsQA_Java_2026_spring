@@ -26,7 +26,7 @@ public class PipelineProject2Test extends BaseTest {
 
         getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']")).click();
     }
-    @Ignore
+
     @Test
     public void testCreateWithValidName() {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
@@ -35,5 +35,19 @@ public class PipelineProject2Test extends BaseTest {
         WebElement projectName = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='%s']".formatted(PROJECT_NAME))));
 
         Assert.assertEquals(projectName.getText(), PROJECT_NAME);
+    }
+
+    @Test
+    public void testCreateWithEmptyName() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+
+        boolean isEnabled = getDriver().findElement(By.id("ok-button")).isEnabled();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='itemname-required']")).getText(),
+                "» This field cannot be empty, please enter a valid name");
+
+        Assert.assertFalse(isEnabled);
     }
 }
