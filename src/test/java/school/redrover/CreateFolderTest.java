@@ -6,7 +6,6 @@ import static org.testng.Assert.assertEquals;
 
 public class CreateFolderTest extends BaseTest {
 
-
     @Test
     public void createFolderTest() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
