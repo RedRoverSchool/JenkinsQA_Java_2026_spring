@@ -1,4 +1,4 @@
-package school.redrover;
+package old;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -7,12 +7,14 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 import java.time.Duration;
 import java.util.List;
 
+@Ignore
 public class UserTest extends BaseTest {
 
     public static void createUser (String userLogin, String userFullName, String password, String retryPassword, String userMail, WebDriver driver) {

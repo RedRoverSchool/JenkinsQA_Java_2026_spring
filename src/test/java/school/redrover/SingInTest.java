@@ -11,22 +11,20 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import javax.swing.*;
 import java.time.Duration;
 
-public class LoginTest extends BaseTest {
+public class SingInTest extends BaseTest {
 
-    public static void logout(WebDriver driver){
+    private void logout(WebDriver driver){
 
-        WebElement userAction = driver.findElement(By.id("root-action-UserAction"));
+        Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+
+        WebElement userAction = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
 
         Actions action = new Actions(driver);
         action.moveToElement(userAction).perform();
 
-        Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-box")));
-
-        driver.findElement(By.linkText("Sign out")).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/logout']"))).click();
     }
 
     @Test
@@ -35,7 +33,7 @@ public class LoginTest extends BaseTest {
         final String userLogin = "KozhemiakaN";
         final String userPassw = "Nik123";
 
-        UserTest.createUser(userLogin,
+        TestUtility.createUser(userLogin,
                 "Nikita",
                 userPassw,
                 userPassw,
@@ -51,11 +49,9 @@ public class LoginTest extends BaseTest {
         getDriver().findElement(By.name("j_password")).sendKeys(userPassw);
         getDriver().findElement(By.name("Submit")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("main-panel")));
+        WebElement header = wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
 
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector(".empty-state-block >h1")).getText(),
-                "Welcome to Jenkins!");
+        Assert.assertEquals(header.getText(), "Welcome to Jenkins!");
     }
 
 
