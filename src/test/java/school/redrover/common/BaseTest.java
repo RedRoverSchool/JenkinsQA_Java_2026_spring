@@ -47,4 +47,8 @@ public abstract class BaseTest {
     protected WebDriver getDriver() {
         return driver;
     }
+
+    protected void goHome() {
+        ProjectUtils.get(getDriver());
+    }
 }
