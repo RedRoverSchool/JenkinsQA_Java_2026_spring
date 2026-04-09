@@ -25,7 +25,6 @@ public class PipelineProject2Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']")).click();
     }
 
-    
     @Test
     public void testCreateWithValidName() {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
