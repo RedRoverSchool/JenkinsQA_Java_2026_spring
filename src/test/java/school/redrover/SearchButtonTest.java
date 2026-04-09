@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.ProjectUtils;
 
 import java.time.Duration;
 
@@ -31,7 +32,7 @@ public class SearchButtonTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//button[@value='Save']")).click();
 
-        goHome();
+        ProjectUtils.get(getDriver());
 
     }
 
