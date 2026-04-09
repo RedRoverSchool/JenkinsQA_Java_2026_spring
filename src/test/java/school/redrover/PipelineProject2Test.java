@@ -35,4 +35,18 @@ public class PipelineProject2Test extends BaseTest {
 
         Assert.assertEquals(projectName.getText(), PROJECT_NAME);
     }
+
+    @Test
+    public void testCreateWithEmptyName() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+
+        boolean isEnabled = getDriver().findElement(By.id("ok-button")).isEnabled();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='itemname-required']")).getText(),
+                "» This field cannot be empty, please enter a valid name");
+
+        Assert.assertFalse(isEnabled);
+    }
 }
