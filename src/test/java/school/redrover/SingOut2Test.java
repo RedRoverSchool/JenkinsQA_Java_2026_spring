@@ -27,27 +27,21 @@ public class SingOut2Test extends BaseTest {
     @Test
     public void testSingOutIsImmediate() {
 
-        // 1. Находим кнопку пользователя
         WebElement userButton = getDriver().findElement(By.id("root-action-UserAction"));
 
-        // 2. Наводим мышь для открытия выпадающего меню
         Actions actions = new Actions(getDriver());
         actions.moveToElement(userButton).perform();
 
-        // 3. Ждём появления меню и кликаем "Sign out"
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         WebElement dropdownMenu = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']"))
         );
         dropdownMenu.findElement(By.xpath(".//a[@href='/logout']")).click();
 
-        // 4. Проверяем, что alert не появился (используем вспомогательный метод)
         Assert.assertFalse(isAlertPresent(getDriver()),
                 "Не должно быть alert-окна подтверждения выхода. Выход должен быть мгновенным.");
 
-        // 5. Ждём перенаправления на страницу логина
         wait.until(ExpectedConditions.urlContains("login"));
 
-        System.out.println("Тест пройден: выход выполнен мгновенно, без подтверждений.");
     }
 }
