@@ -60,4 +60,5 @@ public class SearchButtonTest extends BaseTest {
         Assert.assertEquals(getDriver()
                 .findElement(By.xpath("//h1[text()='Test Folder']")).getText(), FOLDER_NAME);
     }
+
 }
