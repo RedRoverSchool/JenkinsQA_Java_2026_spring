@@ -9,9 +9,9 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class FreestylePrConfigureSCMTest extends BaseTest {
-    private void createFreestyleProjectAndSelectGit(String projectName) {
+    private void createFreestyleProjectAndSelectGit() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.id("name")).sendKeys("Freestyle");
         getDriver().findElement(By.cssSelector("li.hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
@@ -20,7 +20,7 @@ public class FreestylePrConfigureSCMTest extends BaseTest {
     }
     @Test
     public void testRepositoryURL() {
-        createFreestyleProjectAndSelectGit("Freestyle");
+        createFreestyleProjectAndSelectGit();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("_.url"))).
                 sendKeys("https://github.com");
@@ -30,7 +30,7 @@ public class FreestylePrConfigureSCMTest extends BaseTest {
     }
     @Test
     public void testCredentials() {
-        createFreestyleProjectAndSelectGit("Freestyle");
+        createFreestyleProjectAndSelectGit();
 
         WebElement dropDownList = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//select[@name='_.credentialsId']")));
@@ -39,7 +39,7 @@ public class FreestylePrConfigureSCMTest extends BaseTest {
     }
     @Test
     public void testBranchesToBuild() {
-        createFreestyleProjectAndSelectGit("Freestyle");
+        createFreestyleProjectAndSelectGit();
 
         WebElement branchInput = getWait5().until(ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("//div[contains(text(), 'Branch Specifier')]/following::input[1]")));
