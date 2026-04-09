@@ -21,6 +21,7 @@ public class VadimTest {
         WebElement submitButton = driver.findElement(By.cssSelector("button"));
         textBox.sendKeys("Selenium");
         submitButton.click();
+        submitButton.click();
 
         WebElement message = driver.findElement(By.id("message"));
 
