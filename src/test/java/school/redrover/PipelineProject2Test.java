@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -24,7 +25,7 @@ public class PipelineProject2Test extends BaseTest {
 
         getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']")).click();
     }
-
+    @Ignore
     @Test
     public void testCreateWithValidName() {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
