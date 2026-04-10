@@ -2,10 +2,14 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +29,9 @@ public class FooterVersionMenuTest extends BaseTest {
                 By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).click();
 
         List<String> actualElements= new ArrayList<>();
-        List<WebElement> actualWebElements = getDriver().findElements
-                (By.xpath("//a[@class='jenkins-dropdown__item ']"));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        List<WebElement> actualWebElements =  wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy
+                (By.xpath("//a[@class='jenkins-dropdown__item ']")));
 
         for (WebElement i : actualWebElements) {
             actualElements.add(i.getText());
@@ -66,7 +71,21 @@ public class FooterVersionMenuTest extends BaseTest {
 
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/");
     }
+    @Test
+    public void testSessionPersistsAfterExternalSiteAndBack() {
+        getDriver().findElement(
+                By.xpath("//a[@href='/view/all/newJob']")).click();
 
+        String originalUrl = getDriver().getCurrentUrl();
 
+        getDriver().findElement(
+                By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).click();
+        getDriver().findElement(By.xpath("//a[@href='https://www.jenkins.io/']")).click();
 
-}
+        getDriver().navigate().back();
+
+        Assert.assertEquals(getDriver().getCurrentUrl(), originalUrl);
+
+    }
+
+    }
