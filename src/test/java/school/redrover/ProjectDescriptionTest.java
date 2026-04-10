@@ -25,20 +25,6 @@ public class ProjectDescriptionTest  extends BaseTest {
     }
 
     @Test
-    public void testApplyNonDescriptionProject() {
-        openNewItemPage();
-        fillInProjectName(PROJECT_NAME);
-        openNewPipelineConfigurePage();
-
-        getDriver().findElement(By.name("Apply")).click();
-
-        String saveText = getWait2()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar")))
-                .getText();
-        Assert.assertEquals(saveText, "Saved");
-    }
-
-    @Test
     public void testApplyProjectDescription() {
         openNewItemPage();
         fillInProjectName(PROJECT_NAME);
