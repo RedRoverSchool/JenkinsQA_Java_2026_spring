@@ -57,7 +57,7 @@ public class FooterVersionMenuTest extends BaseTest {
         getDriver().findElement(
                 By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).click();
 
-        getDriver().findElement(By.xpath("//a[@href='https://www.jenkins.io/participate/']")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href, 'jenkins.io') and normalize-space(.)='Website'")).click();
 
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/participate/");
     }
