@@ -39,6 +39,26 @@ public class SingOut2Test extends BaseTest {
             getWait5().until(ExpectedConditions.urlContains("login"));
         }
 
+    @Test
+    public void testJenkinsSingOutButton() {
+
+        WebElement userButton = getDriver().findElement(By.id("root-action-UserAction"));
+
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(userButton).perform();
+
+        WebElement dropdownMenu = getWait5().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']"))
+        );
+        dropdownMenu.findElement(By.xpath(".//a[@href='/logout']")).click();
+
+        WebElement buttonSingIn = getWait5().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='submit']"))
+        );
+
+        Assert.assertEquals(buttonSingIn.getText(), "Sign in");
+    }
+
         @Test
         public void testJenkinsSingOutButtonUserNameEmpty() {
             WebElement userButton = getDriver().findElement(By.id("root-action-UserAction"));
