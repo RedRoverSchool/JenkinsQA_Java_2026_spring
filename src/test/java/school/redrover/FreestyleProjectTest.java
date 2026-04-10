@@ -1,6 +1,9 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -42,7 +45,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(
                 By.id("enable-project")).getText().contains("This project is currently disabled"));
     }
-    @Ignore
+
     @Test
     public void testEnableFreestyleProject() {
 
@@ -54,13 +57,34 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(By.xpath("//button[@value='Enable']")).click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), "FreestyleProject"));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//a[@href='/job/FreestyleProject/configure']"))).click();
 
         Assert.assertEquals(getDriver().findElement(
                 By.className("jenkins-toggle-switch__label__checked-title")).getText(),
                 "Enabled");
+    }
+
+    @Test
+    public void testBuildAfterOtherProject() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("FreestyleProject");
+        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", getDriver().findElement(By.xpath("//input[@id='cb14']/ancestor::span")));
+
+        getDriver().findElement(By.xpath("//label[contains(text(), 'Build after other projects are built')]")).click();
+
+        WebElement inputField= getDriver().findElement(By.name("_.upstreamProjects"));
+        inputField.sendKeys("FreestyleUnexisted");
+        inputField.click();
+
+        getDriver().findElement(By.xpath("//label[contains(text(), 'Trigger only if build is stable')]")).click();
+        WebElement messageError = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='error' and contains(text(), 'No such project')]")));
+        Assert.assertEquals(messageError.getText(),
+                "No such project ‘FreestyleUnexisted’. Did you mean ‘FreestyleProject’?");
     }
 }
