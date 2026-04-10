@@ -65,12 +65,6 @@ public class CreateFolderTest extends BaseTest {
                 .click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//div[@id='main-panel' and contains(text(), 'Full folder name: ParentFolder/ChildFolder')]")).getText().contains("ParentFolder/ChildFolder"));
-        //(getDriver().findElement(By.xpath("//div[@id='main-panel' and contains(text(), 'Full folder name: ParentFolder/ChildFolder')]")).getText(),"ParentFolder/ChildFolder'");
-
-
-
-
-        //getDriver().findElement(By.xpath("//td/a[@href='job/ParentFolder/']")).click();
 
     }
 
