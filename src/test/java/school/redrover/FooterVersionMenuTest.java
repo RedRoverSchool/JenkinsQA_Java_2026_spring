@@ -83,8 +83,8 @@ public class FooterVersionMenuTest extends BaseTest {
         wait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']"))).click();
 
-        getDriver().findElement(
-                By.xpath("//a[@href='https://www.jenkins.io/']")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a[@href='https://www.jenkins.io/']"))).click();
 
         getDriver().navigate().back();
 
