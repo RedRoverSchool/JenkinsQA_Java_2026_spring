@@ -8,7 +8,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-public class CreatingItemByCopyingItem extends BaseTest {
+public class CreatingItemByCopyingItemTest extends BaseTest {
     private static final String SOURCE_ITEM_NAME = "source_item";
     private static final String NEW_ITEM_NAME = "new_item_copy";
     private static final String DESCRIPTION_TEXT = "Copied description text";
