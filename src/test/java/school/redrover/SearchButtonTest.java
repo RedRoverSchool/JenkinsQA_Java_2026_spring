@@ -62,5 +62,6 @@ public class SearchButtonTest extends BaseTest {
 
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/doc/book/using/searchbox/");
 
+
     }
 }
