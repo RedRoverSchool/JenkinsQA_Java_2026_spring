@@ -22,7 +22,7 @@ public abstract class BaseTest {
 
     @BeforeSuite(alwaysRun = true)
     public void setupSuiteAuth() {
-        ProjectUtils.initJenkinsAuth();
+        ProjectUtils.refreshJenkinsToken();
     }
 
     @BeforeMethod
