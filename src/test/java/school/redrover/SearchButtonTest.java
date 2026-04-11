@@ -61,7 +61,21 @@ public class SearchButtonTest extends BaseTest {
         getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(Keys.ENTER);
 
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/doc/book/using/searchbox/");
+    }
 
+    @Test
+    public void testCaseInsensitivity() {
 
+        createFolder();
+
+        getDriver().findElement(SEARCH_BUTTON).click();
+
+        getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys("test folder");
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//*[@id='search-results']/a[@href='/job/Test%20Folder/']"))).click();
+
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//h1[text()='Test Folder']")).getText(), FOLDER_NAME);
     }
 }
