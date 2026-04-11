@@ -106,15 +106,11 @@ public final class JenkinsUtils {
     private static String getPage(String uri) {
         HttpResponse<String> page = getHttp(ProjectUtils.getUrl() + uri);
         if (page.statusCode() == 403) {
-            String status = (ProjectUtils.getCachedToken() != null) ? "PRESENT" : "MISSING";
-
-            throw new RuntimeException(String.format(
-                    "403 Forbidden: User [%s], Token is [%s]",
-                    ProjectUtils.getUserName(), status
-            ));
-
-        } else if (page.statusCode() != 200) {
-            throw new RuntimeException("Something went wrong while clearing data");
+            String status = (ProjectUtils.getCachedToken() != null) ? "TOKEN" : "PASSWORD";
+            throw new RuntimeException("403 Forbidden: Auth failed using " + status);
+        }
+        if (page.statusCode() != 200) {
+            throw new RuntimeException("HTTP Error: " + page.statusCode() + " for " + uri);
         }
 
         return page.body();
