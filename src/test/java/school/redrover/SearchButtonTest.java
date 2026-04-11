@@ -12,14 +12,13 @@ public class SearchButtonTest extends BaseTest {
 
     private static final By SEARCH_BUTTON = By.xpath("//button[@id='root-action-SearchAction']");
     private static final By SEARCH_INPUT_FIELD = By.xpath("//input");
-    private static final String FOLDER_NAME = "Test Folder";
 
 
-    private void createFolder() {
+    private void createFolder(String folderName) {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
-        getDriver().findElement(By.id("name")).sendKeys(FOLDER_NAME);
+        getDriver().findElement(By.id("name")).sendKeys(folderName);
         getDriver().findElement(By.xpath("//li[contains(@class,'com_cloudbees_hudson_plugins_folder_Folder')]")).click();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='submit']"))).click();
@@ -41,16 +40,18 @@ public class SearchButtonTest extends BaseTest {
     @Test
     public void testSearchExistingJob() {
 
-        createFolder();
+        String folderName = "TEST";
+
+        createFolder(folderName);
 
         getDriver().findElement(SEARCH_BUTTON).click();
-        getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(FOLDER_NAME);
+        getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(folderName);
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated
-                (By.xpath("//*[@id='search-results']/a[@href='/job/Test%20Folder/']"))).click();
+                        (By.xpath("//*[@id='search-results']/a[@href='/job/" + folderName + "/']"))).click();
 
         Assert.assertEquals(getDriver()
-                .findElement(By.xpath("//h1[text()='Test Folder']")).getText(), FOLDER_NAME);
+                .findElement(By.xpath("//h1[text()='" + folderName + "']")).getText(), folderName);
     }
 
     @Test
@@ -66,16 +67,18 @@ public class SearchButtonTest extends BaseTest {
     @Test
     public void testCaseInsensitivity() {
 
-        createFolder();
+        String folderName = "Test";
+
+        createFolder(folderName);
 
         getDriver().findElement(SEARCH_BUTTON).click();
 
-        getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys("test folder");
+        getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(folderName.toLowerCase());
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated
-                (By.xpath("//*[@id='search-results']/a[@href='/job/Test%20Folder/']"))).click();
+                (By.xpath("//*[@id='search-results']/a[@href='/job/" + folderName + "/']"))).click();
 
         Assert.assertEquals(getDriver()
-                .findElement(By.xpath("//h1[text()='Test Folder']")).getText(), FOLDER_NAME);
+                .findElement(By.xpath("//h1[text()='" + folderName + "']")).getText(), folderName);
     }
 }
