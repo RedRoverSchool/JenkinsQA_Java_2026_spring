@@ -31,7 +31,7 @@ public class CreatingItemByCopyingItemTest extends BaseTest {
     private void enterCopyItemName() {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                         By.id("from")))
-                .sendKeys(CreatingItemByCopyingItem.SOURCE_ITEM_NAME);
+                .sendKeys(SOURCE_ITEM_NAME);
     }
 
     private void selectFreestyleProject() {
@@ -48,7 +48,7 @@ public class CreatingItemByCopyingItemTest extends BaseTest {
 
     private void fillDescription() {
         getDriver().findElement(By.name("description"))
-                .sendKeys(CreatingItemByCopyingItem.DESCRIPTION_TEXT);
+                .sendKeys(DESCRIPTION_TEXT);
     }
 
     private void clickCheckBoxGitHub() {
@@ -60,7 +60,7 @@ public class CreatingItemByCopyingItemTest extends BaseTest {
     private void fillGitURL() {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                         By.name("_.projectUrlStr"))).
-                sendKeys(CreatingItemByCopyingItem.REPOSITORY_URL);
+                sendKeys(REPOSITORY_URL);
     }
 
     private void clickSave() {
