@@ -30,7 +30,7 @@ public abstract class BaseTest {
     }
 
     @BeforeSuite(alwaysRun = true)
-    public void setupSuiteAuth() {
+    public void refreshToken() {
         ProjectUtils.refreshJenkinsToken();
     }
 
