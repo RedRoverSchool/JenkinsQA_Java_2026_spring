@@ -30,7 +30,7 @@ public class CopyItemTest extends BaseTest {
 
     private void enterCopyItemName() {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("from")))
+                        By.id("from")))
                 .sendKeys(SOURCE_ITEM_NAME);
     }
 
