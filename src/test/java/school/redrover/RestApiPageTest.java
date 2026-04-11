@@ -46,6 +46,6 @@ public class RestApiPageTest extends BaseTest {
 
         Assert.assertEquals(getDriver().getWindowHandle(), originalWindow,
                 "Фокус переключился на другое окно");
-    }
 
+    }
 }
