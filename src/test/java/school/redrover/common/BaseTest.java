@@ -29,6 +29,11 @@ public abstract class BaseTest {
         }
     }
 
+    @BeforeSuite(alwaysRun = true)
+    public void setupSuiteAuth() {
+        ProjectUtils.refreshJenkinsToken();
+    }
+
     @BeforeMethod
     protected void beforeMethod(Method method) {
         ProjectUtils.log("Run %s.%s", this.getClass().getName(), method.getName());

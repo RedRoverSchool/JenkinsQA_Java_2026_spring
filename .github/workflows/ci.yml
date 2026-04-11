@@ -62,7 +62,6 @@ jobs:
         env:
           JENKINS_USERNAME: ${{ secrets.ADMIN_USERNAME }}
           JENKINS_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
-          JENKINS_API_TOKEN: ${{ secrets.ADMIN_TOKEN }}
           JENKINS_HOST: localhost
           JENKINS_PORT: 8080
           BROWSER_NAME: chrome

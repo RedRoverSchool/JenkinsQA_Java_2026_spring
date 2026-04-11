@@ -20,6 +20,8 @@ public final class ProjectUtils {
 
     private static final ChromeOptions chromeOptions;
 
+    private static String cachedToken = null;
+
     static {
         properties = new Properties();
         if (!isRunCI()) {
@@ -91,8 +93,28 @@ public final class ProjectUtils {
         return getValue(PREFIX_JENKINS_PROP + "password");
     }
 
-    public static String getApiToken() {
-        return getValue(PREFIX_JENKINS_PROP + "api-token");
+    public static String getCachedToken() {
+        return cachedToken;
+    }
+
+    public static void refreshJenkinsToken() {
+        if (cachedToken == null) {
+            log("Starting Jenkins access initialization...");
+
+            try {
+                log("Revoking all existing API tokens in Jenkins");
+                JenkinsUtils.revokeTokens();
+
+                log("Generating a fresh API token");
+                cachedToken = JenkinsUtils.generateApiToken();
+
+                log("Jenkins authentication initialized successfully");
+
+            } catch (Exception e) {
+                log("Failed to initialize Jenkins authentication: " + e.getMessage());
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public static void log(String message, Object... args) {
