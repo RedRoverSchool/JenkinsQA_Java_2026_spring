@@ -1,4 +1,4 @@
-package school.redrover;
+package old;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;

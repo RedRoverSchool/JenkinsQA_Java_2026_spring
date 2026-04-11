@@ -1,39 +1,50 @@
-package school.redrover;
+package old;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import java.time.Duration;
 import java.util.List;
 
-public class CreateNewUserTest extends BaseTest {
+@Ignore
+public class UserTest extends BaseTest {
 
-    public void createUser (String userLogin, String userFullName, String password, String retryPassword, String userMail) {
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
-        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
-        getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__controls']")).click();
+    public static void createUser (String userLogin, String userFullName, String password, String retryPassword, String userMail, WebDriver driver) {
 
-        getDriver().findElement(By.name("username")).sendKeys(userLogin);
-        getDriver().findElement(By.name("password1")).sendKeys(password);
-        getDriver().findElement(By.name("password2")).sendKeys(retryPassword);
-        getDriver().findElement(By.name("fullname")).sendKeys(userFullName);
-        getDriver().findElement(By.name("email")).sendKeys(userMail);
-        getDriver().findElement(By.name("Submit")).click();
+        Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+        WebElement settingButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("root-action-ManageJenkinsAction")));
+
+        settingButton.click();
+        driver.findElement(By.xpath("//a[@href='securityRealm/']")).click();
+        driver.findElement(By.xpath("//div[@class='jenkins-app-bar__controls']")).click();
+
+        driver.findElement(By.name("username")).sendKeys(userLogin);
+        driver.findElement(By.name("password1")).sendKeys(password);
+        driver.findElement(By.name("password2")).sendKeys(retryPassword);
+        driver.findElement(By.name("fullname")).sendKeys(userFullName);
+        driver.findElement(By.name("email")).sendKeys(userMail);
+        driver.findElement(By.name("Submit")).click();
     }
 
     @Test
     public void testCreateValidUser () {
-        String userLogin = "Greka";
-        createUser(userLogin, "Rekov Greka", "pass123", "pass123", "Greka@e-mail.com");
+        final String userLogin = "Greka";
+        createUser(userLogin, "Rekov Greka", "pass123", "pass123", "Greka@e-mail.com", getDriver());
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("people")));
         String createdUser = getDriver().findElement(By.xpath("//table[@class='jenkins-table sortable']//a[@href='user/" + userLogin.toLowerCase() + "/' and @class='jenkins-table__link model-link inside']")).getText();
 
         Assert.assertEquals(createdUser, userLogin);
     }
 
-    @Ignore
     @Test
     public void testCreateIdenticalLoginUsers () {
         String usersLogin = "Shpuntik";
@@ -41,12 +52,14 @@ public class CreateNewUserTest extends BaseTest {
                 "Vintikov Vintik",
                 "pass123",
                 "pass123",
-                "Vintik@e-mail.com");
+                "Vintik@e-mail.com",
+                getDriver());
         createUser(usersLogin,
                 "Shpuntikov Shpuntik",
                 "pass123",
                 "pass123",
-                "Shpuntik@e-mail.com");
+                "Shpuntik@e-mail.com",
+                getDriver());
 
         List<WebElement> errorText = getDriver().findElements(By.xpath("//div[@class='error jenkins-!-margin-bottom-2']"));
         boolean textFound = false;
@@ -64,7 +77,8 @@ public class CreateNewUserTest extends BaseTest {
                 "Barmaley",
                 "pass123",
                 "pass12",
-                "barmaley@e-mail.com");
+                "barmaley@e-mail.com",
+                getDriver());
 
         List<WebElement> errorText = getDriver().findElements(By.xpath("//div[@class='error jenkins-!-margin-bottom-2']"));
         boolean textFound = false;
@@ -82,7 +96,8 @@ public class CreateNewUserTest extends BaseTest {
                 "Barmaley",
                 "pass123",
                 "pass123",
-                "barmaleye-mail.com");
+                "barmaleye-mail.com",
+                getDriver());
 
         List<WebElement> errorText = getDriver().findElements(By.xpath("//div[@class='error jenkins-!-margin-bottom-2']"));
         boolean textFound = false;

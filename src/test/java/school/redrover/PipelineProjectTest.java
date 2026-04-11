@@ -14,10 +14,6 @@ public class PipelineProjectTest extends BaseTest {
 
     public static final String PIPELINE_NAME = "PipelineName";
 
-    private WebDriverWait getWait5() {
-        return new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-    }
-
     private void createPipeline(String name) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(name);
