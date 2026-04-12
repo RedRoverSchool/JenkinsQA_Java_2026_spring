@@ -21,7 +21,9 @@ public class GlobalSearchTest extends BaseTest {
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@type='submit']"))).click();
 
-        getDriver().findElement(By.xpath("//a[@class='app-jenkins-logo']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[@class='app-jenkins-logo']")
+        )).click();
 
     }
 
