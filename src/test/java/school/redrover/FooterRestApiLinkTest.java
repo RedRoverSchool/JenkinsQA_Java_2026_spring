@@ -14,7 +14,7 @@ import school.redrover.common.BaseTest;
 
 public class FooterRestApiLinkTest extends BaseTest {
     @Test
-    public void testRestApiLinkHasHoverEffect() {
+    public void testCheckingTheRestApiLinkHasHoverEffect() {
         WebElement restApiLink = getWait10()
                 .until(ExpectedConditions.visibilityOfElementLocated(
                         By.cssSelector("footer .rest-api")
