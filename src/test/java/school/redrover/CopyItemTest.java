@@ -16,10 +16,22 @@ public class CopyItemTest extends BaseTest {
     private static final String JENKINS_URL = "http://localhost:8080/view/all/newJob";
 
     private void openPageNewItem() {
-        getDriver().get(JENKINS_URL);
+        //getDriver().get(JENKINS_URL);
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                 By.id("name")));
+    }
+
+    private void clickCMain(){
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                        By.cssSelector("a[href='/']")))
+                .click();
+    }
+
+    private void clickCreateItem(){
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("a[href='/view/all/newJob']")))
+                .click();
     }
 
     private void enterNewItemName(String itemName) {
@@ -72,13 +84,11 @@ public class CopyItemTest extends BaseTest {
 
     @BeforeMethod
     public void setUpSourceItem()  throws InterruptedException{
-        Thread.sleep(5000);
-        openPageNewItem();
+        clickCreateItem();
         enterNewItemName(SOURCE_ITEM_NAME);
         selectFreestyleProject();
         clickOk();
 
-        Thread.sleep(5000);
         getWait10().until(ExpectedConditions.urlContains("/job/" + SOURCE_ITEM_NAME + "/configure"));
 
         fillDescription();
@@ -86,20 +96,17 @@ public class CopyItemTest extends BaseTest {
         fillGitURL();
         clickSave();
 
-        Thread.sleep(5000);
         getWait10().until(ExpectedConditions.urlContains("/job/" + SOURCE_ITEM_NAME + "/"));
     }
 
     @Test
     public void testCreateNewItemByCopy() throws InterruptedException {
-        Thread.sleep(5000);
-        openPageNewItem();
-        Thread.sleep(5000);
+        clickCMain();
+        clickCreateItem();
         enterNewItemName(NEW_ITEM_NAME);
         enterCopyItemName();
         clickOk();
 
-        Thread.sleep(5000);
         getWait10().until(ExpectedConditions.urlContains("/job/" + NEW_ITEM_NAME + "/configure"));
 
         Assert.assertEquals(
