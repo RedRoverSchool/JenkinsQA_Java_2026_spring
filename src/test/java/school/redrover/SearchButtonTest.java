@@ -93,7 +93,7 @@ public class SearchButtonTest extends BaseTest {
                 ? Keys.COMMAND : Keys.CONTROL;
 
         new Actions(getDriver())
-                .keyDown(modifier).sendKeys("K").keyUp(modifier)
+                .keyDown(modifier).sendKeys("k").keyUp(modifier)
                 .perform();
 
         Assert.assertTrue(getWait10()
