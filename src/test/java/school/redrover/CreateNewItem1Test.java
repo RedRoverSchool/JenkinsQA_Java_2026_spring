@@ -11,6 +11,7 @@ public class CreateNewItem1Test extends BaseTest {
     public void testNavigateToItemCreatePage() {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
         WebElement text = getDriver().findElement(By.xpath("//h1"));
+
         Assert.assertEquals(text.getText(), "New Item");
     }
     @Test
@@ -18,10 +19,20 @@ public class CreateNewItem1Test extends BaseTest {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
         WebElement inputName = getDriver().findElement(By.id("name"));
         inputName.sendKeys("Olga Test");
+
         String actualValue = inputName.getAttribute("value");
         Assert.assertEquals(actualValue, "Olga Test");
 
 
 
+    }
+    @Test
+    public void testSelectAnItemType() {
+        getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
+        WebElement inputName = getDriver().findElement(By.id("name"));
+        inputName.sendKeys("Select an item type test");
+        getDriver().findElement(By.xpath("//div[contains(text(), 'Build, test')]")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.id("ok-button")).isEnabled());
     }
 }

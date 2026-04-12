@@ -26,7 +26,7 @@ public class SingInTest extends BaseTest {
 
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/logout']"))).click();
     }
-    @Ignore
+@Ignore
     @Test
     public void testLoginValidData () {
 
