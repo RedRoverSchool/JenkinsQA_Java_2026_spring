@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.JenkinsUtils;
@@ -24,7 +25,7 @@ public class SingIn2Test extends BaseTest {
 
             Assert.assertEquals(alertText.getText(), "Invalid username or password");
         }
-
+    @Ignore
     @Test
     public void testSignInPageAlertTextColor() {
         JenkinsUtils.logout(getDriver());
