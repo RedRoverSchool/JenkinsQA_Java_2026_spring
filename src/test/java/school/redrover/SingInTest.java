@@ -44,9 +44,10 @@ public class SingInTest extends BaseTest {
         getDriver().findElement(By.name("j_password")).sendKeys(userPassword);
         getDriver().findElement(By.name("Submit")).click();
 
-        WebElement header = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("empty-state-block")));
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("empty-state-block")));
+        String header = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1"))).getText();
 
-        Assert.assertEquals(header.getText(), "Welcome to Jenkins!");
+        Assert.assertEquals(header, "Welcome to Jenkins!");
     }
 
     @Test
