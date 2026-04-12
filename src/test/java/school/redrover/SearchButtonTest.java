@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -27,6 +28,10 @@ public class SearchButtonTest extends BaseTest {
 
         ProjectUtils.get(getDriver());
 
+    }
+
+    public void openSearchFeild() {
+        getDriver().findElement(SEARCH_BUTTON).click();
     }
 
     @Test
@@ -80,5 +85,14 @@ public class SearchButtonTest extends BaseTest {
 
         Assert.assertEquals(getDriver()
                 .findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(), folderName);
+    }
+
+    @Test
+    public void testOpenSearchFieldByKeyboardCtrlK() {
+        new Actions(getDriver()).keyDown(Keys.CONTROL).sendKeys("K").keyUp(Keys.CONTROL).perform();
+
+        Assert.assertTrue(getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(SEARCH_INPUT_FIELD))
+                .isDisplayed());
     }
 }
