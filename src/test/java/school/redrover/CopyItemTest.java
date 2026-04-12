@@ -3,9 +3,9 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
 
 public class CopyItemTest extends BaseTest {
@@ -13,18 +13,10 @@ public class CopyItemTest extends BaseTest {
     private static final String NEW_ITEM_NAME = "new_item_copy";
     private static final String DESCRIPTION_TEXT = "Copied description text";
     private static final String REPOSITORY_URL = "https://github.com/RedRoverSchool/JenkinsQA_Java_2026_spring.git/";
-    private static final String JENKINS_URL = "http://localhost:8080/view/all/newJob";
-
-    private void openPageNewItem() {
-        //getDriver().get(JENKINS_URL);
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("name")));
-    }
 
     private void clickCMain(){
         getWait10().until(ExpectedConditions.elementToBeClickable(
-                        By.cssSelector("a[href='/']")))
+                By.cssSelector("a[href='/']")))
                 .click();
     }
 
@@ -83,7 +75,7 @@ public class CopyItemTest extends BaseTest {
     }
 
     @BeforeMethod
-    public void setUpSourceItem()  throws InterruptedException{
+    public void setUpSourceItem(){
         clickCreateItem();
         enterNewItemName(SOURCE_ITEM_NAME);
         selectFreestyleProject();
@@ -100,7 +92,7 @@ public class CopyItemTest extends BaseTest {
     }
 
     @Test
-    public void testCreateNewItemByCopy() throws InterruptedException {
+    public void testCreateNewItemByCopy() {
         clickCMain();
         clickCreateItem();
         enterNewItemName(NEW_ITEM_NAME);
@@ -109,33 +101,40 @@ public class CopyItemTest extends BaseTest {
 
         getWait10().until(ExpectedConditions.urlContains("/job/" + NEW_ITEM_NAME + "/configure"));
 
-        Assert.assertEquals(
-                getDriver().findElement(By.linkText(NEW_ITEM_NAME)).getText(),
+        WebElement gitRadioButton = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.name("githubProject")));
+
+        SoftAssert softAssert = new SoftAssert();
+
+        softAssert.assertEquals(
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                                By.linkText(NEW_ITEM_NAME))).getText(),
                 NEW_ITEM_NAME
         );
 
-        Assert.assertEquals(
+        softAssert.assertEquals(
                 getDriver().getCurrentUrl(),
                 "http://localhost:8080/job/" + NEW_ITEM_NAME + "/configure"
         );
 
-        Assert.assertEquals(
-                getDriver().findElement(By.name("description")).getAttribute("value"),
+        softAssert.assertEquals(
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.name("description"))).getAttribute("value"),
                 DESCRIPTION_TEXT
         );
 
-        WebElement gitRadioButton = getDriver().findElement(
-                By.name("githubProject")
-        );
-        Assert.assertTrue(
+        softAssert.assertTrue(
                 gitRadioButton.isSelected(),
                 "Git project is not selected"
         );
 
-        Assert.assertEquals(
-                getDriver().findElement(By.name("_.projectUrlStr")).getAttribute("value"),
+        softAssert.assertEquals(
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.name("_.projectUrlStr"))).getAttribute("value"),
                 REPOSITORY_URL
         );
+
+        softAssert.assertAll();
     }
 }
 
