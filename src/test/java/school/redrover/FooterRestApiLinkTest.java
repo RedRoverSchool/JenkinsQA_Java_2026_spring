@@ -5,18 +5,17 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.time.Duration;
+
 
 
 public class FooterRestApiLinkTest extends BaseTest {
     @Test
     public void testRestApiLinkHasHoverEffect() {
-        WebElement restApiLink = new WebDriverWait(getDriver(), Duration.ofSeconds(10))
+        WebElement restApiLink = getWait10()
                 .until(ExpectedConditions.visibilityOfElementLocated(
                         By.cssSelector("footer .rest-api")
                 ));
@@ -29,11 +28,16 @@ public class FooterRestApiLinkTest extends BaseTest {
         Actions actions = new Actions(getDriver());
         actions.moveToElement(restApiLink).perform();
 
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        getWait5().until(driver -> {
+            String currentBackground = (String) ((JavascriptExecutor) driver).executeScript(
+                    "return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');",
+                    restApiLink
+            );
+            if (currentBackground == null) {
+                return false;
+            }
+            return !currentBackground.equals(beforeBackground);
+        });
 
         String afterBackground = (String) ((JavascriptExecutor) getDriver()).executeScript(
                 "return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');",
