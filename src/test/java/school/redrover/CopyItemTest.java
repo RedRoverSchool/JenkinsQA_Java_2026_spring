@@ -30,7 +30,7 @@ public class CopyItemTest extends BaseTest {
 
     private void enterCopyItemName() {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.id("from")))
+                By.id("from")))
                 .sendKeys(SOURCE_ITEM_NAME);
     }
 
@@ -70,7 +70,7 @@ public class CopyItemTest extends BaseTest {
                 .click();
     }
 
-    @BeforeMethod
+    //@BeforeMethod
     public void setUpSourceItem() {
         openPageNewItem();
         enterNewItemName(SOURCE_ITEM_NAME);
@@ -87,12 +87,30 @@ public class CopyItemTest extends BaseTest {
     }
 
     @Test
-    public void testCreateNewItemByCopy() {
+    public void testCreateNewItemByCopy() throws InterruptedException {
+        Thread.sleep(5000);
         openPageNewItem();
+        Thread.sleep(5000);
+        enterNewItemName(SOURCE_ITEM_NAME);
+        selectFreestyleProject();
+        clickOk();
+        Thread.sleep(5000);
+        getWait10().until(ExpectedConditions.urlContains("/job/" + SOURCE_ITEM_NAME + "/configure"));
+
+        fillDescription();
+        clickCheckBoxGitHub();
+        fillGitURL();
+        clickSave();
+        Thread.sleep(5000);
+        getWait10().until(ExpectedConditions.urlContains("/job/" + SOURCE_ITEM_NAME + "/"));
+
+        openPageNewItem();
+        Thread.sleep(5000);
         enterNewItemName(NEW_ITEM_NAME);
         enterCopyItemName();
         clickOk();
 
+        Thread.sleep(5000);
         getWait10().until(ExpectedConditions.urlContains("/job/" + NEW_ITEM_NAME + "/configure"));
 
         Assert.assertEquals(
