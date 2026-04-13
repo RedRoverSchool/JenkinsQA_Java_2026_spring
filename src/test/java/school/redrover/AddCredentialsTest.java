@@ -13,7 +13,7 @@ public class AddCredentialsTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']//h1")).getText(),
                 "Credentials");
-        Assert.assertTrue(getDriver().findElement(By.xpath("//button[contains(text(),'Add')]")).isEnabled(),
-                "'Add credentials' button is active!");
+        Assert.assertTrue(getDriver().findElement(By.xpath("//button[contains(text(),'Add')]"))
+                        .isEnabled(), "'Add credentials' button is active!");
     }
 }
