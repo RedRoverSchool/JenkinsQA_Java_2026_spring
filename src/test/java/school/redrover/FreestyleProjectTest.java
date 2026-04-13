@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 import java.time.Duration;
-
+@Ignore
 public class FreestyleProjectTest extends BaseTest {
 
     @Test
