@@ -22,5 +22,6 @@ public class UserProfileTest extends BaseTest {
         Assert.assertTrue(
                 getDriver().findElement(By.xpath("//*[@id='main-panel']"))
                         .getText().contains("Jenkins User ID: " + userName));
+
     }
 }
