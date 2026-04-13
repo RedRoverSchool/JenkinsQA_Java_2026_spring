@@ -67,7 +67,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testBuildAfterOtherProject() {
+    public void testBuildTriggersWarningMessage() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys("FreestyleProject");
@@ -86,5 +86,19 @@ public class FreestyleProjectTest extends BaseTest {
         WebElement messageError = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='error' and contains(text(), 'No such project')]")));
         Assert.assertEquals(messageError.getText(),
                 "No such project ‘FreestyleUnexisted’. Did you mean ‘FreestyleProject’?");
+    }
+
+    @Test
+    public void testBuildNowCheckAlert() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("FreestyleProject");
+        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Build Now']/.."))).click();
+
+        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
+                "Build scheduled");
     }
 }
