@@ -9,6 +9,8 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.ProjectUtils;
 
+import java.util.Random;
+
 public class SearchButtonTest extends BaseTest {
 
     private static final By SEARCH_BUTTON = By.xpath("//button[@id='root-action-SearchAction']");
@@ -34,6 +36,22 @@ public class SearchButtonTest extends BaseTest {
 
     public void openSearchFeild() {
         getDriver().findElement(SEARCH_BUTTON).click();
+    }
+
+    public static String randomLatinString(int length) {
+        if (length <= 0) {
+            return "";
+        }
+
+        Random rnd = new Random();
+        StringBuilder sb = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            char c = (char) ('a' + rnd.nextInt(26));
+            sb.append(c);
+        }
+
+        return sb.toString();
     }
 
     @Test
@@ -123,5 +141,16 @@ public class SearchButtonTest extends BaseTest {
         Assert.assertTrue(getWait10()
                 .until(ExpectedConditions.visibilityOfElementLocated(searchInputLocator))
                 .isDisplayed());
+    }
+
+    @Test
+    public void testSearchLongQuery() {
+        final String CHARACTERS_2000 = randomLatinString(2000);
+
+        openSearchFeild();
+        getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(CHARACTERS_2000);
+
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//p//span")).getText(), "No results for");
     }
 }
