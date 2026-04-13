@@ -13,9 +13,6 @@ public class SearchButtonTest extends BaseTest {
 
     private static final By SEARCH_BUTTON = By.xpath("//button[@id='root-action-SearchAction']");
     private static final By SEARCH_INPUT_FIELD = By.xpath("//input");
-    private static final String FOLDER_NAME1 = "Partialtest";
-    private static final String FOLDER_NAME2 = "Parttaltest";
-    private static final String PARTIAL_WORD = "Partt";
     private static final By HEADER_LOCATOR = By.id("page-header");
 
 
@@ -29,6 +26,7 @@ public class SearchButtonTest extends BaseTest {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='submit']"))).click();
 
         getDriver().findElement(By.xpath("//button[@value='Save']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='" + folderName + "']")));
 
         ProjectUtils.get(getDriver());
 
@@ -93,14 +91,20 @@ public class SearchButtonTest extends BaseTest {
 
     @Test
     public void testSearchPartialWords() {
+        final String FOLDER_NAME1 = "Partialtest";
+        final String FOLDER_NAME2 = "Parttaltest";
+        final String PARTIAL_WORD = "Partt";
 
         createFolder(FOLDER_NAME1);
         createFolder(FOLDER_NAME2);
 
-        getDriver().findElement(SEARCH_BUTTON).click();
+        openSearchFeild();
         getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(PARTIAL_WORD);
 
-        Assert.assertEquals(getDriver().findElements(By.xpath("//*[@id='search-results']//a[contains(@href, '" + PARTIAL_WORD + "')]")).size() , 1);
+        By partialResult = By.xpath("//*[@id='search-results']//a[contains(@href, '" + PARTIAL_WORD + "')]");
+
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(partialResult));
+        Assert.assertEquals(getDriver().findElements(partialResult).size(), 1);
     }
 
     @Test
