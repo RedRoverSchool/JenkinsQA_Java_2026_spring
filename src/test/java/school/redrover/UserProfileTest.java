@@ -9,15 +9,15 @@ import school.redrover.common.ProjectUtils;
 
 public class UserProfileTest extends BaseTest {
 
+    String userName = ProjectUtils.getUserName();
+
     public void openUserProfile() {
-        getDriver().findElement(By.xpath("//a[@href='/user/admin']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/user/" + userName + "']")).click();
     }
 
     @Test
     public void testOpenUserProfile() {
         openUserProfile();
-
-        String userName = ProjectUtils.getUserName();
 
         Assert.assertTrue(
                 getDriver().findElement(By.xpath("//*[@id='main-panel']"))
