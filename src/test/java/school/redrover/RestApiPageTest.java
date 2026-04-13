@@ -48,4 +48,36 @@ public class RestApiPageTest extends BaseTest {
                 "Фокус переключился на другое окно");
 
     }
+
+    @Test
+    public void testRestApiLinkHoverEffect() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+
+        WebElement restApiLink = getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//footer//a[contains(text(),'REST API')]"))
+        );
+
+        String cursor = restApiLink.getCssValue("cursor");
+        Assert.assertEquals(cursor, "pointer", "У ссылки должен быть курсор pointer при наведении");
+    }
+
+    @Test
+    public void testReturnWithBackButton() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+
+        getWait10().until(
+                ExpectedConditions.elementToBeClickable(By.xpath("//footer//a[contains(text(),'REST API')]"))
+        ).click();
+
+        getDriver().navigate().back();
+
+        boolean isDashboardVisible = getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@href,'/view/')]"))
+        ).isDisplayed();
+        Assert.assertTrue(isDashboardVisible, "Элементы Dashboard не отображаются. Возможно, пользователь разлогинен.");
+    }
 }
