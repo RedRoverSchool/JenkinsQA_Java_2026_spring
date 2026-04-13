@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -12,6 +13,7 @@ public class SearchButtonTest extends BaseTest {
 
     private static final By SEARCH_BUTTON = By.xpath("//button[@id='root-action-SearchAction']");
     private static final By SEARCH_INPUT_FIELD = By.xpath("//input");
+    private static final By HEADER_LOCATOR = By.id("page-header");
 
 
     private void createFolder(String folderName) {
@@ -24,9 +26,14 @@ public class SearchButtonTest extends BaseTest {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='submit']"))).click();
 
         getDriver().findElement(By.xpath("//button[@value='Save']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='" + folderName + "']")));
 
         ProjectUtils.get(getDriver());
 
+    }
+
+    public void openSearchFeild() {
+        getDriver().findElement(SEARCH_BUTTON).click();
     }
 
     @Test
@@ -80,5 +87,41 @@ public class SearchButtonTest extends BaseTest {
 
         Assert.assertEquals(getDriver()
                 .findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(), folderName);
+    }
+
+    @Test
+    public void testSearchPartialWords() {
+        final String FOLDER_NAME1 = "Partialtest";
+        final String FOLDER_NAME2 = "Parttaltest";
+        final String PARTIAL_WORD = "Partt";
+        final By PARTIAL_RESULT = By.xpath("//*[@id='search-results']//a[contains(@href, '" + PARTIAL_WORD + "')]");
+
+        createFolder(FOLDER_NAME1);
+        createFolder(FOLDER_NAME2);
+
+        openSearchFeild();
+        getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(PARTIAL_WORD);
+
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(PARTIAL_RESULT));
+        Assert.assertEquals(getDriver().findElements(PARTIAL_RESULT).size(), 1);
+    }
+
+    @Test
+    public void testOpenSearchFieldByKeyboardCtrlK() {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(HEADER_LOCATOR))
+                .isDisplayed();
+
+        Keys modifier = System.getProperty("os.name").toLowerCase().contains("mac")
+                ? Keys.COMMAND : Keys.CONTROL;
+
+        new Actions(getDriver())
+                .keyDown(modifier).sendKeys("k").keyUp(modifier)
+                .perform();
+
+        By searchInputLocator = By.xpath("//input[@id='command-bar']");
+
+        Assert.assertTrue(getWait10()
+                .until(ExpectedConditions.visibilityOfElementLocated(searchInputLocator))
+                .isDisplayed());
     }
 }

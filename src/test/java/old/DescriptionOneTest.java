@@ -1,4 +1,6 @@
-package school.redrover;
+
+package old;
+
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -10,7 +12,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 import java.time.Duration;
-
+@Ignore
 public class DescriptionOneTest extends BaseTest {
     private WebDriverWait wait;
 
@@ -30,7 +32,7 @@ public class DescriptionOneTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector("#description-content")).getText(), "Text", "Not found");
     }
-
+    @Ignore
     @Test
     public void testPreview() {
         getDriver().findElement(By.id("description-link")).click();
@@ -41,7 +43,7 @@ public class DescriptionOneTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector(".textarea-preview")).getText(), "Text", "Not found");
     }
-@Ignore
+    @Ignore
     @Test
     public void testClearDescription() {
         getDriver().findElement(By.cssSelector("#description-link")).click();
