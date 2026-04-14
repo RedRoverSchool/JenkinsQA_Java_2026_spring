@@ -12,7 +12,7 @@ public class UserProfileTest extends BaseTest {
     String userName = ProjectUtils.getUserName();
 
     public void openUserProfile() {
-        getDriver().findElement(By.xpath("//a[@href='/user/" + userName + "']")).click();
+        getDriver().findElement(By.id("root-action-UserAction")).click();
     }
 
     @Test
