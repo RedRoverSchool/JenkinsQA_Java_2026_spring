@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 import java.time.Duration;
-@Ignore
+
 public class FreestyleProjectTest extends BaseTest {
 
     private void createNewProject(String projectName) {
@@ -37,6 +37,15 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(
                         By.xpath("//*[@class='jenkins-table__link model-link inside']")).getText(),
                 testProjectName);
+    }
+
+    @Test
+    public void testAddDescriptionToFreestyleProject(){
+        createNewProject("FreestyleProjectWithDescription");
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("Description");
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='description-content']")).getText(),"Description");
     }
 
     @Test
