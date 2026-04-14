@@ -51,7 +51,7 @@ public class DuplicateItemNameTest extends BaseTest {
         returnToStartPage();
         prepareNewPipelineJob(DUPLICATED_JOB_NAME);
 
-        Assert.assertEquals(getDriver().findElement(duplicateNameValidation).getText(), "» A job already exists with the name ‘existing_job_01’");
+        Assert.assertEquals(getWait2().until(ExpectedConditions.visibilityOfElementLocated(duplicateNameValidation)).getText(), "» A job already exists with the name ‘existing_job_01’");
 
         getDriver().findElement(okButton).click();
 

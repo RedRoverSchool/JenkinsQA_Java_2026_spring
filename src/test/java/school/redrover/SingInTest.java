@@ -5,7 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -26,7 +25,7 @@ public class SingInTest extends BaseTest {
 
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/logout']"))).click();
     }
-@Ignore
+
     @Test
     public void testLoginValidData () {
 
@@ -45,9 +44,10 @@ public class SingInTest extends BaseTest {
         getDriver().findElement(By.name("j_password")).sendKeys(userPassword);
         getDriver().findElement(By.name("Submit")).click();
 
-        WebElement header = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("empty-state-block")));
+        String header = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1"))).getText();
 
-        Assert.assertEquals(header.getText(), "Welcome to Jenkins!");
+        Assert.assertEquals(header, "Welcome to Jenkins!");
     }
 
     @Test
