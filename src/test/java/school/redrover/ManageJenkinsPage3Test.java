@@ -112,7 +112,6 @@ public class ManageJenkinsPage3Test extends BaseTest {
                 ExpectedConditions.presenceOfElementLocated(By.cssSelector("textarea[name='system_message']"))
         );
 
-
         ((JavascriptExecutor) getDriver()).executeScript(
                 "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));",
                 textarea
