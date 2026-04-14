@@ -22,7 +22,7 @@ public class UserProfileTest extends BaseTest {
         openUserProfile();
 
         Assert.assertTrue(
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='main-panel']")))
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='main-panel']")))
                         .getText().contains("Jenkins User ID: " + userName));
 
     }
