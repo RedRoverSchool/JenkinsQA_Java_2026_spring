@@ -94,23 +94,19 @@ public class ManageJenkinsPage3Test extends BaseTest {
 
         Select markupFormatter = new Select(
                 getWait5().until(ExpectedConditions.elementToBeClickable(
-                        By.cssSelector("select.jenkins-select__input")))
-        );
+                        By.cssSelector("select.jenkins-select__input"))));
         markupFormatter.selectByValue("1");
 
         ((JavascriptExecutor) getDriver()).executeScript(
-                "window.scrollTo(0, document.body.scrollHeight);"
-        );
+                "window.scrollTo(0, document.body.scrollHeight);");
         getWait10().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
         getWait10().until(ExpectedConditions.urlContains("/manage/"));
 
         getWait10().until(ExpectedConditions.elementToBeClickable(CONFIGURE_SYSTEM_LINK)).click();
         getWait10().until(ExpectedConditions.urlContains("/configure"));
 
-        // Работаем с textarea
         WebElement textarea = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(By.cssSelector("textarea[name='system_message']"))
-        );
+                ExpectedConditions.presenceOfElementLocated(By.cssSelector("textarea[name='system_message']")));
 
         ((JavascriptExecutor) getDriver()).executeScript(
                 "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));",
@@ -118,8 +114,7 @@ public class ManageJenkinsPage3Test extends BaseTest {
         );
 
         WebElement codeMirror = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(By.cssSelector(".CodeMirror"))
-        );
+                ExpectedConditions.presenceOfElementLocated(By.cssSelector(".CodeMirror")));
         codeMirror.click();
 
         new Actions(getDriver())
@@ -135,17 +130,14 @@ public class ManageJenkinsPage3Test extends BaseTest {
         }
 
         WebElement previewLink = getWait5().until(
-                ExpectedConditions.elementToBeClickable(By.xpath("//a[@previewendpoint='/markupFormatter/previewDescription']"))
-        );
+                ExpectedConditions.elementToBeClickable(By.xpath("//a[@previewendpoint='/markupFormatter/previewDescription']")));
         previewLink.click();
 
         WebElement previewArea = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='textarea-preview']"))
-        );
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='textarea-preview']")));
 
         getWait10().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//div[@class='textarea-preview']//b")
-        ));
+                By.xpath("//div[@class='textarea-preview']//b")));
 
         WebElement boldText = previewArea.findElement(By.tagName("b"));
         Assert.assertEquals(boldText.getText(), "Bold");
