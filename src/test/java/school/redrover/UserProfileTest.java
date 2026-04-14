@@ -25,8 +25,7 @@ public class UserProfileTest extends BaseTest {
                 .until(ExpectedConditions.visibilityOfElementLocated(By.id("main-panel")))
                 .getText();
 
-        System.out.printf(actualText);
-
+        System.out.printf("ACTUAL TEXT:" + actualText);
 
         Assert.assertTrue(actualText.contains(userName));
 
