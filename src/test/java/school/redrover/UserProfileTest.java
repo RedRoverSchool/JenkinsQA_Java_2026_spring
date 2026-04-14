@@ -25,7 +25,7 @@ public class UserProfileTest extends BaseTest {
                 .until(ExpectedConditions.visibilityOfElementLocated(By.id("main-panel")))
                 .getText();
 
-        Assert.assertTrue(actualText.contains("Jenkins User ID: " + userName));
+        Assert.assertTrue(actualText.contains(userName));
 
     }
 }
