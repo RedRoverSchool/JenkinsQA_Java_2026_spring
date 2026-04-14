@@ -20,7 +20,7 @@ public class UserProfileTest extends BaseTest {
         openUserProfile();
 
         String actualText = getWait10()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1")))
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//h1")))
                 .getText();
 
         Assert.assertEquals(actualText, ProjectUtils.getUserName());
