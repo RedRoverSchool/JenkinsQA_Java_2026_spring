@@ -103,13 +103,11 @@ public class ManageJenkinsPage3Test extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(CONFIGURE_SYSTEM_LINK)).click();
         getWait10().until(ExpectedConditions.urlContains("/configure"));
 
-        // Работаем с CodeMirror через Actions
         WebElement codeMirror = getWait10().until(
                 ExpectedConditions.presenceOfElementLocated(By.cssSelector(".CodeMirror"))
         );
         codeMirror.click();
 
-        // Очистка поля
         new Actions(getDriver())
                 .keyDown(Keys.CONTROL)
                 .sendKeys("a")
@@ -117,7 +115,6 @@ public class ManageJenkinsPage3Test extends BaseTest {
                 .sendKeys(Keys.DELETE)
                 .perform();
 
-        // Ввод текста
         String testMessage = "<b>Bold</b> <i>Italic</i>";
         new Actions(getDriver())
                 .sendKeys(testMessage)
