@@ -6,9 +6,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -80,7 +83,7 @@ public class ManageJenkinsPage3Test extends BaseTest {
         Assert.assertEquals(actualSections, expectedSections);
 
     }
-    
+
     @Test
     public void testPreviewButtonDisplaysFormattedSystemMessage() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -110,10 +113,12 @@ public class ManageJenkinsPage3Test extends BaseTest {
         getWait10().until(ExpectedConditions.presenceOfElementLocated(
                 By.cssSelector("textarea[name='system_message']")));
 
-        WebElement systemTextArea = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(By.cssSelector(".CodeMirror"))
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(30));
+
+        WebElement codeMirror = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".CodeMirror"))
         );
-        systemTextArea.click();
+        codeMirror.click();
 
         String testMessage = "<b>Bold</b> <i>Italic</i>";
         new Actions(getDriver())
