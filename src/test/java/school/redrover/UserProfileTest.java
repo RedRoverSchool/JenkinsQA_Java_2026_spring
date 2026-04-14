@@ -21,9 +21,11 @@ public class UserProfileTest extends BaseTest {
 
         openUserProfile();
 
-        Assert.assertTrue(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='main-panel']")))
-                        .getText().contains("Jenkins User ID: " + userName));
+        String actualText = getWait10()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.id("main-panel")))
+                .getText();
+
+        Assert.assertTrue(actualText.contains("Jenkins User ID: " + userName));
 
     }
 }
