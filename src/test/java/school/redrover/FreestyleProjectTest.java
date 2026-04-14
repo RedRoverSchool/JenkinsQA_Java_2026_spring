@@ -113,11 +113,13 @@ public class FreestyleProjectTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//label[contains(text(), 'Build after other projects are built')]")).click();
         getDriver().findElement(By.name("_.upstreamProjects")).sendKeys("FreestyleProject");
-        getDriver().findElement(By.xpath("//label[contains(text(), 'Trigger even if the build fails')]")).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(), 'Trigger even if the build fails')]"))).click();
         getDriver().findElement(By.name("Submit")).click();
         getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), "FreestyleProject2"));
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Status']/.."))).click();
-        
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/h2[1]")).getText(),
+                "Upstream Projects");
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[contains(@class,'model-link')]")).getText(),
                 "FreestyleProject");
     }
