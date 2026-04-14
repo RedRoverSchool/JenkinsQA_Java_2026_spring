@@ -42,6 +42,59 @@ public class SingIn2Test extends BaseTest {
         Assert.assertTrue(actualColor.contains("oklch(0.6 0.2671 30)"),
                 "Цвет текста ошибки не красный: " + actualColor);
     }
+
+    @Test
+    public void testLoginPageElementsPresence() {
+        JenkinsUtils.logout(getDriver());
+
+        WebElement usernameField = getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("j_username"))
+        );
+
+        Assert.assertTrue(usernameField.isDisplayed(), "Поле Username не отображается");
+        Assert.assertTrue(usernameField.isEnabled(), "Поле Username не активно");
+
+        WebElement passwordField = getDriver().findElement(By.id("j_password"));
+        Assert.assertTrue(passwordField.isDisplayed(), "Поле Password не отображается");
+        Assert.assertTrue(passwordField.isEnabled(), "Поле Password не активно");
+
+        WebElement signInButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
+        Assert.assertTrue(signInButton.isDisplayed(), "Кнопка Sign in не отображается");
+        Assert.assertTrue(signInButton.isEnabled(), "Кнопка Sign in не активна");
+
+    }
+
+    private static final String VALID_USERNAME = "KhairutdinovaOlga";
+    private static final String VALID_PASSWORD = "admin";
+
+    @Test
+    public void testClearFieldsAndReEnterCredentials() {
+        JenkinsUtils.logout(getDriver());
+
+        WebElement usernameField = getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("j_username"))
+        );
+        WebElement passwordField = getDriver().findElement(By.id("j_password"));
+        WebElement signInButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
+
+        usernameField.sendKeys("wronguser");
+        passwordField.sendKeys("wrongpass");
+
+        usernameField.clear();
+        passwordField.clear();
+
+        Assert.assertEquals(usernameField.getAttribute("value"), "");
+        Assert.assertEquals(passwordField.getAttribute("value"), "");
+
+
+        JenkinsUtils.login(getDriver());
+
+
+        WebElement userButton = getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction"))
+        );
+        Assert.assertTrue(userButton.isDisplayed(), "Не удалось войти в систему после очистки полей");
+    }
     }
 
 
