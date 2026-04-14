@@ -7,12 +7,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -105,18 +103,13 @@ public class ManageJenkinsPage3Test extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(CONFIGURE_SYSTEM_LINK)).click();
         getWait10().until(ExpectedConditions.urlContains("/configure"));
 
-        WebElement textarea = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(By.cssSelector("textarea[name='system_message']")));
-
-        ((JavascriptExecutor) getDriver()).executeScript(
-                "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));",
-                textarea
-        );
-
+        // Работаем с CodeMirror через Actions
         WebElement codeMirror = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(By.cssSelector(".CodeMirror")));
+                ExpectedConditions.presenceOfElementLocated(By.cssSelector(".CodeMirror"))
+        );
         codeMirror.click();
 
+        // Очистка поля
         new Actions(getDriver())
                 .keyDown(Keys.CONTROL)
                 .sendKeys("a")
@@ -124,10 +117,11 @@ public class ManageJenkinsPage3Test extends BaseTest {
                 .sendKeys(Keys.DELETE)
                 .perform();
 
+        // Ввод текста
         String testMessage = "<b>Bold</b> <i>Italic</i>";
-        for (char c : testMessage.toCharArray()) {
-            new Actions(getDriver()).sendKeys(String.valueOf(c)).perform();
-        }
+        new Actions(getDriver())
+                .sendKeys(testMessage)
+                .perform();
 
         WebElement previewLink = getWait5().until(
                 ExpectedConditions.elementToBeClickable(By.xpath("//a[@previewendpoint='/markupFormatter/previewDescription']")));
