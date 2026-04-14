@@ -16,6 +16,8 @@ public class ManageJenkinsPageSystemButtonTest extends BaseTest {
     private static final By SYSTEM_MESSAGE_LOCATOR = By.xpath("//textarea[@name='system_message']/preceding::div[2]");
     private static final By QUIET_PERIOD_LOCATOR = By.xpath("//div[a[contains(@helpurl, 'quietPeriod')]]");
     private static final By SCM_LOCATOR = By.xpath("//div[@nameref='rowSetStart18']/div[contains(@class, 'jenkins-form-label')]");
+    private static final By JENKINS_URL_LOCATOR = By.xpath("//a[@aria-label ='Help for feature: Jenkins URL']/..");
+    private static final By ADMIN_EMAIL_LOCATOR = By.xpath("//a[@aria-label ='Help for feature: System Admin e-mail address']/..");
 
     private void goToSystemPage() {
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
@@ -57,6 +59,23 @@ public class ManageJenkinsPageSystemButtonTest extends BaseTest {
                 "Quiet period",
                 "SCM checkout retry count"
         );
+
+        Assert.assertEquals(actualLabels, expectedLabels);
+    }
+
+    @Test
+    public void testJenkinsLocationSectionContainsConfigurations() {
+
+        goToSystemPage();
+
+        List<By> locators = List.of(JENKINS_URL_LOCATOR, ADMIN_EMAIL_LOCATOR);
+
+        List<String> actualLabels = locators.stream()
+                .map(locator -> getDriver().findElement(locator).getText()
+                        .replace("?", "").trim())
+                .toList();
+
+        List<String> expectedLabels = List.of("Jenkins URL", "System Admin e-mail address");
 
         Assert.assertEquals(actualLabels, expectedLabels);
     }
