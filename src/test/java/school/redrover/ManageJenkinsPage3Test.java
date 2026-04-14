@@ -81,6 +81,7 @@ public class ManageJenkinsPage3Test extends BaseTest {
 
     }
 
+
     @Test
     public void testPreviewButtonDisplaysFormattedSystemMessage() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
