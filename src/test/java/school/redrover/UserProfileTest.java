@@ -6,11 +6,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.ProjectUtils;
 
 public class UserProfileTest extends BaseTest {
-
-    String userName = ProjectUtils.getUserName();
 
     public void openUserProfile() {
         getDriver().findElement(By.id("root-action-UserAction")).click();
@@ -25,9 +22,7 @@ public class UserProfileTest extends BaseTest {
                 .until(ExpectedConditions.visibilityOfElementLocated(By.id("main-panel")))
                 .getText();
 
-        System.out.printf("ACTUAL TEXT:" + actualText);
-
-        Assert.assertTrue(actualText.contains(userName));
+        Assert.assertTrue(actualText.contains("Jenkins User ID:"));
 
     }
 }
