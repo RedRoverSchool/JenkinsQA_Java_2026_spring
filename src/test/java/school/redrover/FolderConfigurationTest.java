@@ -37,5 +37,6 @@ public class FolderConfigurationTest extends BaseTest {
         WebElement newName = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-table__link model-link inside']")));
 
         Assert.assertEquals(newName.getText(), FOLDER_NAME2);
+
     }
 }
