@@ -64,8 +64,8 @@ public class SingIn2Test extends BaseTest {
 
     }
 
-    private static final String VALID_USERNAME = "User123";
-    private static final String VALID_PASSWORD = "User123";
+    private static final String VALID_USERNAME = "KhairutdinovaOlga";
+    private static final String VALID_PASSWORD = "admin";
 
     @Test
     public void testClearFieldsAndReEnterCredentials() {
@@ -91,10 +91,10 @@ public class SingIn2Test extends BaseTest {
 
         signInButton.click();
 
-        WebElement newItemLink = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(),'New Item')]"))
+        WebElement userButton = getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction"))
         );
-        Assert.assertTrue(newItemLink.isDisplayed(), "Не удалось войти в систему после очистки полей");
+        Assert.assertTrue(userButton.isDisplayed(), "Не удалось войти в систему после очистки полей");
     }
     }
 
