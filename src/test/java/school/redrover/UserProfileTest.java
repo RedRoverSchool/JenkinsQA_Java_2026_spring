@@ -27,6 +27,7 @@ public class UserProfileTest extends BaseTest {
 
         System.out.printf(actualText);
 
+
         Assert.assertTrue(actualText.contains(userName));
 
     }
