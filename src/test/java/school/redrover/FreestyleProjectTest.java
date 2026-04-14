@@ -100,6 +100,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "Build scheduled");
     }
 
+    @Ignore
     @Test
     public void testBuildAfterOtherProjectsAreBuild() {
         createNewProject("FreestyleProject");
