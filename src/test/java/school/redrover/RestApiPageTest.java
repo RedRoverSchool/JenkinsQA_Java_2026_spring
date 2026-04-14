@@ -88,7 +88,6 @@ public class RestApiPageTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[contains(@href,'/manage')]")).click();
 
-
         getWait10().until(
                 ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href,'configure')]"))
         ).click();
