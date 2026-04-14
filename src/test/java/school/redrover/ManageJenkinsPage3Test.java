@@ -80,8 +80,7 @@ public class ManageJenkinsPage3Test extends BaseTest {
         Assert.assertEquals(actualSections, expectedSections);
 
     }
-
-
+    
     @Test
     public void testPreviewButtonDisplaysFormattedSystemMessage() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
