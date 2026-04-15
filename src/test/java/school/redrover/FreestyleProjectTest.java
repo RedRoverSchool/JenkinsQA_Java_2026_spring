@@ -117,6 +117,22 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    public void testBuildNow() {
+        createNewProject(PROJECT_NAME);
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("a.app-jenkins-logo"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//span[text()='%s']".formatted(PROJECT_NAME)))).click();
+        getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
+
+        List<String> listOfBuilds = getDriver().findElements(By.className("app-builds-container__item")).stream()
+                .map(WebElement::getText)
+                .toList();
+
+        Assert.assertEquals(listOfBuilds.size(), 1);
+    }
+
+    @Test
     public void testBuildAfterOtherProjectsAreBuild() {
         createNewProject(PROJECT_NAME);
 
