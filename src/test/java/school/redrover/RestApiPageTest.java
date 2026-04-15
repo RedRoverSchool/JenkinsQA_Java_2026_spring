@@ -8,6 +8,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import static java.sql.DriverManager.getDriver;
+
 public class RestApiPageTest extends BaseTest {
 
     @Test
@@ -79,5 +81,30 @@ public class RestApiPageTest extends BaseTest {
                 ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@href,'/view/')]"))
         ).isDisplayed();
         Assert.assertTrue(isDashboardVisible, "Элементы Dashboard не отображаются. Возможно, пользователь разлогинен.");
+    }
+
+    @Test
+    public void testRestApiLinkHiddenOnConfigureSystemPage() {
+
+        getDriver().findElement(By.xpath("//a[contains(@href,'/manage')]")).click();
+
+        getWait10().until(
+                ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href,'configure')]"))
+        ).click();
+
+        getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),'Save')]"))
+        );
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+
+
+        boolean isRestApiLinkPresent = !getDriver().findElements(
+                By.xpath("//footer//a[contains(text(),'REST API')]")
+        ).isEmpty();
+
+        Assert.assertFalse(isRestApiLinkPresent,
+                "Ссылка 'REST API' не должна отображаться в футере на странице Configure System");
     }
 }
