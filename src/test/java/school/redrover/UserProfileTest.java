@@ -10,8 +10,19 @@ import school.redrover.common.ProjectUtils;
 
 public class UserProfileTest extends BaseTest {
 
+    private static final By PROFILE_BUTTON = By.id("root-action-UserAction");
+
+
+
     public void openUserProfile() {
-        getDriver().findElement(By.id("root-action-UserAction")).click();
+        getDriver().findElement(PROFILE_BUTTON).click();
+    }
+
+
+
+    @Test
+    public void testUserProfileButtonVisible() {
+        Assert.assertTrue(getDriver().findElement(PROFILE_BUTTON).isDisplayed());
     }
 
     @Test
