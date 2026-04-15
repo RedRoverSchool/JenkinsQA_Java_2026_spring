@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -16,6 +17,7 @@ public class ManageJenkinsPage3Test extends BaseTest {
     private static final By MANAGE_JENKINS_LINK = By.cssSelector("a[href='/manage']");
     private static final By CONFIGURE_SYSTEM_LINK = By.xpath("//a[contains(@href, 'configure')]");
     private static final By SEARCH_BAR = By.id("settings-search-bar");
+    private static final By RESULT_DROPDOWN = By.xpath("//div[@class='jenkins-dropdown']");
 
     @Test
     public void testOpenConfigureSystemPage() {
@@ -58,7 +60,7 @@ public class ManageJenkinsPage3Test extends BaseTest {
         }
     }
 
-    @Ignore
+
     @Test
     public void testSearchCaseInsensitive(){
         List<String> inputValues = List.of("system","SYSTEM","uSeRs");
@@ -68,10 +70,20 @@ public class ManageJenkinsPage3Test extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(MANAGE_JENKINS_LINK)).click();
         getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), "Manage Jenkins"));
 
+        WebElement searchBar = getDriver().findElement(SEARCH_BAR);
+
         for (String input:inputValues) {
-            getDriver().findElement(SEARCH_BAR).sendKeys(input);
+            searchBar.sendKeys(input);
+            getWait10().until(d -> {
+                String text = d.findElement(RESULT_DROPDOWN).getText();
+                return text != null && !text.trim().isEmpty();
+            });
+
             actualSections.add(getDriver().findElement(By.xpath("//a[contains(@class, 'jenkins-dropdown__item')]")).getText());
-            getDriver().findElement(SEARCH_BAR).clear();
+
+            searchBar.sendKeys(Keys.CONTROL + "a");
+            searchBar.sendKeys(Keys.BACK_SPACE);
+            getWait10().until(ExpectedConditions.invisibilityOfElementLocated(RESULT_DROPDOWN));
         }
 
         Assert.assertEquals(actualSections,expectedSections);
