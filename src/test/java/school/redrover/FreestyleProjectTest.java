@@ -16,6 +16,8 @@ import java.time.Duration;
 
 public class FreestyleProjectTest extends BaseTest {
 
+    private final static String PROJECT_NAME = "FreestyleProject";
+
     private void createNewProject(String projectName) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(projectName);
@@ -24,25 +26,23 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testCreateFreestyleProject() {
-        String testProjectName = "test";
+    public void testCreate() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(testProjectName);
+        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
         getDriver().findElement(By.id("ok-button")).click();
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//a[@class='app-jenkins-logo']"))).click();
 
         Assert.assertEquals(getDriver().findElement(
                         By.xpath("//*[@class='jenkins-table__link model-link inside']")).getText(),
-                testProjectName);
+                PROJECT_NAME);
     }
 
     @Test
-    public void testAddDescriptionToFreestyleProject(){
-        createNewProject("FreestyleProjectWithDescription");
+    public void testAddDescription() {
+        createNewProject(PROJECT_NAME);
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("Description");
         getDriver().findElement(By.name("Submit")).click();
 
@@ -50,8 +50,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testDisableFreestyleProject() {
-        createNewProject("FreestyleProject");
+    public void testDisable() {
+        createNewProject(PROJECT_NAME);
         getDriver().findElement(By.xpath("//label[@class='jenkins-toggle-switch__label ']")).click();
         getDriver().findElement(By.name("Submit")).click();
 
@@ -60,13 +60,13 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testEnableFreestyleProject() {
-        createNewProject("FreestyleProject");
+    public void testEnable() {
+        createNewProject(PROJECT_NAME);
         getDriver().findElement(By.xpath("//label[@class='jenkins-toggle-switch__label ']")).click();
         getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(By.xpath("//button[@value='Enable']")).click();
 
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), "FreestyleProject"));
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), PROJECT_NAME));
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//a[@href='/job/FreestyleProject/configure']"))).click();
 
@@ -77,7 +77,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testBuildTriggersWarningMessage() {
-        createNewProject("FreestyleProject");
+        createNewProject(PROJECT_NAME);
 
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", getDriver().findElement(By.xpath("//input[@id='cb14']/ancestor::span")));
 
@@ -92,7 +92,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testBuildNowCheckAlert() {
-        createNewProject("FreestyleProject");
+        createNewProject(PROJECT_NAME);
         getDriver().findElement(By.name("Submit")).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Build Now']/.."))).click();
 
@@ -102,7 +102,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testBuildAfterOtherProjectsAreBuild() {
-        createNewProject("FreestyleProject");
+        createNewProject(PROJECT_NAME);
 
         getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.cssSelector("a.app-jenkins-logo"))).click();
@@ -110,9 +110,13 @@ public class FreestyleProjectTest extends BaseTest {
         createNewProject("FreestyleProject2");
 
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);",
-                getDriver().findElement(By.xpath("//input[@id='cb14']/ancestor::span")));
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.cssSelector("input[name = 'jenkins-triggers-ReverseBuildTrigger']"))));
 
-        getDriver().findElement(By.xpath("//label[contains(text(), 'Build after other projects are built')]")).click();
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.cssSelector("input[name = 'jenkins-triggers-ReverseBuildTrigger']"))));
+
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.name("_.upstreamProjects")))
                 .sendKeys("FreestyleProject", Keys.TAB);
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(), 'Trigger even if the build fails')]"))).click();
@@ -121,8 +125,8 @@ public class FreestyleProjectTest extends BaseTest {
 
         WebElement statusButton = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text()='Status']/..")));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", statusButton);
-        
-        Assert.assertEquals(getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@id='main-panel']/h2[1]"))).getText(),
+
+        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='main-panel']/h2[1]"))).getText(),
                 "Upstream Projects");
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[contains(@class,'model-link')]")).getText(),
                 "FreestyleProject");
