@@ -9,16 +9,11 @@ import school.redrover.common.BaseTest;
 
 public class FolderConfigurationTest extends BaseTest {
 
-    private static final String FOLDER_NAME2 = "FolderName2";
-
     private void createFolder(String name) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='name']"))).sendKeys(name);
         getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='ok-button']"))).click();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[normalize-space()='Configuration']")));
     }
 
     private void goToMainPage() {
@@ -27,9 +22,9 @@ public class FolderConfigurationTest extends BaseTest {
 
     @Test
     public void testRename() {
-
         createFolder("FolderName1");
-        goToMainPage();
+
+        final String FOLDER_NAME2 = "FolderName2";
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-table__link model-link inside']")));
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='jenkins-menu-dropdown-chevron']"))).click();
@@ -41,8 +36,21 @@ public class FolderConfigurationTest extends BaseTest {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[@class='job-index-headline page-headline']")));
         goToMainPage();
 
-        WebElement name = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-table__link model-link inside']")));
+        WebElement name = getWait10().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//a[@class='jenkins-table__link model-link inside']")));
 
         Assert.assertEquals(name.getText(), FOLDER_NAME2);
+    }
+
+    @Test
+    public void testAddDescription() {
+        createFolder("TestFolder");
+
+        getDriver().findElement(By.name("_.description")).sendKeys("DescriptionForTest");
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("view-message"))).getText(), "DescriptionForTest");
     }
 }
