@@ -20,6 +20,8 @@ public class AddCredentialsTest extends BaseTest {
     private final By titleAddCredentials = By.xpath("//dialog[contains(@class, 'dialog')]//*[text()='Add Credentials']");
     private final By subTitleAddCredentials = By.xpath("//dialog//legend[contains(text(), 'Select a type of credential')]");
     private final By nextButton = By.id("cr-dialog-next");
+    private final By userNameAndPasswordButton = By.xpath("//dialog//label[contains(., 'Username with password')]");
+    private final By addUsernameWithPasswordWindow = By.cssSelector("dialog[open]");
 
     private void credentialsOpen() {
         getDriver().findElement(manageJenkinsButton).click();
@@ -72,5 +74,16 @@ public class AddCredentialsTest extends BaseTest {
                 subTitleAddCredentials)).getText(), "Select a type of credential");
         Assert.assertEquals(actualTypes, expectedTypes, "The lists of credential types are not identical!");
         Assert.assertFalse(getDriver().findElement(nextButton).isEnabled(), "'Next' button is not active");
+    }
+    @Test
+    public void testFormCredentialsOpen(){
+        credentialsOpen();
+        addCredentialsClick();
+
+        getDriver().findElement(userNameAndPasswordButton).click();
+        getDriver().findElement(nextButton).click();
+
+        Assert.assertTrue(getDriver().findElement(addUsernameWithPasswordWindow).isDisplayed(),
+                "The 'Add Username with password' modal window did not open!");
     }
 }
