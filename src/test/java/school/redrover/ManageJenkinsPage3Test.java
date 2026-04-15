@@ -87,6 +87,7 @@ public class ManageJenkinsPage3Test extends BaseTest {
 
     @Test
     public void testPreviewButtonDisplaysFormattedSystemMessage() {
+
         getWait10().until(ExpectedConditions.elementToBeClickable(MANAGE_JENKINS_LINK)).click();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(CONFIGURE_SECURITY_LINK)).click();
