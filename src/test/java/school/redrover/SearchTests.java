@@ -66,4 +66,16 @@ public class SearchTests extends BaseTest {
 
         Assert.assertTrue(getWait2().until(ExpectedConditions.urlContains("/job/" + jobTitle)));
     }
+
+    @Test
+    public void testOpenSearchByKeyboard(){
+
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(NEW_ITEM_BUTTON));
+        getDriver().findElement(By.tagName("body"))
+                .sendKeys(Keys.chord(Keys.CONTROL, "k"));
+        getWait2().until(ExpectedConditions.elementToBeClickable(SEARCH_RESULTS));
+
+        Boolean res = getDriver().findElement(SEARCH_INPUT_FIELD).isDisplayed();
+        Assert.assertTrue(res);
+    }
 }
