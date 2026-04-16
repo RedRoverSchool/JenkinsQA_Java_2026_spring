@@ -9,7 +9,7 @@ import school.redrover.common.ProjectUtils;
 
 public class FolderConfigurationTest extends BaseTest {
     public static final String FOLDER_NAME = "FolderInitial";
-    public static final By FOLDER_NAME_MAIN_PAGE=By.cssSelector(".jenkins-table__link > span:first-child");
+    public static final By FOLDER_NAME_MAIN_PAGE = By.cssSelector(".jenkins-table__link > span:first-child");
 
     private void createFolder(String name) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -23,17 +23,17 @@ public class FolderConfigurationTest extends BaseTest {
         ProjectUtils.get(getDriver());
     }
 
-    private void goToConfigPage(){
+    private void goToConfigPage() {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.className("jenkins-menu-dropdown-chevron"))).click();
     }
 
     @Test
-    public void testCreate(){
+    public void testCreate() {
         createFolder(FOLDER_NAME);
         goToMainPage();
 
         Assert.assertEquals(
-                getDriver().findElement(FOLDER_NAME_MAIN_PAGE).getText(), FOLDER_NAME);
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(FOLDER_NAME_MAIN_PAGE)).getText(), FOLDER_NAME);
     }
 
     @Test(dependsOnMethods = "testCreate")
@@ -49,12 +49,12 @@ public class FolderConfigurationTest extends BaseTest {
 
         goToMainPage();
 
-        Assert.assertEquals(getDriver().findElement(FOLDER_NAME_MAIN_PAGE).getText(), FOLDER_NEW_NAME);
+        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(FOLDER_NAME_MAIN_PAGE)).getText(), FOLDER_NEW_NAME);
     }
 
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescription() {
-        String descriptiontext="DescriptionForTest";
+        String descriptiontext = "DescriptionForTest";
 
         goToConfigPage();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[normalize-space()='Configure']"))).click();
