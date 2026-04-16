@@ -1,11 +1,12 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.ProjectUtils;
 
 public class FolderConfigurationTest extends BaseTest {
     public static final String FOLDER_NAME = "FolderInitial";
@@ -20,7 +21,10 @@ public class FolderConfigurationTest extends BaseTest {
     }
 
     private void goToMainPage() {
-        ProjectUtils.get(getDriver());
+        WebElement logo = getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a.app-jenkins-logo")));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", logo);
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a[@href='/view/all/newJob']"))).isDisplayed();
     }
 
     private void goToConfigPage() {
