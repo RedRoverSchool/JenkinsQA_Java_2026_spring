@@ -33,21 +33,15 @@ public class AddCredentialsTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(addCredentialsButton).isEnabled(),
                 "'Add credentials' button is not enabled!");
     }
-    @Test
+    @Test(dependsOnMethods = "testAddCredentialsButtonActive")
     public void testAddCredentialsClick() {
-        getDriver().findElement(manageJenkinsButton).click();
-        getDriver().findElement(credentialsButton).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(addCredentialsButton)).click();
-        modalWindow();
-        Assert.assertTrue(modalWindow().isDisplayed(), "The 'Add credentials' modal window did not open!");
-    }
-    @Test
-    public void testCredentialsTypes() {
-        getDriver().findElement(manageJenkinsButton).click();
-        getDriver().findElement(credentialsButton).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(addCredentialsButton)).click();
         modalWindow();
 
+        Assert.assertTrue(modalWindow().isDisplayed(), "The 'Add credentials' modal window did not open!");
+    }
+    @Test(dependsOnMethods = "testAddCredentialsClick")
+    public void testCredentialsTypes() {
         List<String> expectedTypes = List.of(
                 "Username with password",
                 "GitHub App",
