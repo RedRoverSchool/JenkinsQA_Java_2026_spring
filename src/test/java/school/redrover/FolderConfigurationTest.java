@@ -50,5 +50,6 @@ public class FolderConfigurationTest extends BaseTest {
 
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("view-message"))).getText(), "DescriptionForTest");
+
     }
 }
