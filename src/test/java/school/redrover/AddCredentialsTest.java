@@ -24,10 +24,6 @@ public class AddCredentialsTest extends BaseTest {
     private WebElement modalWindow() {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(modalWindow));
     }
-    private void addCredentialsClick() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(addCredentialsButton)).click();
-        modalWindow();
-    }
     @Test
     public void testAddCredentialsButtonActive() {
         getDriver().findElement(manageJenkinsButton).click();
