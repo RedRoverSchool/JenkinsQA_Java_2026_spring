@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -14,36 +15,8 @@ public class PipelineProjectTest extends BaseTest {
 
     public static final String PIPELINE_NAME = "PipelineName";
 
-    private void createPipeline(String name) {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(name);
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-
-        getDriver().findElement(By.id("ok-button")).click();
-
-        goHome();
-    }
-
-    private void goHome() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-head-icon"))).click();
-    }
-
-    private void openJobByName(String name) {
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//td/a[@href='job/%s/']".formatted(name)))).click();
-    }
-
     @Test
-    public void testCreate() {
-        createPipeline(PIPELINE_NAME);
-
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector(".jenkins-table__link > span:first-child")).getText(),
-                PIPELINE_NAME);
-    }
-
-    @Test
-    public void testCreateWithoutNameShowsError() {
+    public void testCreateWithoutNameError() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
 
@@ -56,11 +29,26 @@ public class PipelineProjectTest extends BaseTest {
     }
 
     @Test
+    public void testCreate() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(PIPELINE_NAME);
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.name("Submit")));
+        getDriver().findElement(By.id("jenkins-head-icon")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector(".jenkins-table__link > span:first-child")).getText(),
+                PIPELINE_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreate")
     public void testAddDescription() {
         final String description = "SomeDescription";
 
-        createPipeline(PIPELINE_NAME);
-        openJobByName(PIPELINE_NAME);
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//td/a[@href='job/%s/']".formatted(PIPELINE_NAME)))).click();
 
         getDriver().findElement(By.id("description-link")).click();
 
@@ -72,12 +60,12 @@ public class PipelineProjectTest extends BaseTest {
                 description);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testAddDescription")
     public void testRename() {
         final String renamedPipeline = "RenamedPipeline";
 
-        createPipeline(PIPELINE_NAME);
-        openJobByName(PIPELINE_NAME);
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//td/a[@href='job/%s/']".formatted(PIPELINE_NAME)))).click();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//a[@href='/job/%s/confirm-rename']".formatted(PIPELINE_NAME)))).click();
@@ -87,7 +75,7 @@ public class PipelineProjectTest extends BaseTest {
         inputField.sendKeys(renamedPipeline);
         getDriver().findElement(By.xpath("//button[@value='Rename']")).click();
 
-        goHome();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-head-icon"))).click();
 
         Assert.assertEquals(
                 getDriver().findElement(By.cssSelector(".jenkins-table__link > span:first-child")).getText(),

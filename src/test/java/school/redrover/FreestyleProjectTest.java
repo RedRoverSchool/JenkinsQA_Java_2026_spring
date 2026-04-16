@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 import java.time.Duration;
+import java.util.List;
 
 public class FreestyleProjectTest extends BaseTest {
 
@@ -76,6 +77,21 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    public void testDelete() {
+        createNewProject(PROJECT_NAME);
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("a.app-jenkins-logo"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//span[text()='%s']".formatted(PROJECT_NAME)))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-title='Delete Project']"))).click();
+        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+        List<String> listOfJobs = getDriver().findElements(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).stream()
+                .map(WebElement::getText).toList();
+
+        Assert.assertEquals(listOfJobs.size(), 0);
+    }
+
+    @Test
     public void testBuildTriggersWarningMessage() {
         createNewProject(PROJECT_NAME);
 
@@ -99,7 +115,23 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
                 "Build scheduled");
     }
-    @Ignore
+
+    @Test
+    public void testBuildNow() {
+        createNewProject(PROJECT_NAME);
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("a.app-jenkins-logo"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//span[text()='%s']".formatted(PROJECT_NAME)))).click();
+        getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
+
+        List<String> listOfBuilds = getDriver().findElements(By.className("app-builds-container__item")).stream()
+                .map(WebElement::getText)
+                .toList();
+
+        Assert.assertEquals(listOfBuilds.size(), 1);
+    }
+
     @Test
     public void testBuildAfterOtherProjectsAreBuild() {
         createNewProject(PROJECT_NAME);
@@ -117,18 +149,17 @@ public class FreestyleProjectTest extends BaseTest {
                 getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                         By.cssSelector("input[name = 'jenkins-triggers-ReverseBuildTrigger']"))));
 
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.name("_.upstreamProjects")))
+        getWait10().until(ExpectedConditions.presenceOfElementLocated(By.name("_.upstreamProjects")))
                 .sendKeys("FreestyleProject", Keys.TAB);
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(), 'Trigger even if the build fails')]"))).click();
         getDriver().findElement(By.name("Submit")).click();
         getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), "FreestyleProject2"));
+        getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
 
-        WebElement statusButton = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text()='Status']/..")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", statusButton);
+        List <String> listOfBuilds = getDriver().findElements(By.className("app-builds-container__item")).stream()
+                .map(WebElement::getText)
+                .toList();
 
-        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='main-panel']/h2[1]"))).getText(),
-                "Upstream Projects");
-        Assert.assertEquals(getDriver().findElement(By.xpath("//a[contains(@class,'model-link')]")).getText(),
-                "FreestyleProject");
+        Assert.assertEquals(listOfBuilds.size(), 1);
     }
 }
