@@ -10,11 +10,16 @@ import school.redrover.common.ProjectUtils;
 
 public class FolderConfigurationTest extends BaseTest {
 
+    private static final String FOLDER_NAME = "TestFolder_Name";
+    private static final By DROP_DOWN_MENU = By.xpath("//button[@class='jenkins-menu-dropdown-chevron']");
+    private static final By DROP_DOWN_MENU_CONFIGURE = By.xpath("//a[normalize-space()='Configure']");
+    private static final By DESCRIPTION_INPUT_FOLDER = By.name("_.description");
+
     private void createFolder(String name) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='name']"))).sendKeys(name);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='name']"))).sendKeys(name);
         getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='ok-button']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='ok-button']"))).click();
     }
 
     private void goToMainPage() {
@@ -24,32 +29,45 @@ public class FolderConfigurationTest extends BaseTest {
     @Test
     public void testRename() {
 
-        final String FOLDER_NAME = "FolderName";
-        final String FOLDER_NEW_NAME = "FolderNewName";
+        final String FOLDER_NEW_NAME = "TestFolder_NewName";
 
         createFolder(FOLDER_NAME);
         goToMainPage();
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='jenkins-menu-dropdown-chevron']"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[normalize-space()='Configure']"))).click();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='_.displayNameOrNull']"))).sendKeys(FOLDER_NEW_NAME);
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@name='Submit']"))).click();
-
+        getWait5().until(ExpectedConditions.elementToBeClickable(DROP_DOWN_MENU)).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(DROP_DOWN_MENU_CONFIGURE)).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='_.displayNameOrNull']"))).sendKeys(FOLDER_NEW_NAME);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@name='Submit']"))).click();
         WebElement name = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1")));
 
         Assert.assertEquals(name.getText(), FOLDER_NEW_NAME);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testRename")
     public void testAddDescription() {
-        createFolder("TestFolder");
 
-        getDriver().findElement(By.name("_.description")).sendKeys("DescriptionForTest");
-
+        getWait5().until(ExpectedConditions.elementToBeClickable(DROP_DOWN_MENU)).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(DROP_DOWN_MENU_CONFIGURE)).click();
+        getDriver().findElement(DESCRIPTION_INPUT_FOLDER).sendKeys("DescriptionForTest");
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("view-message"))).getText(), "DescriptionForTest");
     }
+
+    @Test(dependsOnMethods = "testAddDescription")
+    public void testChangeDescription() {
+        goToMainPage();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(DROP_DOWN_MENU)).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(DROP_DOWN_MENU_CONFIGURE)).click();
+        getDriver().findElement(DESCRIPTION_INPUT_FOLDER).clear();
+        getDriver().findElement(By.name("_.description")).sendKeys("NewDescriptionForTest");
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("view-message"))).getText(), "NewDescriptionForTest");
+
+    }
+
 }
