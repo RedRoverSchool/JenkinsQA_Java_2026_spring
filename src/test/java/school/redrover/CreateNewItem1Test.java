@@ -34,18 +34,18 @@ public class CreateNewItem1Test extends BaseTest {
     @Test
     public void testSelectItemTypeWithValidName() {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
-        getDriver().findElement(By.id("name")).sendKeys("Test1");
+        getDriver().findElement(By.id("name")).sendKeys("Test3");
         getDriver().findElement(By.xpath("//div[contains(text(), 'Build, test')]")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Test1");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Test3");
 
     }
     @Test(dependsOnMethods = "testSelectItemTypeWithValidName")
     public void testSelectItemTypeWithSameName() {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
-        getDriver().findElement(By.id("name")).sendKeys("Test1");
-        Assert.assertEquals(getDriver().findElement(By.id("itemname-invalid")).getText(), "» A job already exists with the name ‘Test1’");
+        getDriver().findElement(By.id("name")).sendKeys("Test3");
+        Assert.assertEquals(getDriver().findElement(By.id("itemname-invalid")).getText(), "» A job already exists with the name ‘Test3’");
 
     }
 }
