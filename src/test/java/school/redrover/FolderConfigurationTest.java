@@ -49,7 +49,7 @@ public class FolderConfigurationTest extends BaseTest {
         getWait5().until(ExpectedConditions.elementToBeClickable(DROP_DOWN_MENU)).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(DROP_DOWN_MENU_CONFIGURE)).click();
         getDriver().findElement(DESCRIPTION_INPUT_FOLDER).sendKeys("DescriptionForTest");
-        getDriver().findElement(By.name("Submit")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
 
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("view-message"))).getText(), "DescriptionForTest");
