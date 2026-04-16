@@ -17,7 +17,7 @@ public class FolderConfigurationTest extends BaseTest {
     }
 
     private void goToMainPage() {
-        getDriver().findElement(By.xpath("//span[text()='Jenkins']")).click();
+        getDriver().findElement((By.xpath("//a[@href='/' or contains(@href,'/')]"))).click();
     }
 
     @Test
@@ -50,6 +50,5 @@ public class FolderConfigurationTest extends BaseTest {
 
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("view-message"))).getText(), "DescriptionForTest");
-
     }
 }
