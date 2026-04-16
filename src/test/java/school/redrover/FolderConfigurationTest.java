@@ -34,10 +34,10 @@ public class FolderConfigurationTest extends BaseTest {
         createFolder(FOLDER_NAME);
         goToMainPage();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(DROP_DOWN_MENU)).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(DROP_DOWN_MENU_CONFIGURE)).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='_.displayNameOrNull']"))).sendKeys(FOLDER_NEW_NAME);
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@name='Submit']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(DROP_DOWN_MENU)).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(DROP_DOWN_MENU_CONFIGURE)).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='_.displayNameOrNull']"))).sendKeys(FOLDER_NEW_NAME);
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@name='Submit']"))).click();
         WebElement name = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1")));
 
         Assert.assertEquals(name.getText(), FOLDER_NEW_NAME);
