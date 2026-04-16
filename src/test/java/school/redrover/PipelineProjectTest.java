@@ -1,19 +1,19 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-
-import java.time.Duration;
 
 public class PipelineProjectTest extends BaseTest {
 
     public static final String PIPELINE_NAME = "PipelineName";
+
+    private static final By SAVE_BUTTON = By.xpath("//button[@name='Submit']");
+    private static final By JENKINS_LOGO = By.xpath("//span[@class='jenkins-mobile-hide']");
 
     @Test
     public void testCreateWithoutNameError() {
@@ -80,5 +80,40 @@ public class PipelineProjectTest extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.cssSelector(".jenkins-table__link > span:first-child")).getText(),
                 renamedPipeline);
+    }
+
+    @Test(dependsOnMethods = "testCreate")
+    public void testDisplayNameInAdvancedSectionChangeProjectNameOnDashboard() {
+        String displayName = "Changed Pipeline";
+
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//span[text()='%s']".formatted(PIPELINE_NAME)))).click();
+
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[contains(@href, '/configure')]"))).click();
+
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "window.scrollTo(0, document.body.scrollHeight);");
+
+        WebElement advancedButton = getWait10().until(
+                ExpectedConditions.elementToBeClickable(
+                        By.xpath("(//button[contains(@class, 'advancedButton')])[last()]")));
+        advancedButton.click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//input[@name='_.displayNameOrNull']"))).sendKeys(displayName);
+
+        getDriver().findElement(SAVE_BUTTON).click();
+
+        getWait10().until(ExpectedConditions.urlContains("/job/" + PIPELINE_NAME.replace(" ", "%20")));
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                JENKINS_LOGO)).click();
+
+        WebElement projectOnDashboard = getWait10().until(
+                ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//span[text()='%s']".formatted(displayName))));
+        Assert.assertEquals(projectOnDashboard.getText(), displayName,
+                "Project should be displayed with Display Name on dashboard");
     }
 }
