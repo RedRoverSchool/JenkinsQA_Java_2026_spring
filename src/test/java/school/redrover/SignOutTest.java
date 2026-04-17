@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.JenkinsUtils;
 
 public class SignOutTest extends BaseTest {
 
@@ -70,8 +71,19 @@ public class SignOutTest extends BaseTest {
     }
 
     @Test (dependsOnMethods = "testSingOutIsImmediate")
-    public void testJenkinsSingOutButtonUserNameEmpty() {
-        WebElement userButton = getDriver().findElement(By.id("root-action-UserAction"));
+     public void testJenkinsSingOutButtonUserNameEmpty() {
+
+        String currentUrl = getDriver().getCurrentUrl();
+        String baseUrl = currentUrl.replaceFirst("(https?://[^/]+).*", "$1");
+        getDriver().get(baseUrl);
+
+
+        JenkinsUtils.login(getDriver());
+
+
+        WebElement userButton = getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction"))
+        );
 
         Actions actions = new Actions(getDriver());
         actions.moveToElement(userButton).perform();
@@ -81,11 +93,11 @@ public class SignOutTest extends BaseTest {
         );
         dropdownMenu.findElement(By.xpath(".//a[@href='/logout']")).click();
 
-        getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='submit']"))
+
+        WebElement usernameField = getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("j_username"))
         );
 
-        WebElement usernameField = getDriver().findElement(By.id("j_username"));
         String usernameValue = usernameField.getAttribute("value");
         Assert.assertEquals(usernameValue, "",
                 "Поле 'Username' должно быть пустым, но содержит: '" + usernameValue + "'");
