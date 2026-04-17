@@ -90,7 +90,7 @@ public class PipelineProjectTest extends BaseTest {
         String displayName = "Changed Pipeline";
 
         getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='PipelineName']".formatted(PIPELINE_NAME)))).click();
+                By.xpath("//a[@class='jenkins-table__link model-link inside']".formatted(PIPELINE_NAME)))).click();
 
         getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//a[contains(@href, '/configure')]"))).click();
@@ -115,7 +115,7 @@ public class PipelineProjectTest extends BaseTest {
 
         WebElement projectOnDashboard = getWait10().until(
                 ExpectedConditions.presenceOfElementLocated(
-                        By.xpath("//span[text()='%s']".formatted(displayName))));
+                        By.xpath("//a[@class='jenkins-table__link model-link inside']".formatted(displayName))));
         Assert.assertEquals(projectOnDashboard.getText(), displayName,
                 "Project should be displayed with Display Name on dashboard");
     }
