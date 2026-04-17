@@ -33,4 +33,12 @@ public class CreateNewItemTest extends BaseTest {
 
         Assert.assertEquals(expectedItemTypeList, actualItemTypeList);
     }
+
+    @Test
+    public void testCreateEmptyItem() {
+        getDriver().findElement(By.xpath("//a[.//span[text()='New Item']]")).click();
+        getDriver().findElement(By.cssSelector("#ok-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#itemname-required")).getText(),"» This field cannot be empty, please enter a valid name");
+    }
 }
