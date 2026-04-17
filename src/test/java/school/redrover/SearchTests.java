@@ -75,7 +75,16 @@ public class SearchTests extends BaseTest {
                 .sendKeys(Keys.chord(Keys.CONTROL, "k"));
         getWait2().until(ExpectedConditions.elementToBeClickable(SEARCH_RESULTS));
 
-        Boolean res = getDriver().findElement(SEARCH_INPUT_FIELD).isDisplayed();
-        Assert.assertTrue(res);
+        Assert.assertTrue(getDriver().findElement(SEARCH_INPUT_FIELD).isDisplayed());
+    }
+
+    @Test
+    public void testEmptyQuery(){
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(SEARCH_BUTTON)).click();
+        getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(Keys.ENTER);
+
+        Assert.assertTrue(getWait2().until(ExpectedConditions.urlContains("https://www.jenkins.io/doc/book/using/searchbox/")));
+
     }
 }
