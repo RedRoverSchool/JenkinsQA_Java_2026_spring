@@ -105,8 +105,8 @@ public final class ProjectUtils {
 
     static void takeScreenshot(WebDriver driver, String className, String methodName) {
         File directory = new File("screenshots");
-        if (!directory.exists()) {
-            directory.mkdirs();
+        if (!directory.exists() && !directory.mkdirs()) {
+            throw new RuntimeException("Failure creating directory for screenshots");
         }
         try {
             File screenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
