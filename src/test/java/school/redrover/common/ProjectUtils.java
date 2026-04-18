@@ -95,10 +95,6 @@ public final class ProjectUtils {
         return getValue(PREFIX_JENKINS_PROP + "password");
     }
 
-    public static String getApiToken() {
-        return getValue(PREFIX_JENKINS_PROP + "api-token");
-    }
-
     public static void log(String message, Object... args) {
         System.out.println(message.formatted(args));
     }
