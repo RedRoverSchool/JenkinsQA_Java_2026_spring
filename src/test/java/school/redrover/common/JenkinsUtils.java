@@ -2,7 +2,9 @@ package school.redrover.common;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.json.Json;
 
+import java.net.CookieManager;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -14,12 +16,53 @@ import java.util.stream.Collectors;
 
 public final class JenkinsUtils {
 
-    private static final HttpClient client = HttpClient.newBuilder().build();
+    private static final List<String> HEADER_FORM = List.of("Content-Type", "application/x-www-form-urlencoded");
 
-    private static String authorization;
+    private static final HttpClient client = HttpClient.newBuilder()
+            .cookieHandler(new CookieManager())
+            .build();
+
+    private static List<String> headerAuthorization;
+    private static List<String> headerCrumb;
 
     private JenkinsUtils() {
         throw new UnsupportedOperationException();
+    }
+
+    private static HttpResponse<String> getHttp(String url, List<String> headerList) {
+        return getHttp(url, headerList.toArray(String[]::new));
+    }
+
+    private static HttpResponse<String> getHttp(String url, String... headers) {
+        try {
+            return client.send(
+                    HttpRequest.newBuilder()
+                            .uri(URI.create(url))
+                            .headers(headers)
+                            .GET()
+                            .build(),
+                    HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static HttpResponse<String> getHttp(String url) {
+        return getHttp(url, getDefaultHeader());
+    }
+
+    private static HttpResponse<String> postHttp(String url, String body) {
+        try {
+            return client.send(
+                    HttpRequest.newBuilder()
+                            .uri(URI.create(url))
+                            .headers(getDefaultHeader())
+                            .POST(HttpRequest.BodyPublishers.ofString(body))
+                            .build(),
+                    HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static String getCrumbFromPage(String page) {
@@ -31,14 +74,10 @@ public final class JenkinsUtils {
         return page.substring(crumbTagBeginIndex, crumbTagEndIndex);
     }
 
-    private static String getCrumbFromJson(String page) {
-        final String CRUMB_TAG = "\"crumb\":\"";
-        final String CRUMB_END = "\",\"crumbRequestField";
+    private static List<String> getCrumbFromJson(String json) {
+        Map<String, String> jsonMap = new Json().toType(json, HashMap.class);
 
-        int crumbTagIndex = page.indexOf(CRUMB_TAG) + CRUMB_TAG.length();
-        int crumbEndIndex = page.indexOf(CRUMB_END);
-
-        return page.substring(crumbTagIndex, crumbEndIndex);
+        return List.of(jsonMap.get("crumbRequestField"), jsonMap.get("crumb"));
     }
 
     private static Set<String> getSubstringsFromPage(String page, String from, String to) {
@@ -66,78 +105,39 @@ public final class JenkinsUtils {
         return result;
     }
 
-    private static String[] getHeader() {
-        List<String> result = new ArrayList<>(List.of("Content-Type", "application/x-www-form-urlencoded"));
-        if (ProjectUtils.getApiToken() != null) {
-            result.add("Authorization");
-            if (authorization == null) {
-                authorization = "Basic " + Base64.getEncoder().encodeToString((ProjectUtils.getUserName() + ":" + ProjectUtils.getApiToken()).getBytes());
-            }
-            result.add(authorization);
-        }
+    private static String[] getDefaultHeader() {
+        List<String> result = new ArrayList<>();
+
+        result.addAll(HEADER_FORM);
+        result.addAll(getHeaderAuthorization());
+        result.addAll(getHeaderCrumb());
 
         return result.toArray(String[]::new);
     }
 
-    private static HttpResponse<String> getHttp(String url, String... headers) {
-        try {
-            return client.send(
-                    HttpRequest.newBuilder()
-                            .uri(URI.create(url))
-                            .headers(headers)
-                            .GET()
-                            .build(),
-                    HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static HttpResponse<String> getHttp(String url) {
-        return getHttp(url, getHeader());
-    }
-
-    private static HttpResponse<String> postHttp(String url, String body) {
-        try {
-            return client.send(
-                    HttpRequest.newBuilder()
-                            .uri(URI.create(url))
-                            .headers(getHeader())
-                            .POST(HttpRequest.BodyPublishers.ofString(body))
-                            .build(),
-                    HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static HttpResponse<String> postHttp(String url, String body, String crumb) {
-        try {
-            return client.send(
-                    HttpRequest.newBuilder()
-                            .uri(URI.create(url))
-                            .headers(getHeader())
-                            .header("Jenkins-Crumb", crumb)
-                            .POST(HttpRequest.BodyPublishers.ofString(body))
-                            .build(),
-                    HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static String getCrumb() {
-        HttpResponse<String> jsonResponse = getHttp(ProjectUtils.getUrl() + "crumbIssuer/api/json",
-                "Authorization",
-                "Basic " + Base64.getEncoder().encodeToString((ProjectUtils.getUserName() + ":" + ProjectUtils.getApiToken()).getBytes()));
-
-        if (jsonResponse.statusCode() == 403) {
-            throw new RuntimeException(String.format("Authorization does not work with user: \"%s\" and password: \"%s\"", ProjectUtils.getUserName(), ProjectUtils.getApiToken()));
-        } else if (jsonResponse.statusCode() != 200) {
-            throw new RuntimeException("Something went wrong while clearing data");
+    private static List<String> getHeaderAuthorization() {
+        if (headerAuthorization == null) {
+            headerAuthorization = List.of(
+                    "Authorization",
+                    "Basic " + Base64.getEncoder().encodeToString((ProjectUtils.getUserName() + ":" + ProjectUtils.getPassword()).getBytes()));
         }
 
-        return getCrumbFromJson(jsonResponse.body());
+        return headerAuthorization;
+    }
+
+    private static List<String> getHeaderCrumb() {
+        if (headerCrumb == null) {
+            HttpResponse<String> jsonResponse = getHttp(ProjectUtils.getUrl() + "crumbIssuer/api/json", getHeaderAuthorization());
+            if (jsonResponse.statusCode() == 403) {
+                throw new RuntimeException(String.format("Authorization does not work with user: \"%s\" and password: \"%s\"", ProjectUtils.getUserName(), ProjectUtils.getUserName()));
+            } else if (jsonResponse.statusCode() != 200) {
+                throw new RuntimeException("Something went wrong while clearing data");
+            }
+
+            headerCrumb = getCrumbFromJson(jsonResponse.body());
+        }
+
+        return headerCrumb;
     }
 
     private static String getPage(String uri) {
