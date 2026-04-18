@@ -1,11 +1,15 @@
 package school.redrover.common;
 
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.time.Duration;
 import java.util.Properties;
 
@@ -97,5 +101,19 @@ public final class ProjectUtils {
 
     public static void log(String message, Object... args) {
         System.out.println(message.formatted(args));
+    }
+
+    static void takeScreenshot(WebDriver driver, String className, String methodName) {
+        File directory = new File("screenshots");
+        if (!directory.exists() && !directory.mkdirs()) {
+            throw new RuntimeException("Failure creating directory for screenshots");
+        }
+        try {
+            File screenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            File finalScreenshotFile = new File(directory,className + "." + methodName + ".png");
+            Files.copy(screenshotFile.toPath(), finalScreenshotFile.toPath());
+        } catch (Exception e) {
+            ProjectUtils.log("Error making screenshot: " + e.getMessage());
+        }
     }
 }
