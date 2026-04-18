@@ -65,13 +65,8 @@ public final class JenkinsUtils {
         }
     }
 
-    private static String getCrumbFromPage(String page) {
-        final String CRUMB_TAG = "data-crumb-value=\"";
-
-        int crumbTagBeginIndex = page.indexOf(CRUMB_TAG) + CRUMB_TAG.length();
-        int crumbTagEndIndex = page.indexOf('"', crumbTagBeginIndex);
-
-        return page.substring(crumbTagBeginIndex, crumbTagEndIndex);
+    private static String getCrumbAsString() {
+        return "%s=%s".formatted(getHeaderCrumb().get(0), getHeaderCrumb().get(1));
     }
 
     private static List<String> getCrumbFromJson(String json) {
@@ -142,9 +137,7 @@ public final class JenkinsUtils {
 
     private static String getPage(String uri) {
         HttpResponse<String> page = getHttp(ProjectUtils.getUrl() + uri);
-        if (page.statusCode() == 403) {
-            throw new RuntimeException(String.format("Authorization does not work with user: \"%s\" and API token: \"%s\"", ProjectUtils.getUserName(), ProjectUtils.getApiToken()));
-        } else if (page.statusCode() != 200) {
+        if (page.statusCode() != 200) {
             throw new RuntimeException("Something went wrong while clearing data");
         }
 
@@ -152,9 +145,8 @@ public final class JenkinsUtils {
     }
 
     private static void deleteByLink(String link, Set<String> names, String crumb) {
-        String fullCrumb = String.format("Jenkins-Crumb=%s", crumb);
         for (String name : names) {
-            postHttp(String.format(ProjectUtils.getUrl() + link, name), fullCrumb);
+            postHttp(String.format(ProjectUtils.getUrl() + link, name), crumb);
         }
     }
 
@@ -162,8 +154,8 @@ public final class JenkinsUtils {
         String url = ProjectUtils.getUrl() + "user/" + ProjectUtils.getUserName() + "/appearance/configSubmit";
         String jsonPayload = "{\"userProperty0\":{\"theme\":{\"value\":\"0\",\"stapler-class\":\"io.jenkins.plugins.thememanager.none.NoOpThemeManagerFactory\",\"$class\":\"io.jenkins.plugins.thememanager.none.NoOpThemeManagerFactory\"}}}";
         String encodedJson = URLEncoder.encode(jsonPayload, StandardCharsets.UTF_8);
-        String body = String.format("Jenkins-Crumb=%s&json=%s&Submit=Submit&core:apply=true",
-                getCrumbFromPage(getPage("")),
+        String body = String.format("%s&json=%s&Submit=Submit&core:apply=true",
+                getCrumbAsString(),
                 encodedJson);
         postHttp(url, body);
     }
@@ -172,19 +164,19 @@ public final class JenkinsUtils {
         String mainPage = getPage("");
         deleteByLink("job/%s/doDelete",
                 getSubstringsFromPage(mainPage, "href=\"job/", "/\""),
-                getCrumbFromPage(mainPage));
+                getCrumbAsString());
     }
 
     private static void deleteViews() {
         String mainPage = getPage("");
         deleteByLink("view/%s/doDelete",
                 getSubstringsFromPage(mainPage, "href=\"/view/", "/\""),
-                getCrumbFromPage(mainPage));
+                getCrumbAsString());
 
         String viewPage = getPage("me/my-views/view/all/");
         deleteByLink("user/admin/my-views/view/%s/doDelete",
                 getSubstringsFromPage(viewPage, "href=\"/user/admin/my-views/view/", "/\""),
-                getCrumbFromPage(viewPage));
+                getCrumbAsString());
     }
 
     private static void deleteUsers() {
@@ -192,7 +184,7 @@ public final class JenkinsUtils {
         deleteByLink("manage/securityRealm/user/%s/doDelete",
                 getSubstringsFromPage(userPage, "href=\"user/", "/\"").stream()
                         .filter(user -> !user.equals(ProjectUtils.getUserName())).collect(Collectors.toSet()),
-                getCrumbFromPage(userPage));
+                getCrumbAsString());
     }
 
     private static void deleteNodes() {
@@ -201,15 +193,15 @@ public final class JenkinsUtils {
         nodes.remove("(built-in)");
         deleteByLink("manage/computer/%s/doDelete",
                 nodes,
-                getCrumbFromPage(mainPage));
+                getCrumbAsString());
     }
 
     private static void deleteDescription(String uri) {
         String mainPage = getPage("");
         postHttp(ProjectUtils.getUrl() + uri,
                 String.format(
-                        "description=&Submit=&Jenkins-Crumb=%1$s&json=%%7B%%22description%%22%%3A+%%22%%22%%2C+%%22Submit%%22%%3A+%%22%%22%%2C+%%22Jenkins-Crumb%%22%%3A+%%22%1$s%%22%%7D",
-                        getCrumbFromPage(mainPage)));
+                        "description=&Submit=&%1$s&json=%%7B%%22description%%22%%3A+%%22%%22%%2C+%%22Submit%%22%%3A+%%22%%22%%2C+%%22Jenkins-Crumb%%22%%3A+%%22%1$s%%22%%7D",
+                        getCrumbAsString()));
     }
 
     private static void deleteMainDescription() {
@@ -224,18 +216,17 @@ public final class JenkinsUtils {
         String systemPage = getPage("manage/credentials/store/system/");
         deleteByLink("manage/credentials/store/system/domain/%s/doDelete",
                 getSubstringsFromPage(systemPage, "<a href=\"domain/", "\" class"),
-                getCrumbFromPage(systemPage));
+                getCrumbAsString());
 
 //        postHttp(ProjectUtils.getUrl() + "user/admin/credentials/store/user/domain/_/doDelete",
 //                String.format("Jenkins-Crumb=%s", getCrumbFromPage(systemPage)));
     }
 
     private static void deleteSystemMessage() {
-        String mainPage = getPage("");
         postHttp(ProjectUtils.getUrl() + "manage/configSubmit",
                 String.format(
-                        "system_message=&Jenkins-Crumb=%1$s&json=%%7B%%22system_message%%22%%3A%%22%%22%%2C%%22Jenkins-Crumb%%22%%3A%%22%1$s%%22%%7D",
-                        getCrumbFromPage(mainPage)));
+                        "system_message=&%1$s&json=%%7B%%22system_message%%22%%3A%%22%%22%%2C%%22Jenkins-Crumb%%22%%3A%%22%1$s%%22%%7D",
+                        getCrumbAsString()));
     }
 
     static void clearData() {
