@@ -7,11 +7,15 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NodeTest extends BaseTest {
 
     private static final String NEW_NODE_NAME = "New Test Node";
+    private static final String DESCRIPTION = "Use only for urgent tasks";
+    private static final String DIR = "D:\\Jenkins\\NewTestNode";
+    private static final String LABELS = "Urgent";
 
     @Test
     public void testCreateNewNode(){
@@ -33,5 +37,34 @@ public class NodeTest extends BaseTest {
                 .toList();
 
         Assert.assertTrue(actualNodeList.contains(NEW_NODE_NAME));
+    }
+
+    @Test (dependsOnMethods = "testCreateNewNode")
+    public void testNodeConfiguration(){
+
+        List<String> expectAttributes= new ArrayList<>(List.of(DESCRIPTION, LABELS));
+        List<String> actualAttributes= new ArrayList<>();
+
+        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
+        getDriver().findElement(By.xpath("//a[@href='../computer/%s/']"
+                .formatted(NEW_NODE_NAME.replace(" ", "%20")))).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/computer/%s/configure']"
+                .formatted(NEW_NODE_NAME.replace(" ", "%20")))).click();
+        getDriver().findElement(By.xpath("//textarea[@name='nodeDescription']")).sendKeys(DESCRIPTION);
+        getDriver().findElement(By.xpath("//input[@name='_.remoteFS']")).sendKeys(DIR);
+        getDriver().findElement(By.xpath("//input[@name='_.labelString']")).sendKeys(LABELS);
+        getDriver().findElement(By.xpath("//select[@name='mode']")).click();
+        getDriver().findElement(By.xpath("//option[@value='EXCLUSIVE']")).click();
+        getDriver().findElement(By.xpath("//button[@value='Save']")).click();
+
+        actualAttributes.add(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content")))
+                .getText());
+
+        actualAttributes.add(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a[@href='/label/%s']".formatted(LABELS)))).getText());
+
+        Assert.assertEquals(actualAttributes, expectAttributes);
     }
 }
