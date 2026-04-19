@@ -88,7 +88,7 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
         getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(NEW_PROJECT_NAME);
         getDriver().findElement(By.name("Submit")).click();
-
+        
         Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='main-panel']//h1"))).getText(),
                 NEW_PROJECT_NAME);
     }
