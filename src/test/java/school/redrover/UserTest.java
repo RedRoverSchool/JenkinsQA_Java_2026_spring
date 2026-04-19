@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -11,6 +12,7 @@ import java.util.List;
 public class UserTest extends BaseTest {
 
     private final static String USER_NAME = "testUser";
+    private final static String USER_NEW_NAME = "testUserName";
     private final static String USER_PASSWORD = "testPassword";
     private final static String USER_EMAIL = "testUser@example.com";
 
@@ -59,5 +61,28 @@ public class UserTest extends BaseTest {
 
         Assert.assertNotEquals(actualErrorMessageList.size(), 0);
         Assert.assertEquals(actualErrorMessageList, expectedErrorMessageList);
+    }
+
+    @Test(dependsOnMethods = "testCreateUser")
+    public void testRenameUser() {
+
+        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a[text()='%s']".formatted(USER_NAME)))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a[contains(., 'Account')]"))).click();
+
+        WebElement fullNameInput = getDriver().findElement(By.name("_.fullName"));
+        fullNameInput.clear();
+        fullNameInput.sendKeys(USER_NEW_NAME);
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        String actualUserName = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.tagName("h1"))).getText();
+
+        Assert.assertEquals(actualUserName, USER_NEW_NAME);
     }
 }
