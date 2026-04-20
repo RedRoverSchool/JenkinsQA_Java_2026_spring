@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -13,6 +14,8 @@ public class Folder2Test extends BaseTest {
     @Test
     public void testNewItemPageOpen() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "New Item");
     }
