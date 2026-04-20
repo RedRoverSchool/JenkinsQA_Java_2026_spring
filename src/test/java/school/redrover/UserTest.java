@@ -63,7 +63,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(actualErrorMessageList, expectedErrorMessageList);
     }
 
-    @Test(dependsOnMethods = "testCreateUser")
+    @Test(dependsOnMethods = {"testCreateUser", "testSearchUser"})
     public void testRenameUser() {
 
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
@@ -86,21 +86,21 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(actualUserName, USER_FULL_NAME);
     }
 
-    @Test(dependsOnMethods = {"testCreateUser", "testRenameUser"})
+    @Test(dependsOnMethods = "testCreateUser")
     public void testSearchUser() {
 
         getDriver().findElement(By.id("root-action-SearchAction")).click();
 
         WebElement searchInput = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("command-bar")));
-        searchInput.sendKeys(USER_FULL_NAME);
+        searchInput.sendKeys(USER_NAME);
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='search-results']/p")));
         searchInput.sendKeys(Keys.ENTER);
 
         Assert.assertEquals(
                 getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1"))).getText(),
-                USER_FULL_NAME,
-                "User " + USER_FULL_NAME + "is not found");
+                USER_NAME,
+                "The user with User ID " + USER_NAME + "is not found");
     }
 
     @Test(dependsOnMethods = {"testCreateUser", "testRenameUser", "testSearchUser"})
