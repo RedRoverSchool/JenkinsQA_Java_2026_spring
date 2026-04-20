@@ -103,7 +103,7 @@ public class UserTest extends BaseTest {
                 "User " + USER_FULL_NAME + "is not found");
     }
 
-    @Test(dependsOnMethods = "testSearchUser")
+    @Test(dependsOnMethods = {"testCreateUser", "testRenameUser", "testSearchUser"})
     public void testDeleteUserViaDropDownMenu() {
 
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
@@ -114,12 +114,17 @@ public class UserTest extends BaseTest {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@href, 'doDelete')]"))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='Yes']"))).click();
 
+        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+
         List<String> actualUsersNameList = getDriver().findElements(By
                 .xpath("//a[@class = 'jenkins-table__link model-link inside']"))
                 .stream()
                 .map(WebElement::getText)
                 .toList();
 
-        Assert.assertFalse(actualUsersNameList.contains(USER_NAME), "The user " + USER_NAME + "was not deleted");
+        Assert.assertFalse(
+                actualUsersNameList.contains(USER_NAME),
+                "The user with User ID " + USER_NAME + "was not deleted");
     }
 }
