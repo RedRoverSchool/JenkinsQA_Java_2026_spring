@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 
 public class FreestyleProjectTest extends BaseTest {
@@ -157,5 +158,46 @@ public class FreestyleProjectTest extends BaseTest {
                 .map(WebElement::getText).toList();
 
         Assert.assertEquals(listOfJobs.size(), 1);
+    }
+
+    @Test
+    public void testAddBuildStepDropdownContainsAllOptions(){
+
+        List<String> expectedTexts = Arrays.asList(
+                "Execute Windows batch command",
+                "Execute shell",
+                "Invoke Ant",
+                "Invoke Gradle script",
+                "Invoke top-level Maven targets",
+                "Run with timeout",
+                "Set build status to \"pending\" on GitHub commit"
+        );
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
+        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        WebElement addBuildStepButton = getWait10().until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@suffix='builder']"))
+        );
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", addBuildStepButton);
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(addBuildStepButton));
+
+        addBuildStepButton.click();
+
+        List<WebElement> dropdownItems = getWait10().until(
+                ExpectedConditions.presenceOfAllElementsLocatedBy(
+                        By.xpath("//div[@class='jenkins-dropdown jenkins-dropdown--compact']//button")));
+
+        List<String> actualTexts = dropdownItems.stream()
+                .map(WebElement::getText)
+                .toList();
+
+
+        Assert.assertEquals(actualTexts, expectedTexts,
+                "Dropdown options should match expected list");
+
     }
 }
