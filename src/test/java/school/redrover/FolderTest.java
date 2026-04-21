@@ -12,6 +12,7 @@ public class FolderTest extends BaseTest {
     public static final String FOLDER_NAME = "FolderInitial";
     public static final By FOLDER_NAME_MAIN_PAGE = By.cssSelector(".jenkins-table__link > span:first-child");
     public final String FOLDER_NEW_NAME = "FolderNewName";
+    public final String NESTED_FOLDER = "NestedFolder";
     public final String DESCRIPTION_TEXT = "DescriptionForTest";
 
     private void createFolder(String name) {
@@ -58,9 +59,9 @@ public class FolderTest extends BaseTest {
     public void testAddDescription() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_NEW_NAME)))).click();
 
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(DESCRIPTION_TEXT);
-        getDriver().findElement(By.xpath("//button[@value='Save']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//textarea[@name='description']"))).sendKeys(DESCRIPTION_TEXT);
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@value='Save']"))).click();
 
         Assert.assertEquals(
                 getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText(),
@@ -70,18 +71,33 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testAddDescription")
     public void testAddMetricButtonVisibleInHealthMetricsDropdown() {
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_NEW_NAME)))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_NEW_NAME)))).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("Configure"))).click();
 
-        WebElement healthSection = getWait5().until(ExpectedConditions.presenceOfElementLocated(
+        WebElement healthSection = getWait10().until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//*[contains(text(), 'Health metrics')]")));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", healthSection);
 
-        WebElement addButton = getWait5().until(ExpectedConditions.presenceOfElementLocated(
+        WebElement addButton = getWait10().until(ExpectedConditions.presenceOfElementLocated(
                 By.cssSelector("button.hetero-list-add[suffix='healthMetrics']")));
 
         Assert.assertEquals(addButton.getAttribute("suffix"), "healthMetrics",
                 "Button should have suffix='healthMetrics'");
     }
 
+    @Test(dependsOnMethods = "testRename")
+    public void createNestedFolderTest(){
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_NEW_NAME)))).click();
+
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='newJob']"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='name']"))).sendKeys(NESTED_FOLDER);
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(
+                        "//li[contains(@class,'com_cloudbees_hudson_plugins_folder_Folder')]"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@type='submit']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@value='Save']")))
+                .click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']/span")).getText(), NESTED_FOLDER);
+
+    }
 }
