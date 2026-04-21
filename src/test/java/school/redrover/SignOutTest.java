@@ -137,4 +137,38 @@ public class SignOutTest extends BaseTest {
                 "Поле 'Password' должно быть пустым, но содержит: '" + passwordValue + "'");
     }
 
+    @Test
+    public void testDropdownMenuClosesWhenMouseMovesAway() {
+
+        WebElement userButton = getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction"))
+        );
+
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(userButton).perform();
+
+
+        WebElement dropdownMenu = getWait5().until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//div[contains(@class,'jenkins-dropdown')]")
+                )
+        );
+        Assert.assertTrue(dropdownMenu.isDisplayed(), "Меню не появилось после наведения");
+
+
+        WebElement header = getDriver().findElement(By.tagName("header"));
+        actions.moveToElement(header).click().perform();
+
+
+        getWait5().until(ExpectedConditions.invisibilityOf(dropdownMenu));
+
+
+        WebElement userButtonStillVisible = getDriver().findElement(By.id("root-action-UserAction"));
+        Assert.assertTrue(userButtonStillVisible.isDisplayed(), "Пользователь разлогинился, кнопка не видна");
+
+
+        boolean isLoginFormPresent = getDriver().findElements(By.id("j_username")).isEmpty();
+        Assert.assertTrue(isLoginFormPresent, "Произошёл переход на страницу логина, сессия потеряна");
+    }
+
 }
