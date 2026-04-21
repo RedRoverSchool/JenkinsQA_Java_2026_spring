@@ -1,6 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -18,12 +20,17 @@ public class ManageJenkinsPageTest extends BaseTest {
     private static final By CONFIGURE_SYSTEM_LINK = By.xpath("//a[contains(@href, 'configure')]");
     private static final By SEARCH_BAR = By.id("settings-search-bar");
     private static final By EMPTY_DROPDOWN = By.className("jenkins-search__results__no-results-label");
+    private static final By HEADER = By.xpath("//h1");
 
     private final List<String> expectedItems = List.of("System", "Tools", "Plugins", "Nodes", "Clouds",
             "Appearance", "Security", "Credentials", "Credential Providers", "Users", "System Information",
             "System Log", "Load Statistics", "About Jenkins", "Manage Old Data", "Reload Configuration from Disk",
             "Jenkins CLI", "Script Console", "Prepare for Shutdown"
     );
+
+    private String getHeader() {
+        return getDriver().findElement(HEADER).getText();
+    }
 
     @Test
     public void testManageJenkinsPageItems() {
@@ -81,6 +88,41 @@ public class ManageJenkinsPageTest extends BaseTest {
         String actualOutput = getWait10().until(ExpectedConditions.visibilityOfElementLocated(EMPTY_DROPDOWN)).getText();
 
         Assert.assertEquals(actualOutput, expOutput);
+    }
+
+    @DataProvider
+    public Object[][] systemConfiguration() {
+        return new Object[][]{
+                {"System"}, {"Tools"}, {"Plugins"}, {"Nodes"}, {"Clouds"}, {"Appearance"}
+        };
+    }
+
+    public void pressEnterUntilPageChanges() {
+        getWait10().until(d -> {
+            try {
+                WebElement searchBar = d.findElement(SEARCH_BAR);
+                searchBar.sendKeys(Keys.ENTER);
+
+                return ExpectedConditions.not(
+                        ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), "Manage Jenkins")).apply(d);
+            } catch (StaleElementReferenceException e) {
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        });
+    }
+
+    @Test(dataProvider = "systemConfiguration")
+    public void testNavigateToSystemConfigurationPagesByEnter(String section) {
+        getWait10().until(ExpectedConditions.elementToBeClickable(MANAGE_JENKINS_LINK)).click();
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(HEADER, "Manage Jenkins"));
+
+        WebElement search = getWait10().until(ExpectedConditions.elementToBeClickable((SEARCH_BAR)));
+        search.sendKeys(section);
+        pressEnterUntilPageChanges();
+
+        Assert.assertEquals(getHeader(), section);
     }
 
     @Test
