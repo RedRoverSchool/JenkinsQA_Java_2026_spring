@@ -160,7 +160,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(listOfJobs.size(), 1);
     }
 
-    @Ignore
+   // @Ignore
     @Test
     public void testAddBuildStepDropdownContainsAllOptions(){
 
