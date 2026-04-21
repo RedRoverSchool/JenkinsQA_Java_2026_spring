@@ -78,19 +78,18 @@ public class FooterVersionMenuTest extends BaseTest {
 
     @Test
     public void testAboutJenkinsOpensInSameTab() {
-
         String currentUrl = getDriver().getCurrentUrl();
         String baseUrl = currentUrl.replaceFirst("(https?://[^/]+).*", "$1");
         getDriver().get(baseUrl);
-        JenkinsUtils.login(getDriver());
 
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 
+
         WebElement jenkinsVersionLink = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//footer//a[contains(text(),'Jenkins') and contains(text(),'.')]")
-                )
+                        By.xpath("//footer//a[contains(text(),'Jenkins')]")
+                    )
         );
 
         Actions actions = new Actions(getDriver());
@@ -98,18 +97,18 @@ public class FooterVersionMenuTest extends BaseTest {
 
         WebElement aboutJenkinsMenu = getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//a[contains(text(),'About Jenkins') or contains(text(),'О Jenkins')]")
-                )
-        );
+                            By.xpath("//a[contains(text(),'About Jenkins')]")
+                    )
+            );
 
         String originalWindow = getDriver().getWindowHandle();
         aboutJenkinsMenu.click();
 
         Assert.assertEquals(getDriver().getWindowHandles().size(), 1,
-                "Открылось новое окно или вкладка");
+                    "Открылось новое окно или вкладка");
 
         Assert.assertEquals(getDriver().getWindowHandle(), originalWindow,
-                "Фокус переключился на другое окно");
-    }
+                    "Фокус переключился на другое окно");
+        }
 
     }
