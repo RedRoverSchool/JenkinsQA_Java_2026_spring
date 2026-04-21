@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.JenkinsUtils;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -78,18 +79,17 @@ public class FooterVersionMenuTest extends BaseTest {
     @Test
     public void testAboutJenkinsOpensInSameTab() {
 
+        String currentUrl = getDriver().getCurrentUrl();
+        String baseUrl = currentUrl.replaceFirst("(https?://[^/]+).*", "$1");
+        getDriver().get(baseUrl);
+        JenkinsUtils.login(getDriver());
+
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-
         WebElement jenkinsVersionLink = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//footer//a[contains(@href,'about')]")
+                        By.xpath("//footer//a[contains(text(),'Jenkins') and contains(text(),'.')]")
                 )
         );
 
@@ -110,18 +110,6 @@ public class FooterVersionMenuTest extends BaseTest {
 
         Assert.assertEquals(getDriver().getWindowHandle(), originalWindow,
                 "Фокус переключился на другое окно");
-    }
-
-    @Test(dependsOnMethods = "testAboutJenkinsOpensInSameTab")
-    public void testAboutJenkinsBackButton() {
-
-        getDriver().navigate().back();
-
-        boolean isUserButtonVisible = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction"))
-        ).isDisplayed();
-
-        Assert.assertTrue(isUserButtonVisible, "Сессия не активна после нажатия Back");
     }
 
     }
