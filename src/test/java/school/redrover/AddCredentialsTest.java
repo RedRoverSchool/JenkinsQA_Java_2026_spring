@@ -17,7 +17,6 @@ public class AddCredentialsTest extends BaseTest {
     private static final By DIALOG_HEADER = By.cssSelector(".jenkins-dialog__title");
     private static final By NEXT_BTN = By.id("cr-dialog-next");
     private static final By CREDENTIAL_OPTIONS = By.cssSelector(".jenkins-choice-list__item__label");
-    private static final By ADD_USERNAME_TITLE = By.cssSelector(".jenkins-dialog__title");
     private static final By USERNAME_FIELD = By.name("_.username");
     private static final By PASSWORD_FIELD = By.name("_.password");
     private static final By ID_FIELD = By.name("_.id");
@@ -59,8 +58,7 @@ public class AddCredentialsTest extends BaseTest {
         Assert.assertTrue(nextButton.isEnabled(), "The button must be enabled after selection");
         nextButton.click();
 
-        WebElement addUsernameTitle = getWait5().until(ExpectedConditions.visibilityOfElementLocated(ADD_USERNAME_TITLE));
-        Assert.assertEquals(addUsernameTitle.getText(),"Add Username with password");
+        Boolean addUsernameTitle = getWait5().until(ExpectedConditions.textToBe(DIALOG_HEADER,"Add Username with password"));
 
         getDriver().findElement(USERNAME_FIELD).sendKeys("testUser1");
         getDriver().findElement(PASSWORD_FIELD).sendKeys("testPassword1");
