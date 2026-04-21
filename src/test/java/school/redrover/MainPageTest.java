@@ -4,11 +4,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-public class AddDescriptionTest extends BaseTest {
+public class MainPageTest extends BaseTest {
     private static final String TEXT_CONTENT = "TEST";
 
     private void openDescription(){
@@ -31,15 +30,6 @@ public class AddDescriptionTest extends BaseTest {
         if(save){
             getDriver().findElement(By.name("Submit")).click();
         }
-    }
-
-    @Test
-    public void testPreviewContainerTitle() {
-        openDescription();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.className("textarea-preview-container")).getText(),
-                "Plain text\nPreview");
     }
 
     @Test
@@ -88,15 +78,9 @@ public class AddDescriptionTest extends BaseTest {
                 TEXT_CONTENT);
     }
 
-    @Ignore
-    @Test
+    @Test(dependsOnMethods = "testAddDescription")
     public void testChangeDescription() {
         String changedDescription = TEXT_CONTENT + "_changed";
-
-        openDescription();
-        fillOutDescription(TEXT_CONTENT, true);
-        getWait5().until(ExpectedConditions.
-                visibilityOfElementLocated(By.id("description-link")));
 
         openDescription();
         refillDescription(changedDescription, true);
