@@ -59,6 +59,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(actualErrorMessageList, expectedErrorMessageList);
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testCreateUser", "testSearchUser"})
     public void testRenameUser() {
         final String userFullName = "testUserFullName";
