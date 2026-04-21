@@ -97,6 +97,8 @@ public class FolderTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@value='Save']")))
                 .click();
 
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.className("job-index-headline"),NESTED_FOLDER));
+
         Assert.assertEquals(getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']/span"))).getText(), NESTED_FOLDER);
 
     }

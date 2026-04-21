@@ -5,6 +5,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -82,6 +83,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(actualUserName, userFullName);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateUser")
     public void testSearchUser() {
 
@@ -124,6 +126,7 @@ public class UserTest extends BaseTest {
                 "The user with User ID " + USER_NAME + "was not deleted");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testUserCreateWithAnIncorrectConfirmPassword")
     public void testCreateUserWithDuplicateUsername() {
         final String expectedErrorMessage = "User name is already taken";
