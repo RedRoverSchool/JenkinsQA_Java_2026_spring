@@ -121,13 +121,24 @@ public class FooterVersionMenuTest extends BaseTest {
 
     @Test(dependsOnMethods = "testAboutJenkinsOpensInSameTab")
     public void testAboutJenkinsBackButton() {
-
+        // Нажимаем кнопку "Назад"
         getDriver().navigate().back();
 
-        boolean isUserButtonVisible = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction"))
-        ).isDisplayed();
+        // Проверяем наличие кнопки пользователя (признак активной сессии на Dashboard)
+        List<WebElement> userButtons = getDriver().findElements(By.id("root-action-UserAction"));
 
-        Assert.assertTrue(isUserButtonVisible, "Сессия не активна после нажатия Back");
+        if (userButtons.isEmpty()) {
+            System.out.println("Кнопка пользователя не найдена. Возможно, сессия потеряна или страница не Dashboard.");
+            // Проверяем, не оказались ли мы на странице логина
+            List<WebElement> loginFields = getDriver().findElements(By.id("j_username"));
+            if (!loginFields.isEmpty()) {
+                Assert.fail("После нажатия Back произошёл переход на страницу логина, сессия потеряна");
+            } else {
+                Assert.fail("Не удалось определить состояние после нажатия Back: элемент Dashboard не найден");
+            }
+        } else {
+            Assert.assertTrue(userButtons.get(0).isDisplayed(),
+                    "Кнопка пользователя отображается, сессия активна");
+        }
     }
     }
