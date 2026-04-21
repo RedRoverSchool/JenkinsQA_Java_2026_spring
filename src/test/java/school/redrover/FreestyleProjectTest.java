@@ -188,6 +188,9 @@ public class FreestyleProjectTest extends BaseTest {
 
         addBuildStepButton.click();
 
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(@class, 'jenkins-dropdown')]")));
+
         List<WebElement> dropdownItems = getWait10().until(
                 ExpectedConditions.presenceOfAllElementsLocatedBy(
                         By.xpath("//div[@class='jenkins-dropdown jenkins-dropdown--compact']//button")));
