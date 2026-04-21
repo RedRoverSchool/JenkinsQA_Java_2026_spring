@@ -160,7 +160,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(listOfJobs.size(), 1);
     }
 
-    @Ignore
     @Test
     public void testAddBuildStepDropdownContainsAllOptions(){
 
@@ -187,6 +186,9 @@ public class FreestyleProjectTest extends BaseTest {
         getWait5().until(ExpectedConditions.elementToBeClickable(addBuildStepButton));
 
         addBuildStepButton.click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(@class, 'jenkins-dropdown')]")));
 
         List<WebElement> dropdownItems = getWait10().until(
                 ExpectedConditions.presenceOfAllElementsLocatedBy(
