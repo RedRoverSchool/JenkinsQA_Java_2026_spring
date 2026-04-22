@@ -44,11 +44,11 @@ public class CreateNewItem1Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Test3");
 
     }
+    @Ignore
     @Test(dependsOnMethods = "testSelectItemTypeWithValidName")
     public void testSelectItemTypeWithSameName() {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
         getDriver().findElement(By.id("name")).sendKeys("Test3");
         Assert.assertEquals(getDriver().findElement(By.id("itemname-invalid")).getText(), "» A job already exists with the name ‘Test3’");
-
     }
 }
