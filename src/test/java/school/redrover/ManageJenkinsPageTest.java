@@ -42,7 +42,6 @@ public class ManageJenkinsPageTest extends BaseTest {
         for (WebElement item : items) {
             actualItems.add(item.getText());
         }
-
         Assert.assertEquals(actualItems, expectedItems);
     }
 
