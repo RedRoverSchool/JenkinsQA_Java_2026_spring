@@ -16,8 +16,6 @@ public class DescriptionTest extends BaseTest {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//textarea[@name='description']"))).sendKeys(text);
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='description-content']")));
-
         Assert.assertEquals(
                 getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='description-content']"))).getText(),
                 text);
