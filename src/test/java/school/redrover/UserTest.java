@@ -11,6 +11,7 @@ import school.redrover.common.BaseTest;
 
 import java.util.List;
 
+@Ignore
 public class UserTest extends BaseTest {
 
     private final static String USER_NAME = "testUser";

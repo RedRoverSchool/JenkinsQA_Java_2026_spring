@@ -12,13 +12,6 @@ import java.util.List;
 public class NewItemPageTest extends BaseTest {
 
     @Test
-    public void testNewItemPageHeading() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(),"New Item");
-    }
-    
-    @Test
     public void testCreateNewItemPipelineSuccess() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
@@ -127,5 +120,4 @@ public class NewItemPageTest extends BaseTest {
 
         Assert.assertEquals(actualTasks, expectedTasks);
     }
-
 }

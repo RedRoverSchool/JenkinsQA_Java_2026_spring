@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class FreestyleProject1Test extends BaseTest {
+
     @Test
     public void testDisableFreestyleProject(){
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();

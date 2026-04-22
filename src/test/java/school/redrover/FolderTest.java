@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class FolderTest extends BaseTest {
+
     public static final String FOLDER_NAME = "FolderInitial";
     public static final By FOLDER_NAME_MAIN_PAGE = By.cssSelector(".jenkins-table__link > span:first-child");
     public final String FOLDER_NEW_NAME = "FolderNewName";
@@ -100,6 +101,5 @@ public class FolderTest extends BaseTest {
                 .click();
 
         Assert.assertEquals(getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']/span"))).getText(), NESTED_FOLDER);
-
     }
 }
