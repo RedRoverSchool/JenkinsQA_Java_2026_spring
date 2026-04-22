@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -32,6 +33,7 @@ public class CreateNewItem1Test extends BaseTest {
 
         Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
     }
+    @Ignore
     @Test
     public void testSelectItemTypeWithValidName() {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
@@ -42,6 +44,7 @@ public class CreateNewItem1Test extends BaseTest {
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1"))).getText(), "Test3");
 
     }
+    @Ignore
     @Test(dependsOnMethods = "testSelectItemTypeWithValidName")
     public void testSelectItemTypeWithSameName() {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();

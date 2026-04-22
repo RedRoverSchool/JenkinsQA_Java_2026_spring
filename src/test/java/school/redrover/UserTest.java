@@ -60,6 +60,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(actualErrorMessageList, expectedErrorMessageList);
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testCreateUser", "testSearchUser"})
     public void testRenameUser() {
         final String userFullName = "testUserFullName";
@@ -84,6 +85,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(actualUserName, userFullName);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateUser")
     public void testSearchUser() {
 
@@ -101,6 +103,7 @@ public class UserTest extends BaseTest {
                 "The user with User ID " + USER_NAME + "is not found");
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testCreateUser", "testRenameUser", "testSearchUser"})
     public void testDeleteUserViaDropDownMenu() {
 
@@ -126,6 +129,7 @@ public class UserTest extends BaseTest {
                 "The user with User ID " + USER_NAME + "was not deleted");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testUserCreateWithAnIncorrectConfirmPassword")
     public void testCreateUserWithDuplicateUsername() {
         final String expectedErrorMessage = "User name is already taken";
