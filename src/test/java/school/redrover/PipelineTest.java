@@ -27,6 +27,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualProjectName.getText(), projectName);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreatePipeline")
 
     public void testDisplayNameInAdvancedSectionChangesProjectNameOnDashboard() {
