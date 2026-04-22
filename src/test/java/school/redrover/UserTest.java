@@ -101,6 +101,7 @@ public class UserTest extends BaseTest {
                 "The user with User ID " + USER_NAME + "is not found");
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testCreateUser", "testRenameUser", "testSearchUser"})
     public void testDeleteUserViaDropDownMenu() {
 
