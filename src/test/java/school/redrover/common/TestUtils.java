@@ -28,9 +28,7 @@ public class TestUtils {
         }
     }
 
-    public static void createJob(BaseTest baseTest, String projectName, JobType jobType) {
-        final WebDriver driver = baseTest.getDriver();
-        final WebDriverWait wait = baseTest.getWait10();
+    public static void createJob(WebDriver driver, WebDriverWait wait, String projectName, JobType jobType) {
 
         driver.findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='name']"))).sendKeys(projectName);
