@@ -40,10 +40,8 @@ public class TestUtils {
     }
 
     public static void createJob (WebDriver driver, WebDriverWait wait, String projectName, JobType jobType) {
-
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
         fillJobCreationForm(driver, wait, projectName, jobType);
-
     }
 
     public static void createNestedJob (WebDriver driver, WebDriverWait wait, String projectName, String childName, JobType jobType) {
@@ -51,8 +49,6 @@ public class TestUtils {
         wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']/span"), projectName));
 
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='New Item']/ancestor::a"))).click();
-
         fillJobCreationForm(driver, wait, childName, jobType);
-
     }
 }
