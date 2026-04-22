@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class ProjectDescriptionTest  extends BaseTest {
-    private static final String PROJECT_NAME = "PipelineWithDescription";
+    private static final String PROJECT_NAME = "ProjectWithDescription";
     private static final String DESCRIPTION_TEXT = "Description text for Apply";
 
     private void openNewItemPage() {
