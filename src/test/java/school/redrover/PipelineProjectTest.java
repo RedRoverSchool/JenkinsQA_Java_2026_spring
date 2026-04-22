@@ -3,17 +3,14 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-
-import java.time.Duration;
 
 public class PipelineProjectTest extends BaseTest {
 
     public static final String PIPELINE_NAME = "PipelineName";
+    public static final String RENAMED_NAME = "RenamedName";
 
     @Test
     public void testCreateWithoutNameError() {
@@ -62,8 +59,6 @@ public class PipelineProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testAddDescription")
     public void testRename() {
-        final String renamedPipeline = "RenamedPipeline";
-
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//td/a[@href='job/%s/']".formatted(PIPELINE_NAME)))).click();
 
@@ -72,13 +67,26 @@ public class PipelineProjectTest extends BaseTest {
 
         WebElement inputField = getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='newName']")));
         inputField.clear();
-        inputField.sendKeys(renamedPipeline);
+        inputField.sendKeys(RENAMED_NAME);
         getDriver().findElement(By.xpath("//button[@value='Rename']")).click();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-head-icon"))).click();
 
         Assert.assertEquals(
                 getDriver().findElement(By.cssSelector(".jenkins-table__link > span:first-child")).getText(),
-                renamedPipeline);
+                RENAMED_NAME);
+    }
+
+    @Test(dependsOnMethods = "testRename")
+    public void testDeleteViaSidebar() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//td/a[@href='job/%s/']".formatted(RENAMED_NAME)))).click();
+
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-title='Delete Pipeline']"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();
+
+        Assert.assertEquals(
+                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1"))).getText(),
+                "Welcome to Jenkins!");
     }
 }
