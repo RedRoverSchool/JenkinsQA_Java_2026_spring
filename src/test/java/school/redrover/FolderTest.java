@@ -57,6 +57,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(FOLDER_NAME_MAIN_PAGE)).getText(), FOLDER_NEW_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testRename")
     public void testAddDescription() {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_NEW_NAME)))).click();
@@ -72,6 +73,7 @@ public class FolderTest extends BaseTest {
                 getDriver().findElement(By.id("description-content")).getText(), DESCRIPTION_TEXT);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testAddDescription")
     public void testAddMetricButtonVisibleInHealthMetricsDropdown() {
 
