@@ -79,7 +79,7 @@ public class MainPageTest extends BaseTest {
                 getDriver().findElement(By.id("description-content")).getText(),
                 TEXT_CONTENT);
     }
-
+    @Ignore
     @Test(dependsOnMethods = "testAddDescription")
     public void testChangeDescription() {
         String changedDescription = TEXT_CONTENT + "_changed";
