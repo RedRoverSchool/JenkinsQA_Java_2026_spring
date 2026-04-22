@@ -9,50 +9,37 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class FreestylePrConfigureSCMTest extends BaseTest {
+
     public static final String NAME_PROJECT = "Freestyle";
     public static final String REPOSITORY_URL = "https://github.com";
     public static final String BRANCH_NAME = "*/main";
 
-    private final By newItem = By.xpath("//a[@href='/view/all/newJob']");
-    private final By itemName = By.id("name");
-    private final By itemType = By.cssSelector("li.hudson_model_FreeStyleProject");
-    private final By okButton = By.id("ok-button");
-    private final By saveButton = By.name("Submit");
-    private final By mainPage = By.cssSelector("#jenkins-home-link, #jenkins-head-icon");
-    private final By nameProject = By.xpath("//a[contains(@href, 'job/Freestyle')]");
-    private final By freestyleButton = By.xpath("//a[@href='job/Freestyle/']");
-    private final By configureButton = By.xpath("//a[contains(@href, 'configure')]");
-    private final By gitButton = By.xpath("//label[text()='Git']");
-    private final By repositoryURLArea = By.name("_.url");
-    private final By credentials = By.xpath("//select[@name='_.credentialsId']");
-    private final By branchesToBuild = By.xpath("//div[contains(text(), 'Branch Specifier')]/following::input[1]");
-    private final By branchSpecifier = By.xpath("//div[contains(text(), 'Branch Specifier')]/following::input[1]");
-    private final By pageBody = By.id("page-body");
-    private final By error = By.xpath("//input[@name='_.url']/following::div[@class='error'][1]");
-
-
     private void goToCongigurePage(){
-        getWait5().until(ExpectedConditions.elementToBeClickable(freestyleButton)).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(configureButton)).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[@href='job/Freestyle/']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[contains(@href, 'configure')]"))).click();
     }
     private void gitButton(){
-        WebElement gitOption = getDriver().findElement(gitButton);
+        WebElement gitOption = getDriver().findElement(By.xpath("//label[text()='Git']"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", gitOption);
     }
     private void enterRepositoryURL(){
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(repositoryURLArea)).
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("_.url"))).
                 sendKeys(REPOSITORY_URL);
     }
     @Test
     public void testCreateProject(){
-        getDriver().findElement(newItem).click();
-        getDriver().findElement(itemName).sendKeys(NAME_PROJECT);
-        getDriver().findElement(itemType).click();
-        getDriver().findElement(okButton).click();
-        getDriver().findElement(saveButton).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(mainPage)).click();
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(NAME_PROJECT);
+        getDriver().findElement(By.cssSelector("li.hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("#jenkins-home-link, #jenkins-head-icon"))).click();
 
-        Assert.assertEquals(getDriver().findElement(nameProject).getText(), NAME_PROJECT);
+        Assert.assertEquals(getDriver().findElement(
+                By.xpath("//a[contains(@href, 'job/Freestyle')]")).getText(), NAME_PROJECT);
     }
     @Test(dependsOnMethods = "testCreateProject")
     public void testRepositoryURL() {
@@ -60,7 +47,7 @@ public class FreestylePrConfigureSCMTest extends BaseTest {
         gitButton();
         enterRepositoryURL();
 
-        Assert.assertEquals(getDriver().findElement(repositoryURLArea).getAttribute("value"), REPOSITORY_URL,
+        Assert.assertEquals(getDriver().findElement(By.name("_.url")).getAttribute("value"), REPOSITORY_URL,
                 "The repository URL does not match!");
     }
     @Test(dependsOnMethods = "testRepositoryURL")
@@ -68,7 +55,8 @@ public class FreestylePrConfigureSCMTest extends BaseTest {
         goToCongigurePage();
         gitButton();
 
-        Assert.assertTrue(getWait5().until(ExpectedConditions.visibilityOfElementLocated(credentials)).isDisplayed(),
+        Assert.assertTrue(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//select[@name='_.credentialsId']"))).isDisplayed(),
                 "The Credentials drop-down list is not displayed");
     }
     @Test(dependsOnMethods = "testCredentials")
@@ -76,11 +64,14 @@ public class FreestylePrConfigureSCMTest extends BaseTest {
         goToCongigurePage();
         gitButton();
 
-        WebElement branchInput = getWait5().until(ExpectedConditions.visibilityOfElementLocated(branchesToBuild));
+        WebElement branchInput = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(text(), 'Branch Specifier')]/following::input[1]")));
         branchInput.clear();
         branchInput.sendKeys(BRANCH_NAME);
 
-        Assert.assertEquals(getDriver().findElement(branchSpecifier).getAttribute("value"), BRANCH_NAME,
+        Assert.assertEquals(getDriver().findElement(
+                By.xpath("//div[contains(text(), 'Branch Specifier')]/following::input[1]"))
+                        .getAttribute("value"), BRANCH_NAME,
                 "The branch name does not match the expected one!");
     }
     @Test(dependsOnMethods = "testBranchesToBuild")
@@ -89,11 +80,13 @@ public class FreestylePrConfigureSCMTest extends BaseTest {
         gitButton();
         enterRepositoryURL();
 
-        getDriver().findElement(pageBody).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(error,
+        getDriver().findElement(By.id("page-body")).click();
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(
+                By.xpath("//input[@name='_.url']/following::div[@class='error'][1]"),
                 "Failed to connect to repository"));
 
-        String actualError = getDriver().findElement(error).getText();
+        String actualError = getDriver().findElement(
+                By.xpath("//input[@name='_.url']/following::div[@class='error'][1]")).getText();
 
         Assert.assertTrue(actualError.contains("Failed to connect to repository"),
                 "Ожидаемый текст ошибки не найден" + actualError);
