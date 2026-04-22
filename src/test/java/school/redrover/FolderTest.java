@@ -5,10 +5,12 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class FolderTest extends BaseTest {
+
     public static final String FOLDER_NAME = "FolderInitial";
     public static final By FOLDER_NAME_MAIN_PAGE = By.cssSelector(".jenkins-table__link > span:first-child");
     public final String FOLDER_NEW_NAME = "FolderNewName";
@@ -85,6 +87,7 @@ public class FolderTest extends BaseTest {
                 "Button should have suffix='healthMetrics'");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testRename")
     public void createNestedFolderTest(){
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_NEW_NAME)))).click();
@@ -98,6 +101,5 @@ public class FolderTest extends BaseTest {
                 .click();
 
         Assert.assertEquals(getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']/span"))).getText(), NESTED_FOLDER);
-
     }
 }

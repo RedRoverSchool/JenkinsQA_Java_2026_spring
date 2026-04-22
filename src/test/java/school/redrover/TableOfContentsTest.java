@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TableOfContentsTest extends BaseTest {
+
     private final List<String> TableOfContents = List.of("Case insensitive search", "OpenSearch support","Feedback appreciated");
 
     @Test

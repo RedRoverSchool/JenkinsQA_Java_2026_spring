@@ -9,10 +9,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-
-
-
 public class FooterRestApiLinkTest extends BaseTest {
+
     @Test
     public void testCheckingTheRestApiLinkHasHoverEffect() {
         WebElement restApiLink = getWait10()

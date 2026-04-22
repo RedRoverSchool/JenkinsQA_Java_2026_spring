@@ -10,6 +10,7 @@ import school.redrover.common.BaseTest;
 import java.time.Duration;
 
 public class ItemNameBlankTest extends BaseTest {
+
     @Test
     public void testItemNameBlank(){
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();

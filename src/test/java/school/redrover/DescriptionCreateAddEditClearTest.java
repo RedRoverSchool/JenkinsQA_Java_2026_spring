@@ -3,15 +3,14 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.time.Duration;
 @Ignore
 public class DescriptionCreateAddEditClearTest extends BaseTest {
+
     @Test
     public void testCreateAddEditClearDescription() {
         final String text = "My first project";
@@ -22,8 +21,7 @@ public class DescriptionCreateAddEditClearTest extends BaseTest {
         getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        WebElement descriptionField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("description")));
+        WebElement descriptionField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description")));
 
         descriptionField.sendKeys(text);
         getDriver().findElement(By.className("textarea-show-preview")).click();
@@ -32,7 +30,7 @@ public class DescriptionCreateAddEditClearTest extends BaseTest {
 
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).
+        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).
                 getText(), text);
 
         getDriver().findElement(By.id("description-link")).click();
@@ -45,7 +43,7 @@ public class DescriptionCreateAddEditClearTest extends BaseTest {
 
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).
+        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).
                 getText(), text2);
 
         getDriver().findElement(By.id("description-link")).click();
@@ -53,7 +51,7 @@ public class DescriptionCreateAddEditClearTest extends BaseTest {
 
         getDriver().findElement(By.name("Submit")).click();
 
-        boolean isEmpty = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("description-content"))).getText().isEmpty();
+        boolean isEmpty = getWait5().until(ExpectedConditions.presenceOfElementLocated(By.id("description-content"))).getText().isEmpty();
         Assert.assertTrue(isEmpty, "Описание не очистилось!");
     }
 }

@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class MainPageTest extends BaseTest {
+
     private static final String TEXT_CONTENT = "TEST";
 
     private void openDescription(){

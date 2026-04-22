@@ -24,6 +24,5 @@ public class SelectMultibranchPipelineTypeTest extends BaseTest {
 		Assert.assertEquals(
 				getDriver().findElement(By.xpath("//div//*[text()='Configuration']")).getText(),
 				"Configuration");
-
 	}
 }

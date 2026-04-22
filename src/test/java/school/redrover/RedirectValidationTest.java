@@ -8,6 +8,7 @@ import school.redrover.common.BaseTest;
 
 
 public class RedirectValidationTest extends BaseTest {
+
     @Test
     public void testCheckRedirect() {
         getDriver().findElement(By.xpath("//*[@class='task '][1]")).click();
