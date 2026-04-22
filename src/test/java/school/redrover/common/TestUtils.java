@@ -28,17 +28,27 @@ public class TestUtils {
         }
     }
 
-    public static void createJob(WebDriver driver, WebDriverWait wait, String projectName, JobType jobType) {
-
-        driver.findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+    private static void fillJobCreationForm (WebDriver driver, WebDriverWait wait, String projectName, JobType jobType) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='name']"))).sendKeys(projectName);
 
         WebElement jobElement = driver.findElement(By.xpath("//span[text()='%s']".formatted(jobType.getDisplayName())));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", jobElement);
         jobElement.click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='ok-button']"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.name("Submit")));
+    }
 
+    public static void createJob (WebDriver driver, WebDriverWait wait, String projectName, JobType jobType) {
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
+        fillJobCreationForm(driver, wait, projectName, jobType);
+    }
+
+    public static void createNestedJob (WebDriver driver, WebDriverWait wait, String projectName, String childName, JobType jobType) {
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(projectName)))).click();
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']/span"), projectName));
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='New Item']/ancestor::a"))).click();
+        fillJobCreationForm(driver, wait, childName, jobType);
     }
 }

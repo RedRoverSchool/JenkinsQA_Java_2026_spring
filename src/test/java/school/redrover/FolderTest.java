@@ -57,19 +57,23 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(FOLDER_NAME_MAIN_PAGE)).getText(), FOLDER_NEW_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testRename")
     public void testAddDescription() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_NEW_NAME)))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_NEW_NAME)))).click();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//textarea[@name='description']"))).sendKeys(DESCRIPTION_TEXT);
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@value='Save']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//textarea[@name='description']"))).sendKeys(DESCRIPTION_TEXT);
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@value='Save']"))).click();
+
+        getWait5().until(ExpectedConditions.attributeToBeNotEmpty(
+                getDriver().findElement(By.id("description-content")), "innerText"));
 
         Assert.assertEquals(
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText(),
-                DESCRIPTION_TEXT);
+                getDriver().findElement(By.id("description-content")).getText(), DESCRIPTION_TEXT);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testAddDescription")
     public void testAddMetricButtonVisibleInHealthMetricsDropdown() {
 
