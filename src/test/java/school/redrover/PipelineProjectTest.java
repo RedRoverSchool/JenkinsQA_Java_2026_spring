@@ -9,7 +9,8 @@ import school.redrover.common.BaseTest;
 
 public class PipelineProjectTest extends BaseTest {
 
-    public static final String PIPELINE_NAME = "PipelineName";
+    private static final String PIPELINE_NAME = "PipelineName";
+    private static final String DESCRIPTION_TEXT = "PipelineDescription";
 
     @Test
     public void testCreateWithoutNameError() {
@@ -41,19 +42,17 @@ public class PipelineProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescription() {
-        final String description = "SomeDescription";
-
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//td/a[@href='job/%s/']".formatted(PIPELINE_NAME)))).click();
 
         getDriver().findElement(By.id("description-link")).click();
 
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(DESCRIPTION_TEXT);
         getDriver().findElement(By.xpath("//button[@value='Save']")).click();
 
         Assert.assertEquals(
                 getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText(),
-                description);
+                DESCRIPTION_TEXT);
     }
 
     @Test(dependsOnMethods = "testAddDescription")
@@ -76,5 +75,23 @@ public class PipelineProjectTest extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.cssSelector(".jenkins-table__link > span:first-child")).getText(),
                 renamedPipeline);
+    }
+
+    @Test
+    public void testApplyProjectDescription() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(PIPELINE_NAME);
+
+        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.xpath("//textarea[@name='description']"))
+                .sendKeys(DESCRIPTION_TEXT);
+        getDriver().findElement(By.name("Apply")).click();
+
+        String saveText = getWait2()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar")))
+                .getText();
+        Assert.assertEquals(saveText, "Saved");
     }
 }

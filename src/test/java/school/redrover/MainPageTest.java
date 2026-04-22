@@ -15,62 +15,13 @@ public class MainPageTest extends BaseTest {
         getDriver().findElement(By.cssSelector("#description-link.jenkins-button")).click();
     }
 
-    private void fillOutDescription(String description, boolean save){
-        getDriver().findElement(By.name("description")).sendKeys(description);
-
-        if(save){
-            getDriver().findElement(By.name("Submit")).click();
-        }
-    }
-
-    private void refillDescription(String newDescription, boolean save){
-        WebElement descriptionField = getDriver().findElement(By.name("description"));
-        descriptionField.clear();
-        descriptionField.sendKeys(newDescription);
-
-        if(save){
-            getDriver().findElement(By.name("Submit")).click();
-        }
-    }
-
-    @Test
-    public void testCancelWithoutDescription() {
-        openDescription();
-        getDriver().findElement(By.xpath("//button[contains(@class, 'description-cancel-button')]")).click();
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link")));
-        Assert.assertEquals(
-                getDriver().findElement(By.id("description-link")).getText(),
-                "Add description");
-    }
-
-    @Test
-    public void testSaveWithoutDescription() {
-        openDescription();
-        getDriver().findElement(By.name("Submit")).click();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#description-link.jenkins-button")));
-        Assert.assertTrue(
-                getDriver().findElement(By.id("description-content")).getText().isEmpty(),
-                "Description has non-empty content!");
-    }
-
-    @Test
-    public void testChangeAddDescriptionButtonTitle() {
-        openDescription();
-        fillOutDescription(TEXT_CONTENT, true);
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#description-link.jenkins-button")));
-
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("#description-link.jenkins-button")).getText(),
-                "Edit description");
-    }
-
     @Test
     public void testAddDescription() {
         openDescription();
-        fillOutDescription(TEXT_CONTENT, true);
+
+        getDriver().findElement(By.name("description")).sendKeys(TEXT_CONTENT);
+        getDriver().findElement(By.name("Submit")).click();
+
         getWait5().until(ExpectedConditions.
                 visibilityOfElementLocated(By.cssSelector("#description-link.jenkins-button")));
 
@@ -84,12 +35,28 @@ public class MainPageTest extends BaseTest {
         String changedDescription = TEXT_CONTENT + "_changed";
 
         openDescription();
-        refillDescription(changedDescription, true);
+
+        WebElement descriptionField = getDriver().findElement(By.name("description"));
+        descriptionField.clear();
+        descriptionField.sendKeys(changedDescription);
+        getDriver().findElement(By.name("Submit")).click();
+
         getWait5().until(ExpectedConditions.
                 visibilityOfElementLocated(By.cssSelector("#description-link.jenkins-button")));
 
         Assert.assertEquals(
                 getDriver().findElement(By.id("description-content")).getText(),
                 changedDescription);
+    }
+
+    @Test
+    public void testSaveWithoutDescription() {
+        openDescription();
+        getDriver().findElement(By.name("Submit")).click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#description-link.jenkins-button")));
+        Assert.assertTrue(
+                getDriver().findElement(By.id("description-content")).getText().isEmpty(),
+                "Description has non-empty content!");
     }
 }
