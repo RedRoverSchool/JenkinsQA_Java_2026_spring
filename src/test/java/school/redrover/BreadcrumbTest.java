@@ -59,7 +59,25 @@ public class BreadcrumbTest extends BaseTest {
                 .toList();
 
         Assert.assertEquals(actualBreadcrumbs, List.of(FOLDER_PARENT, "Configuration"), "Breadcrumbs sequence is wrong!");
+    }
 
+    @Test(dependsOnMethods = "testNavigateToParentFolder")
+    public void testDropDownMenuItemsCorrect() {
+        final List<String> expectedMenuItems = List.of("Configure", "New Item", "Delete Folder", "Build History", "Rename", "Credentials", "All");
+
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_PARENT)))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_CHILD)))).click();
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.className("job-index-headline"), FOLDER_CHILD));
+
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href, '/job/%s/')]/following-sibling::div[@class='dropdown-indicator']".formatted(FOLDER_PARENT)))).click();
+        List<String> actualMenuItems = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".jenkins-dropdown__item")))
+                .stream()
+                .map(WebElement::getText)
+                .map(String::trim)
+                .filter(text -> !text.isEmpty())
+                .toList();
+
+        Assert.assertEquals(actualMenuItems, expectedMenuItems);
     }
 }
 
