@@ -11,7 +11,7 @@ import school.redrover.common.BaseTest;
 
 public class PipelineTest extends BaseTest {
 
-    @Ignore
+
     @Test
     public void testCreatePipeline() {
         final String projectName = "new Pipeline";
@@ -21,19 +21,18 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
+        getWait10().until(ExpectedConditions.urlContains("/configure"));
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-jenkins-logo"))).click();
 
         WebElement actualProjectName = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(projectName)));
         Assert.assertEquals(actualProjectName.getText(), projectName);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testCreatePipeline")
 
-    public void testDisplayNameInAdvancedSectionChangesProjectNameOnDashboard() {
+    @Test(dependsOnMethods = "testCreatePipeline")
+    public void testReplacesOriginalName() {
 
         String displayName = "Changed Pipeline";
-
 
         WebElement pipelineName = getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.cssSelector("#job_new\\ Pipeline > td:nth-child(3) > a")));
