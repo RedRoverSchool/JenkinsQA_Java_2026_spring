@@ -26,6 +26,6 @@ public class MultibranchPipelineTest extends BaseTest {
 
 		WebElement actualProjectName = getWait10().until(
 				ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(projectName))));
-		Assert.assertEquals(actualProjectName.getText(), projectName);;
+		Assert.assertEquals(actualProjectName.getText(), projectName);
 	}
 }
