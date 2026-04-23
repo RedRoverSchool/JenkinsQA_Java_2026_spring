@@ -88,6 +88,26 @@ public class NodeTest extends BaseTest {
                 ,"Mark this node temporarily offline");
     }
 
+    @Test (dependsOnMethods = "testCreateNewNode")
+    public void testDeleteNode(){
+
+        goToNewNodeManagementPage();
+
+        WebElement deleteIcon = getDriver().findElement(By.className("icon-edit-delete"));
+        deleteIcon.click();
+
+        WebElement submitButton = getDriver().findElement(By.xpath("//button [@data-id='ok']"));
+        submitButton.click();
+
+        List<String> actualNodeList = getDriver().findElements(By
+                        .xpath("//a[@class = 'jenkins-table__link model-link inside']"))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+
+        Assert.assertFalse(actualNodeList.contains(NEW_NODE_NAME));
+    }
+
     private void goToNewNodeManagementPage(){
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
         getDriver().findElement(By.xpath("//a[@href='computer']")).click();
