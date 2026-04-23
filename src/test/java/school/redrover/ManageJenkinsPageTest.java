@@ -134,11 +134,9 @@ public class ManageJenkinsPageTest extends BaseTest {
 
         getWait10().until(ExpectedConditions.urlContains("/manage"));
 
-
         WebElement configureSystemLink = getWait5()
                 .until(ExpectedConditions.elementToBeClickable(CONFIGURE_SYSTEM_LINK));
         configureSystemLink.click();
-
 
         getWait2().until(ExpectedConditions.urlContains("/configure"));
         Assert.assertTrue(getDriver().getCurrentUrl().contains("/configure"),
@@ -146,7 +144,7 @@ public class ManageJenkinsPageTest extends BaseTest {
     }
 
     @Test
-    public void testConfigureSystemPageSectionsWithFields() {
+    public void testSystemSettingsHaveFields() {
 
         getWait10().until(ExpectedConditions.elementToBeClickable(MANAGE_JENKINS_LINK)).click();
         getWait10().until(ExpectedConditions.urlContains("/manage"));

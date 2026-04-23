@@ -7,6 +7,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import java.util.Random;
+
 public class GlobalSearchTest extends BaseTest {
 
     private static final By SEARCH_BUTTON = By.id("root-action-SearchAction");
@@ -21,12 +23,27 @@ public class GlobalSearchTest extends BaseTest {
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@type='submit']"))).click();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//a[@class='app-jenkins-logo']")
-        )).click();
-
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='app-jenkins-logo']"))).click();
     }
 
+    public static String randomString(int length){
+        if(length <= 0){
+            return "";
+        }
+
+        Random random = new Random();
+        StringBuilder result = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            if (i % 6 == 0 && i != 0) {
+                result.append(' ');
+            } else {
+                char c = (char) ('a' + random.nextInt(26));
+                result.append(c);
+            }
+        }
+
+        return result.toString();
+    }
 
     @Test
     public void testClearingTheSearchField(){
@@ -38,25 +55,35 @@ public class GlobalSearchTest extends BaseTest {
         searchInput.clear();
 
         Assert.assertEquals(searchInput.getAttribute("value"), "");
-
     }
 
     @Test
-    public void testChangeReguest(){
+    public void testReguest(){
 
         createFolder("FirstFolder");
         createFolder("SecondFolder");
 
         getDriver().findElement(SEARCH_BUTTON).click();
-        WebElement searchInput = getWait5().until(ExpectedConditions.elementToBeClickable(SEARCH_INPUT_FIELD));
+        WebElement searchInput = getWait2().until(ExpectedConditions.elementToBeClickable(SEARCH_INPUT_FIELD));
         searchInput.sendKeys("FirstFolder");
         searchInput.clear();
         searchInput.sendKeys("SecondFolder");
 
-        WebElement result = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@href, 'SecondFolder')]"))
-        );
+        WebElement result = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a[contains(@href, 'SecondFolder')]")));
         String actualText = result.getText();
         Assert.assertTrue(actualText.contains("SecondFolder"));
+    }
+
+    @Test
+    public void testLongQuery(){
+        getDriver().findElement(SEARCH_BUTTON).click();
+        WebElement searchInput = getWait2().until(ExpectedConditions.elementToBeClickable(SEARCH_INPUT_FIELD));
+        searchInput.sendKeys(randomString(1000));
+
+        WebElement result = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//*[contains(text(), 'No results for')]")));
+        Assert.assertTrue(result.isDisplayed(), "Search result message should be visible");
+
     }
 }
