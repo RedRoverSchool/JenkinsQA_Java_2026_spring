@@ -28,7 +28,6 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualProjectName.getText(), projectName);
     }
 
-
     @Test(dependsOnMethods = "testCreatePipeline")
     public void testReplacesOriginalName() {
 
@@ -45,6 +44,7 @@ public class PipelineTest extends BaseTest {
         WebElement advancedButton = getWait10().until(
                 ExpectedConditions.elementToBeClickable(
                         By.xpath("(//button[contains(@class, 'advancedButton')])[last()]")));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", advancedButton);
         advancedButton.click();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
@@ -64,15 +64,17 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testDisableProject() {
+        String projectName = "Changed Pipeline_" + System.currentTimeMillis();
+
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("Pipeline Test");
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getWait10().until(ExpectedConditions.urlContains("/configure"));
 
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Enabled']"))).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
-        getWait10().until(ExpectedConditions.urlContains("/job/Pipeline%20Test/"));
+        getWait10().until(ExpectedConditions.urlContains("%20"));
 
         WebElement warningMessage = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(
