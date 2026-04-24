@@ -1,10 +1,16 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DashboardTest extends BaseTest {
 
@@ -13,7 +19,7 @@ public class DashboardTest extends BaseTest {
     private static final String FOLDER_NAME = "FolderName";
 
     @Test
-    void testDescriptionAdd() {
+    public void testAddDescription() {
         getDriver().findElement(By.id("description-link")).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(DESC_MESSAGE);
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
@@ -22,8 +28,8 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(), DESC_MESSAGE);
     }
 
-    @Test
-    void testCreatePipeline() {
+    @Test(dependsOnMethods = "testAddDescription")
+    public void testCreatePipeline() {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(PIPELINE_NAME);
@@ -37,7 +43,7 @@ public class DashboardTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreatePipeline")
-    void testCreateFolder() {
+    public void testCreateFolder() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(FOLDER_NAME);
@@ -48,5 +54,17 @@ public class DashboardTest extends BaseTest {
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='FolderName']")));
         Assert.assertEquals(getDriver().findElement(By.xpath("//span[text()='FolderName']")).getText(), FOLDER_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreateFolder")
+    public void testOrderName() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='FolderName']")));
+        List<WebElement> elements = getDriver().findElements(By.cssSelector(".jenkins-table__link.model-link.inside"));
+
+        List<String> actualOrder = elements.stream().map(WebElement::getText).collect(Collectors.toList());
+        List<String> expectedOrder = new ArrayList<>(actualOrder);
+        Collections.sort(expectedOrder);
+
+        Assert.assertEquals(actualOrder, expectedOrder, "Not an alphabetical order!");
     }
 }
