@@ -21,22 +21,40 @@ public class FreestyleProjectTest extends BaseTest {
     private final static String PROJECT_NAME = "FreestyleProject";
     private final static String NEW_PROJECT_NAME_1 = "FreestyleProject1";
     private final static String NEW_PROJECT_NAME_2 ="FreestyleProject2";
+    private static final String REPOSITORY_URL = "https://github.com";
+    private static final String BRANCH_NAME = "*/main";
 
+    private void goToConfigurePage(){
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[contains(@href, 'job/')]//span[text()='%s']".formatted(PROJECT_NAME)))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[contains(@href, '/configure')]"))).click();
+    }
+    private void gitButton(){
+        WebElement gitOption = getDriver().findElement(By.xpath("//label[text()='Git']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", gitOption);
+    }
+    private void enterRepositoryURL(){
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("_.url"))).
+                sendKeys(REPOSITORY_URL);
+    }
     @Test
     public void testCreate() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
         getDriver().findElement(By.id("ok-button")).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@class='app-jenkins-logo']"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
 
-        Assert.assertEquals(getDriver().findElement(
-                        By.xpath("//*[@class='jenkins-table__link model-link inside']")).getText(),
-                PROJECT_NAME);
+        getWait10().until(ExpectedConditions.not(ExpectedConditions.urlContains("configure")));
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.id("jenkins-head-icon"))).click();
+
+        String actualName = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a[contains(@href, 'job/Freestyle')]//span"))).getText();
+
+        Assert.assertEquals(actualName, PROJECT_NAME);
     }
-
     @Test (dependsOnMethods = "testCreate")
     public void testAddDescription() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -49,7 +67,6 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='description-content']")).getText(),"Description");
     }
-
     @Test(dependsOnMethods = "testAddDescription")
     public void testDisable() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -63,7 +80,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(
                 By.id("enable-project")).getText().contains("This project is currently disabled"));
     }
-
     @Test(dependsOnMethods = "testDisable")
     public void testEnable() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -78,7 +94,6 @@ public class FreestyleProjectTest extends BaseTest {
                         By.className("jenkins-toggle-switch__label__checked-title")).getText(),
                 "Enabled");
     }
-
     @Test(dependsOnMethods = "testEnable")
     public void testRename() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -92,7 +107,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='main-panel']//h1"))).getText(),
                 NEW_PROJECT_NAME_1);
     }
-
     @Test(dependsOnMethods = "testRename")
     public void testBuildNowCheckAlert() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -103,13 +117,13 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
                 "Build scheduled");
     }
-
     @Test(dependsOnMethods = "testBuildNowCheckAlert")
     public void testBuildNow() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//span[text()='%s']".formatted(NEW_PROJECT_NAME_1)))).click();
         getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), NEW_PROJECT_NAME_1));
-        getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
+        getWait10().until(ExpectedConditions.presenceOfElementLocated(
+                By.className("app-builds-container__item")));
 
         List<String> listOfBuilds = getDriver().findElements(By.className("app-builds-container__item")).stream()
                 .map(WebElement::getText)
@@ -117,7 +131,6 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(listOfBuilds.size(), 1);
     }
-
     @Test(dependsOnMethods = "testBuildNow")
     public void testBuildAfterOtherProjectsAreBuild() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -146,7 +159,6 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(listOfBuilds.size(), 1);
     }
-
     @Test(dependsOnMethods = "testBuildAfterOtherProjectsAreBuild")
     public void testDelete() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -159,10 +171,8 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(listOfJobs.size(), 1);
     }
-
     @Test
     public void testAddBuildStepDropdownContainsAllOptions(){
-
         List<String> expectedTexts = Arrays.asList(
                 "Execute Windows batch command",
                 "Execute shell",
@@ -170,8 +180,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "Invoke Gradle script",
                 "Invoke top-level Maven targets",
                 "Run with timeout",
-                "Set build status to \"pending\" on GitHub commit"
-        );
+                "Set build status to \"pending\" on GitHub commit");
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
@@ -179,34 +188,26 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
 
         WebElement addBuildStepButton = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@suffix='builder']"))
-        );
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@suffix='builder']")));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", addBuildStepButton);
 
         getWait5().until(ExpectedConditions.elementToBeClickable(addBuildStepButton));
-
         addBuildStepButton.click();
-
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[contains(@class, 'jenkins-dropdown')]")));
 
         List<WebElement> dropdownItems = getWait10().until(
                 ExpectedConditions.presenceOfAllElementsLocatedBy(
                         By.xpath("//div[@class='jenkins-dropdown jenkins-dropdown--compact']//button")));
-
         List<String> actualTexts = dropdownItems.stream()
                 .map(WebElement::getText)
                 .toList();
 
-
         Assert.assertEquals(actualTexts, expectedTexts,
                 "Dropdown options should match expected list");
-
     }
-
     @Test
     public void testDeleteBuildStep() {
-
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
@@ -215,7 +216,6 @@ public class FreestyleProjectTest extends BaseTest {
 
         WebElement addBuildStepButton = getWait10().until(
                 ExpectedConditions.elementToBeClickable(By.xpath("//button[@suffix='builder']")));
-
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", addBuildStepButton);
         getWait2().until(driver -> true); // небольшая пауза
         addBuildStepButton.click();
@@ -224,7 +224,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .click();
 
         WebElement commandField = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//textarea[@name='command']")));
-        commandField.sendKeys("echo \"Test\"");
+        commandField.sendKeys("echo 'Test'");
 
         WebElement deleteButton = getWait10().until(
                 ExpectedConditions.presenceOfElementLocated(
@@ -254,5 +254,71 @@ public class FreestyleProjectTest extends BaseTest {
         commandFieldExists = getWait5().until(
                 driver -> getDriver().findElements(By.xpath("//textarea[@name='command']")).size() == 0);
         Assert.assertTrue(commandFieldExists, "Build step should not appear after reopening configuration");
+    }
+    @Test
+    public void testCreateProject(){
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
+        getDriver().findElement(By.cssSelector("li.hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getWait10().until(ExpectedConditions.not(ExpectedConditions.urlContains("configure")));
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.id("jenkins-head-icon"))).click();
+
+        String actualName = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a[contains(@href, 'job/Freestyle')]//span"))).getText();
+
+        Assert.assertEquals(actualName, PROJECT_NAME);
+    }
+    @Test(dependsOnMethods = "testCreateProject")
+    public void testRepositoryURL() {
+        goToConfigurePage();
+        gitButton();
+        enterRepositoryURL();
+
+        Assert.assertEquals(getDriver().findElement(By.name("_.url")).getAttribute("value"), REPOSITORY_URL,
+                "The repository URL does not match!");
+    }
+    @Test(dependsOnMethods = "testCreateProject")
+    public void testCredentials() {
+        goToConfigurePage();
+        gitButton();
+
+        Assert.assertTrue(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//select[@name='_.credentialsId']"))).isDisplayed(),
+                "The Credentials drop-down list is not displayed");
+    }
+    @Test(dependsOnMethods = "testCreateProject")
+    public void testBranchesToBuild() {
+        goToConfigurePage();
+        gitButton();
+
+        WebElement branchInput = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(text(), 'Branch Specifier')]/following::input[1]")));
+        branchInput.clear();
+        branchInput.sendKeys(BRANCH_NAME);
+
+        Assert.assertEquals(getDriver().findElement(
+                                By.xpath("//div[contains(text(), 'Branch Specifier')]/following::input[1]"))
+                        .getAttribute("value"), BRANCH_NAME,
+                "The branch name does not match the expected one!");
+    }
+    @Test(dependsOnMethods = "testCreateProject")
+    public void testSCMAuthenticationFails(){
+        goToConfigurePage();
+        gitButton();
+        enterRepositoryURL();
+
+        getDriver().findElement(By.id("page-body")).click();
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(
+                By.xpath("//input[@name='_.url']/following::div[@class='error'][1]"),
+                "Failed to connect to repository"));
+
+        String actualError = getDriver().findElement(
+                By.xpath("//input[@name='_.url']/following::div[@class='error'][1]")).getText();
+
+        Assert.assertTrue(actualError.contains("Failed to connect to repository"),
+                "Ожидаемый текст ошибки не найден" + actualError);
     }
 }
