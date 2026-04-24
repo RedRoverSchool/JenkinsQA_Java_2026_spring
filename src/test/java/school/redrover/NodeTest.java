@@ -71,7 +71,8 @@ public class NodeTest extends BaseTest {
 
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 getDriver().findElement(By.xpath("//form [@action='markOffline']")))).click();
-        getDriver().findElement(By.className("jenkins-submit-button")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                getDriver().findElement(By.className("jenkins-submit-button")))).click();
 
         Assert.assertEquals(getDriver().findElement(By.className("message")).getText(), "Disconnected by admin");
     }
