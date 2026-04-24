@@ -92,11 +92,8 @@ public class NodeTest extends BaseTest {
 
         goToNewNodeManagementPage();
 
-        WebElement deleteIcon = getDriver().findElement(By.className("icon-edit-delete"));
-        deleteIcon.click();
-
-        WebElement submitButton = getDriver().findElement(By.xpath("//button [@data-id='ok']"));
-        submitButton.click();
+        getDriver().findElement(By.className("icon-edit-delete")).click();
+        getDriver().findElement(By.xpath("//button [@data-id='ok']")).click();
 
         List<String> actualNodeList = getDriver().findElements(By
                         .xpath("//a[@class = 'jenkins-table__link model-link inside']"))
