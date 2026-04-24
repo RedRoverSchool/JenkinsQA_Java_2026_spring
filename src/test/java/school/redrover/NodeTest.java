@@ -65,7 +65,7 @@ public class NodeTest extends BaseTest {
         Assert.assertEquals(actualAttributes, expectAttributes);
     }
 
-    @Test (dependsOnMethods = "testCreateNewNode")
+    @Test (dependsOnMethods = "testNodeConfiguration")
     public void testMarkNodeOffline(){
         goToNewNodeManagementPage();
 
