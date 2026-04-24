@@ -65,7 +65,8 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("Description");
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='description-content']")).getText(),"Description");
+        Assert.assertEquals(getDriver().findElement(
+                By.xpath("//div[@id='description-content']")).getText(),"Description");
     }
     @Test(dependsOnMethods = "testAddDescription")
     public void testDisable() {
@@ -99,23 +100,25 @@ public class FreestyleProjectTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//span[text()='%s']".formatted(PROJECT_NAME)))).click();
         getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), PROJECT_NAME));
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Rename']/.."))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//span[text()='Rename']/.."))).click();
         getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
         getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(NEW_PROJECT_NAME_1);
         getDriver().findElement(By.name("Submit")).click();
         
-        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='main-panel']//h1"))).getText(),
-                NEW_PROJECT_NAME_1);
+        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//*[@id='main-panel']//h1"))).getText(), NEW_PROJECT_NAME_1);
     }
     @Test(dependsOnMethods = "testRename")
     public void testBuildNowCheckAlert() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//span[text()='%s']".formatted(NEW_PROJECT_NAME_1)))).click();
         getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), NEW_PROJECT_NAME_1));
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Build Now']/.."))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//span[text()='Build Now']/.."))).click();
 
-        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
-                "Build scheduled");
+        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("notification-bar"))).getText(), "Build scheduled");
     }
     @Test(dependsOnMethods = "testBuildNowCheckAlert")
     public void testBuildNow() {
@@ -125,7 +128,8 @@ public class FreestyleProjectTest extends BaseTest {
         getWait10().until(ExpectedConditions.presenceOfElementLocated(
                 By.className("app-builds-container__item")));
 
-        List<String> listOfBuilds = getDriver().findElements(By.className("app-builds-container__item")).stream()
+        List<String> listOfBuilds = getDriver().findElements(By.className("app-builds-container__item"))
+                .stream()
                 .map(WebElement::getText)
                 .toList();
 
@@ -148,12 +152,14 @@ public class FreestyleProjectTest extends BaseTest {
 
         getWait10().until(ExpectedConditions.presenceOfElementLocated(By.name("_.upstreamProjects")))
                 .sendKeys(NEW_PROJECT_NAME_1, Keys.TAB);
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(), 'Trigger even if the build fails')]"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//label[contains(text(), 'Trigger even if the build fails')]"))).click();
         getDriver().findElement(By.name("Submit")).click();
         getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), NEW_PROJECT_NAME_2));
         getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
 
-        List <String> listOfBuilds = getDriver().findElements(By.className("app-builds-container__item")).stream()
+        List <String> listOfBuilds = getDriver().findElements(By.className("app-builds-container__item"))
+                .stream()
                 .map(WebElement::getText)
                 .toList();
 
@@ -164,9 +170,11 @@ public class FreestyleProjectTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//span[text()='%s']".formatted(NEW_PROJECT_NAME_2)))).click();
         getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), NEW_PROJECT_NAME_2));
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-title='Delete Project']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[@data-title='Delete Project']"))).click();
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
-        List<String> listOfJobs = getDriver().findElements(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).stream()
+        List<String> listOfJobs = getDriver().findElements(By.cssSelector(".jenkins-table__link > span:nth-child(1)"))
+                .stream()
                 .map(WebElement::getText).toList();
 
         Assert.assertEquals(listOfJobs.size(), 1);
@@ -220,11 +228,12 @@ public class FreestyleProjectTest extends BaseTest {
         getWait2().until(driver -> true); // небольшая пауза
         addBuildStepButton.click();
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(text(), 'Execute Windows batch command')]")))
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//button[contains(text(), 'Execute Windows batch command')]")))
                 .click();
 
-        WebElement commandField = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//textarea[@name='command']")));
-        commandField.sendKeys("echo 'Test'");
+        WebElement commandField = getWait10().until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//textarea[@name='command']")));commandField.sendKeys("echo 'Test'");
 
         WebElement deleteButton = getWait10().until(
                 ExpectedConditions.presenceOfElementLocated(
@@ -235,10 +244,12 @@ public class FreestyleProjectTest extends BaseTest {
         deleteButton.click();
 
         boolean commandFieldExists = getWait5().until(
-                driver -> getDriver().findElements(By.xpath("//textarea[@name='command']")).size() == 0);
+                driver -> getDriver().findElements(
+                        By.xpath("//textarea[@name='command']")).size() == 0);
         Assert.assertTrue(commandFieldExists, "Build step should disappear immediately after clicking delete");
 
-        WebElement saveButton = getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']")));
+        WebElement saveButton = getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//button[@name='Submit']")));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", saveButton);
         getWait2().until(driver -> true); // небольшая пауза
         saveButton.click();
@@ -252,7 +263,8 @@ public class FreestyleProjectTest extends BaseTest {
         configureLink.click();
 
         commandFieldExists = getWait5().until(
-                driver -> getDriver().findElements(By.xpath("//textarea[@name='command']")).size() == 0);
+                driver -> getDriver().findElements(
+                        By.xpath("//textarea[@name='command']")).size() == 0);
         Assert.assertTrue(commandFieldExists, "Build step should not appear after reopening configuration");
     }
     @Test
