@@ -69,9 +69,8 @@ public class NodeTest extends BaseTest {
     public void testMarkNodeOffline(){
         goToNewNodeManagementPage();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                getDriver().findElement(By.xpath("//form [@action='markOffline']")))).click();
-        getDriver().findElement(By.xpath("//button [@name='Submit']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//form [@action='markOffline']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button [@name='Submit']"))).click();
 
         Assert.assertEquals(getDriver().findElement(By.className("message")).getText(), "Disconnected by admin");
     }
