@@ -14,11 +14,9 @@ public class MultibranchPipelineTest extends BaseTest {
 	private final static String PROJECT_NAME = "MultibranchPipelineProject";
 	private final static String PROJECT_NAME_1 = "MultibranchPipelineProject1";
 
-
 	@Test
 	public void testCreate() {
 		getDriver().findElement(By.xpath("//a[contains(@class, 'task-link-no-confirm') and contains(@it, 'hudson')]")).click();
-
 		WebElement nameInput = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
 		nameInput.clear();
 		nameInput.sendKeys(PROJECT_NAME);
