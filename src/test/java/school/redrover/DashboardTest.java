@@ -7,10 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DashboardTest extends BaseTest {
 
@@ -58,12 +55,14 @@ public class DashboardTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFolder")
     public void testOrderName() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='PipelineName']")));
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='FolderName']")));
-        List<WebElement> elements = getDriver().findElements(By.cssSelector(".jenkins-table__link.model-link.inside"));
 
-        List<String> actualOrder = elements.stream().map(WebElement::getText).collect(Collectors.toList());
-        List<String> expectedOrder = new ArrayList<>(actualOrder);
-        Collections.sort(expectedOrder);
+        List<String> actualOrder = getDriver().findElements(By.cssSelector(".jenkins-table__link.model-link.inside"))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+        List<String> expectedOrder = actualOrder.stream().sorted().toList();
 
         Assert.assertEquals(actualOrder, expectedOrder, "Not an alphabetical order!");
     }
