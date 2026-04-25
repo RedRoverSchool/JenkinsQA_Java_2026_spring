@@ -7,10 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DashboardTest extends BaseTest {
 
@@ -24,8 +21,7 @@ public class DashboardTest extends BaseTest {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(DESC_MESSAGE);
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
-        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.id("description-content"), DESC_MESSAGE));
-        Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(), DESC_MESSAGE);
+        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText(), DESC_MESSAGE);
     }
 
     @Test(dependsOnMethods = "testAddDescription")
@@ -38,8 +34,8 @@ public class DashboardTest extends BaseTest {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/PipelineName/']")));
         getDriver().findElement(By.id("jenkins-head-icon")).click();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='PipelineName']")));
-        Assert.assertEquals(getDriver().findElement(By.xpath("//span[text()='PipelineName']")).getText(), PIPELINE_NAME);
+        WebElement pipeName = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='PipelineName']")));
+        Assert.assertEquals(pipeName.getText(), PIPELINE_NAME);
     }
 
     @Test(dependsOnMethods = "testCreatePipeline")
@@ -52,18 +48,20 @@ public class DashboardTest extends BaseTest {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/FolderName/']")));
         getDriver().findElement(By.id("jenkins-head-icon")).click();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='FolderName']")));
-        Assert.assertEquals(getDriver().findElement(By.xpath("//span[text()='FolderName']")).getText(), FOLDER_NAME);
+        WebElement folderName = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='FolderName']")));
+        Assert.assertEquals(folderName.getText(), FOLDER_NAME);
     }
 
     @Test(dependsOnMethods = "testCreateFolder")
     public void testOrderName() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='PipelineName']")));
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='FolderName']")));
-        List<WebElement> elements = getDriver().findElements(By.cssSelector(".jenkins-table__link.model-link.inside"));
 
-        List<String> actualOrder = elements.stream().map(WebElement::getText).collect(Collectors.toList());
-        List<String> expectedOrder = new ArrayList<>(actualOrder);
-        Collections.sort(expectedOrder);
+        List<String> actualOrder = getDriver().findElements(By.cssSelector(".jenkins-table__link.model-link.inside"))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+        List<String> expectedOrder = actualOrder.stream().sorted().toList();
 
         Assert.assertEquals(actualOrder, expectedOrder, "Not an alphabetical order!");
     }
