@@ -1,16 +1,11 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-
-import java.time.Duration;
 
 public class PipelineProjectTest extends BaseTest {
 
@@ -37,7 +32,8 @@ public class PipelineProjectTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.name("Submit")));
         getDriver().findElement(By.id("jenkins-head-icon")).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a[@href='/view/all/newJob']"))).click();
 
         getDriver().findElement(By.id("name")).sendKeys(PIPELINE_NAME);
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
