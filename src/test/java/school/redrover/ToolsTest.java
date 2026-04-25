@@ -13,7 +13,8 @@ public class ToolsTest extends BaseTest {
     private final static By SAVE_BUTTON = By.name("Submit");
 
     public void openToolsPage() {
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("root-action-ManageJenkinsAction"))).click();
         getWait5().until(ExpectedConditions
                 .visibilityOfElementLocated(By.xpath("//a[@href = 'configureTools']"))).click();
 
