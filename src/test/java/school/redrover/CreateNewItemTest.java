@@ -14,14 +14,12 @@ public class CreateNewItemTest extends BaseTest {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
         getDriver().findElement(By.id("name")).sendKeys("Select an item type test");
         getDriver().findElement(By.xpath("//div[contains(text(), 'Build, test')]")).click();
-
         Assert.assertTrue(getDriver().findElement(By.id("ok-button")).isEnabled());
     }
     @Test
     public void testSelectItemTypeWithEmptyName() {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
         getDriver().findElement(By.xpath("//div[contains(text(), 'Build, test')]")).click();
-
         Assert.assertEquals(getDriver().findElement(By.id("itemname-required")).getText(),
                 "» This field cannot be empty, please enter a valid name");
     }
@@ -30,7 +28,6 @@ public class CreateNewItemTest extends BaseTest {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
         WebElement inputName = getDriver().findElement(By.id("name"));
         inputName.sendKeys("$");
-
         Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
     }
     @Test
@@ -40,7 +37,6 @@ public class CreateNewItemTest extends BaseTest {
         getDriver().findElement(By.xpath("//div[contains(text(), 'Build, test')]")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
-
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//h1"))).getText(), "Test3");
     }
@@ -48,7 +44,6 @@ public class CreateNewItemTest extends BaseTest {
     public void testSelectItemTypeWithSameName() {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
         getDriver().findElement(By.id("name")).sendKeys("Test3");
-
         Assert.assertEquals(getDriver().findElement(By.id("itemname-invalid")).getText(),
                 "» A job already exists with the name ‘Test3’");
     }
