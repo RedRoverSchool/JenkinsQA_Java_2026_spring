@@ -30,14 +30,17 @@ public class FreestyleProjectTest extends BaseTest {
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//a[contains(@href, '/configure')]"))).click();
     }
+
     private void gitButton(){
         WebElement gitOption = getDriver().findElement(By.xpath("//label[text()='Git']"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", gitOption);
     }
+
     private void enterRepositoryURL(){
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("_.url"))).
                 sendKeys(REPOSITORY_URL);
     }
+
     @Test
     public void testCreate() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -55,6 +58,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(actualName, PROJECT_NAME);
     }
+
     @Test (dependsOnMethods = "testCreate")
     public void testAddDescription() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -68,6 +72,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(
                 By.xpath("//div[@id='description-content']")).getText(),"Description");
     }
+
     @Test(dependsOnMethods = "testAddDescription")
     public void testDisable() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -81,6 +86,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(
                 By.id("enable-project")).getText().contains("This project is currently disabled"));
     }
+
     @Test(dependsOnMethods = "testDisable")
     public void testEnable() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -95,6 +101,7 @@ public class FreestyleProjectTest extends BaseTest {
                         By.className("jenkins-toggle-switch__label__checked-title")).getText(),
                 "Enabled");
     }
+
     @Test(dependsOnMethods = "testEnable")
     public void testRename() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -109,6 +116,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//*[@id='main-panel']//h1"))).getText(), NEW_PROJECT_NAME_1);
     }
+
     @Test(dependsOnMethods = "testRename")
     public void testBuildNowCheckAlert() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -120,6 +128,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.id("notification-bar"))).getText(), "Build scheduled");
     }
+
     @Test(dependsOnMethods = "testBuildNowCheckAlert")
     public void testBuildNow() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -135,6 +144,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(listOfBuilds.size(), 1);
     }
+
     @Test(dependsOnMethods = "testBuildNow")
     public void testBuildAfterOtherProjectsAreBuild() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -165,6 +175,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(listOfBuilds.size(), 1);
     }
+
     @Test(dependsOnMethods = "testBuildAfterOtherProjectsAreBuild")
     public void testDelete() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -179,6 +190,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(listOfJobs.size(), 1);
     }
+
     @Test
     public void testAddBuildStepDropdownContainsAllOptions(){
         List<String> expectedTexts = Arrays.asList(
@@ -214,6 +226,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(actualTexts, expectedTexts,
                 "Dropdown options should match expected list");
     }
+
     @Test
     public void testDeleteBuildStep() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -267,6 +280,7 @@ public class FreestyleProjectTest extends BaseTest {
                         By.xpath("//textarea[@name='command']")).size() == 0);
         Assert.assertTrue(commandFieldExists, "Build step should not appear after reopening configuration");
     }
+
     @Test
     public void testCreateProject(){
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -283,6 +297,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(actualName, PROJECT_NAME);
     }
+
     @Test(dependsOnMethods = "testCreateProject")
     public void testRepositoryURL() {
         goToConfigurePage();
@@ -292,6 +307,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.name("_.url")).getAttribute("value"), REPOSITORY_URL,
                 "The repository URL does not match!");
     }
+
     @Test(dependsOnMethods = "testCreateProject")
     public void testCredentials() {
         goToConfigurePage();
@@ -301,6 +317,7 @@ public class FreestyleProjectTest extends BaseTest {
                         By.xpath("//select[@name='_.credentialsId']"))).isDisplayed(),
                 "The Credentials drop-down list is not displayed");
     }
+
     @Test(dependsOnMethods = "testCreateProject")
     public void testBranchesToBuild() {
         goToConfigurePage();
@@ -316,6 +333,7 @@ public class FreestyleProjectTest extends BaseTest {
                         .getAttribute("value"), BRANCH_NAME,
                 "The branch name does not match the expected one!");
     }
+
     @Test(dependsOnMethods = "testCreateProject")
     public void testSCMAuthenticationFails(){
         goToConfigurePage();
