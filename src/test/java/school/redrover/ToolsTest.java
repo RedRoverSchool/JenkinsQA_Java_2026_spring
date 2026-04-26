@@ -17,7 +17,6 @@ public class ToolsTest extends BaseTest {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("root-action-ManageJenkinsAction"))).click();
         getWait5().until(ExpectedConditions
                 .visibilityOfElementLocated(By.xpath("//a[@href = 'configureTools']"))).click();
-
     }
 
     @Test
@@ -28,11 +27,32 @@ public class ToolsTest extends BaseTest {
 
     @Test(dependsOnMethods = "testOpenToolsPage")
     public void testSimpleMavenConfiguration() {
+
         openToolsPage();
-        WebElement dropMenuSimple = getDriver().findElement(By.xpath("//select[@class='jenkins-select__input dropdownList'][1]"));
+
+        WebElement dropMenuSimple = getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("(//select[contains(@class,'jenkins-select__input')])[1]")));
         Select dropdown = new Select(dropMenuSimple);
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//select[contains(@class,'jenkins-select__input')]")));
-        dropdown.selectByValue("1");
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//select[contains(@class,'jenkins-select__input')]")));
+        dropdown.selectByVisibleText("Settings file in filesystem");
+        getDriver().findElement(SAVE_BUTTON).click();
+
+        openToolsPage();
+        Assert.assertTrue(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("_.path"))).isDisplayed());
+    }
+
+    @Test(dependsOnMethods = "testOpenToolsPage")
+    public void testGlobalMavenConfiguration() {
+
+        openToolsPage();
+
+        WebElement dropMenuGlobal = getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("(//select[contains(@class,'jenkins-select__input')])[2]")));
+        Select dropdown = new Select(dropMenuGlobal);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//select[contains(@class,'jenkins-select__input')]")));
+        dropdown.selectByVisibleText("Global settings file on filesystem");
         getDriver().findElement(SAVE_BUTTON).click();
 
         openToolsPage();
