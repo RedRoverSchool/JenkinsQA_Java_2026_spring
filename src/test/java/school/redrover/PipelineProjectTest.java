@@ -24,6 +24,7 @@ public class PipelineProjectTest extends BaseTest {
         Assert.assertTrue(
                 getDriver().findElement(By.id("ok-button")).isDisplayed());
     }
+
     @Test
     public void testCreateWithDuplicateName() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -41,6 +42,7 @@ public class PipelineProjectTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='itemname-invalid']")).getText(),
                 "» A job already exists with the name ‘%s’".formatted(PIPELINE_NAME));
     }
+
     @Test
     public void testCreate() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -54,6 +56,7 @@ public class PipelineProjectTest extends BaseTest {
                 getDriver().findElement(By.cssSelector(".jenkins-table__link > span:first-child")).getText(),
                 PIPELINE_NAME);
     }
+
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescription() {
         getWait5().until(ExpectedConditions.elementToBeClickable(
@@ -66,6 +69,7 @@ public class PipelineProjectTest extends BaseTest {
                 getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText(),
                 DESCRIPTION_TEXT);
     }
+
     @Test(dependsOnMethods = "testAddDescription")
     public void testRename() {
         getWait5().until(ExpectedConditions.elementToBeClickable(
@@ -84,6 +88,7 @@ public class PipelineProjectTest extends BaseTest {
                 getDriver().findElement(By.cssSelector(".jenkins-table__link > span:first-child")).getText(),
                 RENAME_PIPELINE);
     }
+
     @Test
     public void testApplyProjectDescription() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
