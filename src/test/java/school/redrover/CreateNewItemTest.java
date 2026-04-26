@@ -38,12 +38,12 @@ public class CreateNewItemTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//h1"))).getText(), "Test3");
+                By.xpath("//h1"))).getText(), "Test5");
     }
     @Test(dependsOnMethods = "testSelectItemTypeWithValidName")
     public void testSelectItemTypeWithSameName() {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
-        getDriver().findElement(By.id("name")).sendKeys("Test3");
+        getDriver().findElement(By.id("name")).sendKeys("Test5");
         Assert.assertEquals(getDriver().findElement(By.id("itemname-invalid")).getText(),
                 "» A job already exists with the name ‘Test3’");
     }
