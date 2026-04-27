@@ -133,4 +133,13 @@ public class SearchButtonTest extends BaseTest {
         Assert.assertEquals(getDriver()
                 .findElement(By.xpath("//p//span")).getText(), "No results for");
     }
+
+    @Test
+    public void testOpenSearchByKeyboard(){
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//div[@id='tasks']//a)[1]")));
+        getDriver().findElement(By.tagName("body")).sendKeys(Keys.chord(Keys.CONTROL, "k"));
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='search-results']/a")));
+
+        Assert.assertTrue(getDriver().findElement(SEARCH_INPUT_FIELD).isDisplayed());
+    }
 }
