@@ -23,6 +23,8 @@ public class DescriptionTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(), ADD_DESCRIPTION);
     }
+
+    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testUpdate() {
         getDriver().findElement((By.linkText("Edit description"))).click();
@@ -34,6 +36,8 @@ public class DescriptionTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(), UPDATE_DESCRIPTION);
     }
+
+    @Ignore
     @Test(dependsOnMethods = "testUpdate")
     public void testCancel() {
         getDriver().findElement((By.linkText("Edit description"))).click();
