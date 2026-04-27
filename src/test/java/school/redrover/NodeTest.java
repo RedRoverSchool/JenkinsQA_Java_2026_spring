@@ -28,6 +28,7 @@ public class NodeTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[@value='Create']")).click();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@value='Save']"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='main-panel']//h1")));
 
         List<String> actualNodeList = getDriver().findElements(By
                         .xpath("//a[@class = 'jenkins-table__link model-link inside']"))
