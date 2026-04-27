@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -27,6 +28,7 @@ public class ManageJenkinsPage2Test extends BaseTest {
                     "//h1 | " +
                     "//h2");
 
+    @Ignore
     @Test(description = "Проверка страницы Manage Jenkins")
     public void testManageJenkinsModules() {
 

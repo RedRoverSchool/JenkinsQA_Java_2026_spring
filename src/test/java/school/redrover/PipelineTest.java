@@ -28,7 +28,6 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualProjectName.getText(), projectName);
     }
 
-
     @Test(dependsOnMethods = "testCreatePipeline")
     public void testReplacesOriginalName() {
 
@@ -45,6 +44,7 @@ public class PipelineTest extends BaseTest {
         WebElement advancedButton = getWait10().until(
                 ExpectedConditions.elementToBeClickable(
                         By.xpath("(//button[contains(@class, 'advancedButton')])[last()]")));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", advancedButton);
         advancedButton.click();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
@@ -60,5 +60,33 @@ public class PipelineTest extends BaseTest {
                         By.xpath("//span[text()='%s']".formatted(displayName))));
         Assert.assertEquals(projectOnDashboard.getText(), displayName,
                 "Project should be displayed with Display Name on dashboard");
+    }
+
+    @Ignore
+    @Test
+    public void testDisableProject() {
+        String projectName = "Changed Pipeline_" + System.currentTimeMillis();
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getWait10().until(ExpectedConditions.urlContains("/configure"));
+
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Enabled']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
+        getWait10().until(ExpectedConditions.urlContains("%20"));
+
+        WebElement warningMessage = getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//*[contains(text(), 'This project is currently disabled')]")));
+        Assert.assertTrue(warningMessage.isDisplayed(),
+                "Warning message 'This project is currently disabled' should be displayed");
+
+        WebElement enableButton = getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//button[contains(text(), 'Enable')]")));
+        Assert.assertTrue(enableButton.isDisplayed(),
+                "Enable button should be displayed");
     }
 }
