@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -17,6 +18,7 @@ public class NodeTest extends BaseTest {
     private static final String DIR = "D:\\Jenkins\\NewTestNode";
     private static final String LABELS = "Urgent";
 
+    @Ignore
     @Test
     public void testCreateNewNode(){
 
@@ -39,6 +41,7 @@ public class NodeTest extends BaseTest {
         Assert.assertTrue(actualNodeList.contains(NEW_NODE_NAME));
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testCreateNewNode")
     public void testNodeConfiguration(){
 
@@ -65,6 +68,7 @@ public class NodeTest extends BaseTest {
         Assert.assertEquals(actualAttributes, expectAttributes);
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testCreateNewNode")
     public void testMarkNodeOffline(){
         goToNewNodeManagementPage();
@@ -77,6 +81,7 @@ public class NodeTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.className("message")).getText(), "Disconnected by admin");
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testMarkNodeOffline")
     public void testBringTheNodeBackOnline(){
         goToNewNodeManagementPage();

@@ -40,7 +40,7 @@ public abstract class BaseTest {
 
     private void loginWeb() {
         ProjectUtils.log("Login");
-        JenkinsUtils.login(getDriver());
+        JenkinsUtils.login(this);
     }
 
     private void getWeb() {

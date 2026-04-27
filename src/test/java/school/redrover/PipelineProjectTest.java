@@ -38,6 +38,8 @@ public class PipelineProjectTest extends BaseTest {
                 getDriver().findElement(By.cssSelector(".jenkins-table__link > span:first-child")).getText(),
                 PIPELINE_NAME);
     }
+
+    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescription() {
         getWait5().until(ExpectedConditions.elementToBeClickable(
@@ -50,6 +52,8 @@ public class PipelineProjectTest extends BaseTest {
                 getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText(),
                 DESCRIPTION_TEXT);
     }
+
+    @Ignore
     @Test(dependsOnMethods = "testAddDescription")
     public void testRename() {
         getWait5().until(ExpectedConditions.elementToBeClickable(

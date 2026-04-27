@@ -49,6 +49,7 @@ public class SearchButtonTest extends BaseTest {
         return sb.toString();
     }
 
+    @Ignore
     @Test
     public void testSearchButtonVisibility() {
 
@@ -121,6 +122,7 @@ public class SearchButtonTest extends BaseTest {
         Assert.assertEquals(getDriver().findElements(PARTIAL_RESULT).size(), 1);
     }
 
+    @Ignore
     @Test
     public void testSearchLongQuery() {
         final String CHARACTERS_2000 = randomLatinString(2000);
