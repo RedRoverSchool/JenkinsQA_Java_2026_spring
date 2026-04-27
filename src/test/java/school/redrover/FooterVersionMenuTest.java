@@ -33,6 +33,7 @@ public class FooterVersionMenuTest extends BaseTest {
         Assert.assertTrue(actualUrl.contains("/manage/about"),
                 "URL should contain '/manage/about' but was: " + actualUrl);
     }
+
     @Ignore
     @Test
     public void testCheckGetInvoled(){
