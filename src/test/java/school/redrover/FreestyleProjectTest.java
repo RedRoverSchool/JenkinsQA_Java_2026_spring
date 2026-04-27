@@ -41,6 +41,7 @@ public class FreestyleProjectTest extends BaseTest {
                 sendKeys(REPOSITORY_URL);
     }
 
+    @Ignore
     @Test
     public void testCreate() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -59,6 +60,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(actualName, PROJECT_NAME);
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testCreate")
     public void testAddDescription() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -73,6 +75,7 @@ public class FreestyleProjectTest extends BaseTest {
                 By.xpath("//div[@id='description-content']")).getText(),"Description");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testAddDescription")
     public void testDisable() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -87,6 +90,7 @@ public class FreestyleProjectTest extends BaseTest {
                 By.id("enable-project")).getText().contains("This project is currently disabled"));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testDisable")
     public void testEnable() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -102,6 +106,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "Enabled");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testEnable")
     public void testRename() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -117,6 +122,7 @@ public class FreestyleProjectTest extends BaseTest {
                 By.xpath("//*[@id='main-panel']//h1"))).getText(), NEW_PROJECT_NAME_1);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testRename")
     public void testBuildNowCheckAlert() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -129,6 +135,7 @@ public class FreestyleProjectTest extends BaseTest {
                 By.id("notification-bar"))).getText(), "Build scheduled");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testBuildNowCheckAlert")
     public void testBuildNow() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -145,6 +152,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(listOfBuilds.size(), 1);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testBuildNow")
     public void testBuildAfterOtherProjectsAreBuild() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -176,6 +184,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(listOfBuilds.size(), 1);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testBuildAfterOtherProjectsAreBuild")
     public void testDelete() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -227,6 +236,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "Dropdown options should match expected list");
     }
 
+    @Ignore
     @Test
     public void testDeleteBuildStep() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();

@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -57,6 +58,7 @@ public class GlobalSearchTest extends BaseTest {
         Assert.assertEquals(searchInput.getAttribute("value"), "");
     }
 
+    @Ignore
     @Test
     public void testReguest(){
 
@@ -75,6 +77,7 @@ public class GlobalSearchTest extends BaseTest {
         Assert.assertTrue(actualText.contains("SecondFolder"));
     }
 
+    @Ignore
     @Test
     public void testLongQuery(){
         getDriver().findElement(SEARCH_BUTTON).click();

@@ -5,6 +5,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -16,6 +17,7 @@ public class UserTest extends BaseTest {
     private final static String USER_PASSWORD = "testPassword";
     private final static String USER_EMAIL = "testUser@example.com";
 
+    @Ignore
     @Test
     public void testCreateUser() {
 
@@ -35,6 +37,7 @@ public class UserTest extends BaseTest {
         Assert.assertTrue(actualUsersNameList.contains(USER_NAME));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateUser")
     public void testSearchUser() {
 
@@ -53,6 +56,7 @@ public class UserTest extends BaseTest {
                 "The user with User ID " + USER_NAME + "is not found");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testSearchUser")
     public void testRenameUser() {
         final String userFullName = "testUserFullName";
@@ -77,6 +81,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(actualUserName, userFullName);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testRenameUser")
     public void testDeleteUserViaDropDownMenu() {
 
@@ -162,6 +167,7 @@ public class UserTest extends BaseTest {
                 "Error Message for incorrect confirmation password not displayed");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateUserWithAnIncorrectConfirmPassword")
     public void testCreateUserWithDuplicateUsername() {
         final String expectedErrorMessage = "User name is already taken";

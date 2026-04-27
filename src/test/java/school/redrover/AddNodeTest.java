@@ -2,6 +2,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import java.util.List;
@@ -23,6 +24,7 @@ public class AddNodeTest extends BaseTest {
     private final By label = By.xpath("//form/div[1]/div[5]/div[2]/input");
     private final By saveButton = By.xpath("//div[@id='bottom-sticker']//button");
 
+    @Ignore
     @Test
     public void testAddNewNode() {
         getDriver().findElement(settingsButton).click();

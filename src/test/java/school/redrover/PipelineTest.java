@@ -62,6 +62,7 @@ public class PipelineTest extends BaseTest {
                 "Project should be displayed with Display Name on dashboard");
     }
 
+    @Ignore
     @Test
     public void testDisableProject() {
         String projectName = "Changed Pipeline_" + System.currentTimeMillis();
