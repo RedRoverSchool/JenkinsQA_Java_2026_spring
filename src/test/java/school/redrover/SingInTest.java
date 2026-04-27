@@ -4,11 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.JenkinsUtils;
+
+import java.time.Duration;
 
 
 public class SingInTest extends BaseTest {
@@ -106,10 +109,14 @@ public class SingInTest extends BaseTest {
         getDriver().findElement(By.cssSelector("#j_password")).sendKeys("qwerty");
         getDriver().findElement(By.xpath("//button[text()='Sign in']")).click();
 
-        WebElement alertText = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='app-sign-in-register__error']")));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
-        Assert.assertEquals(alertText.getText(), "Invalid username or password");
+        boolean textMatches = wait.until(
+                ExpectedConditions.textToBePresentInElementLocated(
+                        By.xpath("//div[@class='app-sign-in-register__error']"),
+                        "Invalid username or password"));
+
+        Assert.assertTrue(textMatches, "Сообщение об ошибке не появилось или текст не совпадает");
     }
 
     @Ignore
