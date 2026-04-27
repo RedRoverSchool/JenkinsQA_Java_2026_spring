@@ -17,13 +17,11 @@ public class FooterRestApiLinkTest extends BaseTest {
     public void testCheckingTheRestApiLinkHasHoverEffect() {
         WebElement restApiLink = getWait10()
                 .until(ExpectedConditions.visibilityOfElementLocated(
-                        By.cssSelector("footer .rest-api")
-                ));
+                        By.cssSelector("footer .rest-api")));
 
         String beforeBackground = (String) ((JavascriptExecutor) getDriver()).executeScript(
                 "return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');",
-                restApiLink
-        );
+                restApiLink);
 
         Actions actions = new Actions(getDriver());
         actions.moveToElement(restApiLink).perform();
@@ -31,18 +29,15 @@ public class FooterRestApiLinkTest extends BaseTest {
         getWait5().until(driver -> {
             String currentBackground = (String) ((JavascriptExecutor) driver).executeScript(
                     "return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');",
-                    restApiLink
-            );
+                    restApiLink);
             if (currentBackground == null) {
                 return false;
             }
-            return !currentBackground.equals(beforeBackground);
-        });
+            return !currentBackground.equals(beforeBackground);});
 
         String afterBackground = (String) ((JavascriptExecutor) getDriver()).executeScript(
                 "return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');",
-                restApiLink
-        );
+                restApiLink);
 
         Assert.assertEquals(restApiLink.getCssValue("cursor"), "pointer");
         Assert.assertNotEquals(beforeBackground, afterBackground);
