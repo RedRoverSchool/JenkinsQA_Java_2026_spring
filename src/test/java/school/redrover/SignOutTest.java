@@ -40,13 +40,13 @@ public class SignOutTest extends BaseTest {
         actions.moveToElement(userButton).perform();
 
         WebElement dropdownMenu = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']"))
-        );
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']")));
         dropdownMenu.findElement(By.xpath(".//a[@href='/logout']")).click();
 
         Assert.assertFalse(isAlertPresent(getDriver()),
                 "Не должно быть alert-окна подтверждения выхода. Выход должен быть мгновенным.");
 
+        // ожидаем перехода на страницу авторизации
         getWait5().until(ExpectedConditions.urlContains("login"));
     }
 
@@ -59,20 +59,17 @@ public class SignOutTest extends BaseTest {
         JenkinsUtils.login(this);
 
         WebElement userButton = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction"))
-        );
+                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
 
         Actions actions = new Actions(getDriver());
         actions.moveToElement(userButton).perform();
 
         WebElement dropdownMenu = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']"))
-        );
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']")));
         dropdownMenu.findElement(By.xpath(".//a[@href='/logout']")).click();
 
         WebElement buttonSingIn = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='submit']"))
-        );
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='submit']")));
 
         Assert.assertEquals(buttonSingIn.getText(), "Sign in");
     }
@@ -87,20 +84,17 @@ public class SignOutTest extends BaseTest {
         JenkinsUtils.login(this);
 
         WebElement userButton = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction"))
-        );
+                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
 
         Actions actions = new Actions(getDriver());
         actions.moveToElement(userButton).perform();
 
         WebElement dropdownMenu = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']"))
-        );
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']")));
         dropdownMenu.findElement(By.xpath(".//a[@href='/logout']")).click();
 
         WebElement usernameField = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("j_username"))
-        );
+                ExpectedConditions.visibilityOfElementLocated(By.id("j_username")));
 
         String usernameValue = usernameField.getAttribute("value");
         Assert.assertEquals(usernameValue, "",
@@ -117,20 +111,17 @@ public class SignOutTest extends BaseTest {
         JenkinsUtils.login(this);
 
         WebElement userButton = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction"))
-        );
+                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
 
         Actions actions = new Actions(getDriver());
         actions.moveToElement(userButton).perform();
 
         WebElement dropdownMenu = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']"))
-        );
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']")));
         dropdownMenu.findElement(By.xpath(".//a[@href='/logout']")).click();
 
         WebElement passwordField = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("j_password"))
-        );
+                ExpectedConditions.visibilityOfElementLocated(By.id("j_password")));
 
         String passwordValue = passwordField.getAttribute("value");
         Assert.assertEquals(passwordValue, "",
@@ -141,8 +132,7 @@ public class SignOutTest extends BaseTest {
     public void testDropdownMenuClosesWhenMouseMovesAway() {
 
         WebElement userButton = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction"))
-        );
+                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
 
         Actions actions = new Actions(getDriver());
         actions.moveToElement(userButton).perform();
@@ -150,18 +140,14 @@ public class SignOutTest extends BaseTest {
 
         WebElement dropdownMenu = getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//div[contains(@class,'jenkins-dropdown')]")
-                )
-        );
-        Assert.assertTrue(dropdownMenu.isDisplayed(), "Меню не появилось после наведения");
+                        By.xpath("//div[contains(@class,'jenkins-dropdown')]")));
 
+        Assert.assertTrue(dropdownMenu.isDisplayed(), "Меню не появилось после наведения");
 
         WebElement header = getDriver().findElement(By.tagName("header"));
         actions.moveToElement(header).click().perform();
 
-
         getWait5().until(ExpectedConditions.invisibilityOf(dropdownMenu));
-
 
         WebElement userButtonStillVisible = getDriver().findElement(By.id("root-action-UserAction"));
         Assert.assertTrue(userButtonStillVisible.isDisplayed(), "Пользователь разлогинился, кнопка не видна");

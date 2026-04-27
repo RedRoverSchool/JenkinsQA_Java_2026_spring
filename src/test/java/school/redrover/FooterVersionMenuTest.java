@@ -94,8 +94,7 @@ public class FooterVersionMenuTest extends BaseTest {
         js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 
         List<WebElement> versionLinks = getDriver().findElements(
-                By.xpath("//footer//a[contains(text(),'Jenkins')]")
-        );
+                By.xpath("//footer//a[contains(text(),'Jenkins')]"));
 
         if (versionLinks.isEmpty()) {
             System.out.println("Ссылка с версией Jenkins не найдена в футере. Тест пропущен.");
@@ -107,9 +106,7 @@ public class FooterVersionMenuTest extends BaseTest {
 
         List<WebElement> aboutMenus = getWait5().until(
                 ExpectedConditions.visibilityOfAllElementsLocatedBy(
-                        By.xpath("//a[contains(text(),'About Jenkins')]")
-                )
-        );
+                        By.xpath("//a[contains(text(),'About Jenkins')]")));
 
         if (aboutMenus.isEmpty()) {
             System.out.println("Пункт 'About Jenkins' не найден. Тест пропущен.");
@@ -126,5 +123,4 @@ public class FooterVersionMenuTest extends BaseTest {
                 "Фокус переключился на другое окно");
     }
 
-
-    }
+}

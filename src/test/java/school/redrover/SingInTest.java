@@ -107,8 +107,7 @@ public class SingInTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[text()='Sign in']")).click();
 
         WebElement alertText = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='app-sign-in-register__error']"))
-        );
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='app-sign-in-register__error']")));
 
         Assert.assertEquals(alertText.getText(), "Invalid username or password");
     }
@@ -123,8 +122,7 @@ public class SingInTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[text()='Sign in']")).click();
 
         WebElement alertText = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[text()='Invalid username or password']"))
-        );
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[text()='Invalid username or password']")));
 
         String actualColor = alertText.getCssValue("color");
         Assert.assertTrue(actualColor.contains("oklch(0.6 0.2671 30)"),
@@ -136,8 +134,7 @@ public class SingInTest extends BaseTest {
         JenkinsUtils.logout(getDriver());
 
         WebElement usernameField = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("j_username"))
-        );
+                ExpectedConditions.visibilityOfElementLocated(By.id("j_username")));
 
         Assert.assertTrue(usernameField.isDisplayed(), "Поле Username не отображается");
         Assert.assertTrue(usernameField.isEnabled(), "Поле Username не активно");
@@ -157,8 +154,7 @@ public class SingInTest extends BaseTest {
         JenkinsUtils.logout(getDriver());
 
         WebElement usernameField = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("j_username"))
-        );
+                ExpectedConditions.visibilityOfElementLocated(By.id("j_username")));
         WebElement passwordField = getDriver().findElement(By.id("j_password"));
         WebElement signInButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
 
@@ -171,13 +167,10 @@ public class SingInTest extends BaseTest {
         Assert.assertEquals(usernameField.getAttribute("value"), "");
         Assert.assertEquals(passwordField.getAttribute("value"), "");
 
-
         JenkinsUtils.login(this);
 
-
         WebElement userButton = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction"))
-        );
+                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
         Assert.assertTrue(userButton.isDisplayed(), "Не удалось войти в систему после очистки полей");
     }
 
