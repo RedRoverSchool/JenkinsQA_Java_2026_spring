@@ -283,7 +283,7 @@ public class FreestyleProjectTest extends BaseTest {
         getWait2().until(driver -> true); // небольшая пауза
         saveButton.click();
 
-        getWait10().until(ExpectedConditions.urlContains("/job/" + PROJECT_NAME.replace(" ", "%20")));
+        getWait10().until(ExpectedConditions.urlContains("/job/" + projectName.replace(" ", "%20")));
 
         WebElement configureLink = getWait10().until(
                 ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href, '/configure')]")));
