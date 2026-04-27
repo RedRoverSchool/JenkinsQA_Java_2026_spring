@@ -12,7 +12,10 @@ public class CreateMultibranchPipelineTest extends BaseTest {
     @Test
     public void testCreateMultibranchPipeline() {
         String itemName = "test-pipeline";
-        getDriver().findElement(By.linkText("New Item")).click();
+        getWait10().until(
+                ExpectedConditions.elementToBeClickable(By.linkText("New Item"))
+                )
+                        .click();
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("name")))
                 .sendKeys(itemName);
