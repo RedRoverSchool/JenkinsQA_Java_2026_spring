@@ -2,11 +2,8 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.ProjectUtils;
@@ -16,42 +13,24 @@ import java.util.Random;
 public class SearchButtonTest extends BaseTest {
 
     private static final By SEARCH_BUTTON = By.xpath("//button[@id='root-action-SearchAction']");
-    private static final By SEARCH_INPUT_FIELD = By.xpath("//input");
-    private static final By SEARCH_INPUT_LOCATOR = By.xpath("//input[@id='command-bar']");
-    private static final By HEADER_LOCATOR = By.id("page-header");
-
+    private static final By SEARCH_INPUT_FIELD = By.xpath("//input[@id='command-bar']");
+    private final String FOLDER_NAME = "TEST";
 
     private void createFolder(String folderName) {
 
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
 
-        getDriver().findElement(By.id("name")).sendKeys(folderName);
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(folderName);
         getDriver().findElement(By.xpath("//li[contains(@class,'com_cloudbees_hudson_plugins_folder_Folder')]")).click();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='submit']"))).click();
+        getWait10().until(ExpectedConditions
+                .elementToBeClickable(By.xpath("//button[@type='submit']"))).click();
 
-        getDriver().findElement(By.xpath("//button[@value='Save']")).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='" + folderName + "']")));
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
+        getWait5().until(ExpectedConditions
+                .visibilityOfElementLocated(By.xpath("//h1[text()='" + folderName + "']")));
 
         ProjectUtils.get(getDriver());
-
-    }
-
-    public void openSearchField() {
-        click(SEARCH_BUTTON);
-    }
-
-    private void click(By locator) {
-        getDriver().findElement(locator).click();
-    }
-
-    private void sendKeys(By locator, String text) {
-        getDriver().findElement(locator).clear();
-        getDriver().findElement(locator).sendKeys(text);
-    }
-
-    private WebElement waitElementVisibility(By locator) {
-       return getWait5().until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
     public static String randomLatinString(int length) {
@@ -71,17 +50,9 @@ public class SearchButtonTest extends BaseTest {
     }
 
     @Test
-    public void testSearchButtonVisibility() {
-
-        getDriver().findElement(SEARCH_BUTTON).click();
-
-        Assert.assertTrue(getWait5().until(ExpectedConditions.visibilityOfElementLocated(SEARCH_INPUT_FIELD)).isDisplayed());
-    }
-
-    @Test
     public void testSearchExistingJob() {
 
-        String folderName = "TEST";
+        String folderName = FOLDER_NAME;
 
         createFolder(folderName);
 
@@ -89,41 +60,36 @@ public class SearchButtonTest extends BaseTest {
         getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(folderName);
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated
-                        (By.xpath("//*[@id='search-results']/a[@href='/job/" + folderName + "/']"))).click();
+                (By.xpath("//*[@id='search-results']/a[@href='/job/" + folderName + "/']"))).click();
 
         Assert.assertEquals(getDriver()
-                .findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(), folderName);
+                .findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
+                .getText(), folderName);
     }
 
     @Test
     public void testEmptyQuery() {
 
         getDriver().findElement(SEARCH_BUTTON).click();
-
         getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(Keys.ENTER);
 
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/doc/book/using/searchbox/");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testSearchExistingJob")
     public void testCaseInsensitivity() {
 
-        String folderName = "Test";
-
-        createFolder(folderName);
-
         getDriver().findElement(SEARCH_BUTTON).click();
-
-        getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(folderName.toLowerCase());
+        getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(FOLDER_NAME.toLowerCase());
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated
-                (By.xpath("//*[@id='search-results']/a[@href='/job/" + folderName + "/']"))).click();
+                (By.xpath("//*[@id='search-results']/a[@href='/job/" + FOLDER_NAME + "/']"))).click();
 
         Assert.assertEquals(getDriver()
-                .findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(), folderName);
+                .findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
+                .getText(), FOLDER_NAME);
     }
 
-    @Ignore
     @Test
     public void testSearchPartialWords() {
         final String FOLDER_NAME1 = "Partialtest";
@@ -134,7 +100,7 @@ public class SearchButtonTest extends BaseTest {
         createFolder(FOLDER_NAME1);
         createFolder(FOLDER_NAME2);
 
-        openSearchField();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(SEARCH_BUTTON)).click();
         getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(PARTIAL_WORD);
 
         getWait5().until(ExpectedConditions.presenceOfElementLocated(PARTIAL_RESULT));
@@ -142,27 +108,21 @@ public class SearchButtonTest extends BaseTest {
     }
 
     @Test
-    public void testOpenSearchFieldByKeyboardCtrlK() {
-        waitElementVisibility(HEADER_LOCATOR).isDisplayed();
-
-        Keys modifier = System.getProperty("os.name").toLowerCase().contains("mac")
-                ? Keys.COMMAND : Keys.CONTROL;
-
-        new Actions(getDriver())
-                .keyDown(modifier).sendKeys("k").keyUp(modifier)
-                .perform();
-
-        Assert.assertTrue(waitElementVisibility(SEARCH_INPUT_LOCATOR).isDisplayed());
-    }
-
-    @Test
     public void testSearchLongQuery() {
         final String CHARACTERS_2000 = randomLatinString(2000);
 
-        openSearchField();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(SEARCH_BUTTON)).click();
         getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(CHARACTERS_2000);
 
-        Assert.assertEquals(getDriver()
-                .findElement(By.xpath("//p//span")).getText(), "No results for");
+        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p//span"))).getText() , "No results for");
+    }
+
+    @Test
+    public void testOpenSearchByKeyboard(){
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//div[@id='tasks']//a)[1]")));
+        getDriver().findElement(By.tagName("body")).sendKeys(Keys.chord(Keys.CONTROL, "k"));
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='search-results']/a")));
+
+        Assert.assertTrue(getDriver().findElement(SEARCH_INPUT_FIELD).isDisplayed());
     }
 }

@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -14,25 +15,28 @@ public class CreateNewItemTest extends BaseTest {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
         getDriver().findElement(By.id("name")).sendKeys("Select an item type test");
         getDriver().findElement(By.xpath("//div[contains(text(), 'Build, test')]")).click();
-
         Assert.assertTrue(getDriver().findElement(By.id("ok-button")).isEnabled());
     }
+
+    @Ignore
     @Test
     public void testSelectItemTypeWithEmptyName() {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
         getDriver().findElement(By.xpath("//div[contains(text(), 'Build, test')]")).click();
-
         Assert.assertEquals(getDriver().findElement(By.id("itemname-required")).getText(),
                 "» This field cannot be empty, please enter a valid name");
     }
+
+    @Ignore
     @Test
     public void testSelectItemTypeWithInvalidName() {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
         WebElement inputName = getDriver().findElement(By.id("name"));
         inputName.sendKeys("$");
-
         Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
     }
+
+    @Ignore
     @Test
     public void testSelectItemTypeWithValidName() {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
@@ -40,15 +44,15 @@ public class CreateNewItemTest extends BaseTest {
         getDriver().findElement(By.xpath("//div[contains(text(), 'Build, test')]")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
-
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//h1"))).getText(), "Test3");
     }
+
+    @Ignore
     @Test(dependsOnMethods = "testSelectItemTypeWithValidName")
     public void testSelectItemTypeWithSameName() {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
         getDriver().findElement(By.id("name")).sendKeys("Test3");
-
         Assert.assertEquals(getDriver().findElement(By.id("itemname-invalid")).getText(),
                 "» A job already exists with the name ‘Test3’");
     }

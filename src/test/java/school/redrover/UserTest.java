@@ -19,7 +19,7 @@ public class UserTest extends BaseTest {
     @Test
     public void testCreateUser() {
 
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("root-action-ManageJenkinsAction"))).click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='securityRealm/']"))).click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='addUser']"))).click();
 
@@ -117,7 +117,8 @@ public class UserTest extends BaseTest {
                 "Invalid e-mail address"
         );
 
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+        getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-ManageJenkinsAction"))).click();
         getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='securityRealm/']"))).click();
         getWait10().until(

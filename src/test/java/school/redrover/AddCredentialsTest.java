@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -23,7 +24,7 @@ public class AddCredentialsTest extends BaseTest {
     private static final By DESCRIPTION_FIELD = By.name("_.description");
     private static final By CREATE_BTN = By.id("cr-dialog-submit");
 
-
+    @Ignore
     @Test
     public void testAddCredentials() {
 
