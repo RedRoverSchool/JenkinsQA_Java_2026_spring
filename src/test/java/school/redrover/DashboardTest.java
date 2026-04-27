@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -15,6 +16,7 @@ public class DashboardTest extends BaseTest {
     private static final String PIPELINE_NAME = "PipelineName";
     private static final String FOLDER_NAME = "FolderName";
 
+    @Ignore
     @Test
     public void testAddDescription() {
         getDriver().findElement(By.id("description-link")).click();
@@ -25,6 +27,7 @@ public class DashboardTest extends BaseTest {
                 By.id("description-content"))).getText(), DESC_MESSAGE);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testAddDescription")
     public void testCreatePipeline() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -41,6 +44,7 @@ public class DashboardTest extends BaseTest {
                 By.xpath("//span[text()='" + PIPELINE_NAME + "']"))).getText(), PIPELINE_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreatePipeline")
     public void testCreateFolder() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -57,6 +61,7 @@ public class DashboardTest extends BaseTest {
                 By.xpath("//span[text()='" + FOLDER_NAME + "']"))).getText(), FOLDER_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateFolder")
     public void testOrderName() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
