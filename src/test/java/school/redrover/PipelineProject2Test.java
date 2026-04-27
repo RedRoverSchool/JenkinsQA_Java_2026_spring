@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -26,12 +25,10 @@ public class PipelineProject2Test extends BaseTest {
                 PROJECT_NAME);
     }
 
-    @Ignore
     @Test
     public void testCreateWithEmptyName() {
-
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Pipeline']"))).click();
 
         Assert.assertEquals(
                 getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='itemname-required']"))).getText(),
