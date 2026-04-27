@@ -35,7 +35,7 @@ public abstract class BaseTest {
 
     private void clearData() {
         ProjectUtils.log("Clear data");
-        JenkinsUtils.clearData();
+        //JenkinsUtils.clearData();
     }
 
     private void loginWeb() {

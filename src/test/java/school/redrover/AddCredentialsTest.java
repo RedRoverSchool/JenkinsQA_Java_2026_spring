@@ -54,7 +54,7 @@ public class AddCredentialsTest extends BaseTest {
                         .toList();
         Assert.assertEquals(actualOptionsNames, expectedOptions, "Lists are different");
 
-        actualElements.getFirst().click();
+        actualElements.get(0).click();
         Assert.assertTrue(nextButton.isEnabled(), "The button must be enabled after selection");
         nextButton.click();
 
