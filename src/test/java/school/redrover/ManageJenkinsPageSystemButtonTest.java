@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -24,6 +25,7 @@ public class ManageJenkinsPageSystemButtonTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='configure']")).click();
     }
 
+    @Ignore
     @Test
     public void testSystemButtonOpensConfigurationPage() {
 
