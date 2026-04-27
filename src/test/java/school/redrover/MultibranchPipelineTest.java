@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 
 public class MultibranchPipelineTest extends BaseTest {
 
@@ -32,4 +33,25 @@ public class MultibranchPipelineTest extends BaseTest {
 				ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME))));
 		Assert.assertEquals(actualProjectName.getText(), PROJECT_NAME);
 	}
+
+	@Test
+	public void testStatusIconIsDisplayedForMultibranchPipeline() {
+		final String projectName = "new-multibranch-pipeline-" + System.currentTimeMillis();
+		TestUtils.createJob(
+				getDriver(),
+				getWait10(),
+				projectName,
+				TestUtils.JobType.MULTIBRANCH_PIPELINE);
+
+		getWait10().until(ExpectedConditions.urlContains("/configure"));
+		getWait10().until(ExpectedConditions.elementToBeClickable(By.className("app-jenkins-logo"))).click();
+
+		By statusIcon = By.xpath("//tr[.//span[normalize-space()='" + projectName + "']]//*[name()='svg']");
+		WebElement icon = getWait10().until(ExpectedConditions.visibilityOfElementLocated(statusIcon));
+		Assert.assertTrue(icon.isDisplayed());
+	}
 }
+
+
+
+
