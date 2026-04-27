@@ -26,7 +26,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     private void goToConfigurePage(){
         getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//a[contains(@href, 'job/')]//span[text()='%s']".formatted(PROJECT_NAME)))).click();
+                By.xpath("//a[contains(@href, 'job/')]//span[text()='%s']".formatted(NEW_PROJECT_NAME_1)))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//a[contains(@href, '/configure')]"))).click();
     }
@@ -41,10 +41,9 @@ public class FreestyleProjectTest extends BaseTest {
                 sendKeys(REPOSITORY_URL);
     }
 
-    @Ignore
     @Test
     public void testCreate() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
         getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
         getDriver().findElement(By.id("ok-button")).click();
@@ -60,8 +59,79 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(actualName, PROJECT_NAME);
     }
 
-    @Ignore
     @Test (dependsOnMethods = "testCreate")
+    public void testAddBuildStepDropdownContainsAllOptions(){
+        List<String> expectedTexts = Arrays.asList(
+                "Execute Windows batch command",
+                "Execute shell",
+                "Invoke Gradle script",
+                "Invoke top-level Maven targets",
+                "Run with timeout",
+                "Set build status to \"pending\" on GitHub commit");
+
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//span[text()='%s']".formatted(PROJECT_NAME)))).click();
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), PROJECT_NAME));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a[@href='/job/FreestyleProject/configure']"))).click();
+
+        WebElement addBuildStepButton = getWait10().until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@suffix='builder']")));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", addBuildStepButton);
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(addBuildStepButton));
+        addBuildStepButton.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(@class, 'jenkins-dropdown')]")));
+
+        List<WebElement> dropdownItems = getWait10().until(
+                ExpectedConditions.presenceOfAllElementsLocatedBy(
+                        By.xpath("//div[@class='jenkins-dropdown jenkins-dropdown--compact']//button")));
+        List<String> actualTexts = dropdownItems.stream()
+                .map(WebElement::getText)
+                .toList();
+
+        Assert.assertEquals(actualTexts, expectedTexts,
+                "Dropdown options should match expected list");
+    }
+
+    @Test(dependsOnMethods = "testAddBuildStepDropdownContainsAllOptions")
+    public void testDeleteBuildStep() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//span[text()='%s']".formatted(PROJECT_NAME)))).click();
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), PROJECT_NAME));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a[@href='/job/FreestyleProject/configure']"))).click();
+
+        WebElement addBuildStepButton = getWait10().until(
+                ExpectedConditions.elementToBeClickable(By.xpath("//button[@suffix='builder']")));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", addBuildStepButton);
+
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",
+                addBuildStepButton);
+
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                        By.xpath("//button[contains(text(), 'Execute Windows batch command')]")))
+                .click();
+
+        WebElement commandField = getWait10().until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//textarea[@name='command']")));commandField.sendKeys("echo 'Test'");
+
+        WebElement deleteButton = getWait10().until(
+                ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("(//button[contains(@class, 'repeatable-delete')])[last()]")));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", deleteButton);
+
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",
+                deleteButton);
+
+        boolean commandFieldExists = getWait5().until(
+                driver -> getDriver().findElements(
+                        By.xpath("//textarea[@name='command']")).isEmpty());
+        Assert.assertTrue(commandFieldExists, "Build step should disappear immediately after clicking delete");
+    }
+
+    @Test (dependsOnMethods = "testDeleteBuildStep")
     public void testAddDescription() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//span[text()='%s']".formatted(PROJECT_NAME)))).click();
@@ -75,7 +145,6 @@ public class FreestyleProjectTest extends BaseTest {
                 By.xpath("//div[@id='description-content']")).getText(),"Description");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testAddDescription")
     public void testDisable() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -90,7 +159,6 @@ public class FreestyleProjectTest extends BaseTest {
                 By.id("enable-project")).getText().contains("This project is currently disabled"));
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testDisable")
     public void testEnable() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -106,7 +174,6 @@ public class FreestyleProjectTest extends BaseTest {
                 "Enabled");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testEnable")
     public void testRename() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -122,7 +189,6 @@ public class FreestyleProjectTest extends BaseTest {
                 By.xpath("//*[@id='main-panel']//h1"))).getText(), NEW_PROJECT_NAME_1);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testRename")
     public void testBuildNowCheckAlert() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -135,7 +201,6 @@ public class FreestyleProjectTest extends BaseTest {
                 By.id("notification-bar"))).getText(), "Build scheduled");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testBuildNowCheckAlert")
     public void testBuildNow() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -152,7 +217,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(listOfBuilds.size(), 1);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testBuildNow")
     public void testBuildAfterOtherProjectsAreBuild() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -176,7 +240,7 @@ public class FreestyleProjectTest extends BaseTest {
         getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), NEW_PROJECT_NAME_2));
         getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
 
-        List <String> listOfBuilds = getDriver().findElements(By.className("app-builds-container__item"))
+        List <String> listOfBuilds = getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.className("app-builds-container__item")))
                 .stream()
                 .map(WebElement::getText)
                 .toList();
@@ -184,7 +248,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(listOfBuilds.size(), 1);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testBuildAfterOtherProjectsAreBuild")
     public void testDelete() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -193,122 +256,14 @@ public class FreestyleProjectTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//a[@data-title='Delete Project']"))).click();
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
-        List<String> listOfJobs = getDriver().findElements(By.cssSelector(".jenkins-table__link > span:nth-child(1)"))
+        List<String> listOfJobs = getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".jenkins-table__link > span:nth-child(1)")))
                 .stream()
                 .map(WebElement::getText).toList();
 
         Assert.assertEquals(listOfJobs.size(), 1);
     }
 
-    @Test
-    public void testAddBuildStepDropdownContainsAllOptions(){
-        List<String> expectedTexts = Arrays.asList(
-                "Execute Windows batch command",
-                "Execute shell",
-                "Invoke Ant",
-                "Invoke Gradle script",
-                "Invoke top-level Maven targets",
-                "Run with timeout",
-                "Set build status to \"pending\" on GitHub commit");
-
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        WebElement addBuildStepButton = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@suffix='builder']")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", addBuildStepButton);
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(addBuildStepButton));
-        addBuildStepButton.click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[contains(@class, 'jenkins-dropdown')]")));
-
-        List<WebElement> dropdownItems = getWait10().until(
-                ExpectedConditions.presenceOfAllElementsLocatedBy(
-                        By.xpath("//div[@class='jenkins-dropdown jenkins-dropdown--compact']//button")));
-        List<String> actualTexts = dropdownItems.stream()
-                .map(WebElement::getText)
-                .toList();
-
-        Assert.assertEquals(actualTexts, expectedTexts,
-                "Dropdown options should match expected list");
-    }
-
-    @Ignore
-    @Test
-    public void testDeleteBuildStep() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-
-        WebElement addBuildStepButton = getWait10().until(
-                ExpectedConditions.elementToBeClickable(By.xpath("//button[@suffix='builder']")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", addBuildStepButton);
-        getWait2().until(driver -> true); // небольшая пауза
-        addBuildStepButton.click();
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//button[contains(text(), 'Execute Windows batch command')]")))
-                .click();
-
-        WebElement commandField = getWait10().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//textarea[@name='command']")));commandField.sendKeys("echo 'Test'");
-
-        WebElement deleteButton = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(
-                        By.xpath("(//button[contains(@class, 'repeatable-delete')])[last()]")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", deleteButton);
-        getWait2().until(driver -> true); // небольшая пауза
-
-        deleteButton.click();
-
-        boolean commandFieldExists = getWait5().until(
-                driver -> getDriver().findElements(
-                        By.xpath("//textarea[@name='command']")).size() == 0);
-        Assert.assertTrue(commandFieldExists, "Build step should disappear immediately after clicking delete");
-
-        WebElement saveButton = getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//button[@name='Submit']")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", saveButton);
-        getWait2().until(driver -> true); // небольшая пауза
-        saveButton.click();
-
-        getWait10().until(ExpectedConditions.urlContains("/job/" + PROJECT_NAME.replace(" ", "%20")));
-
-        WebElement configureLink = getWait10().until(
-                ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href, '/configure')]")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", configureLink);
-        getWait2().until(driver -> true);
-        configureLink.click();
-
-        commandFieldExists = getWait5().until(
-                driver -> getDriver().findElements(
-                        By.xpath("//textarea[@name='command']")).size() == 0);
-        Assert.assertTrue(commandFieldExists, "Build step should not appear after reopening configuration");
-    }
-
-    @Test
-    public void testCreateProject(){
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.cssSelector("li.hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        getWait10().until(ExpectedConditions.not(ExpectedConditions.urlContains("configure")));
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.id("jenkins-head-icon"))).click();
-
-        String actualName = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[contains(@href, 'job/Freestyle')]//span"))).getText();
-
-        Assert.assertEquals(actualName, PROJECT_NAME);
-    }
-
-    @Test(dependsOnMethods = "testCreateProject")
+    @Test(dependsOnMethods = "testDelete")
     public void testRepositoryURL() {
         goToConfigurePage();
         gitButton();
@@ -318,7 +273,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "The repository URL does not match!");
     }
 
-    @Test(dependsOnMethods = "testCreateProject")
+    @Test(dependsOnMethods = "testRepositoryURL")
     public void testCredentials() {
         goToConfigurePage();
         gitButton();
@@ -328,7 +283,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "The Credentials drop-down list is not displayed");
     }
 
-    @Test(dependsOnMethods = "testCreateProject")
+    @Test(dependsOnMethods = "testCredentials")
     public void testBranchesToBuild() {
         goToConfigurePage();
         gitButton();
@@ -344,7 +299,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "The branch name does not match the expected one!");
     }
 
-    @Test(dependsOnMethods = "testCreateProject")
+    @Test(dependsOnMethods = "testBranchesToBuild")
     public void testSCMAuthenticationFails(){
         goToConfigurePage();
         gitButton();
