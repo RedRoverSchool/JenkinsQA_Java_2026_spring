@@ -64,6 +64,7 @@ public class FreestyleProjectTest extends BaseTest {
         List<String> expectedTexts = Arrays.asList(
                 "Execute Windows batch command",
                 "Execute shell",
+                "Invoke Ant",
                 "Invoke Gradle script",
                 "Invoke top-level Maven targets",
                 "Run with timeout",
