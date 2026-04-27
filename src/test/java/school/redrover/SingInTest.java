@@ -6,7 +6,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.JenkinsUtils;
@@ -28,7 +27,7 @@ public class SingInTest extends BaseTest {
         Actions action = new Actions(getDriver());
         action.moveToElement(userButton).perform();
 
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/logout']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/logout']"))).click();
     }
 
     @Test
@@ -119,7 +118,6 @@ public class SingInTest extends BaseTest {
         Assert.assertTrue(textMatches, "Сообщение об ошибке не появилось или текст не совпадает");
     }
 
-    @Ignore
     @Test
     public void testSignInPageAlertTextColor() {
         JenkinsUtils.logout(getDriver());
@@ -163,7 +161,6 @@ public class SingInTest extends BaseTest {
         WebElement usernameField = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("j_username")));
         WebElement passwordField = getDriver().findElement(By.id("j_password"));
-        WebElement signInButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
 
         usernameField.sendKeys("wronguser");
         passwordField.sendKeys("wrongpass");
