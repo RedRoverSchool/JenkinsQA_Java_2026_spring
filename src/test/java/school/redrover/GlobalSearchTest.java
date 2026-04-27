@@ -1,13 +1,10 @@
 package school.redrover;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-
 import java.util.Random;
 
 public class GlobalSearchTest extends BaseTest {
@@ -46,7 +43,6 @@ public class GlobalSearchTest extends BaseTest {
 
     @Test
     public void testClearingTheSearchField(){
-
         getWait5().until(ExpectedConditions.elementToBeClickable(SEARCH_BUTTON)).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(SEARCH_INPUT_FIELD));
         WebElement searchInput = getDriver().findElement(SEARCH_INPUT_FIELD);
@@ -59,7 +55,6 @@ public class GlobalSearchTest extends BaseTest {
 
     @Test
     public void testReguest(){
-
         createFolder("FirstFolder");
         createFolder("SecondFolder");
 
@@ -85,6 +80,5 @@ public class GlobalSearchTest extends BaseTest {
         WebElement result = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                         By.xpath("//*[contains(text(), 'No results for')]")));
         Assert.assertTrue(result.isDisplayed(), "Search result message should be visible");
-
     }
 }
