@@ -176,7 +176,8 @@ public class ManageJenkinsPageTest extends BaseTest {
 
         //Restoring Light theme for subsequent tests
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[@for='radio-block-0']"))).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
+        WebElement saveButton = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@id='bottom-sticker']//button[@name='Submit']")));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", saveButton);
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(text(), 'Manage Jenkins')]")));
     }
 }
