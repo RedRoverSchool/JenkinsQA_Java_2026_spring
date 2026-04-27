@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -15,7 +14,7 @@ public class ButtonSearchVisibleTest extends BaseTest {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='search-results']/a")));
         getDriver().findElement(By.xpath("//*[@id='command-bar']")).sendKeys("text");
         String expectedText = getDriver().findElement(By.xpath("//*[@id='command-bar']")).getAttribute("value");
-        Assert.assertEquals(expectedText, "text");
 
+        Assert.assertEquals(expectedText, "text");
     }
 }

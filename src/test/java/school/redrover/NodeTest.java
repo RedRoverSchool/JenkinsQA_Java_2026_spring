@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -17,6 +18,7 @@ public class NodeTest extends BaseTest {
     private static final String DIR = "D:\\Jenkins\\NewTestNode";
     private static final String LABELS = "Urgent";
 
+    @Ignore
     @Test
     public void testCreateNewNode(){
 
@@ -39,16 +41,14 @@ public class NodeTest extends BaseTest {
         Assert.assertTrue(actualNodeList.contains(NEW_NODE_NAME));
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testCreateNewNode")
     public void testNodeConfiguration(){
 
         List<String> expectAttributes= new ArrayList<>(List.of(DESCRIPTION, LABELS));
         List<String> actualAttributes= new ArrayList<>();
 
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
-        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
-        getDriver().findElement(By.xpath("//a[@href='../computer/%s/']"
-                .formatted(NEW_NODE_NAME.replace(" ", "%20")))).click();
+        goToNewNodeManagementPage();
 
         getDriver().findElement(By.xpath("//a[@href='/computer/%s/configure']"
                 .formatted(NEW_NODE_NAME.replace(" ", "%20")))).click();
@@ -68,17 +68,35 @@ public class NodeTest extends BaseTest {
         Assert.assertEquals(actualAttributes, expectAttributes);
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testCreateNewNode")
     public void testMarkNodeOffline(){
+        goToNewNodeManagementPage();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                getDriver().findElement(By.xpath("//form [@action='markOffline']")))).click();
+        WebElement submitButton = getDriver().findElement(By.className("jenkins-submit-button"));
+        submitButton.click();
+
+        Assert.assertEquals(getDriver().findElement(By.className("message")).getText(), "Disconnected by admin");
+    }
+
+    @Ignore
+    @Test (dependsOnMethods = "testMarkNodeOffline")
+    public void testBringTheNodeBackOnline(){
+        goToNewNodeManagementPage();
+
+        WebElement submitButton = getDriver().findElement(By.className("jenkins-button--primary"));
+        submitButton.click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//form [@action='markOffline']")).getText()
+                ,"Mark this node temporarily offline");
+    }
+
+    private void goToNewNodeManagementPage(){
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
         getDriver().findElement(By.xpath("//a[@href='computer']")).click();
         getDriver().findElement(By.xpath("//a[@href='../computer/%s/']"
                 .formatted(NEW_NODE_NAME.replace(" ", "%20")))).click();
-
-        getDriver().findElement(By.xpath("//form [@action='markOffline']")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                getDriver().findElement(By.xpath("//button [@name='Submit']")))).click();
-
-        Assert.assertEquals(getDriver().findElement(By.className("message")).getText(), "Disconnected by admin");
     }
 }

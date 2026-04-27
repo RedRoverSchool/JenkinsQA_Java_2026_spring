@@ -2,28 +2,52 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.time.Duration;
-
-@Ignore
 public class DescriptionTest extends BaseTest {
 
+    private static final String ADD_DESCRIPTION = "description added";
+    private static final String UPDATE_DESCRIPTION = "description updated";
+
+    @Ignore
     @Test
-    public void testDescription () {
-        String text = "hi";
+    public void testCreate() {
+        getDriver().findElement((By.linkText("Add description"))).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']"))
+                .sendKeys(ADD_DESCRIPTION);
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
 
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(text);
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(), ADD_DESCRIPTION);
+    }
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(3));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='description-content']")));
+    @Ignore
+    @Test(dependsOnMethods = "testCreate")
+    public void testUpdate() {
+        getDriver().findElement((By.linkText("Edit description"))).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).clear();
+        getDriver().findElement(By.xpath("//textarea[@name='description']"))
+                .sendKeys(UPDATE_DESCRIPTION);
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='description-content']")).getText(),text);
+        Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(), UPDATE_DESCRIPTION);
+    }
+
+    @Ignore
+    @Test(dependsOnMethods = "testUpdate")
+    public void testCancel() {
+        getDriver().findElement((By.linkText("Edit description"))).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).clear();
+        getDriver().findElement(By.xpath("//textarea[@name='description']"))
+                .sendKeys(ADD_DESCRIPTION);
+        getDriver().findElement(By.xpath("//button[text()='Cancel']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
+
+        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("description-content"))).getText(), UPDATE_DESCRIPTION);
     }
 }

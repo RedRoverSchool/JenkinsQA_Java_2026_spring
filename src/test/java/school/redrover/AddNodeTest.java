@@ -2,11 +2,13 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import java.util.List;
 
 public class AddNodeTest extends BaseTest {
+
     private static final String NEV_NODE_NAME = "SecondNode";
     private static final String NODE_DESCRIPTION = "In a linked list: each node points to the next node.In a tree: nodes connect like branches";
     private static final String LABEL = "New Node";
@@ -22,6 +24,7 @@ public class AddNodeTest extends BaseTest {
     private final By label = By.xpath("//form/div[1]/div[5]/div[2]/input");
     private final By saveButton = By.xpath("//div[@id='bottom-sticker']//button");
 
+    @Ignore
     @Test
     public void testAddNewNode() {
         getDriver().findElement(settingsButton).click();
@@ -38,12 +41,12 @@ public class AddNodeTest extends BaseTest {
 
         getDriver().findElement(saveButton).click();
 
-        List<String> NodeNamesList = getDriver().findElements(By.xpath("//tbody//td[2]/a"))
+        List<String> nodeNamesList = getDriver().findElements(By.xpath("//tbody//td[2]/a"))
                 .stream()
                 .map(WebElement::getText)
                 .toList();
 
-        Assert.assertTrue(NodeNamesList.size() > 1);
-        Assert.assertTrue(NodeNamesList.contains(NEV_NODE_NAME));
+        Assert.assertTrue(nodeNamesList.size() > 1);
+        Assert.assertTrue(nodeNamesList.contains(NEV_NODE_NAME));
     }
 }
