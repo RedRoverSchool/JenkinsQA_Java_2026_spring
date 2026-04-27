@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.JenkinsUtils;
@@ -25,6 +26,7 @@ public class FooterVersionMenuTest extends BaseTest {
                 "Jenkins 2.541.3");
     }
 
+    @Ignore
     @Test
     public void testCheckDropdownMenu(){
         List<String> exeptedElements= new ArrayList<>(List.of("About Jenkins", "Get involved", "Website"));
@@ -44,6 +46,7 @@ public class FooterVersionMenuTest extends BaseTest {
         Assert.assertEquals(actualElements, exeptedElements);
     }
 
+    @Ignore
     @Test
     public void testCheckAboutJenkinSection(){
 

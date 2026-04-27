@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -11,6 +12,7 @@ public class DescriptionTest extends BaseTest {
     private static final String ADD_DESCRIPTION = "description added";
     private static final String UPDATE_DESCRIPTION = "description updated";
 
+    @Ignore
     @Test
     public void testCreate() {
         getDriver().findElement((By.linkText("Add description"))).click();

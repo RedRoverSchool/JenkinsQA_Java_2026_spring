@@ -243,8 +243,8 @@ public final class JenkinsUtils {
     }
 
     public static void login(BaseTest baseTest, String userName, String password) {
-        baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("j_username"))).sendKeys(userName);
-        baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("j_password"))).sendKeys(password);
+        baseTest.getWait10().until(ExpectedConditions.presenceOfElementLocated(By.name("j_username"))).sendKeys(userName);
+        baseTest.getWait10().until(ExpectedConditions.presenceOfElementLocated(By.name("j_password"))).sendKeys(password);
         baseTest.getDriver().findElement(By.name("Submit")).click();
     }
 

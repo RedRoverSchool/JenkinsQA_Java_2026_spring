@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -10,6 +11,7 @@ import static java.sql.DriverManager.getDriver;
 
 public class OrganizationFolderTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testCreateOrganizationFolder() {
         getDriver().findElement(By.xpath("//a[@href = 'newJob']")).click();

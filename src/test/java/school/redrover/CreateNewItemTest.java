@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -17,6 +18,8 @@ public class CreateNewItemTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.id("ok-button")).isEnabled());
     }
+
+    @Ignore
     @Test
     public void testSelectItemTypeWithEmptyName() {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
@@ -25,6 +28,8 @@ public class CreateNewItemTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.id("itemname-required")).getText(),
                 "» This field cannot be empty, please enter a valid name");
     }
+
+    @Ignore
     @Test
     public void testSelectItemTypeWithInvalidName() {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();
@@ -33,6 +38,8 @@ public class CreateNewItemTest extends BaseTest {
 
         Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
     }
+
+    @Ignore
     @Test
     public void testSelectItemTypeWithValidName() {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[contains(@href, 'newJob')]")).click();

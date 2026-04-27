@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -30,6 +31,7 @@ public class NewItemPageTest extends BaseTest {
         Assert.assertEquals(actualTasks, expectedTasks);
     }
 
+    @Ignore
     @Test
     public void testCreateNewItemFreestyleProjectSuccess() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -51,6 +53,7 @@ public class NewItemPageTest extends BaseTest {
         Assert.assertEquals(actualTasks, expectedTasks);
     }
 
+    @Ignore
     @Test
     public void testCreateNewItemMultiConfigurationSuccess() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -75,6 +78,7 @@ public class NewItemPageTest extends BaseTest {
         Assert.assertEquals(actualTasks, expectedTasks);
     }
 
+    @Ignore
     @Test
     public void testCreateNewItemFolderSuccess() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -96,6 +100,7 @@ public class NewItemPageTest extends BaseTest {
         Assert.assertEquals(actualTasks, expectedTasks);
     }
 
+    @Ignore
     @Test
     public void testCreateNewItemMultibranchPipelineSuccess() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();

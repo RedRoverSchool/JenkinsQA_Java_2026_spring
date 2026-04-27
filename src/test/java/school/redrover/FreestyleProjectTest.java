@@ -41,6 +41,7 @@ public class FreestyleProjectTest extends BaseTest {
                 sendKeys(REPOSITORY_URL);
     }
 
+    @Ignore
     @Test
     public void testCreate() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();

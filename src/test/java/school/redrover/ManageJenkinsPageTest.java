@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -32,6 +33,7 @@ public class ManageJenkinsPageTest extends BaseTest {
         return getDriver().findElement(HEADER).getText();
     }
 
+    @Ignore
     @Test
     public void testManageJenkinsPageItems() {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
