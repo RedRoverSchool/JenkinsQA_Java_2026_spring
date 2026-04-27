@@ -11,10 +11,8 @@ import school.redrover.common.TestUtils;
 
 
 public class MultibranchPipelineTest extends BaseTest {
-
 	private final static String PROJECT_NAME = "MultibranchPipelineProject";
 	private final static String PROJECT_NAME_1 = "MultibranchPipelineProject1";
-
 
 	@Test
 	public void testCreate() {
@@ -66,9 +64,4 @@ public class MultibranchPipelineTest extends BaseTest {
  		Assert.assertEquals(getWait10().until(
 				ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME_1)))).getText(), PROJECT_NAME_1);
 	}
-
 }
-
-
-
-
