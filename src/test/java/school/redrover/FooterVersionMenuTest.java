@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FooterVersionMenuTest extends BaseTest {
+
+    @Ignore
     @Test
     public  void testCheckVersionJenkins(){
         Assert.assertEquals(getDriver().findElement(

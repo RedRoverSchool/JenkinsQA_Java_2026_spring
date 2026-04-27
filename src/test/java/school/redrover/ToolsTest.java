@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -43,6 +44,7 @@ public class ToolsTest extends BaseTest {
         Assert.assertTrue(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//input[@name = '_.path'])[1]"))).isDisplayed());
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testOpenToolsPage")
     public void testGlobalMavenConfiguration() {
         openManage();

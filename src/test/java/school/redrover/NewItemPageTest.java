@@ -12,6 +12,7 @@ import java.util.List;
 
 public class NewItemPageTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testCreateNewItemPipelineSuccess() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();

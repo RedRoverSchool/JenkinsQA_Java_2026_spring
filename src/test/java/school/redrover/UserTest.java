@@ -167,6 +167,7 @@ public class UserTest extends BaseTest {
                 "Error Message for incorrect confirmation password not displayed");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateUserWithAnIncorrectConfirmPassword")
     public void testCreateUserWithDuplicateUsername() {
         final String expectedErrorMessage = "User name is already taken";

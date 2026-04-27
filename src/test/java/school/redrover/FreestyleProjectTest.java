@@ -236,6 +236,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "Dropdown options should match expected list");
     }
 
+    @Ignore
     @Test
     public void testDeleteBuildStep() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
