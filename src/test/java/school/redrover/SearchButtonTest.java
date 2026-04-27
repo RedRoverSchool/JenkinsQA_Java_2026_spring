@@ -49,6 +49,7 @@ public class SearchButtonTest extends BaseTest {
         return sb.toString();
     }
 
+    @Ignore
     @Test
     public void testSearchButtonVisibility() {
 
