@@ -3,6 +3,7 @@ package school.redrover.common;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.json.Json;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.net.CookieManager;
 import java.net.URI;
@@ -241,14 +242,14 @@ public final class JenkinsUtils {
         JenkinsUtils.resetTheme();
     }
 
-    public static void login(WebDriver driver, String userName, String password) {
-        driver.findElement(By.name("j_username")).sendKeys(userName);
-        driver.findElement(By.name("j_password")).sendKeys(password);
-        driver.findElement(By.name("Submit")).click();
+    public static void login(BaseTest baseTest, String userName, String password) {
+        baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("j_username"))).sendKeys(userName);
+        baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("j_password"))).sendKeys(password);
+        baseTest.getDriver().findElement(By.name("Submit")).click();
     }
 
-    public static void login(WebDriver driver) {
-        login(driver, ProjectUtils.getUserName(), ProjectUtils.getPassword());
+    public static void login(BaseTest baseTest) {
+        login(baseTest, ProjectUtils.getUserName(), ProjectUtils.getPassword());
     }
 
     public static void logout(WebDriver driver) {

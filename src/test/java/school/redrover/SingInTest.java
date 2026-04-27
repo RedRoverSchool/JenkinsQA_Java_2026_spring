@@ -172,7 +172,7 @@ public class SingInTest extends BaseTest {
         Assert.assertEquals(passwordField.getAttribute("value"), "");
 
 
-        JenkinsUtils.login(getDriver());
+        JenkinsUtils.login(this);
 
 
         WebElement userButton = getWait10().until(
