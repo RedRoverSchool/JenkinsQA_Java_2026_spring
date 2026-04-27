@@ -13,7 +13,6 @@ public class GlobalSearchTest extends BaseTest {
     private static final By SEARCH_INPUT_FIELD = By.xpath("//div[contains(@class,'jenkins-search')]//input");
     private static final String TEXT_TO_SEARCH = "test12321";
 
-
     private void createFolder(String folderName) {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(folderName);
@@ -52,7 +51,6 @@ public class GlobalSearchTest extends BaseTest {
         Assert.assertEquals(searchInput.getAttribute("value"), "");
     }
 
-
     @Test
     public void testReguest(){
         createFolder("FirstFolder");
@@ -69,7 +67,6 @@ public class GlobalSearchTest extends BaseTest {
         String actualText = result.getText();
         Assert.assertTrue(actualText.contains("SecondFolder"));
     }
-
 
     @Test
     public void testLongQuery(){
