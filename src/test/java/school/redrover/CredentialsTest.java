@@ -11,8 +11,6 @@ import java.util.List;
 
 public class CredentialsTest extends BaseTest {
 
-    private static final String UNIQUE_ID = "id-123";
-
     private void openAddCredentialsDialog() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("root-action-ManageJenkinsAction"))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='credentials']"))).click();
@@ -55,19 +53,26 @@ public class CredentialsTest extends BaseTest {
     public void testCreateUsernamePasswordCredential() {
         openAddCredentialsDialog();
 
+        long  timestamp = System.currentTimeMillis();
+
+        String nextUser = "user-" + timestamp;
+        String nextPassword = "pass-" + timestamp;
+        String nextId = "id-" + timestamp;
+        String nextDescription = "Test Description " + timestamp;
+
         getWait5().until(ExpectedConditions.presenceOfAllElementsLocatedBy(
                 By.cssSelector(".jenkins-choice-list__item__label"))).getFirst().click();
         getWait5().until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id("cr-dialog-next"))).getFirst().click();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("_.username")))
-                .sendKeys("testUser1");
-        getDriver().findElement(By.name("_.password")).sendKeys("testPassword1");
-        getDriver().findElement(By.name("_.id")).sendKeys(UNIQUE_ID);
-        getDriver().findElement(By.name("_.description")).sendKeys("Test credential1");
+                .sendKeys(nextUser);
+        getDriver().findElement(By.name("_.password")).sendKeys(nextPassword);
+        getDriver().findElement(By.name("_.id")).sendKeys(nextId);
+        getDriver().findElement(By.name("_.description")).sendKeys(nextDescription);
         getDriver().findElement(By.id("cr-dialog-submit")).click();
 
         Assert.assertTrue(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[contains(text(), '" + UNIQUE_ID + "')]"))).isDisplayed(),
-                "Учетная запись с ID " + UNIQUE_ID + " не найдена!");
+                By.xpath("//*[contains(text(), '" + nextId + "')]"))).isDisplayed(),
+                "Username with ID " + nextId + " is not found!");
     }
 }
