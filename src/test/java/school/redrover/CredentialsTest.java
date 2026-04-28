@@ -92,7 +92,7 @@ public class CredentialsTest extends BaseTest {
 
         getDriver().findElement(By.cssSelector("button[title='More actions']")).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector(".jenkins-dropdown"))).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok'] | //button[text()='Yes']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='Yes']"))).click();
 
         Assert.assertTrue(getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//td[contains(text(), '" + nextId + "')]"))),
                 "Username with ID " + nextId + " is still found!");
