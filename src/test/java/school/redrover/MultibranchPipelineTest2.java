@@ -8,26 +8,22 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-public class CreateMultibranchPipelineTest extends BaseTest {
+public class MultibranchPipelineTest2 extends BaseTest {
     @Test
-    public void testCreateMultibranchPipeline() {
-        String itemName = "test-pipeline";
-        getWait10().until(
-                ExpectedConditions.elementToBeClickable(By.linkText("New Item"))
-                )
-                        .click();
+    public void testCreate() {
+        final String itemName = "test-pipeline";
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item")))
+                .click();
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("name")))
                 .sendKeys(itemName);
         WebElement multibranch = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(
-                        By.xpath("//span[text()='Multibranch Pipeline']")
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text()='Multibranch Pipeline']")
                 )
         );
 
         ((JavascriptExecutor) getDriver()).executeScript(
-                "arguments[0].scrollIntoView({block: 'center'});",
-                multibranch
+                "arguments[0].scrollIntoView({block: 'center'});", multibranch
         );
 
         getWait10().until(ExpectedConditions.elementToBeClickable(multibranch)).click();
