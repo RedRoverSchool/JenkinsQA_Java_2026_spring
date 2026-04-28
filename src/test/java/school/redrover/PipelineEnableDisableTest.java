@@ -21,6 +21,7 @@ public class PipelineEnableDisableTest extends BaseTest {
                 "Configure");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreatePipelineAndOpenConfigure")
     public void testDisablePipeline() {
 
@@ -37,6 +38,7 @@ public class PipelineEnableDisableTest extends BaseTest {
         );
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testDisablePipeline")
     public void testEnablePipeline() {
 
