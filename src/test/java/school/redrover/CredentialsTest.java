@@ -92,7 +92,7 @@ public class CredentialsTest extends BaseTest {
 
         getDriver().findElement(By.cssSelector("button[title='More actions']")).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector(".tippy-box"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-id='ok']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-id='ok']"))).click();
 
         Assert.assertTrue(getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//td[contains(text(), '" + nextId + "')]"))),
                 "Username with ID " + nextId + " is still found!");
