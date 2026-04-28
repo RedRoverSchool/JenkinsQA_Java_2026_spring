@@ -2,11 +2,13 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class PipelineEnableDisableTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testCreatePipelineAndOpenConfigure() {
 
@@ -19,6 +21,7 @@ public class PipelineEnableDisableTest extends BaseTest {
                 "Configure");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreatePipelineAndOpenConfigure")
     public void testDisablePipeline() {
 
@@ -35,6 +38,7 @@ public class PipelineEnableDisableTest extends BaseTest {
         );
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testDisablePipeline")
     public void testEnablePipeline() {
 

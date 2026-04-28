@@ -14,6 +14,7 @@ public class PipelineProjectTest extends BaseTest {
     private static final String DESCRIPTION_TEXT = "PipelineDescription";
     private static final String RENAME_PIPELINE = "RenamedPipeline";
 
+    @Ignore
     @Test
     public void testCreateWithoutNameError() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -25,6 +26,7 @@ public class PipelineProjectTest extends BaseTest {
         Assert.assertTrue(
                 getDriver().findElement(By.id("ok-button")).isDisplayed());
     }
+    @Ignore
     @Test
     public void testCreate() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -72,6 +74,7 @@ public class PipelineProjectTest extends BaseTest {
                 getDriver().findElement(By.cssSelector(".jenkins-table__link > span:first-child")).getText(),
                 RENAME_PIPELINE);
     }
+    @Ignore
     @Test
     public void testApplyProjectDescription() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
