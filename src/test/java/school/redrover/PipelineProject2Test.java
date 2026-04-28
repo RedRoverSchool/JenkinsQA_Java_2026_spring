@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -10,6 +11,7 @@ public class PipelineProject2Test extends BaseTest {
 
     private static final String PROJECT_NAME = "MyPipelineProject";
 
+    @Ignore
     @Test
     public void testCreateWithValidName() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();

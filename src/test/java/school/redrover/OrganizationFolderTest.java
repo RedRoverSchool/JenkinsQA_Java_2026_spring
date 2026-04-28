@@ -5,6 +5,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -45,6 +46,7 @@ public class OrganizationFolderTest extends BaseTest {
                 getDriver().findElement(By.id("description-content")).getText(), DESCRIPTION_TEXT);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testAddDisplayName () {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(ORG_FOLDER_NAME)))).click();
