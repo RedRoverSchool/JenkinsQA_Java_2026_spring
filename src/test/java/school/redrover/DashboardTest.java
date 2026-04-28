@@ -12,6 +12,7 @@ import java.util.List;
 
 public class DashboardTest extends BaseTest {
 
+    private static final String TEXT_DESCRIPTION_BUTTON = "Add description";
     private static final String DESC_MESSAGE = "Some description text here";
     private static final String UPDATED_DESC_MESSAGE = "Updated description";
     private static final String PIPELINE_NAME = "PipelineName";
@@ -48,6 +49,16 @@ public class DashboardTest extends BaseTest {
 
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.id("description-content"))).getText(), UPDATED_DESC_MESSAGE);
+    }
+
+    @Test(dependsOnMethods = "testCancelUpdateDescription")
+    public void testDeleteDescription() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']"))).clear();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
+
+        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).getText(),
+                TEXT_DESCRIPTION_BUTTON);
     }
 
     @Ignore
