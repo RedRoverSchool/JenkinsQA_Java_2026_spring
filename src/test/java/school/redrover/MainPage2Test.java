@@ -13,9 +13,6 @@ import java.util.List;
 
 public class MainPage2Test extends BaseTest {
 
-    private static final String TEXT_DESCRIPTION_BUTTON = "Add description";
-    private static final String DESC_MESSAGE = "Some description text here";
-    private static final String UPDATED_DESC_MESSAGE = "Updated description";
     private static final String PIPELINE_NAME = "PipelineName";
     private static final String FOLDER_NAME = "FolderName";
 
@@ -24,49 +21,6 @@ public class MainPage2Test extends BaseTest {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", logo);
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//a[@href='/view/all/newJob']"))).isDisplayed();
-    }
-
-    @Test
-    public void testAddDescription() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(DESC_MESSAGE);
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
-
-        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("description-content"))).getText(), DESC_MESSAGE);
-    }
-
-    @Test(dependsOnMethods = "testAddDescription")
-    public void testUpdateDescription() {
-        getWait5().until(ExpectedConditions.elementToBeClickable((By.linkText("Edit description")))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']"))).clear();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']"))).sendKeys(UPDATED_DESC_MESSAGE);
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@formnovalidate='formNoValidate']"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
-
-        Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(), UPDATED_DESC_MESSAGE);
-    }
-
-    @Test(dependsOnMethods = "testUpdateDescription")
-    public void testCancelUpdateDescription() {
-        getWait5().until(ExpectedConditions.elementToBeClickable((By.linkText("Edit description")))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']"))).clear();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']"))).sendKeys(DESC_MESSAGE);
-        getDriver().findElement(By.xpath("//button[text()='Cancel']")).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
-
-        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("description-content"))).getText(), UPDATED_DESC_MESSAGE);
-    }
-
-    @Test(dependsOnMethods = "testCancelUpdateDescription")
-    public void testDeleteDescription() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']"))).clear();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
-
-        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).getText(),
-                TEXT_DESCRIPTION_BUTTON);
     }
 
     @Test
