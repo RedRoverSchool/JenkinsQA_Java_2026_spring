@@ -92,7 +92,8 @@ public class CredentialsTest extends BaseTest {
 
         getDriver().findElement(By.cssSelector("button[title='More actions']")).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector(".jenkins-dropdown"))).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='Yes']"))).click();
+        WebElement yesButton = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("button[data-id='ok']")));
+        ((org.openqa.selenium.JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", yesButton);
 
         Assert.assertTrue(getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//td[contains(text(), '" + nextId + "')]"))),
                 "Username with ID " + nextId + " is still found!");
