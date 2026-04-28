@@ -85,8 +85,7 @@ public class PipelineProjectTest extends BaseTest {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-title='Delete Pipeline']"))).click();
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();
 
-        Assert.assertEquals(
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1"))).getText(),
-                "Welcome to Jenkins!");
+        Assert.assertTrue(
+                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Welcome to Jenkins!']"))).isDisplayed());
     }
 }
