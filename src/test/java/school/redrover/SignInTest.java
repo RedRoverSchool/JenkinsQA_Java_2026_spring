@@ -1,52 +1,38 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.JenkinsUtils;
 
-import java.time.Duration;
 
+public class SignInTest extends BaseTest {
 
-public class SingInTest extends BaseTest {
-
-    final String userLogin = "Berendey";
-    final String userPassword = "Beren123";
-    final String userFullName = "Berendey";
-    final String userEMail = "berendey@kingdom.pz";
-
-    private void logout(){
-
-        WebElement userButton = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
-
-        Actions action = new Actions(getDriver());
-        action.moveToElement(userButton).perform();
-
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/logout']"))).click();
-    }
+    final private String USER_LOGIN = "Berendey";
+    final private String USER_PASSWORD = "Beren123";
+    final private String USER_FULL_NAME = "Berendey";
+    final private String USER_EMAIL = "berendey@kingdom.pz";
 
     @Test
     public void testLoginValidData () {
 
-        TestUtility.createUser(userLogin,
-                userFullName,
-                userPassword,
-                userPassword,
-                userEMail,
+        createUser(USER_LOGIN,
+                USER_FULL_NAME,
+                USER_PASSWORD,
+                USER_PASSWORD,
+                USER_EMAIL,
                 getDriver());
 
-        logout();
+        JenkinsUtils.logout(getDriver());
+        getWait10().until(ExpectedConditions.presenceOfElementLocated(By.className("app-sign-in-register__content-inner")));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-sign-in-register__content-inner")));
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-sign-in-register__content-inner")));
-
-        getDriver().findElement(By.name("j_username")).sendKeys(userLogin);
-        getDriver().findElement(By.name("j_password")).sendKeys(userPassword);
+        getDriver().findElement(By.name("j_username")).sendKeys(USER_LOGIN);
+        getDriver().findElement(By.name("j_password")).sendKeys(USER_PASSWORD);
         getDriver().findElement(By.name("Submit")).click();
 
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("empty-state-block")));
@@ -58,18 +44,18 @@ public class SingInTest extends BaseTest {
     @Test
     public void testLoginInvalidPassword () {
 
-        TestUtility.createUser(userLogin,
-                userFullName,
-                userPassword,
-                userPassword,
-                userEMail,
+        createUser(USER_LOGIN,
+                USER_FULL_NAME,
+                USER_PASSWORD,
+                USER_PASSWORD,
+                USER_EMAIL,
                 getDriver());
 
-        logout();
+        JenkinsUtils.logout(getDriver());
+        getWait10().until(ExpectedConditions.presenceOfElementLocated(By.className("app-sign-in-register__content-inner")));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-sign-in-register__content-inner")));
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-sign-in-register__content-inner")));
-
-        getDriver().findElement(By.name("j_username")).sendKeys(userLogin);
+        getDriver().findElement(By.name("j_username")).sendKeys(USER_LOGIN);
         getDriver().findElement(By.name("j_password")).sendKeys("nik123");
         getDriver().findElement(By.name("Submit")).click();
 
@@ -81,19 +67,19 @@ public class SingInTest extends BaseTest {
     @Test
     public void testLoginInvalidUsername () {
 
-        TestUtility.createUser(userLogin,
-                userFullName,
-                userPassword,
-                userPassword,
-                userEMail,
+        createUser(USER_LOGIN,
+                USER_FULL_NAME,
+                USER_PASSWORD,
+                USER_PASSWORD,
+                USER_EMAIL,
                 getDriver());
 
-        logout();
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-sign-in-register__content-inner")));
+        JenkinsUtils.logout(getDriver());
+        getWait10().until(ExpectedConditions.presenceOfElementLocated(By.className("app-sign-in-register__content-inner")));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-sign-in-register__content-inner")));
 
         getDriver().findElement(By.name("j_username")).sendKeys("SpongeBob");
-        getDriver().findElement(By.name("j_password")).sendKeys(userPassword);
+        getDriver().findElement(By.name("j_password")).sendKeys(USER_PASSWORD);
         getDriver().findElement(By.name("Submit")).click();
 
         WebElement errorMessage = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-sign-in-register__error")));
@@ -109,9 +95,7 @@ public class SingInTest extends BaseTest {
         getDriver().findElement(By.cssSelector("#j_password")).sendKeys("qwerty");
         getDriver().findElement(By.xpath("//button[text()='Sign in']")).click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-
-        boolean textMatches = wait.until(
+        boolean textMatches = getWait10().until(
                 ExpectedConditions.textToBePresentInElementLocated(
                         By.xpath("//div[@class='app-sign-in-register__error']"),
                         "Invalid username or password"));
@@ -119,7 +103,6 @@ public class SingInTest extends BaseTest {
         Assert.assertTrue(textMatches, "Сообщение об ошибке не появилось или текст не совпадает");
     }
 
-    @Ignore
     @Test
     public void testSignInPageAlertTextColor() {
         JenkinsUtils.logout(getDriver());
@@ -163,7 +146,6 @@ public class SingInTest extends BaseTest {
         WebElement usernameField = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("j_username")));
         WebElement passwordField = getDriver().findElement(By.id("j_password"));
-        WebElement signInButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
 
         usernameField.sendKeys("wronguser");
         passwordField.sendKeys("wrongpass");
@@ -179,6 +161,21 @@ public class SingInTest extends BaseTest {
         WebElement userButton = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
         Assert.assertTrue(userButton.isDisplayed(), "Не удалось войти в систему после очистки полей");
+    }
+
+    private void createUser(String userLogin, String userFullName, String password, String retryPassword, String userMail, WebDriver driver) {
+
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("root-action-ManageJenkinsAction"))).click();
+
+        driver.findElement(By.xpath("//a[@href='securityRealm/']")).click();
+        driver.findElement(By.xpath("//div[@class='jenkins-app-bar__controls']")).click();
+
+        driver.findElement(By.name("username")).sendKeys(userLogin);
+        driver.findElement(By.name("password1")).sendKeys(password);
+        driver.findElement(By.name("password2")).sendKeys(retryPassword);
+        driver.findElement(By.name("fullname")).sendKeys(userFullName);
+        driver.findElement(By.name("email")).sendKeys(userMail);
+        driver.findElement(By.name("Submit")).click();
     }
 
 }
