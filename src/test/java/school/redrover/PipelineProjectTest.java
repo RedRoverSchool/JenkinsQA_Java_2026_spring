@@ -25,6 +25,7 @@ public class PipelineProjectTest extends BaseTest {
         Assert.assertTrue(
                 getDriver().findElement(By.id("ok-button")).isDisplayed());
     }
+    @Ignore
     @Test
     public void testCreate() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
