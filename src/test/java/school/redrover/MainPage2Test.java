@@ -1,22 +1,30 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 
 import java.util.List;
 
-public class DashboardTest extends BaseTest {
+public class MainPage2Test extends BaseTest {
 
     private static final String TEXT_DESCRIPTION_BUTTON = "Add description";
     private static final String DESC_MESSAGE = "Some description text here";
     private static final String UPDATED_DESC_MESSAGE = "Updated description";
     private static final String PIPELINE_NAME = "PipelineName";
     private static final String FOLDER_NAME = "FolderName";
+
+    private void goToMainPage() {
+        WebElement logo = getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a.app-jenkins-logo")));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", logo);
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a[@href='/view/all/newJob']"))).isDisplayed();
+    }
 
     @Test
     public void testAddDescription() {
@@ -61,47 +69,15 @@ public class DashboardTest extends BaseTest {
                 TEXT_DESCRIPTION_BUTTON);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testAddDescription")
-    public void testCreatePipeline() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/']")));
-        getDriver().findElement(By.id("jenkins-head-icon")).click();
-
-        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//span[text()='" + PIPELINE_NAME + "']"))).getText(), PIPELINE_NAME);
-    }
-
-    @Ignore
-    @Test(dependsOnMethods = "testCreatePipeline")
-    public void testCreateFolder() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(FOLDER_NAME);
-        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@href='/job/" + FOLDER_NAME + "/']")));
-        getDriver().findElement(By.id("jenkins-head-icon")).click();
-
-        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//span[text()='" + FOLDER_NAME + "']"))).getText(), FOLDER_NAME);
-    }
-
-    @Ignore
-    @Test(dependsOnMethods = "testCreateFolder")
+    @Test
     public void testOrderName() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//span[text()='" + PIPELINE_NAME + "']")));
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//span[text()='" + FOLDER_NAME + "']")));
+        TestUtils.createJob(getDriver(), getWait10(), PIPELINE_NAME, TestUtils.JobType.PIPELINE);
+        goToMainPage();
+        TestUtils.createJob(getDriver(), getWait10(), FOLDER_NAME, TestUtils.JobType.FOLDER);
+        goToMainPage();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + PIPELINE_NAME + "']")));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + FOLDER_NAME + "']")));
 
         List<String> actualOrder = getDriver().findElements(By.cssSelector(".jenkins-table__link.model-link.inside"))
                 .stream()
