@@ -8,7 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-public class MultibranchPipelineTest2 extends BaseTest {
+public class MultibranchPipelineTest0 extends BaseTest {
     @Test
     public void testCreate() {
         final String itemName = "test-pipeline";
