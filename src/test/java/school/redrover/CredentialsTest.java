@@ -11,15 +11,22 @@ import java.util.List;
 
 public class CredentialsTest extends BaseTest {
 
-    private void openAddCredentialsDialog() {
+    private String nextId;
+
+    private void navigateToCredentialsPage() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("root-action-ManageJenkinsAction"))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='credentials']"))).click();
+    }
+
+    private void openAddCredentialsDialog() {
+        navigateToCredentialsPage();
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.cssSelector("button[data-type='credentials-add-store-item']"))).click();
     }
 
     @Test
     public void testAddCredentialsDialogOpen() {
+
         openAddCredentialsDialog();
 
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
@@ -30,6 +37,7 @@ public class CredentialsTest extends BaseTest {
 
     @Test
     public void testCredentialTypesList() {
+
         openAddCredentialsDialog();
 
         List<String> expectedOptions = List.of(
@@ -51,13 +59,14 @@ public class CredentialsTest extends BaseTest {
 
     @Test
     public void testCreateUsernamePasswordCredential() {
+
         openAddCredentialsDialog();
 
         long  timestamp = System.currentTimeMillis();
 
         String nextUser = "user-" + timestamp;
         String nextPassword = "pass-" + timestamp;
-        String nextId = "id-" + timestamp;
+        nextId = "id-" + timestamp;
         String nextDescription = "Test Description " + timestamp;
 
         getWait5().until(ExpectedConditions.presenceOfAllElementsLocatedBy(
@@ -72,7 +81,20 @@ public class CredentialsTest extends BaseTest {
         getDriver().findElement(By.id("cr-dialog-submit")).click();
 
         Assert.assertTrue(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[contains(text(), '" + nextId + "')]"))).isDisplayed(),
+                        By.xpath("//*[contains(text(), '" + nextId + "')]"))).isDisplayed(),
                 "Username with ID " + nextId + " is not found!");
+    }
+
+    @Test(dependsOnMethods = "testCreateUsernamePasswordCredential")
+    public void testDeleteCredentials() {
+
+        navigateToCredentialsPage();
+
+        getDriver().findElement(By.cssSelector("button[title='More actions']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector(".tippy-box"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-id='ok']"))).click();
+
+        Assert.assertTrue(getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//td[contains(text(), '" + nextId + "')]"))),
+                "Username with ID " + nextId + " is still found!");
     }
 }
