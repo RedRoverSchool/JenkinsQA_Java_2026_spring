@@ -2,12 +2,14 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.ProjectUtils;
 
+import java.util.List;
 import java.util.Random;
 
 public class SearchButtonTest extends BaseTest {
@@ -92,29 +94,32 @@ public class SearchButtonTest extends BaseTest {
 
     @Test
     public void testSearchPartialWords() {
-        final String FOLDER_NAME1 = "Partialtest";
-        final String FOLDER_NAME2 = "Parttaltest";
-        final String PARTIAL_WORD = "Partt";
-        final By PARTIAL_RESULT = By.xpath("//*[@id='search-results']//a[contains(@href, '" + PARTIAL_WORD + "')]");
+        final String folderName1 = "Partialtest";
+        final String folderName2 = "Parttaltest";
+        final String partialWord = "Partt";
 
-        createFolder(FOLDER_NAME1);
-        createFolder(FOLDER_NAME2);
+        createFolder(folderName1);
+        createFolder(folderName2);
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(SEARCH_BUTTON)).click();
-        getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(PARTIAL_WORD);
+        getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(partialWord);
 
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(PARTIAL_RESULT));
-        Assert.assertEquals(getDriver().findElements(PARTIAL_RESULT).size(), 1);
+        List<WebElement> resultList = getWait5().until(
+                ExpectedConditions.presenceOfAllElementsLocatedBy(
+                        By.xpath("//div[@id='search-results']//a[contains(@href, '" + partialWord + "')]")));
+        Assert.assertEquals(resultList.size(), 1);
     }
 
     @Test
     public void testSearchLongQuery() {
-        final String CHARACTERS_2000 = randomLatinString(2000);
+        final String characters2000 = randomLatinString(2000);
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(SEARCH_BUTTON)).click();
-        getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(CHARACTERS_2000);
+        getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(characters2000);
 
-        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p//span"))).getText() , "No results for");
+        Assert.assertEquals(getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p//span")))
+                .getText() , "No results for");
     }
 
     @Test
