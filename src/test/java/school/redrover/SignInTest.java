@@ -150,7 +150,6 @@ public class SignInTest extends BaseTest {
         WebElement usernameField = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("j_username")));
         WebElement passwordField = getDriver().findElement(By.id("j_password"));
-        WebElement signInButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
 
         usernameField.sendKeys("wronguser");
         passwordField.sendKeys("wrongpass");
