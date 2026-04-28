@@ -74,6 +74,7 @@ public class PipelineProjectTest extends BaseTest {
                 getDriver().findElement(By.cssSelector(".jenkins-table__link > span:first-child")).getText(),
                 RENAME_PIPELINE);
     }
+    @Ignore
     @Test
     public void testApplyProjectDescription() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();

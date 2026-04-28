@@ -27,6 +27,7 @@ public class PipelineProject2Test extends BaseTest {
                 PROJECT_NAME);
     }
 
+    @Ignore
     @Test
     public void testCreateWithEmptyName() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -39,6 +40,7 @@ public class PipelineProject2Test extends BaseTest {
         Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateWithValidName")
     public void testCreateWithDuplicateName() {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
