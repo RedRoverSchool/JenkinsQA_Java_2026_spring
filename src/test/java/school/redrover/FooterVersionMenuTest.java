@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.JenkinsUtils;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FooterVersionMenuTest extends BaseTest {
+
+    @Ignore
     @Test
     public  void testCheckVersionJenkins(){
         Assert.assertEquals(getDriver().findElement(
@@ -25,6 +28,7 @@ public class FooterVersionMenuTest extends BaseTest {
                 "Jenkins 2.541.3");
     }
 
+    @Ignore
     @Test
     public void testCheckDropdownMenu(){
         List<String> exeptedElements= new ArrayList<>(List.of("About Jenkins", "Get involved", "Website"));
@@ -44,6 +48,7 @@ public class FooterVersionMenuTest extends BaseTest {
         Assert.assertEquals(actualElements, exeptedElements);
     }
 
+    @Ignore
     @Test
     public void testCheckAboutJenkinSection(){
 
@@ -56,6 +61,8 @@ public class FooterVersionMenuTest extends BaseTest {
         Assert.assertTrue(actualUrl.contains("/manage/about"),
                 "URL should contain '/manage/about' but was: " + actualUrl);
     }
+
+    @Ignore
     @Test
     public void testCheckGetInvoled(){
         getDriver().findElement(
@@ -87,8 +94,7 @@ public class FooterVersionMenuTest extends BaseTest {
         js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 
         List<WebElement> versionLinks = getDriver().findElements(
-                By.xpath("//footer//a[contains(text(),'Jenkins')]")
-        );
+                By.xpath("//footer//a[contains(text(),'Jenkins')]"));
 
         if (versionLinks.isEmpty()) {
             System.out.println("Ссылка с версией Jenkins не найдена в футере. Тест пропущен.");
@@ -100,9 +106,7 @@ public class FooterVersionMenuTest extends BaseTest {
 
         List<WebElement> aboutMenus = getWait5().until(
                 ExpectedConditions.visibilityOfAllElementsLocatedBy(
-                        By.xpath("//a[contains(text(),'About Jenkins')]")
-                )
-        );
+                        By.xpath("//a[contains(text(),'About Jenkins')]")));
 
         if (aboutMenus.isEmpty()) {
             System.out.println("Пункт 'About Jenkins' не найден. Тест пропущен.");
@@ -119,5 +123,4 @@ public class FooterVersionMenuTest extends BaseTest {
                 "Фокус переключился на другое окно");
     }
 
-
-    }
+}

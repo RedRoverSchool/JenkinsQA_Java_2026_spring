@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -28,8 +27,8 @@ public class NodeTest extends BaseTest {
         getDriver().findElement(By.className("jenkins-radio__label")).click();
         getDriver().findElement(By.xpath("//button[@value='Create']")).click();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                getDriver().findElement(By.xpath("//button[@value='Save']")))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@value='Save']"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='main-panel']//h1")));
 
         List<String> actualNodeList = getDriver().findElements(By
                         .xpath("//a[@class = 'jenkins-table__link model-link inside']"))
@@ -46,10 +45,7 @@ public class NodeTest extends BaseTest {
         List<String> expectAttributes= new ArrayList<>(List.of(DESCRIPTION, LABELS));
         List<String> actualAttributes= new ArrayList<>();
 
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
-        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
-        getDriver().findElement(By.xpath("//a[@href='../computer/%s/']"
-                .formatted(NEW_NODE_NAME.replace(" ", "%20")))).click();
+        goToNewNodeManagementPage();
 
         getDriver().findElement(By.xpath("//a[@href='/computer/%s/configure']"
                 .formatted(NEW_NODE_NAME.replace(" ", "%20")))).click();
@@ -69,18 +65,48 @@ public class NodeTest extends BaseTest {
         Assert.assertEquals(actualAttributes, expectAttributes);
     }
 
-    @Ignore
-    @Test (dependsOnMethods = "testCreateNewNode")
+    @Test (dependsOnMethods = "testNodeConfiguration")
     public void testMarkNodeOffline(){
+        goToNewNodeManagementPage();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//form [@action='markOffline']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button [@name='Submit']"))).click();
+
+        Assert.assertEquals(getDriver().findElement(By.className("message")).getText(), "Disconnected by admin");
+    }
+
+    @Test (dependsOnMethods = "testMarkNodeOffline")
+    public void testBringTheNodeBackOnline(){
+        goToNewNodeManagementPage();
+
+        WebElement submitButton = getDriver().findElement(By.className("jenkins-button--primary"));
+        submitButton.click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//form [@action='markOffline']")).getText()
+                ,"Mark this node temporarily offline");
+    }
+
+    @Test (dependsOnMethods = "testBringTheNodeBackOnline")
+    public void testDeleteNode(){
+
+        goToNewNodeManagementPage();
+
+        getDriver().findElement(By.className("icon-edit-delete")).click();
+        getDriver().findElement(By.xpath("//button [@data-id='ok']")).click();
+
+        List<String> actualNodeList = getDriver().findElements(By
+                        .xpath("//a[@class = 'jenkins-table__link model-link inside']"))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+
+        Assert.assertFalse(actualNodeList.contains(NEW_NODE_NAME));
+    }
+
+    private void goToNewNodeManagementPage(){
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
         getDriver().findElement(By.xpath("//a[@href='computer']")).click();
         getDriver().findElement(By.xpath("//a[@href='../computer/%s/']"
                 .formatted(NEW_NODE_NAME.replace(" ", "%20")))).click();
-
-        getDriver().findElement(By.xpath("//form [@action='markOffline']")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                getDriver().findElement(By.xpath("//button [@name='Submit']")))).click();
-
-        Assert.assertEquals(getDriver().findElement(By.className("message")).getText(), "Disconnected by admin");
     }
 }

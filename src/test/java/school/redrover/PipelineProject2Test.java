@@ -27,9 +27,8 @@ public class PipelineProject2Test extends BaseTest {
 
     @Test
     public void testCreateWithEmptyName() {
-
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Pipeline']"))).click();
 
         Assert.assertEquals(
                 getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='itemname-required']"))).getText(),

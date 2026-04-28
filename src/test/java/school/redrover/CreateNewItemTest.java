@@ -2,43 +2,49 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import java.util.ArrayList;
-import java.util.List;
+
+
 
 public class CreateNewItemTest extends BaseTest {
 
     @Test
-    public void testCheckItemTypesForSelect() {
-        final List<String> expectedItemTypeList = List.of(
-                "Pipeline",
-                "Freestyle project",
-                "Multi-configuration project",
-                "Folder",
-                "Multibranch Pipeline",
-                "Organization Folder"
-        );
+    public void testSelectItemTypeWithValidName() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
+        getDriver().findElement(By.id("name")).sendKeys("Test3");
+        getDriver().findElement(By.xpath("//div[contains(text(), 'Build, test')]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
 
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Test3");
 
-        List<WebElement> itemTypeList = getDriver().findElements(By.xpath("//span[@class='label']"));
-
-        List<String> actualItemTypeList = new ArrayList<>();
-        Assert.assertNotEquals(itemTypeList.size(), 0);
-        for (WebElement element : itemTypeList) {
-            actualItemTypeList.add(element.getText());
-        }
-
-        Assert.assertEquals(expectedItemTypeList, actualItemTypeList);
     }
 
     @Test
-    public void testCreateEmptyItem() {
-        getDriver().findElement(By.xpath("//a[.//span[text()='New Item']]")).click();
-        getDriver().findElement(By.cssSelector("#ok-button")).click();
+    public void testSelectAnItemType() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
+        getDriver().findElement(By.id("name")).sendKeys("Select an item type test");
+        getDriver().findElement(By.xpath("//div[contains(text(), 'Build, test')]")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("#itemname-required")).getText(),"» This field cannot be empty, please enter a valid name");
+        Assert.assertTrue(getDriver().findElement(By.id("ok-button")).isEnabled());
     }
+    @Test
+    public void testSelectItemTypeWithEmptyName() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
+        getDriver().findElement(By.xpath("//div[contains(text(), 'Build, test')]")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.id("itemname-required")).getText(), "» This field cannot be empty, please enter a valid name");
+    }
+    @Test
+    public void testSelectItemTypeWithInvalidName() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
+        WebElement inputName = getDriver().findElement(By.id("name"));
+        inputName.sendKeys("$");
+//
+        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
+    }
+
 }
