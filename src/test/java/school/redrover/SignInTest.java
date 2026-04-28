@@ -4,14 +4,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.JenkinsUtils;
-
-import java.time.Duration;
 
 
 public class SignInTest extends BaseTest {
@@ -32,6 +28,7 @@ public class SignInTest extends BaseTest {
                 getDriver());
 
         JenkinsUtils.logout(getDriver());
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.className("app-sign-in-register__content-inner")));
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-sign-in-register__content-inner")));
 
         getDriver().findElement(By.name("j_username")).sendKeys(USER_LOGIN);
@@ -55,6 +52,7 @@ public class SignInTest extends BaseTest {
                 getDriver());
 
         JenkinsUtils.logout(getDriver());
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.className("app-sign-in-register__content-inner")));
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-sign-in-register__content-inner")));
 
         getDriver().findElement(By.name("j_username")).sendKeys(USER_LOGIN);
@@ -97,9 +95,7 @@ public class SignInTest extends BaseTest {
         getDriver().findElement(By.cssSelector("#j_password")).sendKeys("qwerty");
         getDriver().findElement(By.xpath("//button[text()='Sign in']")).click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-
-        boolean textMatches = wait.until(
+        boolean textMatches = getWait10().until(
                 ExpectedConditions.textToBePresentInElementLocated(
                         By.xpath("//div[@class='app-sign-in-register__error']"),
                         "Invalid username or password"));
@@ -169,8 +165,7 @@ public class SignInTest extends BaseTest {
 
     private void createUser(String userLogin, String userFullName, String password, String retryPassword, String userMail, WebDriver driver) {
 
-        Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofSeconds(2));
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("root-action-ManageJenkinsAction"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("root-action-ManageJenkinsAction"))).click();
 
         driver.findElement(By.xpath("//a[@href='securityRealm/']")).click();
         driver.findElement(By.xpath("//div[@class='jenkins-app-bar__controls']")).click();
