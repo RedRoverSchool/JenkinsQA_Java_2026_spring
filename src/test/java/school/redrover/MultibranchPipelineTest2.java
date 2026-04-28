@@ -18,13 +18,10 @@ public class MultibranchPipelineTest2 extends BaseTest {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("name")))
                 .sendKeys(itemName);
         WebElement multibranch = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text()='Multibranch Pipeline']")
-                )
-        );
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text()='Multibranch Pipeline']")));
 
         ((JavascriptExecutor) getDriver()).executeScript(
-                "arguments[0].scrollIntoView({block: 'center'});", multibranch
-        );
+                "arguments[0].scrollIntoView({block: 'center'});", multibranch);
 
         getWait10().until(ExpectedConditions.elementToBeClickable(multibranch)).click();
         getDriver().findElement(By.id("ok-button")).click();
