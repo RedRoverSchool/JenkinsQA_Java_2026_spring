@@ -77,7 +77,7 @@ public class SignInTest extends BaseTest {
                 getDriver());
 
         JenkinsUtils.logout(getDriver());
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-sign-in-register__content-inner")));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-sign-in-register__content-inner")));
 
         getDriver().findElement(By.name("j_username")).sendKeys("SpongeBob");
         getDriver().findElement(By.name("j_password")).sendKeys(USER_PASSWORD);
