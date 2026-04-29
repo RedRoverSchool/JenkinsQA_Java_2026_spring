@@ -44,7 +44,9 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testCreate() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
-        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
+        getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("name"))
+        ).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
@@ -142,8 +144,9 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("Description");
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(getDriver().findElement(
-                By.xpath("//div[@id='description-content']")).getText(),"Description");
+        Assert.assertEquals(
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))
+                ).getText(), "Description");
     }
 
     @Test(dependsOnMethods = "testAddDescription")
@@ -156,8 +159,9 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//label[@class='jenkins-toggle-switch__label ']")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertTrue(getDriver().findElement(
-                By.id("enable-project")).getText().contains("This project is currently disabled"));
+        Assert.assertTrue(
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("enable-project"))
+                ).getText().contains("This project is currently disabled"));
     }
 
     @Test(dependsOnMethods = "testDisable")
