@@ -4,7 +4,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ManageJenkinsPageTest extends BaseTest {
+public class ManagePageTest extends BaseTest {
 
     private static final By MANAGE_JENKINS_LINK = By.cssSelector("a[href='/manage']");
     private static final By CONFIGURE_SYSTEM_LINK = By.xpath("//a[contains(@href, 'configure')]");
@@ -30,10 +29,10 @@ public class ManageJenkinsPageTest extends BaseTest {
         return getDriver().findElement(HEADER).getText();
     }
 
-    @Ignore
     @Test
-    public void testManageJenkinsPageItems() {
+    public void testsPageItems() {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-section__item']")));
 
         List<WebElement> items = getDriver().findElements(By.xpath("//div[@class='jenkins-section__item']/a/dl/dt"));
 
