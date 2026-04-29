@@ -30,9 +30,9 @@ public class ManagePageTest extends BaseTest {
     }
 
     @Test
-    public void testManageJenkinsPageItems() {
+    public void testsPageItems() {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-section__item']/a/dl/dt")));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-section__item']")));
 
         List<WebElement> items = getDriver().findElements(By.xpath("//div[@class='jenkins-section__item']/a/dl/dt"));
 
