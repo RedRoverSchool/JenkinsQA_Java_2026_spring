@@ -19,9 +19,9 @@ public class ManagePageTest extends BaseTest {
     private static final By EMPTY_DROPDOWN = By.className("jenkins-search__results__no-results-label");
     private static final By HEADER = By.xpath("//h1");
 
-    private final List<String> expectedItems = List.of("System", "Tools", "Plugins", "Nodes", "Docker", "Clouds",
+    private final List<String> expectedItems = List.of("System", "Tools", "Plugins", "Nodes", "Clouds",
             "Appearance", "Security", "Credentials", "Credential Providers", "Users", "System Information",
-            "System Log", "Load Statistics", "About Jenkins", "Cloud Statistics", "Manage Old Data", "Reload Configuration from Disk",
+            "System Log", "Load Statistics", "About Jenkins", "Manage Old Data", "Reload Configuration from Disk",
             "Jenkins CLI", "Script Console", "Prepare for Shutdown"
     );
 
@@ -32,7 +32,7 @@ public class ManagePageTest extends BaseTest {
     @Test
     public void testManageJenkinsPageItems() {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-section__item']/a/dl/dt")));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-section__item']/a/dl/dt")));
 
         List<WebElement> items = getDriver().findElements(By.xpath("//div[@class='jenkins-section__item']/a/dl/dt"));
 
