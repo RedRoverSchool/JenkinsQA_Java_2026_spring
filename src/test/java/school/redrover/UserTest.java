@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.util.List;
 
@@ -19,12 +20,12 @@ public class UserTest extends BaseTest {
     @Test
     public void testCreateUser() {
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("root-action-ManageJenkinsAction"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='securityRealm/']"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='addUser']"))).click();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@name= 'Submit']")));
-        sendUserDataAndSubmit(USER_NAME, USER_PASSWORD, USER_PASSWORD, USER_EMAIL);
+        new HomePage(getDriver())
+                .clickSetting()
+                .clickUsersButton()
+                .clickCreateUserButton()
+                .sendUserData(USER_NAME, USER_PASSWORD, USER_PASSWORD, USER_EMAIL)
+                .createUser();
 
         List<String> actualUsersNameList = getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By
                 .xpath("//a[@class = 'jenkins-table__link model-link inside']")))
