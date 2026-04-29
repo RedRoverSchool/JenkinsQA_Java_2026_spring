@@ -4,15 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.CreateProjectPage;
+import school.redrover.page.FreestyleProjectConfigPage;
+import school.redrover.page.HomePage;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,20 +42,16 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testCreate() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
-        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
+        List<String> projectList = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
+                .goHomePage()
+                .getProjectList();
 
-        getWait10().until(ExpectedConditions.not(ExpectedConditions.urlContains("configure")));
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.id("jenkins-head-icon"))).click();
-
-        String actualName = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[contains(@href, 'job/Freestyle')]//span"))).getText();
-
-        Assert.assertEquals(actualName, PROJECT_NAME);
+        Assert.assertEquals(projectList.size(), 1);
+        Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);
     }
 
     @Test (dependsOnMethods = "testCreate")
