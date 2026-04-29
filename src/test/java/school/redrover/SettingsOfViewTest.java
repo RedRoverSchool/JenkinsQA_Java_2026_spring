@@ -22,7 +22,7 @@ public class SettingsOfViewTest extends BaseTest {
 
     @Test
     public void testPreviewHideOptionIsAvailable() throws InterruptedException {
-        getDriver().findElement(By.id("description-link")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description")));
         getDriver().findElement(By.name("description")).sendKeys(textInput);
         getDriver().findElement(By.className("textarea-show-preview")).click();
