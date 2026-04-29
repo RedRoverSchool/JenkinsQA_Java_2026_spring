@@ -14,6 +14,7 @@ public class SettingsOfViewTest extends BaseTest {
 
     @Test
     public void testCheckPlainTextInputFieldIsOpened(){
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.id("description-link")));
         getDriver().findElement(By.id("description-link")).click();
         Assert.assertFalse(getDriver().findElements(By.name("description")).isEmpty());
         Assert.assertEquals(getDriver().findElement(By.className("textarea-preview-container")).getText(), "Plain text\n" +
