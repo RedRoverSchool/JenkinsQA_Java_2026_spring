@@ -4,7 +4,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ManageJenkinsPageTest extends BaseTest {
+public class ManagePageTest extends BaseTest {
 
     private static final By MANAGE_JENKINS_LINK = By.cssSelector("a[href='/manage']");
     private static final By CONFIGURE_SYSTEM_LINK = By.xpath("//a[contains(@href, 'configure')]");
@@ -20,9 +19,9 @@ public class ManageJenkinsPageTest extends BaseTest {
     private static final By EMPTY_DROPDOWN = By.className("jenkins-search__results__no-results-label");
     private static final By HEADER = By.xpath("//h1");
 
-    private final List<String> expectedItems = List.of("System", "Tools", "Plugins", "Nodes", "Clouds",
+    private final List<String> expectedItems = List.of("System", "Tools", "Plugins", "Nodes", "Docker", "Clouds",
             "Appearance", "Security", "Credentials", "Credential Providers", "Users", "System Information",
-            "System Log", "Load Statistics", "About Jenkins", "Manage Old Data", "Reload Configuration from Disk",
+            "System Log", "Load Statistics", "About Jenkins", "Cloud Statistics", "Manage Old Data", "Reload Configuration from Disk",
             "Jenkins CLI", "Script Console", "Prepare for Shutdown"
     );
 
@@ -30,10 +29,10 @@ public class ManageJenkinsPageTest extends BaseTest {
         return getDriver().findElement(HEADER).getText();
     }
 
-    @Ignore
     @Test
     public void testManageJenkinsPageItems() {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-section__item']/a/dl/dt")));
 
         List<WebElement> items = getDriver().findElements(By.xpath("//div[@class='jenkins-section__item']/a/dl/dt"));
 
