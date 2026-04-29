@@ -11,6 +11,7 @@ public class GlobalViewTest extends BaseTest {
     private static final String TEXT_DESCRIPTION_BUTTON = "Add description";
     private static final String DESC_MESSAGE = "Some description text here";
     private static final String UPDATED_DESC_MESSAGE = "Updated description";
+    private static String textInput = "Test";
 
     @Ignore
     @Test
@@ -73,5 +74,20 @@ public class GlobalViewTest extends BaseTest {
         Assert.assertTrue(
                 getWait5().until(ExpectedConditions.presenceOfElementLocated(By.id("description-content"))).getText().isEmpty(),
                 "Description has non-empty content!");
+    }
+
+
+    @Test
+    public void hidePreviewOptionIsAvailableTest() throws InterruptedException {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description")));
+
+        getDriver().findElement(By.name("description")).sendKeys(textInput);
+        getDriver().findElement(By.className("textarea-show-preview")).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("textarea-hide-preview")));
+
+        Assert.assertTrue(getDriver().findElement(By.className("textarea-hide-preview")).isDisplayed());
+        Assert.assertEquals(getDriver().findElement(By.className("textarea-preview")).getText(), textInput);
     }
 }
