@@ -26,14 +26,4 @@ public class SettingsOfViewTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.className("textarea-hide-preview")).isDisplayed());
         Assert.assertEquals(getDriver().findElement(By.className("textarea-preview")).getText(), textInput);
     }
-
-    @Test
-    public void checkPreviewHidePreviewOptionIsAvailable() throws InterruptedException {
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys(textInput);
-        getDriver().findElement(By.className("textarea-show-preview")).click();
-        Assert.assertTrue(getDriver().findElement(By.className("textarea-hide-preview")).isDisplayed());
-        Assert.assertEquals(getDriver().findElement(By.className("textarea-preview")).getText(), textInput);
-    }
-
 }
