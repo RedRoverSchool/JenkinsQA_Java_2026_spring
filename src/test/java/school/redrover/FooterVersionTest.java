@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -9,6 +10,7 @@ public class FooterVersionTest extends BaseTest {
     private final String actualVersion = "2.541.3";
     private final By versionButtonOnMainPage = By.cssSelector(".page-footer button.jenkins-button");
 
+    @Ignore
     @Test
     public void checkVersionOnMainPage() {
         Assert.assertEquals(

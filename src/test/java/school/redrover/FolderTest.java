@@ -11,11 +11,11 @@ import school.redrover.common.TestUtils;
 
 public class FolderTest extends BaseTest {
 
-    public static final String FOLDER_NAME = "FolderInitial";
-    public static final By FOLDER_NAME_MAIN_PAGE = By.cssSelector(".jenkins-table__link > span:first-child");
-    public final String FOLDER_NEW_NAME = "FolderNewName";
-    public final String NESTED_FOLDER = "NestedFolder";
-    public final String DESCRIPTION_TEXT = "DescriptionForTest";
+    private static final String FOLDER_NAME = "FolderInitial";
+    private static final By FOLDER_NAME_MAIN_PAGE = By.cssSelector(".jenkins-table__link > span:first-child");
+    private static final String FOLDER_NEW_NAME = "FolderNewName";
+    private static final String NESTED_FOLDER = "NestedFolder";
+    private static final String DESCRIPTION_TEXT = "DescriptionForTest";
 
     private void goToMainPage() {
         WebElement logo = getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a.app-jenkins-logo")));
@@ -47,6 +47,16 @@ public class FolderTest extends BaseTest {
         goToMainPage();
 
         Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(FOLDER_NAME_MAIN_PAGE)).getText(), FOLDER_NEW_NAME);
+    }
+
+    @Test(dependsOnMethods = "testRename")
+    public void createWithSameName() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='name']"))).sendKeys(FOLDER_NEW_NAME);
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='%s']".formatted("Folder")))).click();
+
+        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText(),
+                "» A job already exists with the name " + "‘" + FOLDER_NEW_NAME + "’");
     }
 
     @Test(dependsOnMethods = "testRename")

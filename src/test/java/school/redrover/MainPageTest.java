@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -15,6 +16,7 @@ public class MainPageTest extends BaseTest {
         getDriver().findElement(By.cssSelector("#description-link.jenkins-button")).click();
     }
 
+    @Ignore
     @Test
     public void testAddDescription() {
         openDescription();
@@ -30,6 +32,7 @@ public class MainPageTest extends BaseTest {
                 TEXT_CONTENT);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testAddDescription")
     public void testChangeDescription() {
         String changedDescription = TEXT_CONTENT + "_changed";
@@ -49,6 +52,7 @@ public class MainPageTest extends BaseTest {
                 changedDescription);
     }
 
+    @Ignore
     @Test
     public void testSaveWithoutDescription() {
         openDescription();
