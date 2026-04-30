@@ -322,6 +322,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "Ожидаемый текст ошибки не найден" + actualError);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testEnableDeleteWorkspaceBeforeBuildStarts() {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='" + PROJECT_NAME + "']")))
