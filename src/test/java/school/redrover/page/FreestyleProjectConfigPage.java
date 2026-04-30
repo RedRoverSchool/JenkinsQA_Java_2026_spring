@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class FreestyleProjectConfigPage extends BaseModel {
+public class FreestyleProjectConfigPage extends BasePage {
 
     public FreestyleProjectConfigPage(WebDriver driver) {
         super(driver);
@@ -42,12 +42,4 @@ public class FreestyleProjectConfigPage extends BaseModel {
 
         return new FreestyleProjectPage(getDriver());
     }
-
-    public BasePage goToBasePage(){
-        getDriver().findElement(By.xpath("//a[@class='app-jenkins-logo']")).click();
-
-        return new BasePage(getDriver());
-    }
-
-
 }

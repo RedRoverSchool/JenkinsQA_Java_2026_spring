@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class FreestyleProjectPage extends BaseModel {
+public class FreestyleProjectPage extends BasePage {
 
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);

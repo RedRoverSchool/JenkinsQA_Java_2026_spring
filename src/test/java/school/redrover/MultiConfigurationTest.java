@@ -18,7 +18,7 @@ public class MultiConfigurationTest extends BaseTest {
                 .selectItemType(FREESTYLE)
                 .clickOK()
                 .waitToLoadConfigurePage()
-                .goToBasePage();
+                .goHomePage();
 
         return new BasePage(getDriver());
     }
