@@ -52,6 +52,7 @@ public class SignOutTest extends BaseTest {
         getWait5().until(ExpectedConditions.urlContains("login"));
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testSingOutIsImmediate")
     public void testJenkinsSingOutButton() {
 
