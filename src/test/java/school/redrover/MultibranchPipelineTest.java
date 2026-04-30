@@ -3,11 +3,16 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeListener;
 
 
 public class MultibranchPipelineTest extends BaseTest {
@@ -64,4 +69,27 @@ public class MultibranchPipelineTest extends BaseTest {
  		Assert.assertEquals(getWait10().until(
 				ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME_1)))).getText(), PROJECT_NAME_1);
 	}
-}
+
+	@Test
+	public void testRenameViaContextMenu(){
+		TestUtils.createJob(getDriver(),getWait10(),PROJECT_NAME, TestUtils.JobType.MULTIBRANCH_PIPELINE);
+		getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+				By.xpath("//a[@class='app-jenkins-logo']"))).click();
+
+		WebElement job= getDriver().findElement(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME)));
+		Actions action = new Actions(getDriver());
+		action.moveToElement(job).perform();
+
+		By CHEVRON = By.xpath("//button[@class='jenkins-menu-dropdown-chevron']");
+		getWait5().until(ExpectedConditions.elementToBeClickable(CHEVRON)).click();
+		By rename = By.xpath("//a[contains(@href, 'rename')]");
+		getWait5().until(ExpectedConditions.elementToBeClickable(rename)).click();
+
+		getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
+		getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(PROJECT_NAME_1);
+		getDriver().findElement(By.name("Submit")).click();
+		getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+				By.xpath("//a[@class='app-jenkins-logo']"))).click();
+
+		Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME_1)))).getText(), PROJECT_NAME_1);}
+	}
