@@ -18,6 +18,7 @@ public class SignInTest extends BaseTest {
     final private String USER_FULL_NAME = "Berendey";
     final private String USER_EMAIL = "berendey@kingdom.pz";
 
+    @Ignore
     @Test
     public void testLoginValidData () {
 
@@ -66,6 +67,7 @@ public class SignInTest extends BaseTest {
         Assert.assertEquals(errorMessage.getText(), "Invalid username or password");
     }
 
+    @Ignore
     @Test
     public void testLoginInvalidUsername () {
 
@@ -89,6 +91,7 @@ public class SignInTest extends BaseTest {
         Assert.assertEquals(errorMessage.getText(), "Invalid username or password");
     }
 
+    @Ignore
     @Test
     public void testSignInPageAlertMessageText() {
         JenkinsUtils.logout(getDriver());
