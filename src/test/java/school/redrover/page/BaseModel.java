@@ -21,25 +21,25 @@ public class BaseModel {
         return driver;
     }
 
-    public WebDriverWait getWait2() {
+    protected WebDriverWait getWait2() {
         if (wait2 == null) {
-            wait2 = new WebDriverWait(driver, Duration.ofSeconds(2));
+            wait2 = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
         }
 
         return wait2;
     }
 
-    public WebDriverWait getWait5() {
+    protected WebDriverWait getWait5() {
         if (wait5 == null) {
-            wait5 = new WebDriverWait(driver, Duration.ofSeconds(5));
+            wait5 = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         }
 
         return wait5;
     }
 
-    public WebDriverWait getWait10() {
+    protected WebDriverWait getWait10() {
         if (wait10 == null) {
-            wait10 = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait10 = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         }
 
         return wait10;
