@@ -12,7 +12,8 @@ public class CreateUser extends BasePage {
     }
 
     public CreateUser sendUserData(String username, String password, String confirmPassword, String email) {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()= 'Create User']")));
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@value='Create User']")));
+//        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1['Create User']")));
 
         getDriver().findElement(By.id("username")).sendKeys(username);
         getDriver().findElement(By.xpath("//input[@name='password1']")).sendKeys(password);

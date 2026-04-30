@@ -23,4 +23,11 @@ public class HomePage extends BasePage {
         return getDriver().findElements(By.cssSelector(".jenkins-table__link>span:first-child"))
                 .stream().map(WebElement::getText).toList();
     }
+
+    public ManageJenkins clickSetting() {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("root-action-ManageJenkinsAction"))).click();
+
+        return new ManageJenkins(getDriver());
+
+    }
 }
