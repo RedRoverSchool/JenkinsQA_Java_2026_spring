@@ -30,19 +30,19 @@ public class BaseModel {
     }
 
     public WebDriverWait getWait5() {
-        if (wait2 == null) {
-            wait2 = new WebDriverWait(driver, Duration.ofSeconds(5));
+        if (wait5 == null) {
+            wait5 = new WebDriverWait(driver, Duration.ofSeconds(5));
         }
 
-        return wait2;
+        return wait5;
     }
 
     public WebDriverWait getWait10() {
-        if (wait2 == null) {
-            wait2 = new WebDriverWait(driver, Duration.ofSeconds(10));
+        if (wait10 == null) {
+            wait10 = new WebDriverWait(driver, Duration.ofSeconds(10));
         }
 
-        return wait2;
+        return wait10;
     }
 
 }
