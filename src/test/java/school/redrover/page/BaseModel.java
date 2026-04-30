@@ -44,5 +44,4 @@ public class BaseModel {
 
         return wait10;
     }
-
 }
