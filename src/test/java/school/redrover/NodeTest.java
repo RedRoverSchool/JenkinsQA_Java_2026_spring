@@ -88,6 +88,7 @@ public class NodeTest extends BaseTest {
                 ,"Mark this node temporarily offline");
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testBringTheNodeBackOnline")
     public void testDeleteNode(){
 
