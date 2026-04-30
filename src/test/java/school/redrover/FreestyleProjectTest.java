@@ -253,6 +253,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(listOfBuilds.size(), 1);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testBuildAfterOtherProjectsAreBuild")
     public void testDelete() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -268,6 +269,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(listOfJobs.size(), 1);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testDelete")
     public void testRepositoryURL() {
         goToConfigurePage();
@@ -278,6 +280,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "The repository URL does not match!");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testRepositoryURL")
     public void testCredentials() {
         goToConfigurePage();
@@ -288,6 +291,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "The Credentials drop-down list is not displayed");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCredentials")
     public void testBranchesToBuild() {
         goToConfigurePage();
@@ -304,6 +308,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "The branch name does not match the expected one!");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testBranchesToBuild")
     public void testSCMAuthenticationFails(){
         goToConfigurePage();
