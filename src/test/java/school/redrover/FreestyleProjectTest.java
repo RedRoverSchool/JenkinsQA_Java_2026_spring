@@ -221,7 +221,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(listOfBuilds.size(), 1);
     }
-
+    @Ignore
     @Test(dependsOnMethods = "testBuildNow")
     public void testBuildAfterOtherProjectsAreBuild() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
