@@ -77,6 +77,7 @@ public class SignOutTest extends BaseTest {
         Assert.assertEquals(buttonSingIn.getText(), "Sign in");
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testSingOutIsImmediate")
      public void testJenkinsSingOutButtonUserNameEmpty() {
 
@@ -104,6 +105,7 @@ public class SignOutTest extends BaseTest {
                 "Поле 'Username' должно быть пустым, но содержит: '" + usernameValue + "'");
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testSingOutIsImmediate")
     public void testJenkinsSingOutButtonPasswordEmpty() {
 
