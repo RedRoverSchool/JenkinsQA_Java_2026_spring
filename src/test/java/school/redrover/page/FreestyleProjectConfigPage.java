@@ -26,7 +26,7 @@ public class FreestyleProjectConfigPage extends BaseModel {
     public FreestyleProjectConfigPage clickTrigger(String triggerTitle){
         Actions actions = new Actions(getDriver());
         actions.moveToElement(getDriver().findElement(By.xpath("//label[text()='%s']".formatted(triggerTitle)))).perform();
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[text()='%s']".formatted(triggerTitle)))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[text()='%s']".formatted(triggerTitle)))).click();
 
         return new FreestyleProjectConfigPage(getDriver());
     }
