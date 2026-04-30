@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.ProjectUtils;
+import school.redrover.page.BasePage;
 
 import java.util.List;
 import java.util.Random;
@@ -124,9 +125,10 @@ public class SearchButtonTest extends BaseTest {
 
     @Test
     public void testOpenSearchByKeyboard(){
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//div[@id='tasks']//a)[1]")));
-        getDriver().findElement(By.tagName("body")).sendKeys(Keys.chord(Keys.CONTROL, "k"));
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='search-results']/a")));
+        new BasePage(getDriver())
+                .waitToLoadBasePage()
+                .pushCtrlK()
+                .verifyThatSearchAppeared();
 
         Assert.assertTrue(getDriver().findElement(SEARCH_INPUT_FIELD).isDisplayed());
     }
