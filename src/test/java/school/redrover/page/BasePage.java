@@ -46,6 +46,12 @@ public class BasePage extends BaseModel {
 
         return new BasePage(getDriver());
     }
+
+    public BasePage goHomePage(){
+        getDriver().findElement(By.xpath("//a[@class='app-jenkins-logo']")).click();
+
+        return new BasePage(getDriver());
+    }
 }
 
 
