@@ -51,7 +51,7 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
 
-        getWait10().until(ExpectedConditions.not(ExpectedConditions.urlContains("configure")));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[@class='permalinks-header']")));
         getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.id("jenkins-head-icon"))).click();
 
