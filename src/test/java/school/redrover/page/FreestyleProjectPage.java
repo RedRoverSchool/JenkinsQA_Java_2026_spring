@@ -21,5 +21,4 @@ public class FreestyleProjectPage extends BaseModel {
 
         return new FreestyleProjectConfigPage(getDriver());
     }
-
 }
