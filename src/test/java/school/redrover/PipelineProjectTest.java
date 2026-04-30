@@ -6,6 +6,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
+
+import java.util.List;
 
 public class PipelineProjectTest extends BaseTest {
 
@@ -14,22 +17,21 @@ public class PipelineProjectTest extends BaseTest {
     private static final String RENAME_PIPELINE = "RenamedPipeline";
 
     @Test
-    public void testCreateWithValidName() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
+    public void testCreate() {
+        List<String> jobList = new HomePage(getDriver())
+                .clickItemNewJob()
+                .typeProjectName(PROJECT_NAME)
+                .selectPipelineProjectAndClickOk()
+                .goHomePage()
+                .getProjectList();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated((By.id("name")))).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.name("Submit")));
-        getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']")).click();
-
-        Assert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-table__link > span:first-child"))).getText(),
-                PROJECT_NAME);
+        Assert.assertListContainsObject(
+                jobList,
+                PROJECT_NAME,
+                "Pipeline is not created");
     }
 
-    @Test(dependsOnMethods = "testCreateWithValidName")
+    @Test(dependsOnMethods = "testCreate")
     public void testCreateWithDuplicateName() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
 

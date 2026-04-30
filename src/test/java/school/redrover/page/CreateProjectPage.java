@@ -19,7 +19,14 @@ public class CreateProjectPage extends BaseModel {
     public CreateProjectPage typeProjectName(String projectName){
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='name']"))).sendKeys(projectName);
 
-        return new CreateProjectPage(getDriver());
+        return this;
+    }
+
+    public PipelineProjectConfigPage selectPipelineProjectAndClickOk() {
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new PipelineProjectConfigPage(getDriver());
     }
 
     public CreateProjectPage selectItemType(String jobType){
