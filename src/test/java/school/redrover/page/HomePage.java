@@ -24,10 +24,10 @@ public class HomePage extends BasePage {
                 .stream().map(WebElement::getText).toList();
     }
 
-    public ManageJenkins clickSetting() {
+    public ManageJenkinsPage clickSetting() {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("root-action-ManageJenkinsAction"))).click();
 
-        return new ManageJenkins(getDriver());
+        return new ManageJenkinsPage(getDriver());
 
     }
 }

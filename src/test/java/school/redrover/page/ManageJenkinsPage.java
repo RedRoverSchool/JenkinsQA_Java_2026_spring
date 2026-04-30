@@ -4,16 +4,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class ManageJenkins extends BasePage{
+public class ManageJenkinsPage extends BasePage{
 
-    public ManageJenkins(WebDriver driver) {
+    public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
 
-    public UserDatabase clickUsersButton(){
+    public UserDatabasePage clickUsersButton(){
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='securityRealm/']"))).click();
 
-        return new UserDatabase(getDriver());
+        return new UserDatabasePage(getDriver());
     }
 }
