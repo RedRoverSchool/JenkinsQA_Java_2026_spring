@@ -4,29 +4,28 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class CreateUser extends BasePage {
+public class CreateUserPage extends BasePage {
 
 
-    public CreateUser(WebDriver driver) {
+    public CreateUserPage(WebDriver driver) {
         super(driver);
     }
 
-    public CreateUser sendUserData(String username, String password, String confirmPassword, String email) {
+    public CreateUserPage sendUserData(String username, String password, String confirmPassword, String email) {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@value='Create User']")));
-//        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1['Create User']")));
 
         getDriver().findElement(By.id("username")).sendKeys(username);
         getDriver().findElement(By.xpath("//input[@name='password1']")).sendKeys(password);
         getDriver().findElement(By.xpath("//input[@name='password2']")).sendKeys(confirmPassword);
         getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys(email);
 
-        return new CreateUser(getDriver());
+        return new CreateUserPage(getDriver());
     }
-    public UserDatabase createUser(){
+    public UserDatabasePage createUser(){
 
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
-        return new UserDatabase(getDriver());
+        return new UserDatabasePage(getDriver());
     }
 
 }
