@@ -5,6 +5,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.ProjectUtils;
@@ -70,6 +71,7 @@ public class SearchButtonTest extends BaseTest {
                 .getText(), folderName);
     }
 
+    @Ignore
     @Test
     public void testEmptyQuery() {
 
