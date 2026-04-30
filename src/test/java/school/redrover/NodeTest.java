@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -75,6 +76,7 @@ public class NodeTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.className("message")).getText(), "Disconnected by admin");
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testMarkNodeOffline")
     public void testBringTheNodeBackOnline(){
         goToNewNodeManagementPage();

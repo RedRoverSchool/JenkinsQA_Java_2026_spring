@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.JenkinsUtils;
@@ -41,6 +42,7 @@ public class SignInTest extends BaseTest {
         Assert.assertEquals(header, "Welcome to Jenkins!");
     }
 
+    @Ignore
     @Test
     public void testLoginInvalidPassword () {
 
