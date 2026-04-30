@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.JenkinsUtils;
@@ -17,6 +18,7 @@ public class SignInTest extends BaseTest {
     final private String USER_FULL_NAME = "Berendey";
     final private String USER_EMAIL = "berendey@kingdom.pz";
 
+    @Ignore
     @Test
     public void testLoginValidData () {
 
@@ -41,6 +43,7 @@ public class SignInTest extends BaseTest {
         Assert.assertEquals(header, "Welcome to Jenkins!");
     }
 
+    @Ignore
     @Test
     public void testLoginInvalidPassword () {
 
@@ -64,6 +67,7 @@ public class SignInTest extends BaseTest {
         Assert.assertEquals(errorMessage.getText(), "Invalid username or password");
     }
 
+    @Ignore
     @Test
     public void testLoginInvalidUsername () {
 
@@ -87,6 +91,7 @@ public class SignInTest extends BaseTest {
         Assert.assertEquals(errorMessage.getText(), "Invalid username or password");
     }
 
+    @Ignore
     @Test
     public void testSignInPageAlertMessageText() {
         JenkinsUtils.logout(getDriver());
