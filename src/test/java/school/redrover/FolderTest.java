@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.FolderConfigPage;
+import school.redrover.page.FolderPage;
 import school.redrover.page.HomePage;
 
 import java.util.List;
@@ -16,24 +17,15 @@ import java.util.List;
 public class FolderTest extends BaseTest {
 
     private static final String FOLDER_NAME = "FolderInitial";
-    private static final By FOLDER_NAME_MAIN_PAGE = By.cssSelector(".jenkins-table__link > span:first-child");
     private static final String FOLDER_NEW_NAME = "FolderNewName";
     private static final String NESTED_FOLDER = "NestedFolder";
     private static final String DESCRIPTION_TEXT = "DescriptionForTest";
-
-    private void goToMainPage() {
-        WebElement logo = getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a.app-jenkins-logo")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", logo);
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@href='/view/all/newJob']"))).isDisplayed();
-    }
 
     @Test
     public void testCreate(){
        List<String> joblist =  new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(FOLDER_NAME)
-                .selectFreeStyleProject()
                 .selectItemType(TestUtils.JobType.FOLDER)
                 .clickOK(new FolderConfigPage(getDriver()))
                 .goHomePage()
@@ -45,42 +37,38 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreate")
     public void testRename() {
+        List<String> jobnewlist =  new HomePage(getDriver())
+                .clickOnProject(new FolderPage(getDriver()),FOLDER_NAME)
+                .clickRename(FOLDER_NAME)
+                .enterNewName(FOLDER_NEW_NAME)
+                .clickRenameButton()
+                .goHomePage()
+                .getProjectList();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_NAME)))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/job/%s/confirm-rename']".formatted(FOLDER_NAME)))).click();
-
-        WebElement newName = getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='newName']")));
-        newName.clear();
-        newName.sendKeys(FOLDER_NEW_NAME);
-        getDriver().findElement(By.xpath("//button[@value='Rename']")).click();
-
-        goToMainPage();
-
-        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(FOLDER_NAME_MAIN_PAGE)).getText(), FOLDER_NEW_NAME);
+        Assert.assertEquals(jobnewlist.size(),1);
+        Assert.assertEquals(jobnewlist.getFirst(),FOLDER_NEW_NAME);
     }
 
     @Test(dependsOnMethods = "testRename")
     public void createWithSameName() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='name']"))).sendKeys(FOLDER_NEW_NAME);
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='%s']".formatted("Folder")))).click();
+        new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(FOLDER_NEW_NAME)
+                .selectItemType(TestUtils.JobType.FOLDER);
 
-        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText(),
+        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText(),
                 "» A job already exists with the name " + "‘" + FOLDER_NEW_NAME + "’");
     }
 
     @Test(dependsOnMethods = "testRename")
     public void testAddDescription() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_NEW_NAME)))).click();
+        new HomePage(getDriver())
+                .clickOnProject(new FolderPage(getDriver()),FOLDER_NEW_NAME)
+                .clickAddDescription()
+                .enterDescription(DESCRIPTION_TEXT)
+                .clickSaveDescription();
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//textarea[@name='description']"))).sendKeys(DESCRIPTION_TEXT);
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@value='Save']"))).click();
-
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.id("description-content"), DESCRIPTION_TEXT));
-
-        Assert.assertEquals(
-                getDriver().findElement(By.id("description-content")).getText(), DESCRIPTION_TEXT);
+        Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(), DESCRIPTION_TEXT);
     }
 
     @Test(dependsOnMethods = "testAddDescription")
