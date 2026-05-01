@@ -26,7 +26,6 @@ public class FolderTest extends BaseTest {
        List<String> joblist =  new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(FOLDER_NAME)
-                .selectFreeStyleProject()
                 .selectItemType(TestUtils.JobType.FOLDER)
                 .clickOK(new FolderConfigPage(getDriver()))
                 .goHomePage()
@@ -52,11 +51,12 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testRename")
     public void createWithSameName() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='name']"))).sendKeys(FOLDER_NEW_NAME);
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='%s']".formatted("Folder")))).click();
+        new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(FOLDER_NEW_NAME)
+                .selectItemType(TestUtils.JobType.FOLDER);
 
-        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText(),
+        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText(),
                 "» A job already exists with the name " + "‘" + FOLDER_NEW_NAME + "’");
     }
 
