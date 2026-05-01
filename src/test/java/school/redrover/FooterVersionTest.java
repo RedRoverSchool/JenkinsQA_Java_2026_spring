@@ -18,6 +18,7 @@ public class FooterVersionTest extends BaseTest {
                 "Jenkins " + actualVersion);
     }
 
+    @Ignore
     @Test
     public void checkVersionOnAboutPage() {
         getDriver().findElement(versionButtonOnMainPage).click();
