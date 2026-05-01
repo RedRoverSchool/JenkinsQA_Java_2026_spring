@@ -1,8 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -20,10 +18,11 @@ public class FolderTest extends BaseTest {
     private static final String FOLDER_NEW_NAME = "FolderNewName";
     private static final String NESTED_FOLDER = "NestedFolder";
     private static final String DESCRIPTION_TEXT = "DescriptionForTest";
+    private static final String HEALTH_METRICS_CHILD_NAME = "ChildName";
 
     @Test
-    public void testCreate(){
-       List<String> joblist =  new HomePage(getDriver())
+    public void testCreate() {
+        List<String> joblist = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(FOLDER_NAME)
                 .selectItemType(TestUtils.JobType.FOLDER)
@@ -31,22 +30,22 @@ public class FolderTest extends BaseTest {
                 .goHomePage()
                 .getProjectList();
 
-       Assert.assertEquals(joblist.size(),1);
-       Assert.assertEquals(joblist.getFirst(),FOLDER_NAME);
+        Assert.assertEquals(joblist.size(), 1);
+        Assert.assertEquals(joblist.getFirst(), FOLDER_NAME);
     }
 
     @Test(dependsOnMethods = "testCreate")
     public void testRename() {
-        List<String> jobnewlist =  new HomePage(getDriver())
-                .clickOnProject(new FolderPage(getDriver()),FOLDER_NAME)
+        List<String> jobnewlist = new HomePage(getDriver())
+                .clickOnProject(new FolderPage(getDriver()), FOLDER_NAME)
                 .clickRename(FOLDER_NAME)
                 .enterNewName(FOLDER_NEW_NAME)
                 .clickRenameButton()
                 .goHomePage()
                 .getProjectList();
 
-        Assert.assertEquals(jobnewlist.size(),1);
-        Assert.assertEquals(jobnewlist.getFirst(),FOLDER_NEW_NAME);
+        Assert.assertEquals(jobnewlist.size(), 1);
+        Assert.assertEquals(jobnewlist.getFirst(), FOLDER_NEW_NAME);
     }
 
     @Test(dependsOnMethods = "testRename")
@@ -63,7 +62,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testRename")
     public void testAddDescription() {
         new HomePage(getDriver())
-                .clickOnProject(new FolderPage(getDriver()),FOLDER_NEW_NAME)
+                .clickOnProject(new FolderPage(getDriver()), FOLDER_NEW_NAME)
                 .clickAddDescription()
                 .enterDescription(DESCRIPTION_TEXT)
                 .clickSaveDescription();
@@ -72,20 +71,19 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testAddDescription")
-    public void testAddMetricButtonVisibleInHealthMetricsDropdown() {
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_NEW_NAME)))).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("Configure"))).click();
-
-        WebElement healthSection = getWait10().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//*[contains(text(), 'Health metrics')]")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", healthSection);
-
-        WebElement addButton = getWait10().until(ExpectedConditions.presenceOfElementLocated(
-                By.cssSelector("button.hetero-list-add[suffix='healthMetrics']")));
-
-        Assert.assertEquals(addButton.getAttribute("suffix"), "healthMetrics",
-                "Button should have suffix='healthMetrics'");
+    public void testHealthMetrics() {
+        String actualText = new HomePage(getDriver())
+                .clickOnProject(new FolderPage(getDriver()), FOLDER_NEW_NAME)
+                .clickConfigure()
+                .clickHealthMetrics()
+                .clickAddMetric()
+                .chooseFilterChildName()
+                .enterChildName(HEALTH_METRICS_CHILD_NAME)
+                .clickSave(new FolderPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetrics()
+                .getTextOfMetric();
+        Assert.assertEquals(actualText, HEALTH_METRICS_CHILD_NAME);
     }
 
     @Test(dependsOnMethods = "testRename")
