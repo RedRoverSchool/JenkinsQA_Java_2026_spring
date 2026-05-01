@@ -4,32 +4,28 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class CreateProjectPage extends BaseModel {
+public class CreateProjectPage extends BasePage {
 
-    public  CreateProjectPage(WebDriver driver){
+    public CreateProjectPage(WebDriver driver) {
         super(driver);
     }
 
-    public CreateProjectPage waitToLoadCreatePage(){
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='name']")));
+    public CreateProjectPage setProjectName(String name) {
+        getDriver().findElement(By.id("name")).sendKeys(name);
 
-        return new CreateProjectPage(getDriver());
+        return this;
     }
 
-    public CreateProjectPage typeProjectName(String projectName){
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='name']"))).sendKeys(projectName);
+    public CreateProjectPage selectFreeStyleProject() {
+        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
 
-        return new CreateProjectPage(getDriver());
+        return this;
     }
 
-    public CreateProjectPage selectItemType(String jobType){
-        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(jobType))).click();
-
-        return new CreateProjectPage(getDriver());
-    }
-
-    public FreestyleProjectConfigPage clickOK(){
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+    public FreestyleProjectConfigPage clickOkButton() {
+        getDriver().findElement(By.id("ok-button")).click();
+        // waiting for the configuration page
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
 
         return new FreestyleProjectConfigPage(getDriver());
     }
