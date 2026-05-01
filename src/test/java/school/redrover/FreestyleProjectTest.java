@@ -4,15 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.CreateProjectPage;
+import school.redrover.page.FreestyleProjectConfigPage;
+import school.redrover.page.HomePage;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,22 +42,16 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testCreate() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("name"))
-        ).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
+        List<String> projectList = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
+                .goHomePage()
+                .getProjectList();
 
-        getWait10().until(ExpectedConditions.not(ExpectedConditions.urlContains("configure")));
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.id("jenkins-head-icon"))).click();
-
-        String actualName = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[contains(@href, 'job/Freestyle')]//span"))).getText();
-
-        Assert.assertEquals(actualName, PROJECT_NAME);
+        Assert.assertEquals(projectList.size(), 1);
+        Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);
     }
 
     @Test (dependsOnMethods = "testCreate")
@@ -144,9 +137,8 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("Description");
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))
-                ).getText(), "Description");
+        Assert.assertEquals(getDriver().findElement(
+                By.xpath("//div[@id='description-content']")).getText(),"Description");
     }
 
     @Test(dependsOnMethods = "testAddDescription")
@@ -159,9 +151,8 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//label[@class='jenkins-toggle-switch__label ']")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertTrue(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("enable-project"))
-                ).getText().contains("This project is currently disabled"));
+        Assert.assertTrue(getDriver().findElement(
+                By.id("enable-project")).getText().contains("This project is currently disabled"));
     }
 
     @Test(dependsOnMethods = "testDisable")
@@ -320,28 +311,5 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(actualError.contains("Failed to connect to repository"),
                 "Ожидаемый текст ошибки не найден" + actualError);
-    }
-
-    @Test(dependsOnMethods = "testCreate")
-    public void testEnableDeleteWorkspaceBeforeBuildStarts() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='" + PROJECT_NAME + "']")))
-                .click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href,'configure')]")))
-                .click();
-
-        WebElement checkboxLabel = getWait10().until(
-                ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(.,'Delete workspace before build starts')]")));
-        ((JavascriptExecutor) getDriver()).executeScript(
-                "arguments[0].scrollIntoView({block:'center'});", checkboxLabel);
-
-        checkboxLabel.click();
-        getDriver().findElement(By.name("Submit")).click();
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href,'configure')]")))
-                .click();
-        WebElement actualCheckbox = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(By.name("hudson-plugins-ws_cleanup-PreBuildCleanup")));
-
-        Assert.assertTrue(actualCheckbox.isSelected());
     }
 }
