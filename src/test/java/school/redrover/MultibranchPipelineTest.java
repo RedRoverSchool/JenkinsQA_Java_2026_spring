@@ -10,14 +10,12 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeListener;
 
 
 public class MultibranchPipelineTest extends BaseTest {
 	private final static String PROJECT_NAME = "MultibranchPipelineProject";
 	private final static String PROJECT_NAME_1 = "MultibranchPipelineProject1";
+	private final static By PROJECT_NAME_FIELD = By.xpath("//input[@name='newName']");
 
 	@Test
 	public void testCreate() {
@@ -56,6 +54,7 @@ public class MultibranchPipelineTest extends BaseTest {
 		WebElement icon = getWait10().until(ExpectedConditions.visibilityOfElementLocated(statusIcon));
 		Assert.assertTrue(icon.isDisplayed());
 	}
+
 	@Test(dependsOnMethods ="testCreate" )
 	public void testRename(){
 		getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME)))).click();
@@ -63,33 +62,27 @@ public class MultibranchPipelineTest extends BaseTest {
 		getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
 		getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(PROJECT_NAME_1);
 		getDriver().findElement(By.name("Submit")).click();
-		getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-				By.xpath("//a[@class='app-jenkins-logo']"))).click();
+		getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-jenkins-logo"))).click();
 
  		Assert.assertEquals(getWait10().until(
 				ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME_1)))).getText(), PROJECT_NAME_1);
 	}
 
-	@Test
+	@Test (dependsOnMethods ="testRename" )
 	public void testRenameViaContextMenu(){
-		TestUtils.createJob(getDriver(),getWait10(),PROJECT_NAME, TestUtils.JobType.MULTIBRANCH_PIPELINE);
-		getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-				By.xpath("//a[@class='app-jenkins-logo']"))).click();
-
-		WebElement job= getDriver().findElement(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME)));
 		Actions action = new Actions(getDriver());
-		action.moveToElement(job).perform();
+		action.moveToElement(getDriver().findElement(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME_1)))).perform();
 
-		By CHEVRON = By.xpath("//button[@class='jenkins-menu-dropdown-chevron']");
-		getWait5().until(ExpectedConditions.elementToBeClickable(CHEVRON)).click();
-		By rename = By.xpath("//a[contains(@href, 'rename')]");
-		getWait5().until(ExpectedConditions.elementToBeClickable(rename)).click();
+		getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='jenkins-menu-dropdown-chevron']"))).click();
+		getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href, 'rename')]"))).click();
 
-		getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
-		getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(PROJECT_NAME_1);
+		getDriver().findElement(PROJECT_NAME_FIELD).clear();
+		getDriver().findElement(PROJECT_NAME_FIELD).sendKeys(PROJECT_NAME);
 		getDriver().findElement(By.name("Submit")).click();
-		getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-				By.xpath("//a[@class='app-jenkins-logo']"))).click();
+		getWait5().until(ExpectedConditions.elementToBeClickable(By.className("app-jenkins-logo")));
+		getDriver().findElement(By.className("app-jenkins-logo")).click();
 
-		Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME_1)))).getText(), PROJECT_NAME_1);}
+
+		Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME)))).getText(), PROJECT_NAME);
+	}
 	}
