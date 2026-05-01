@@ -9,7 +9,7 @@ public class BaseConfigPage extends BasePage{
     }
 
     public <JobConfigPage extends BasePage> JobConfigPage clickSave (JobConfigPage jobconfig) {
-        getDriver().findElement(By.name("Submit"));
+        getDriver().findElement(By.name("Submit")).click();
         return jobconfig;
     }
 }
