@@ -82,7 +82,6 @@ public class MultibranchPipelineTest extends BaseTest {
 		getWait5().until(ExpectedConditions.elementToBeClickable(By.className("app-jenkins-logo")));
 		getDriver().findElement(By.className("app-jenkins-logo")).click();
 
-
 		Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME)))).getText(), PROJECT_NAME);
 	}
-	}
+}
