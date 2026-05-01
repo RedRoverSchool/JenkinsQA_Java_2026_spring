@@ -8,8 +8,8 @@ import school.redrover.common.TestUtils;
 
 public class ViewWithinFolderTest extends BaseTest {
 
-    private final static String FOLDER_NAME = "NewFolder";
-    private final static String VIEW_NAME = "NewViewForFolder";
+    private static final String FOLDER_NAME = "NewFolder";
+    private static final String VIEW_NAME = "NewViewForFolder";
 
     @Test
     public void testCreateMyView(){
