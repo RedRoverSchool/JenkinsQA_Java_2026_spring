@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.FolderConfigPage;
+import school.redrover.page.FolderPage;
 import school.redrover.page.HomePage;
 
 import java.util.List;
@@ -16,17 +17,9 @@ import java.util.List;
 public class FolderTest extends BaseTest {
 
     private static final String FOLDER_NAME = "FolderInitial";
-    private static final By FOLDER_NAME_MAIN_PAGE = By.cssSelector(".jenkins-table__link > span:first-child");
     private static final String FOLDER_NEW_NAME = "FolderNewName";
     private static final String NESTED_FOLDER = "NestedFolder";
     private static final String DESCRIPTION_TEXT = "DescriptionForTest";
-
-    private void goToMainPage() {
-        WebElement logo = getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a.app-jenkins-logo")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", logo);
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@href='/view/all/newJob']"))).isDisplayed();
-    }
 
     @Test
     public void testCreate(){
@@ -45,18 +38,16 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreate")
     public void testRename() {
+        List<String> jobnewlist =  new HomePage(getDriver())
+                .clickOnProject(new FolderPage(getDriver()),FOLDER_NAME)
+                .clickRename(FOLDER_NAME)
+                .enterNewName(FOLDER_NEW_NAME)
+                .clickRenameButton()
+                .goHomePage()
+                .getProjectList();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_NAME)))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/job/%s/confirm-rename']".formatted(FOLDER_NAME)))).click();
-
-        WebElement newName = getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='newName']")));
-        newName.clear();
-        newName.sendKeys(FOLDER_NEW_NAME);
-        getDriver().findElement(By.xpath("//button[@value='Rename']")).click();
-
-        goToMainPage();
-
-        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(FOLDER_NAME_MAIN_PAGE)).getText(), FOLDER_NEW_NAME);
+        Assert.assertEquals(jobnewlist.size(),1);
+        Assert.assertEquals(jobnewlist.getFirst(),FOLDER_NEW_NAME);
     }
 
     @Test(dependsOnMethods = "testRename")

@@ -23,4 +23,9 @@ public class HomePage extends BasePage {
         return getDriver().findElements(By.cssSelector(".jenkins-table__link>span:first-child"))
                 .stream().map(WebElement::getText).toList();
     }
+
+    public <JobPage extends BasePage> JobPage clickOnProject(JobPage jobpage,String projectName) {
+        getDriver().findElement(By.xpath("//td/a[contains(@href, '%s')]".formatted(projectName))).click();
+        return jobpage;
+    }
 }
