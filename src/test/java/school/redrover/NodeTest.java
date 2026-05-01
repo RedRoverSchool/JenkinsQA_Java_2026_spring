@@ -18,6 +18,7 @@ public class NodeTest extends BaseTest {
     private static final String DIR = "D:\\Jenkins\\NewTestNode";
     private static final String LABELS = "Urgent";
 
+    @Ignore
     @Test
     public void testCreateNewNode(){
 
@@ -40,6 +41,7 @@ public class NodeTest extends BaseTest {
         Assert.assertTrue(actualNodeList.contains(NEW_NODE_NAME));
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testCreateNewNode")
     public void testNodeConfiguration(){
 

@@ -3,6 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.common.TestUtils;
 
 public class CreateProjectPage extends BasePage {
 
@@ -22,11 +23,25 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
+    public CreateProjectPage selectItemType(TestUtils.JobType jobType){
+        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(jobType.getDisplayName()))).click();
+
+        return this;
+    }
+
     public FreestyleProjectConfigPage clickOkButton() {
         getDriver().findElement(By.id("ok-button")).click();
         // waiting for the configuration page
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
 
         return new FreestyleProjectConfigPage(getDriver());
+    }
+
+    public <JobConfigPage extends BasePage> JobConfigPage clickOK (JobConfigPage jobconfig){
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        // waiting for the configuration page
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
+
+        return jobconfig;
     }
 }

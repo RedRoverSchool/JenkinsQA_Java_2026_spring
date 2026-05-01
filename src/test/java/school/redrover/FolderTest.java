@@ -8,6 +8,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.FolderConfigPage;
+import school.redrover.page.HomePage;
+
+import java.util.List;
 
 public class FolderTest extends BaseTest {
 
@@ -25,12 +29,18 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    public void testCreate() {
-        TestUtils.createJob(getDriver(), getWait10(), FOLDER_NAME, TestUtils.JobType.FOLDER);
-        goToMainPage();
+    public void testCreate(){
+       List<String> joblist =  new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(FOLDER_NAME)
+                .selectFreeStyleProject()
+                .selectItemType(TestUtils.JobType.FOLDER)
+                .clickOK(new FolderConfigPage(getDriver()))
+                .goHomePage()
+                .getProjectList();
 
-        Assert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(FOLDER_NAME_MAIN_PAGE)).getText(), FOLDER_NAME);
+       Assert.assertEquals(joblist.size(),1);
+       Assert.assertEquals(joblist.getFirst(),FOLDER_NAME);
     }
 
     @Test(dependsOnMethods = "testCreate")
