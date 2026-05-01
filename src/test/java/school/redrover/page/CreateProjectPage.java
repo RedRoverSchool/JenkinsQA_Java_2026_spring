@@ -26,7 +26,7 @@ public class CreateProjectPage extends BasePage {
     public CreateProjectPage selectItemType(TestUtils.JobType jobType){
         getDriver().findElement(By.xpath("//span[text()='%s']".formatted(jobType.getDisplayName()))).click();
 
-        return new CreateProjectPage(getDriver());
+        return this;
     }
 
     public FreestyleProjectConfigPage clickOkButton() {
