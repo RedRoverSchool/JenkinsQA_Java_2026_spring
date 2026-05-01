@@ -8,9 +8,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
-import school.redrover.page.BasePage;
 import school.redrover.page.FolderConfigPage;
-import school.redrover.page.FolderPage;
+import school.redrover.page.HomePage;
 
 import java.util.List;
 
@@ -30,24 +29,14 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    public void testCreate() {
-        TestUtils.createJob(getDriver(), getWait10(), FOLDER_NAME, TestUtils.JobType.FOLDER);
-        goToMainPage();
-
-        Assert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(FOLDER_NAME_MAIN_PAGE)).getText(), FOLDER_NAME);
-    }
-
-    @Test
-    public void testCreate1(){
-       List<String> joblist =  new BasePage(getDriver())
-                .clickNewItem()
-                .typeProjectName(FOLDER_NAME)
-                .selectItemType2(TestUtils.JobType.FOLDER)
-                .clickOK2(new FolderConfigPage(getDriver()))
-                .presenceOfSaveButton(new FolderConfigPage(getDriver()))
-               //.waitToLoadFolderPage()
-                .goToHomePage()
+    public void testCreate(){
+       List<String> joblist =  new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(FOLDER_NAME)
+                .selectFreeStyleProject()
+                .selectItemType(TestUtils.JobType.FOLDER)
+                .clickOK(new FolderConfigPage(getDriver()))
+                .goHomePage()
                 .getProjectList();
 
        Assert.assertEquals(joblist.size(),1);
