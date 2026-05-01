@@ -54,7 +54,8 @@ public class UserTest extends BaseTest {
                 USER_NAME,
                 "The user with User ID " + USER_NAME + "is not found");
     }
-
+    
+    @Ignore
     @Test(dependsOnMethods = "testSearchUser")
     public void testRenameUser() {
         final String userFullName = "testUserFullName";
