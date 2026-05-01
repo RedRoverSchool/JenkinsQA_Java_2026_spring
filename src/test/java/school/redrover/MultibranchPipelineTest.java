@@ -76,8 +76,9 @@ public class MultibranchPipelineTest extends BaseTest {
 		getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='jenkins-menu-dropdown-chevron']"))).click();
 		getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href, 'rename')]"))).click();
 
-		getDriver().findElement(PROJECT_NAME_FIELD).clear();
-		getDriver().findElement(PROJECT_NAME_FIELD).sendKeys(PROJECT_NAME);
+		WebElement nameField = getDriver().findElement(PROJECT_NAME_FIELD);
+		nameField.clear();
+		nameField.findElement(PROJECT_NAME_FIELD).sendKeys(PROJECT_NAME);
 		getDriver().findElement(By.name("Submit")).click();
 		getWait5().until(ExpectedConditions.elementToBeClickable(By.className("app-jenkins-logo")));
 		getDriver().findElement(By.className("app-jenkins-logo")).click();
