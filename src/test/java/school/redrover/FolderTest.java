@@ -36,6 +36,7 @@ public class FolderTest extends BaseTest {
                 .selectFreeStyleProject()
                 .selectItemType(TestUtils.JobType.FOLDER)
                 .clickOK(new FolderConfigPage(getDriver()))
+                .clickSave(new FolderConfigPage(getDriver()))
                 .goHomePage()
                 .getProjectList();
 
