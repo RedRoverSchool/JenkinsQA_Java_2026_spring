@@ -62,16 +62,13 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testRename")
     public void testAddDescription() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_NEW_NAME)))).click();
+        new HomePage(getDriver())
+                .clickOnProject(new FolderPage(getDriver()),FOLDER_NEW_NAME)
+                .clickAddDescription()
+                .enterDescription(DESCRIPTION_TEXT)
+                .clickSaveDescription();
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//textarea[@name='description']"))).sendKeys(DESCRIPTION_TEXT);
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@value='Save']"))).click();
-
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.id("description-content"), DESCRIPTION_TEXT));
-
-        Assert.assertEquals(
-                getDriver().findElement(By.id("description-content")).getText(), DESCRIPTION_TEXT);
+        Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(), DESCRIPTION_TEXT);
     }
 
     @Test(dependsOnMethods = "testAddDescription")
