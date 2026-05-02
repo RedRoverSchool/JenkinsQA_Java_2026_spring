@@ -27,6 +27,7 @@ public class CreateProjectPage extends BasePage {
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
         return new PipelineProjectConfigPage(getDriver());
     }
 
