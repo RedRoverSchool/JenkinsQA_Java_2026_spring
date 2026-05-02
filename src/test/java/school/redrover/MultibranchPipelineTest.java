@@ -9,7 +9,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
-
+import school.redrover.page.BaseConfigPage;
+import school.redrover.page.HomePage;
+import school.redrover.page.MultibranchStatusPage;
 
 
 public class MultibranchPipelineTest extends BaseTest {
@@ -85,4 +87,22 @@ public class MultibranchPipelineTest extends BaseTest {
 
 		Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME)))).getText(), PROJECT_NAME);
 	}
+
+	@Test
+	public void testDeleteProjectViaSideMenu() {
+
+		String projectName = "Project_To_Delete";
+
+		HomePage homePage = new HomePage(getDriver())
+				.clickItemNewJob()
+				.setProjectName(projectName)
+				.selectItemType(TestUtils.JobType.MULTIBRANCH_PIPELINE)
+				.clickOK(new BaseConfigPage(getDriver()))
+				.clickSave(new MultibranchStatusPage(getDriver()))
+				.clickDeleteInSideMenu()
+				.confirmDelete();
+
+		Assert.assertFalse(homePage.getProjectList().contains(projectName));
+	}
+
 }
