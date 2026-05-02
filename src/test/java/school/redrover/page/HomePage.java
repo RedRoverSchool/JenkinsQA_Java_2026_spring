@@ -28,4 +28,5 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.xpath("//td/a[contains(@href, '%s')]".formatted(projectName))).click();
         return jobpage;
     }
+
 }
