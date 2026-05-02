@@ -35,9 +35,7 @@ public class FolderPage extends BasePage {
     }
 
     public FolderPage clickAddDescription() {
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("svg[tooltip='Folder']")));
         getDriver().findElement(By.id("description-link")).click();
-
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']")));
 
         return this;
@@ -57,11 +55,17 @@ public class FolderPage extends BasePage {
     }
 
     public FolderConfigPage clickConfigure() {
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("svg[tooltip='Folder']")));
         getDriver().findElement(By.linkText("Configure")).click();
         getWait2().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), "Configuration"));
 
         return new FolderConfigPage(getDriver());
+    }
+
+    public CreateProjectPage clickNewItem() {
+        getDriver().findElement(By.xpath("//a[contains(@href, 'newJob')]")).click();
+        getWait2().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), "New Item"));
+
+        return new CreateProjectPage(getDriver());
     }
 
 }

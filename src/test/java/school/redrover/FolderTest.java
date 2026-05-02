@@ -88,18 +88,14 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testRename")
     public void createNestedFolderTest() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_NEW_NAME)))).click();
+        new HomePage(getDriver())
+                .clickOnProject(new FolderPage(getDriver()), FOLDER_NEW_NAME)
+                .clickNewItem()
+                .setProjectName(NESTED_FOLDER)
+                .selectItemType(TestUtils.JobType.PIPELINE)
+                .clickOK(new FolderConfigPage(getDriver()))
+                .clickSave(new FolderPage(getDriver()));
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='newJob']"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='name']"))).sendKeys(NESTED_FOLDER);
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(
-                "//li[contains(@class,'com_cloudbees_hudson_plugins_folder_Folder')]"))).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@type='submit']"))).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@value='Save']")))
-                .click();
-
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.className("job-index-headline"), NESTED_FOLDER));
-
-        Assert.assertEquals(getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']/span"))).getText(), NESTED_FOLDER);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']/span")).getText(), NESTED_FOLDER);
     }
 }
