@@ -18,30 +18,30 @@ public class ToolsTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Tools");
     }
 
-    @Test(dependsOnMethods = "testOpenToolsPage")
+    @Test()
     public void testSimpleMavenConfiguration() {
         ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
                 .goToTools();
 
-        toolsPage
+        ManagePage managePage = toolsPage
                 .selectSimpleMavenOption("Settings file in filesystem")
                 .clickSaveButton();
 
-        Assert.assertTrue(new ManagePage(getDriver())
+        Assert.assertTrue(managePage
                 .goToTools()
                 .isSimplePathFieldDisplayed());
     }
 
-    @Test(dependsOnMethods = "testOpenToolsPage")
+    @Test()
     public void testGlobalMavenConfiguration() {
         ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
                 .goToTools();
 
-        toolsPage
+        ManagePage managePage = toolsPage
                 .selectGlobalMavenOption("Global settings file on filesystem")
                 .clickSaveButton();
 
-        Assert.assertTrue(new ManagePage(getDriver())
+        Assert.assertTrue(managePage
                 .goToTools()
                 .isGlobalPathFieldDisplayed());
     }
@@ -54,7 +54,8 @@ public class ToolsTest extends BaseTest {
         toolsPage
                 .clickAddJDKButton()
                 .setJDKName("TestName")
-                .setJavaPath("C:\\Program Files\\Java\\jdk-25.0.2").clickSaveButton();
+                .setJavaPath("/test/path/toJDK")
+                .clickSaveButton();
 
         Assert.assertTrue(new ManagePage(getDriver())
                 .goToTools()
