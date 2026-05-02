@@ -32,36 +32,4 @@ public class ToolsTest extends BaseTest {
                 .goToTools()
                 .isSimplePathFieldDisplayed());
     }
-
-    @Ignore
-    @Test
-    public void testGlobalMavenConfiguration() {
-        ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
-                .goToTools();
-
-        ManagePage managePage = toolsPage
-                .selectGlobalMavenOption("Global settings file on filesystem")
-                .clickSaveButton();
-
-        Assert.assertTrue(managePage
-                .goToTools()
-                .isGlobalPathFieldDisplayed());
-    }
-    @Ignore
-    @Test
-    public void testAddJDK() {
-        ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
-                .goToTools();
-
-        toolsPage
-                .clickAddJDKButton()
-                .setJDKName("TestName")
-                .setJavaPath("/test/path/toJDK")
-                .clickSaveButton();
-
-        Assert.assertTrue(new ManagePage(getDriver())
-                .goToTools()
-                .isEditDisplayed());
-
-    }
 }
