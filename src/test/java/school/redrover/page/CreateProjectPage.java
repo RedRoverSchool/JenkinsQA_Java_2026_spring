@@ -23,6 +23,14 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
+    public PipelineProjectConfigPage selectPipelineProjectAndClickOk() {
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
+        return new PipelineProjectConfigPage(getDriver());
+    }
+
     public CreateProjectPage selectItemType(TestUtils.JobType jobType){
         getDriver().findElement(By.xpath("//span[text()='%s']".formatted(jobType.getDisplayName()))).click();
 

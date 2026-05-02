@@ -13,7 +13,7 @@ public class BasePage extends BaseModel {
     public HomePage goHomePage() {
         getDriver().findElement(By.id("jenkins-head-icon")).click();
         // waiting for the home page
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@tooltip='More actions']")));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']")));
 
         return new HomePage(getDriver());
     }
