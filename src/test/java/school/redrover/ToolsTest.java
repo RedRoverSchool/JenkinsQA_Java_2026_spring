@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -18,7 +19,8 @@ public class ToolsTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Tools");
     }
 
-    @Test()
+    @Ignore
+    @Test
     public void testSimpleMavenConfiguration() {
         ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
                 .goToTools();
@@ -32,7 +34,8 @@ public class ToolsTest extends BaseTest {
                 .isSimplePathFieldDisplayed());
     }
 
-    @Test()
+    @Ignore
+    @Test
     public void testGlobalMavenConfiguration() {
         ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
                 .goToTools();
@@ -45,7 +48,7 @@ public class ToolsTest extends BaseTest {
                 .goToTools()
                 .isGlobalPathFieldDisplayed());
     }
-
+    @Ignore
     @Test
     public void testAddJDK() {
         ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()

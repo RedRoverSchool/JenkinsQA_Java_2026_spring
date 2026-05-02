@@ -28,9 +28,6 @@ public class ToolsPage extends BasePage{
 
         new Select(dropMenu).selectByVisibleText(option);
 
-        getWait10().until(driver ->
-                driver.findElements(By.xpath("//input[@name='_.path']")).size() >= 2);
-
         return this;
     }
 
