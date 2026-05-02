@@ -24,9 +24,10 @@ public class HomePage extends BasePage {
                 .stream().map(WebElement::getText).toList();
     }
 
-
     public <JobPage extends BasePage> JobPage clickOnProject(JobPage jobpage,String projectName) {
         getDriver().findElement(By.xpath("//td/a[contains(@href, '%s')]".formatted(projectName))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@class, 'task-link')]//span[text()='Status']")));
+
         return jobpage;
     }
 
