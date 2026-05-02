@@ -36,6 +36,12 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
+    public CreateProjectPage selectFolder() {
+        getDriver().findElement(By.xpath("//li[contains(@class,'com_cloudbees_hudson_plugins_folder_Folder')]")).click();
+
+        return this;
+    }
+
     public FreestyleProjectConfigPage clickOkButton() {
         getDriver().findElement(By.id("ok-button")).click();
         // waiting for the configuration page
