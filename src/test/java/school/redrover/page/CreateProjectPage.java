@@ -28,10 +28,11 @@ public class CreateProjectPage extends BasePage {
         getDriver().findElement(By.id("ok-button")).click();
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
+
         return new PipelineProjectConfigPage(getDriver());
     }
 
-    public CreateProjectPage selectItemType(TestUtils.JobType jobType){
+    public CreateProjectPage selectItemType(TestUtils.JobType jobType) {
         getDriver().findElement(By.xpath("//span[text()='%s']".formatted(jobType.getDisplayName()))).click();
 
         return this;
@@ -51,11 +52,20 @@ public class CreateProjectPage extends BasePage {
         return new FreestyleProjectConfigPage(getDriver());
     }
 
-    public <JobConfigPage extends BasePage> JobConfigPage clickOK (JobConfigPage jobconfig){
+    public <JobConfigPage extends BasePage> JobConfigPage clickOK(JobConfigPage jobconfig) {
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         // waiting for the configuration page
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
 
         return jobconfig;
+    }
+
+    public String getErrorText() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='input-validation-message']"))).getText();
+    }
+
+    public boolean isOkButtonEnabled() {
+        return getDriver().findElement(By.id("ok-button")).isEnabled();
     }
 }
