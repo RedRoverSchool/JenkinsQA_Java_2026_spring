@@ -19,7 +19,6 @@ public class ToolsTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Tools");
     }
 
-    @Ignore
     @Test
     public void testSimpleMavenConfiguration() {
         ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
