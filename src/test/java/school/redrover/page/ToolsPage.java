@@ -24,8 +24,7 @@ public class ToolsPage extends BasePage{
 
     public ToolsPage selectGlobalMavenOption(String option) {
         WebElement dropMenu = getDriver().findElement(
-                By.xpath("(//select[contains(@class,'jenkins-select__input')])[2]")
-        );
+                By.xpath("(//select[contains(@class,'jenkins-select__input')])[2]"));
 
         new Select(dropMenu).selectByVisibleText(option);
 
@@ -35,17 +34,13 @@ public class ToolsPage extends BasePage{
     public boolean isSimplePathFieldDisplayed() {
         return getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("(//input[@name='_.path'])[1]")
-                )
-        ).isDisplayed();
+                        By.xpath("(//input[@name='_.path'])[1]"))).isDisplayed();
     }
 
     public boolean isGlobalPathFieldDisplayed() {
         return getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("(//input[@name='_.path'])[2]")
-                )
-        ).isDisplayed();
+                        By.xpath("(//input[@name='_.path'])[2]"))).isDisplayed();
     }
 
     public ManagePage clickSaveButton() {
