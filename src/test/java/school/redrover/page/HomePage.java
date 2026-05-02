@@ -65,8 +65,9 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public HomePage confirmDelete() {
+    public HomePage confirmDelete(String projectName) {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();
+        getWait5().until(ExpectedConditions.invisibilityOfElementLocated(By.id("job_" + projectName)));
 
         return this;
     }

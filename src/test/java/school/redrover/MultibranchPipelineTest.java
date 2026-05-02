@@ -119,7 +119,7 @@ public class MultibranchPipelineTest extends BaseTest {
 				.goHomePage()
 				.openProjectDropdownMenu(projectName)
 				.clickDeleteInDropdown()
-				.confirmDelete();
+				.confirmDelete(projectName);
 
 		Assert.assertFalse(homePage.getProjectList().contains(projectName));
 	}
