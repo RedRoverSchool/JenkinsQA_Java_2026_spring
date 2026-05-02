@@ -41,7 +41,7 @@ public class HomePage extends BasePage {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("//*[@id='search-results']/a[@href='/job/" + name + "/']"))).click();
 
-        return new HomePage(getDriver());
+        return this;
     }
 
     public List<String> getSearchList() {
