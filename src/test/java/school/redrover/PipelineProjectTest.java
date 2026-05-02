@@ -95,4 +95,16 @@ public class PipelineProjectTest extends BaseTest {
         String saveText = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText();
         Assert.assertEquals(saveText, "Saved");
     }
+
+    @Test(dependsOnMethods = "testRename")
+    public void testDeleteViaSidebar() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//td/a[@href='job/%s/']".formatted(RENAME_PIPELINE)))).click();
+
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-title='Delete Pipeline']"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();
+
+        Assert.assertTrue(
+                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Welcome to Jenkins!']"))).isDisplayed());
+    }
 }

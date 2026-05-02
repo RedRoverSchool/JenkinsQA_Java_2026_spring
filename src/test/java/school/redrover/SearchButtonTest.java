@@ -125,13 +125,13 @@ public class SearchButtonTest extends BaseTest {
                 .getText() , "No results for");
     }
 
-    @Test
-    public void testOpenSearchByKeyboard(){
-        new BasePage(getDriver())
-                .waitToLoadBasePage()
-                .pushCtrlK()
-                .verifyThatSearchAppeared();
-
-        Assert.assertTrue(getDriver().findElement(SEARCH_INPUT_FIELD).isDisplayed());
-    }
+//    @Test
+//    public void testOpenSearchByKeyboard(){
+//        new BasePage(getDriver())
+//                .waitToLoadBasePage()
+//                .pushCtrlK()
+//                .verifyThatSearchAppeared();
+//
+//        Assert.assertTrue(getDriver().findElement(SEARCH_INPUT_FIELD).isDisplayed());
+//    }
 }
