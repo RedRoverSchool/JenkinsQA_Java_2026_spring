@@ -20,7 +20,7 @@ public class PipelineProjectTest extends BaseTest {
     public void testCreate() {
         List<String> jobList = new HomePage(getDriver())
                 .clickItemNewJob()
-                .typeProjectName(PROJECT_NAME)
+                .setProjectName(PROJECT_NAME)
                 .selectPipelineProjectAndClickOk()
                 .goHomePage()
                 .getProjectList();
