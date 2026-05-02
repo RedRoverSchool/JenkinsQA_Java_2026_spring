@@ -1,77 +1,65 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
+import school.redrover.page.ManagePage;
+import school.redrover.page.ToolsPage;
 
 public class ToolsTest extends BaseTest {
 
-    private final static By SAVE_BUTTON = By.name("Submit");
-
-    public void openManage() {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("root-action-ManageJenkinsAction"))).click();
-    }
-
-    public void openTools() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href = 'configureTools']"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1")));
-    }
-
     @Test
     public void testOpenToolsPage() {
-        openManage();
-        openTools();
+        new HomePage(getDriver()).goManagePage()
+                .goToTools();
+
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Tools");
     }
 
     @Test(dependsOnMethods = "testOpenToolsPage")
     public void testSimpleMavenConfiguration() {
-        openManage();
-        openTools();
+        ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
+                .goToTools();
 
-        WebElement dropMenuSimple = getWait5().until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("(//select[contains(@class,'jenkins-select__input')])[1]")));
-        Select dropdown = new Select(dropMenuSimple);
-        dropdown.selectByVisibleText("Settings file in filesystem");
-        getDriver().findElement(SAVE_BUTTON).click();
+        toolsPage
+                .selectSimpleMavenOption("Settings file in filesystem")
+                .clickSaveButton();
 
-        openTools();
-        Assert.assertTrue(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//input[@name = '_.path'])[1]"))).isDisplayed());
+        Assert.assertTrue(new ManagePage(getDriver())
+                .goToTools()
+                .isSimplePathFieldDisplayed());
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testOpenToolsPage")
     public void testGlobalMavenConfiguration() {
-        openManage();
-        openTools();
+        ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
+                .goToTools();
 
-        WebElement dropMenuGlobal = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath("(//select[contains(@class,'jenkins-select__input')])[2]")));
-        Select dropdown = new Select(dropMenuGlobal);
-        dropdown.selectByVisibleText("Global settings file on filesystem");
-        getDriver().findElement(SAVE_BUTTON).click();
+        toolsPage
+                .selectGlobalMavenOption("Global settings file on filesystem")
+                .clickSaveButton();
 
-        openTools();
-        Assert.assertTrue(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//input[@name = '_.path'])[2]"))).isDisplayed());
+        Assert.assertTrue(new ManagePage(getDriver())
+                .goToTools()
+                .isGlobalPathFieldDisplayed());
     }
 
     @Test
     public void testAddJDK() {
-        openManage();
-        openTools();
+        ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
+                .goToTools();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='button']"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("_.name"))).sendKeys("TestName");
-        getDriver().findElement(By.name("_.home")).sendKeys("C:\\Program Files\\Java\\jdk-25.0.2");
-        getDriver().findElement(SAVE_BUTTON).click();
+        toolsPage
+                .clickJDKInstallationsButton()
+                .clickAddJDKButton()
+                .setJDKName("TestName")
+                .setJavaPath("C:\\Program Files\\Java\\jdk-25.0.2").clickSaveButton();
 
-        openTools();
-        Assert.assertTrue(getWait10().until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//span[@tooltip='One or more fields in this block have been edited.']"))).isDisplayed());
+        Assert.assertTrue(new ManagePage(getDriver())
+                .goToTools()
+                .isEditDisplayed());
+
     }
 }

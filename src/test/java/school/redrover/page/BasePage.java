@@ -17,4 +17,11 @@ public class BasePage extends BaseModel {
 
         return new HomePage(getDriver());
     }
+
+    public ManagePage goManagePage() {
+        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='configureTools']")));
+
+        return new ManagePage(getDriver());
+    }
 }
