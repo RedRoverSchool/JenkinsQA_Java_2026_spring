@@ -28,6 +28,9 @@ public class ToolsPage extends BasePage{
 
         new Select(dropMenu).selectByVisibleText(option);
 
+        getWait10().until(driver ->
+                driver.findElements(By.xpath("//input[@name='_.path']")).size() >= 2);
+
         return this;
     }
 
@@ -45,6 +48,9 @@ public class ToolsPage extends BasePage{
 
     public ManagePage clickSaveButton() {
         getDriver().findElement(By.name("Submit")).click();
+        getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.id("settings-search-bar")));
 
         return new ManagePage(getDriver());
     }
