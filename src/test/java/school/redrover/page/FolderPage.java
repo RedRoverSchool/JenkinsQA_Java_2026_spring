@@ -34,25 +34,38 @@ public class FolderPage extends BasePage {
         return this;
     }
 
-    public FolderPage clickAddDescription(){
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("svg[tooltip='Folder']")));
+    public FolderPage clickAddDescription() {
         getDriver().findElement(By.id("description-link")).click();
-
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']")));
 
         return this;
     }
 
-    public FolderPage enterDescription(String description){
+    public FolderPage enterDescription(String description) {
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
 
         return this;
     }
 
-    public FolderPage clickSaveDescription(){
+    public FolderPage clickSaveDescription() {
         getDriver().findElement(By.xpath("//button[@value='Save']")).click();
         getWait2().until(ExpectedConditions.textMatches(By.id("description-content"), Pattern.compile("\\S")));
 
         return this;
     }
+
+    public FolderConfigPage clickConfigure() {
+        getDriver().findElement(By.linkText("Configure")).click();
+        getWait2().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), "Configuration"));
+
+        return new FolderConfigPage(getDriver());
+    }
+
+    public CreateProjectPage clickNewItem() {
+        getDriver().findElement(By.xpath("//a[contains(@href, 'newJob')]")).click();
+        getWait2().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), "New Item"));
+
+        return new CreateProjectPage(getDriver());
+    }
+
 }
