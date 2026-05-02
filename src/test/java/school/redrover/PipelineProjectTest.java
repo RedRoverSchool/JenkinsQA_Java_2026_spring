@@ -75,9 +75,9 @@ public class PipelineProjectTest extends BaseTest {
 
     @Test
     public void testCreateWithEmptyName() {
-       CreateProjectPage createProjectPage= new HomePage(getDriver())
+        CreateProjectPage createProjectPage = new HomePage(getDriver())
                 .clickItemNewJob()
-               .setProjectName(" ")
+                .setProjectName(" ")
                 .selectItemType(TestUtils.JobType.PIPELINE);
 
         Assert.assertEquals(
