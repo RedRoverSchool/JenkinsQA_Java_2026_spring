@@ -12,7 +12,8 @@ public class ManagePage extends BasePage {
 
     public ToolsPage goToTools() {
         getDriver().findElement(By.xpath("//a[@href='configureTools']")).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Apply")));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+
         return new ToolsPage(getDriver());
     }
 
