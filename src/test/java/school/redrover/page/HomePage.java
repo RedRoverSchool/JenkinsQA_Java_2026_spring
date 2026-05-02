@@ -31,4 +31,22 @@ public class HomePage extends BasePage {
         return jobpage;
     }
 
+    public HomePage search(String name) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#root-action-SearchAction"))).click();
+        getDriver().findElement(By.xpath("//input[@id='command-bar']")).sendKeys(name);
+
+        return new HomePage(getDriver());
+    }
+
+    public HomePage chooseSearchingResult(String name) {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//*[@id='search-results']/a[@href='/job/" + name + "/']"))).click();
+
+        return this;
+    }
+
+    public List<String> getSearchList() {
+        return getDriver().findElements(By.cssSelector("#search-results"))
+                .stream().map(WebElement::getText).toList();
+    }
 }
