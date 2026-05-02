@@ -52,7 +52,6 @@ public class ToolsTest extends BaseTest {
                 .goToTools();
 
         toolsPage
-                .clickJDKInstallationsButton()
                 .clickAddJDKButton()
                 .setJDKName("TestName")
                 .setJavaPath("C:\\Program Files\\Java\\jdk-25.0.2").clickSaveButton();
