@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -32,4 +31,19 @@ public class ToolsTest extends BaseTest {
                 .goToTools()
                 .isSimplePathFieldDisplayed());
     }
+
+    @Test(dependsOnMethods = "testSimpleMavenConfiguration")
+    public void testGlobalMavenConfiguration() {
+        ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
+                .goToTools();
+
+        ManagePage managePage = toolsPage
+                .selectGlobalMavenOption("Global settings file on filesystem")
+                .clickSaveButton();
+
+        Assert.assertTrue(managePage
+                .goToTools()
+                .isGlobalPathFieldDisplayed());
+    }
+
 }
