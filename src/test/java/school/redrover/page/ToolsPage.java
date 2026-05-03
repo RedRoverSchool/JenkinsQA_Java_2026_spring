@@ -35,6 +35,7 @@ public class ToolsPage extends BasePage{
 
         return new ManagePage(getDriver());
     }
+
     public ToolsPage selectGlobalMavenOption(String option) {
         WebElement dropMenu = getDriver().findElement(
                 By.xpath("(//select[contains(@class,'jenkins-select__input')])[2]"));
@@ -43,6 +44,7 @@ public class ToolsPage extends BasePage{
 
         return this;
     }
+
     public boolean isGlobalPathFieldDisplayed() {
         return getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(
