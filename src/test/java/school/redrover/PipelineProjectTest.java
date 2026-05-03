@@ -6,6 +6,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
+import school.redrover.page.CreateProjectPage;
 import school.redrover.page.HomePage;
 
 import java.util.List;
@@ -33,12 +35,14 @@ public class PipelineProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreate")
     public void testCreateWithDuplicateName() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
+        String errorText = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectItemType(TestUtils.JobType.PIPELINE)
+                .getErrorText();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated((By.id("name")))).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='itemname-invalid']")).getText(),
+        Assert.assertEquals(
+                errorText,
                 "» A job already exists with the name ‘%s’".formatted(PROJECT_NAME));
     }
 
@@ -71,14 +75,17 @@ public class PipelineProjectTest extends BaseTest {
 
     @Test
     public void testCreateWithEmptyName() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Pipeline']"))).click();
+        CreateProjectPage createProjectPage = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(" ")
+                .selectItemType(TestUtils.JobType.PIPELINE);
 
         Assert.assertEquals(
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='itemname-required']"))).getText(),
+                createProjectPage.getErrorText(),
                 "» This field cannot be empty, please enter a valid name");
 
-        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
+        Assert.assertFalse(
+                createProjectPage.isOkButtonEnabled());
     }
 
     @Test
