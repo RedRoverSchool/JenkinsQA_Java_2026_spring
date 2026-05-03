@@ -49,13 +49,14 @@ public class PipelineProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateWithDuplicateName")
     public void testAddDescription() {
-        new HomePage(getDriver())
+        String descriptionText = new HomePage(getDriver())
                 .clickOnProject(new PipelinePage(getDriver()), PROJECT_NAME)
                 .clickAddDescription()
                 .enterDescription(DESCRIPTION_TEXT)
-                .clickSaveDescription();
+                .clickSaveDescription()
+                .getDescriptionText();
 
-        Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(), DESCRIPTION_TEXT);
+        Assert.assertEquals(descriptionText, DESCRIPTION_TEXT);
     }
 
     @Test(dependsOnMethods = "testAddDescription")

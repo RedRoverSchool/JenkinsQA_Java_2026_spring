@@ -29,4 +29,8 @@ public class PipelinePage extends BasePage{
 
         return this;
     }
+
+    public String getDescriptionText() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
+    }
 }
