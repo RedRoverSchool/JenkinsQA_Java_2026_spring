@@ -48,38 +48,4 @@ public class ToolsPage extends BasePage{
                 ExpectedConditions.visibilityOfElementLocated(
                         By.xpath("(//input[@name='_.path'])[2]"))).isDisplayed();
     }
-
-    public ToolsPage clickJDKInstallationsButton() {
-        getDriver().findElement(By.xpath("//button[contains(text(),'JDK installations')]")).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Add JDK')]")));
-
-        return this;
-    }
-
-    public ToolsPage clickAddJDKButton() {
-        getDriver().findElement(By.xpath("//button[contains(text(), 'Add JDK')]")).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'JDK')]")));
-
-        return this;
-    }
-
-    public ToolsPage setJDKName(String name) {
-        getDriver().findElement(By.name("_.name")).sendKeys(name);
-
-        return this;
-    }
-
-    public ToolsPage setJavaPath(String path) {
-        getDriver().findElement(By.name("_.home")).sendKeys(path);
-
-        return this;
-    }
-
-    public boolean isEditDisplayed() {
-        return getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//span[@tooltip='One or more fields in this block have been edited.']")
-                )
-        ).isDisplayed();
-    }
 }
