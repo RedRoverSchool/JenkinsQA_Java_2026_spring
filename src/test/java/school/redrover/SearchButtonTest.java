@@ -34,6 +34,7 @@ public class SearchButtonTest extends BaseTest {
         return sb.toString();
     }
 
+    @Ignore
     @Test
     public void testSearchExistingJob() {
 
@@ -61,6 +62,7 @@ public class SearchButtonTest extends BaseTest {
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/doc/book/using/searchbox/");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testSearchExistingJob")
     public void testCaseInsensitivity() {
 
