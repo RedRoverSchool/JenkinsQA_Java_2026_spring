@@ -9,6 +9,7 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.CreateProjectPage;
 import school.redrover.page.HomePage;
+import school.redrover.page.PipelinePage;
 
 import java.util.List;
 
@@ -48,14 +49,14 @@ public class PipelineProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateWithDuplicateName")
     public void testAddDescription() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(PROJECT_NAME)))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']"))).sendKeys(DESCRIPTION_TEXT);
-        getDriver().findElement(By.xpath("//button[@value='Save']")).click();
+        String descriptionText = new HomePage(getDriver())
+                .clickOnProject(new PipelinePage(getDriver()), PROJECT_NAME)
+                .clickAddDescription()
+                .enterDescription(DESCRIPTION_TEXT)
+                .clickSaveDescription()
+                .getDescriptionText();
 
-        Assert.assertEquals(
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText(),
-                DESCRIPTION_TEXT);
+        Assert.assertEquals(descriptionText, DESCRIPTION_TEXT);
     }
 
     @Test(dependsOnMethods = "testAddDescription")
