@@ -3,80 +3,91 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
+import java.util.Objects;
 
-public class CopyItemTest extends BaseTest {
-
+public class CreateItemByCopyTest extends BaseTest {
     private static final String SOURCE_ITEM_NAME = "source_item";
     private static final String NEW_ITEM_NAME = "new_item_copy";
     private static final String DESCRIPTION_TEXT = "Copied description text";
     private static final String REPOSITORY_URL = "https://github.com/RedRoverSchool/JenkinsQA_Java_2026_spring.git/";
 
-    private void clickCMain(){
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.cssSelector("a[href='/']")))
-                .click();
-    }
-
     private void clickCreateItem(){
         getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.cssSelector("a[href='/view/all/newJob']")))
+                        By.cssSelector("a[href='/view/all/newJob']")))
                 .click();
     }
 
     private void enterNewItemName(String itemName) {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("name")))
+                        By.id("name")))
                 .sendKeys(itemName);
     }
 
-    private void enterCopyItemName() {
+    private void enterCopyItemName(String sourceName) {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("from")))
-                .sendKeys(SOURCE_ITEM_NAME);
+                        By.id("from")))
+                .sendKeys(sourceName);
     }
 
     private void selectFreestyleProject() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.cssSelector("li.hudson_model_FreeStyleProject")))
+                        By.cssSelector("li.hudson_model_FreeStyleProject")))
                 .click();
     }
 
     private void clickOk() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.id("ok-button")))
+                        By.id("ok-button")))
                 .click();
     }
 
     private void fillDescription() {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.name("description")))
+                        By.name("description")))
                 .sendKeys(DESCRIPTION_TEXT);
     }
 
     private void clickCheckBoxGitHub() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//label[contains(text(),'GitHub project')]")))
+                        By.xpath("//label[contains(text(),'GitHub project')]")))
                 .click();
     }
 
     private void fillGitURL() {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.name("_.projectUrlStr"))).
+                        By.name("_.projectUrlStr"))).
                 sendKeys(REPOSITORY_URL);
     }
 
     private void clickSave() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.name("Submit")))
+                        By.name("Submit")))
                 .click();
     }
 
-    @BeforeMethod
-    public void setUpSourceItem(){
+    @Test(dependsOnMethods = "testCreateSourceItem")
+    public void testCreateItemFromExistingWithEmptyListItems(){
+        clickCreateItem();
+        enterNewItemName(NEW_ITEM_NAME);
+        enterCopyItemName("Empty");
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("[data-tippy-root] .jenkins-dropdown")));
+
+        WebElement getListSourceItem = getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.cssSelector(".jenkins-dropdown__placeholder")
+                )
+        );
+
+        Assert.assertEquals(getListSourceItem.getText(),"No items");
+    }
+
+    @Test
+    public void testCreateSourceItem(){
         clickCreateItem();
         enterNewItemName(SOURCE_ITEM_NAME);
         selectFreestyleProject();
@@ -90,14 +101,18 @@ public class CopyItemTest extends BaseTest {
         clickSave();
 
         getWait10().until(ExpectedConditions.urlContains("/job/" + SOURCE_ITEM_NAME + "/"));
+
+        Assert.assertTrue(
+                Objects.requireNonNull(getDriver().getCurrentUrl()).contains("/job/" + SOURCE_ITEM_NAME + "/"),
+                "Не удалось перейти на страницу созданного проекта"
+        );
     }
 
-    @Test
-    public void testCreateNewItemByCopy() {
-        clickCMain();
+    @Test(dependsOnMethods = "testCreateSourceItem")
+    public void testCreateItemFromExisting() {
         clickCreateItem();
         enterNewItemName(NEW_ITEM_NAME);
-        enterCopyItemName();
+        enterCopyItemName(SOURCE_ITEM_NAME);
         clickOk();
 
         getWait10().until(ExpectedConditions.urlContains("/job/" + NEW_ITEM_NAME + "/configure"));
@@ -109,7 +124,7 @@ public class CopyItemTest extends BaseTest {
 
         softAssert.assertEquals(
                 getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                                By.linkText(NEW_ITEM_NAME))).getText(),
+                        By.linkText(NEW_ITEM_NAME))).getText(),
                 NEW_ITEM_NAME
         );
 
