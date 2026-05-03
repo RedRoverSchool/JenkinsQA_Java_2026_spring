@@ -18,4 +18,34 @@ public class FreestyleProjectConfigPage extends BasePage {
 
         return new FreestyleProjectPage(getDriver());
     }
+
+    public FreestyleProjectConfigPage fillDescription(String descriptiontext) {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.name("description")))
+                .sendKeys(descriptiontext);
+
+        return this;
+    }
+
+    public FreestyleProjectConfigPage clickCheckBoxGitHub() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                        By.xpath("//label[contains(text(),'GitHub project')]")))
+                .click();
+        return this;
+    }
+
+    public FreestyleProjectConfigPage fillGitURL(String repoURL) {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.name("_.projectUrlStr"))).
+                sendKeys(repoURL);
+        return this;
+    }
+
+    public FreestyleProjectConfigPage clickSave() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                        By.name("Submit")))
+                .click();
+        return this;
+    }
+
 }

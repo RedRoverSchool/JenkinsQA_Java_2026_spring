@@ -17,6 +17,14 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
+    public CreateProjectPage enterCopyItemName(String sourceName) {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.id("from")))
+                .sendKeys(sourceName);
+
+        return this;
+    }
+
     public CreateProjectPage selectFreeStyleProject() {
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
 
