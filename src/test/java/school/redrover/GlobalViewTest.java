@@ -98,5 +98,4 @@ public class GlobalViewTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.className("textarea-hide-preview")).isDisplayed());
         Assert.assertEquals(getDriver().findElement(By.className("textarea-preview")).getText(), "textInput");
     }
-    }
 }
