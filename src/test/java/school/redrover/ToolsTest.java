@@ -32,7 +32,7 @@ public class ToolsTest extends BaseTest {
                 .isSimplePathFieldDisplayed());
     }
 
-    @Test
+    @Test(dependsOnMethods = "testSimpleMavenConfiguration")
     public void testGlobalMavenConfiguration() {
         ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
                 .goToTools();
