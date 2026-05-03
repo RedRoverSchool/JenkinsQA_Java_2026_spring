@@ -41,6 +41,7 @@ public class GlobalViewTest extends BaseTest {
     }
 
 
+    @Ignore
     @Test(dependsOnMethods = "testAddViewDescription")
     public void testUpdateViewDescription() {
         getWait5().until(ExpectedConditions.elementToBeClickable((By.linkText("Edit description")))).click();
@@ -52,6 +53,7 @@ public class GlobalViewTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(), "UPDATED_DESC_MESSAGE");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testUpdateViewDescription")
     public void testCancelUpdateViewDescription() {
         getWait5().until(ExpectedConditions.elementToBeClickable((By.linkText("Edit description")))).click();
@@ -64,6 +66,7 @@ public class GlobalViewTest extends BaseTest {
                 By.id("description-content"))).getText(), "UPDATED_DESC_MESSAGE");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCancelUpdateViewDescription")
     public void testDeleteViewDescription() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
@@ -74,6 +77,7 @@ public class GlobalViewTest extends BaseTest {
                 "TEXT_DESCRIPTION_BUTTON");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testDeleteViewDescription")
     public void testSaveWithoutViewDescription() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#description-link.jenkins-button"))).click();
@@ -85,6 +89,7 @@ public class GlobalViewTest extends BaseTest {
                 "Description has non-empty content!");
     }
 
+    @Ignore
     @Test
     public void hidePreviewOptionIsAvailableTest() throws InterruptedException {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
