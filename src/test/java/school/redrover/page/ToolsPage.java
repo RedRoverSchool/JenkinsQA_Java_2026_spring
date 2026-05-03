@@ -13,8 +13,9 @@ public class ToolsPage extends BasePage{
     }
 
     public ToolsPage selectSimpleMavenOption(String option) {
-        WebElement dropMenu = getDriver().findElement(
-                By.xpath("(//select[contains(@class,'jenkins-select__input')])[1]"));
+        WebElement dropMenu = getWait10().until(
+                ExpectedConditions.elementToBeClickable(
+                        By.xpath("(//select[contains(@class,'jenkins-select__input')])[1]")));
 
         new Select(dropMenu).selectByVisibleText(option);
 
@@ -37,8 +38,10 @@ public class ToolsPage extends BasePage{
     }
 
     public ToolsPage selectGlobalMavenOption(String option) {
-        WebElement dropMenu = getDriver().findElement(
-                By.xpath("(//select[contains(@class,'jenkins-select__input')])[2]"));
+        WebElement dropMenu = getWait10().until(
+                ExpectedConditions.elementToBeClickable(
+                        By.xpath("(//select[contains(@class,'jenkins-select__input')])[2]")));
+
 
         new Select(dropMenu).selectByVisibleText(option);
 
