@@ -5,31 +5,25 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.DashboardPage;
+import school.redrover.page.HomePage;
+import school.redrover.page.PipelineConfigPage;
+
+import java.util.List;
 
 public class PipelineEnableDisableTest extends BaseTest {
 
-    @Ignore
     @Test
-    public void testCreatePipelineAndOpenConfigure() {
-
-        getDriver().findElement(By.xpath("//a[.//span[text()='New Item']]")).click();
-        getDriver().findElement(By.xpath("//li[.//span[text()='Pipeline']]")).click();
-        getDriver().findElement(By.id("name")).sendKeys("My Item");
-        getDriver().findElement(By.id("ok-button")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[normalize-space()='Configure']")).getText(),
-                "Configure");
-    }
-
-    @Ignore
-    @Test(dependsOnMethods = "testCreatePipelineAndOpenConfigure")
     public void testDisablePipeline() {
 
-        getDriver().findElement(By.xpath("//span[text()='My Item']")).click();
-        getDriver().findElement(By.xpath("//a[.//span[text()='Configure']]")).click();
-
-        getDriver().findElement(By.xpath("//label[@for='enable-disable-project']")).click();
-        getDriver().findElement(By.xpath("//button[@value='Save']")).click();
+        new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName("My Item")
+                .selectPipeline()
+                .clickOkButton();
+        new PipelineConfigPage(getDriver())
+                .switchEnableButton()
+                .clickSaveButton();
 
         Assert.assertTrue(
                 getDriver().findElement(By.xpath("//form[@id='enable-project']"))
@@ -38,12 +32,11 @@ public class PipelineEnableDisableTest extends BaseTest {
         );
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testDisablePipeline")
     public void testEnablePipeline() {
-
-        getDriver().findElement(By.xpath("//span[text()='My Item']")).click();
-        getDriver().findElement(By.xpath("//button[normalize-space()='Enable']")).click();
+                new DashboardPage(getDriver())
+                        .selectItem()
+                        .clickEnableButton();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1[text()='My Item']")).getText(),
                 "My Item"
