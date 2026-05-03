@@ -8,6 +8,7 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.CreateProjectPage;
 import school.redrover.page.HomePage;
+import school.redrover.page.PipelinePage;
 import school.redrover.page.PipelineProjectPage;
 
 import java.util.List;
