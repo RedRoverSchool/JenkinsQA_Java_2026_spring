@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
-public class ToolsPage extends BasePage{
+public class ToolsPage extends BasePage {
 
     public ToolsPage(WebDriver driver) {
         super(driver);
@@ -34,5 +34,21 @@ public class ToolsPage extends BasePage{
                         By.id("settings-search-bar")));
 
         return new ManagePage(getDriver());
+    }
+
+    public ToolsPage selectGlobalMavenOption(String option) {
+        WebElement dropMenu = getDriver().findElement(
+                By.xpath("(//select[contains(@class,'jenkins-select__input')])[2]"));
+
+
+        new Select(dropMenu).selectByVisibleText(option);
+
+        return this;
+    }
+
+    public boolean isGlobalPathFieldDisplayed() {
+        return getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("(//input[@name='_.path'])[2]"))).isDisplayed();
     }
 }
