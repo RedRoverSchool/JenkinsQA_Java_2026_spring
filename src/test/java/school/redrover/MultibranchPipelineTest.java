@@ -105,4 +105,23 @@ public class MultibranchPipelineTest extends BaseTest {
 		Assert.assertFalse(homePage.getProjectList().contains(projectName));
 	}
 
+	@Test
+	public void testDeleteProjectViaDashboardMenu() {
+
+		String projectName = "Project_To_Delete_Via_Menu";
+
+		HomePage homePage = new HomePage(getDriver())
+				.clickItemNewJob()
+				.setProjectName(projectName)
+				.selectItemType(TestUtils.JobType.MULTIBRANCH_PIPELINE)
+				.clickOK(new BaseConfigPage(getDriver()))
+				.clickSave(new MultibranchStatusPage(getDriver()))
+				.goHomePage()
+				.openProjectDropdownMenu(projectName)
+				.clickDeleteInDropdown()
+				.confirmDelete(projectName);
+
+		Assert.assertFalse(homePage.getProjectList().contains(projectName));
+	}
+
 }
