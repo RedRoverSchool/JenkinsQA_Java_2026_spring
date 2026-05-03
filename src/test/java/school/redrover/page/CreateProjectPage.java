@@ -1,7 +1,9 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.TestUtils;
 
@@ -13,6 +15,14 @@ public class CreateProjectPage extends BasePage {
 
     public CreateProjectPage setProjectName(String name) {
         getDriver().findElement(By.id("name")).sendKeys(name);
+
+        return this;
+    }
+
+    public CreateProjectPage scrollToTypeOfProject(TestUtils.JobType jobType) {
+        WebElement jobElement = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(jobType.getDisplayName())));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", jobElement);
+        jobElement.click();
 
         return this;
     }

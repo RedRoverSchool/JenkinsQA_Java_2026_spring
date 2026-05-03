@@ -25,9 +25,9 @@ public class MainPageTest extends BaseTest {
 
     @Test
     public void testOrderName() {
-        TestUtils.createJob(getDriver(), getWait10(), PIPELINE_NAME, TestUtils.JobType.PIPELINE);
+        TestUtils.createJob(getDriver(), PIPELINE_NAME, TestUtils.JobType.PIPELINE);
         goToMainPage();
-        TestUtils.createJob(getDriver(), getWait10(), FOLDER_NAME, TestUtils.JobType.FOLDER);
+        TestUtils.createJob(getDriver(), FOLDER_NAME, TestUtils.JobType.FOLDER);
         goToMainPage();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + PIPELINE_NAME + "']")));

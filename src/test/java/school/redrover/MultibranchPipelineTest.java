@@ -45,7 +45,6 @@ public class MultibranchPipelineTest extends BaseTest {
 		final String projectName = "new-multibranch-pipeline-" + System.currentTimeMillis();
 		TestUtils.createJob(
 				getDriver(),
-				getWait10(),
 				projectName,
 				TestUtils.JobType.MULTIBRANCH_PIPELINE);
 

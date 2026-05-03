@@ -14,7 +14,7 @@ public class ViewWithinFolderTest extends BaseTest {
     @Test
     public void testCreateMyView(){
 
-        TestUtils.createJob(getDriver(), getWait10(), FOLDER_NAME, TestUtils.JobType.FOLDER);
+        TestUtils.createJob(getDriver(), FOLDER_NAME, TestUtils.JobType.FOLDER);
 
         getDriver().findElement(By.xpath("//a[@class='app-jenkins-logo']")).click();
         getDriver().findElement(By.xpath("//a[@href='job/" + FOLDER_NAME + "/']")).click();

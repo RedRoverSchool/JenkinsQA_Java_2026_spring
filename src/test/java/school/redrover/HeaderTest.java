@@ -22,7 +22,7 @@ public class HeaderTest extends BaseTest {
 
     @Test
     public void testNavigateBackToDashbord() {
-        TestUtils.createJob(getDriver(), getWait10(), JOB_NAME, TestUtils.JobType.FREESTYLE);
+        TestUtils.createJob(getDriver(), JOB_NAME, TestUtils.JobType.FREESTYLE);
         clickOnLogo();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(JOB_NAME)))).click();
