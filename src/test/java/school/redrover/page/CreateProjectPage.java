@@ -23,6 +23,10 @@ public class CreateProjectPage extends BasePage {
         WebElement jobElement = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(jobType.getDisplayName())));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", jobElement);
         jobElement.click();
+        
+         return this;
+        }
+    
     public CreateProjectPage enterCopyItemName(String sourceName) {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                         By.id("from")))
