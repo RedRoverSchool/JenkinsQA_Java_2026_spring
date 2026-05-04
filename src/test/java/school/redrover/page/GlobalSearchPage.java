@@ -1,18 +1,13 @@
 package school.redrover.page;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 public class GlobalSearchPage extends BasePage {
 
     private static final By SEARCH_BUTTON = By.id("root-action-SearchAction");
     private static final By SEARCH_INPUT_FIELD = By.xpath("//div[contains(@class,'jenkins-search')]//input");
-    private static final String TEXT_TO_SEARCH = "test12321";
 
     public GlobalSearchPage(WebDriver driver) {
         super(driver);

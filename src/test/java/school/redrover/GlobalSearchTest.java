@@ -2,14 +2,10 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import java.util.Random;
-
-import school.redrover.page.CreateProjectPage;
 import school.redrover.page.GlobalSearchPage;
 import school.redrover.page.HomePage;
 
@@ -20,7 +16,6 @@ public class GlobalSearchTest extends BaseTest {
     private static final String TEXT_TO_SEARCH = "test12321";
 
     public void createFolder(String folderName) {
-
         new HomePage(getDriver()).clickItemNewJob()
                 .setProjectName(folderName)
                 .selectFolder()
