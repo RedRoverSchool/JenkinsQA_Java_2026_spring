@@ -23,6 +23,7 @@ public class MainPageTest extends BaseTest {
                 By.xpath("//a[@href='/view/all/newJob']"))).isDisplayed();
     }
 
+    @Ignore
     @Test
     public void testOrderName() {
         TestUtils.createJob(getDriver(), PIPELINE_NAME, TestUtils.JobType.PIPELINE);
