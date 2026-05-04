@@ -5,7 +5,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class PipelineProjectPage extends BasePage{
+public class PipelineProjectPage extends BasePage {
 
     public PipelineProjectPage(WebDriver driver) {
         super(driver);
@@ -56,7 +56,7 @@ public class PipelineProjectPage extends BasePage{
     public boolean isBuildNowDisplayed() {
         try {
             getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                            By.xpath("(//span[normalize-space()='Build Now'])[1]")));
+                    By.xpath("(//span[normalize-space()='Build Now'])[1]")));
             return true;
         } catch (TimeoutException e) {
             return false;
