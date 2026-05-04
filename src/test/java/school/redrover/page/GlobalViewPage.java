@@ -10,35 +10,30 @@ public class GlobalViewPage extends BasePage{
     private static final String TEXT_DESCRIPTION_BUTTON = "Add description";
     private static final String DESC_MESSAGE = "Some description text here";
     private static final String UPDATED_DESC_MESSAGE = "Updated description";
-    private static String textInput = "Test";
     private static final By DESCRIPTION_INPUT = By.name("description");
     private static final By PREIVEW_CONTAINER = By.className("textarea-preview-container");
     private static final By SAVE_BUTTON = By.xpath("//button[@name='Submit']");
+    private static final By DESCRIPTION_MESSAGE = By.id("description-content");
 
     public GlobalViewPage(WebDriver driver) {
         super(driver);
     }
 
-
     public String getPreviewText() {
         return getDriver().findElement(PREIVEW_CONTAINER).getText();
     }
 
-    public boolean descriptionInputIsVisible() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(DESCRIPTION_INPUT));
-        return !getDriver().findElements(DESCRIPTION_INPUT).isEmpty();
+    public GlobalViewPage enterDescription(String textInput) {
+        getDriver().findElement(DESCRIPTION_INPUT).sendKeys(textInput);
+
+        return this;
     }
 
-    public WebElement getDescriptionInput() {
-        return getDriver().findElement(DESCRIPTION_INPUT);
-    }
+    public HomePage clickSave() {
+        getDriver().findElement(SAVE_BUTTON).click();
 
-    public WebElement saveButtonIsVisible() {
-        return  getWait5().until(ExpectedConditions.elementToBeClickable(SAVE_BUTTON));
-    }
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(DESCRIPTION_MESSAGE));
 
-    public String getDescriptionText() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("description-content"))).getText();
+        return new HomePage(getDriver());
     }
 }

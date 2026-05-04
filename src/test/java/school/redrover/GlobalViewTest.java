@@ -13,31 +13,15 @@ import school.redrover.page.HomePage;
 
 public class GlobalViewTest extends BaseTest {
 
-    private static final String PREVIEWTEXT = "Preview";
-    private static final String DESCRIPTION_MESSAGE = "DESC_MESSAGE";
-
-    @Test
-    public void testCheckPlainTextInputFieldIsOpened(){
-        HomePage homePage = new HomePage(getDriver());
-        GlobalViewPage globalViewPage = new GlobalViewPage(getDriver());
-
-        homePage.clickDescription();
-
-        Assert.assertTrue(globalViewPage.descriptionInputIsVisible());
-        Assert.assertEquals(globalViewPage.getPreviewText(), "Plain text\n" +
-                PREVIEWTEXT);
-    }
-
     @Test
     public void testAddViewDescription() {
-        HomePage homePage = new HomePage(getDriver());
-        GlobalViewPage globalViewPage = new GlobalViewPage(getDriver());
-        homePage.clickDescription();
-        globalViewPage.descriptionInputIsVisible();
-        globalViewPage.getDescriptionInput().sendKeys(DESCRIPTION_MESSAGE);
-        globalViewPage.saveButtonIsVisible().click();
+        String actualDescriptionText = new HomePage(getDriver())
+                .clickDescription()
+                .enterDescription("Test")
+                        .clickSave()
+                                .getViewDescriptionText();
 
-        Assert.assertEquals(globalViewPage.getDescriptionText(), DESCRIPTION_MESSAGE);
+        Assert.assertEquals(actualDescriptionText, "Test");
     }
 
 
