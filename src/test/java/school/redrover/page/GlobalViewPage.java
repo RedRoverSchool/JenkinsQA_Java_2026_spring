@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class GlobalViewPage extends BasePage{
+public class GlobalViewPage extends BasePage {
 
     private static final String TEXT_DESCRIPTION_BUTTON = "Add description";
     private static final String DESC_MESSAGE = "Some description text here";
@@ -19,28 +19,20 @@ public class GlobalViewPage extends BasePage{
         super(driver);
     }
 
+    public GlobalViewPage enterDescription(String description) {
+        getDriver().findElement(By.name("description")).sendKeys(description);
+
+        return this;
+    }
 
     public String getPreviewText() {
         return getDriver().findElement(PREIVEW_CONTAINER).getText();
     }
 
-    public GlobalViewPage descriptionInputIsVisible() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(DESCRIPTION_INPUT));
-        return this;
-    }
+    public HomePage clickSave() {
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
 
-    public WebElement getDescriptionInput() {
-        return getDriver().findElement(DESCRIPTION_INPUT);
-    }
-
-    public GlobalViewPage saveButtonIsVisible() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(SAVE_BUTTON));
-        GlobalViewPage globalViewPage = new GlobalViewPage(getDriver());
-        return globalViewPage;
-    }
-
-    public String getDescriptionText() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("description-content"))).getText();
+        return new HomePage(getDriver());
     }
 }

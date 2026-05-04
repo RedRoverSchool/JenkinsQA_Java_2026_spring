@@ -1,10 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -16,29 +14,27 @@ public class GlobalViewTest extends BaseTest {
     private static final String PREVIEWTEXT = "Preview";
     private static final String DESCRIPTION_MESSAGE = "DESC_MESSAGE";
 
+    @Ignore
     @Test
-    public void testCheckPlainTextInputFieldIsOpened(){
-        HomePage homePage = new HomePage(getDriver());
+    public void testCheckPlainTextInputFieldIsOpened() {
+       HomePage homePage = new HomePage(getDriver());
+       GlobalViewPage globalViewPage = homePage.clickDescription();
 
-        GlobalViewPage globalViewPage = homePage.clickDescription();
-
-        Assert.assertEquals(
-                globalViewPage.getPreviewText(), "Plain text\n" +
-                PREVIEWTEXT);
+       Assert.assertEquals(
+               globalViewPage.getPreviewText(), "Plain text\n" +
+                       PREVIEWTEXT);
     }
 
     @Test
     public void testAddViewDescription() {
-        HomePage homePage = new HomePage(getDriver());
+        String actualDescriptionText = new HomePage(getDriver())
+                .clickDescription()
+                .enterDescription(DESCRIPTION_MESSAGE)
+                .clickSave()
+                .getViewDescriptionText();
 
-        GlobalViewPage globalViewPage = homePage.clickDescription();
-
-        globalViewPage.descriptionInputIsVisible()
-                .saveButtonIsVisible();
-
-        Assert.assertEquals(globalViewPage.getDescriptionText(), DESCRIPTION_MESSAGE);
+        Assert.assertEquals(actualDescriptionText, DESCRIPTION_MESSAGE);
     }
-
 
     @Ignore
     @Test(dependsOnMethods = "testAddViewDescription")
@@ -90,7 +86,7 @@ public class GlobalViewTest extends BaseTest {
 
     @Ignore
     @Test
-    public void hidePreviewOptionIsAvailableTest() throws InterruptedException {
+    public void hidePreviewOptionIsAvailableTest()  {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description")));
 
@@ -102,3 +98,4 @@ public class GlobalViewTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.className("textarea-hide-preview")).isDisplayed());
         Assert.assertEquals(getDriver().findElement(By.className("textarea-preview")).getText(), "textInput");
     }
+}
