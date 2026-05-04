@@ -1,31 +1,36 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
+import school.redrover.page.CreateProjectPage;
+import school.redrover.page.FolderPage;
+import school.redrover.page.HomePage;
 
 public class ViewWithinFolderTest extends BaseTest {
 
     private static final String FOLDER_NAME = "NewFolder";
-    private static final String VIEW_NAME = "NewViewForFolder";
+    private static final String VIEW_NAME = "MyViewWithinFolder";
 
-    @Ignore
     @Test
     public void testCreateMyView(){
 
-        TestUtils.createJob(getDriver(), FOLDER_NAME, TestUtils.JobType.FOLDER);
+        new HomePage(getDriver()).clickItemNewJob();
+        new CreateProjectPage(getDriver()).
+                setProjectName(FOLDER_NAME)
+                .selectFolder()
+                .clickOkButton()
+                .goHomePage()
+                .search(FOLDER_NAME)
+                .chooseSearchingResult(FOLDER_NAME);
 
-        getDriver().findElement(By.xpath("//a[@class='app-jenkins-logo']")).click();
-        getDriver().findElement(By.xpath("//a[@href='job/" + FOLDER_NAME + "/']")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/"+ FOLDER_NAME + "/newView']")).click();
-        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(VIEW_NAME);
-        getDriver().findElement(By.xpath("//label[@for='hudson.model.MyView']")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        String nameView = new FolderPage(getDriver())
+                .clickNewView()
+                .setProjectName(VIEW_NAME)
+                .chooseMyView()
+                .clickCreateButton()
+                .getCurrentView();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//li[@aria-current='page']")).getText(),
-                VIEW_NAME);
+        Assert.assertEquals(nameView, VIEW_NAME);
     }
 }
