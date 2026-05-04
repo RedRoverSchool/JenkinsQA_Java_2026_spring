@@ -66,7 +66,7 @@ public class PipelineProjectPage extends BasePage {
     public HomePage deletePipelineAndConfirm() {
         getDriver().findElement(By.xpath("//a[@data-title='Delete Pipeline']")).click();
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@href='/view/all/newJob']")));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']")));
 
         return new HomePage(getDriver());
     }
