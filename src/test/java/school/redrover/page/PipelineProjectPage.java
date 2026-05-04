@@ -53,7 +53,7 @@ public class PipelineProjectPage extends BasePage {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='warning']"))).getText();
     }
 
-    public boolean isBuildNowDisplayed() {
+    public boolean isBuildNowButtonDisplayed() {
         try {
             getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                     By.xpath("(//span[normalize-space()='Build Now'])[1]")));
@@ -61,5 +61,13 @@ public class PipelineProjectPage extends BasePage {
         } catch (TimeoutException e) {
             return false;
         }
+    }
+
+    public HomePage clickDeletePipelineSidebarButtonAndConfirm() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-title='Delete Pipeline']"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']")));
+
+        return new HomePage(getDriver());
     }
 }
