@@ -41,7 +41,7 @@ public class SearchButtonTest extends BaseTest {
                 .clickItemNewJob()
                 .setProjectName(FOLDER_NAME)
                 .selectFolder()
-                .clickOkButton()
+                .clickOkButton(new HomePage(getDriver()))
                 .goHomePage()
                 .search(FOLDER_NAME)
                 .chooseSearchingResult(FOLDER_NAME);
@@ -85,12 +85,12 @@ public class SearchButtonTest extends BaseTest {
                 .clickItemNewJob()
                 .setProjectName(folderName1)
                 .selectFolder()
-                .clickOkButton()
+                .clickOkButton(new HomePage(getDriver()))
                 .goHomePage()
                 .clickItemNewJob()
                 .setProjectName(folderName2)
                 .selectFolder()
-                .clickOkButton()
+                .clickOkButton(new HomePage(getDriver()))
                 .goHomePage()
                 .search(partialWord)
                 .getSearchList();

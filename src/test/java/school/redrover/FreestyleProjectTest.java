@@ -10,6 +10,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.CreateProjectPage;
+import school.redrover.page.FolderPage;
 import school.redrover.page.FreestyleProjectConfigPage;
 import school.redrover.page.HomePage;
 
@@ -47,7 +48,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickItemNewJob()
                 .setProjectName(PROJECT_NAME)
                 .selectFreeStyleProject()
-                .clickOkButton()
+                .clickOkButton(new HomePage(getDriver()))
                 .goHomePage()
                 .getProjectList();
 

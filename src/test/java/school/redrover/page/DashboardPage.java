@@ -7,9 +7,9 @@ public class DashboardPage extends BasePage {
 
     public DashboardPage(WebDriver driver) { super(driver); }
 
-    public MyItemPage selectItem() {
+    public PipelinePage selectItem() {
         getDriver().findElement(By.xpath("//span[text()=\"My Item\"]")).click();
 
-        return new MyItemPage(getDriver());
+        return new PipelinePage(getDriver());
     }
 }

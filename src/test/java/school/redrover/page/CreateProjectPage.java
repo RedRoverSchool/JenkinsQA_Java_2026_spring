@@ -50,12 +50,12 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
-    public FreestyleProjectConfigPage clickOkButton() {
+    public <JobPage extends BasePage> JobPage clickOkButton(JobPage jobpage) {
         getDriver().findElement(By.id("ok-button")).click();
         // waiting for the configuration page
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
 
-        return new FreestyleProjectConfigPage(getDriver());
+        return jobpage;
     }
 
     public <JobConfigPage extends BasePage> JobConfigPage clickOK(JobConfigPage jobconfig) {

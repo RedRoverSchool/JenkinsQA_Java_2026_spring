@@ -5,9 +5,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.DashboardPage;
-import school.redrover.page.HomePage;
-import school.redrover.page.PipelineConfigPage;
+import school.redrover.page.*;
 
 public class PipelineEnableDisableTest extends BaseTest {
 
@@ -18,8 +16,7 @@ public class PipelineEnableDisableTest extends BaseTest {
             .clickItemNewJob()
             .setProjectName("My Item")
             .selectPipeline()
-            .clickOkButton();
-        new PipelineConfigPage(getDriver())
+            .clickOkButton(new PipelineConfigPage(getDriver()))
             .switchEnableButton()
             .clickSaveButton();
 
@@ -32,11 +29,11 @@ public class PipelineEnableDisableTest extends BaseTest {
     @Test(dependsOnMethods = "testDisablePipeline")
     public void testEnablePipeline() {
         new DashboardPage(getDriver())
-            .selectItem()
-            .clickEnableButton();
+                .selectItem()
+                .clickEnableButton();
 
         Assert.assertTrue(getWait10().until(ExpectedConditions.invisibilityOfElementLocated(
-            By.cssSelector("form#enable-project button[name='Submit']")))
+                By.cssSelector("form#enable-project button[name='Submit']")))
         );
     }
 }

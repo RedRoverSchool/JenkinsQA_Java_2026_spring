@@ -4,11 +4,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class MyItemPage extends BasePage {
+public class PipelinePage extends BasePage {
 
-    public MyItemPage(WebDriver driver) { super(driver); }
+    public PipelinePage(WebDriver driver) { super(driver); }
 
-    public MyItemPage clickEnableButton() {
+    public PipelinePage clickEnableButton() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.cssSelector("form#enable-project button[name='Submit']"))).click();
 
