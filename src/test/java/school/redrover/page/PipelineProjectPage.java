@@ -71,7 +71,8 @@ public class PipelineProjectPage extends BasePage {
 
     public HomePage clickYesDeleteButton() {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@href='/view/all/newJob']")));
 
-        return new HomePage(getDriver());
+    return new HomePage(getDriver());
     }
 }

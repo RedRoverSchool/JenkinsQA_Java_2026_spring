@@ -123,12 +123,12 @@ public class PipelineProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testRename")
     public void testDeleteViaSidebar() {
-        String welcomeText = new HomePage(getDriver())
+        List<String> jobList = new HomePage(getDriver())
                 .clickOnProject(new PipelineProjectPage(getDriver()), RENAME_PIPELINE)
                 .deletePipeline()
                 .clickYesDeleteButton()
-                .getWelcomeText();
+                .getProjectList();
 
-        Assert.assertEquals(welcomeText, "Welcome to Jenkins!");
+        Assert.assertListNotContainsObject(jobList, RENAME_PIPELINE, "Pipeline is not deleted");
     }
 }
