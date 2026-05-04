@@ -21,6 +21,7 @@ public class PipelineProjectRenamePage extends BasePage {
 
     public PipelineProjectPage clickRenameButton() {
         getDriver().findElement(By.xpath("//button[@value='Rename']")).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[text()='Permalinks']")));
 
         return new PipelineProjectPage(getDriver());
     }

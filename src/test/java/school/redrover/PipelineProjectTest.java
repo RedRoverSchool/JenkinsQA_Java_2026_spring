@@ -8,7 +8,6 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.CreateProjectPage;
 import school.redrover.page.HomePage;
-import school.redrover.page.PipelinePage;
 import school.redrover.page.PipelineProjectPage;
 
 import java.util.List;
@@ -50,7 +49,7 @@ public class PipelineProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateWithDuplicateName")
     public void testAddDescription() {
         String descriptionText = new HomePage(getDriver())
-                .clickOnProject(new PipelinePage(getDriver()), PROJECT_NAME)
+                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
                 .clickAddDescription()
                 .enterDescription(DESCRIPTION_TEXT)
                 .clickSaveDescription()
@@ -60,6 +59,30 @@ public class PipelineProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testAddDescription")
+    public void testDisable() {
+        String warningText = new HomePage(getDriver())
+                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
+                .clickConfigureSidebarButton()
+                .toggleProjectState()
+                .clickSaveButton()
+                .getDisabledWarningText();
+
+        Assert.assertTrue(warningText.contains("This project is currently disabled"));
+    }
+
+    @Test(dependsOnMethods = "testDisable")
+    public void testEnable() {
+        boolean isBuildNowButtonDisplayed = new HomePage(getDriver())
+                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
+                .clickConfigureSidebarButton()
+                .toggleProjectState()
+                .clickSaveButton()
+                .isBuildNowDisplayed();
+
+        Assert.assertTrue(isBuildNowButtonDisplayed);
+    }
+
+    @Test(dependsOnMethods = "testEnable")
     public void testRename() {
         List<String> jobList = new HomePage(getDriver())
                 .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
