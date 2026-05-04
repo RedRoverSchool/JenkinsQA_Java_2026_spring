@@ -1,16 +1,12 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.CreateProjectPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.PipelineProjectPage;
-
 import java.util.List;
 
 public class PipelineProjectTest extends BaseTest {
@@ -125,16 +121,14 @@ public class PipelineProjectTest extends BaseTest {
         Assert.assertEquals(saveText, "Saved");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testRename")
     public void testDeleteViaSidebar() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//td/a[@href='job/%s/']".formatted(RENAME_PIPELINE)))).click();
+        String welcomeText = new HomePage(getDriver())
+                .clickOnProject(new PipelineProjectPage(getDriver()), RENAME_PIPELINE)
+                .deletePipeline()
+                .clickYesDeleteButton()
+                .getWelcomeText();
 
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-title='Delete Pipeline']"))).click();
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();
-
-        Assert.assertTrue(
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Welcome to Jenkins!']"))).isDisplayed());
+        Assert.assertEquals(welcomeText, "Welcome to Jenkins!");
     }
 }

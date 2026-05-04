@@ -31,7 +31,8 @@ public class PipelineProjectPage extends BasePage {
         return this;
     }
 
-    public String getDescriptionText() {
+    public String
+    getDescriptionText() {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
     }
 
@@ -61,5 +62,17 @@ public class PipelineProjectPage extends BasePage {
         } catch (TimeoutException e) {
             return false;
         }
+    }
+
+    public PipelineProjectPage deletePipeline() {
+        getDriver().findElement(By.xpath("//a[@data-title='Delete Pipeline']")).click();
+
+        return this;
+    }
+
+    public HomePage clickYesDeleteButton() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();
+
+        return new HomePage(getDriver());
     }
 }

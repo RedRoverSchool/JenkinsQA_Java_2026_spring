@@ -72,4 +72,7 @@ public class HomePage extends BasePage {
         return this;
     }
 
+    public String getWelcomeText() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Welcome to Jenkins!']"))).getText();
+    }
 }
