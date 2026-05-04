@@ -63,16 +63,11 @@ public class PipelineProjectPage extends BasePage {
         }
     }
 
-    public PipelineProjectPage deletePipeline() {
+    public HomePage deletePipelineAndConfirm() {
         getDriver().findElement(By.xpath("//a[@data-title='Delete Pipeline']")).click();
-
-        return this;
-    }
-
-    public HomePage clickYesDeleteButton() {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@href='/view/all/newJob']")));
 
-    return new HomePage(getDriver());
+        return new HomePage(getDriver());
     }
 }

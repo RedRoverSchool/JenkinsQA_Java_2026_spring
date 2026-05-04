@@ -125,8 +125,7 @@ public class PipelineProjectTest extends BaseTest {
     public void testDeleteViaSidebar() {
         List<String> jobList = new HomePage(getDriver())
                 .clickOnProject(new PipelineProjectPage(getDriver()), RENAME_PIPELINE)
-                .deletePipeline()
-                .clickYesDeleteButton()
+                .deletePipelineAndConfirm()
                 .getProjectList();
 
         Assert.assertListNotContainsObject(jobList, RENAME_PIPELINE, "Pipeline is not deleted");
