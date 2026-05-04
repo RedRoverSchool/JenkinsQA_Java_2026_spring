@@ -37,7 +37,7 @@ public class NewItemTest extends BaseTest {
                 .selectPipelineProject()
                 .getErrorText();
 
-        Assert.assertEquals(actualError, ERROR_MESSAGE);
+        Assert.assertEquals(actualError, "» A job already exists with the name ‘existing_job_01’");
     }
 
     @Test

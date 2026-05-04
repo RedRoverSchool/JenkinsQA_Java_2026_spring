@@ -42,7 +42,7 @@ public class CreateProjectPage extends BasePage {
     }
 
     public CreateProjectPage selectPipelineProject() {
-        getDriver().findElement(By.xpath("//div[contains(text(), 'Build, test')]")).click();
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
 
         return this;
     }
