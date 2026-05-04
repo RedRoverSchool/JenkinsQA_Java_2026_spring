@@ -3,6 +3,7 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.CreateProjectPage;
 import school.redrover.page.HomePage;
 
 import java.util.List;
@@ -49,12 +50,12 @@ public class NewItemTest extends BaseTest {
 
     @Test
     public void testInvalidName() {
-        boolean isOkButtonEnabled = new HomePage(getDriver())
+        CreateProjectPage newItemPage = new HomePage(getDriver())
                 .goHomePage()
                 .clickItemNewJob()
-                .setProjectName("$")
-                .isOkButtonEnabled();
+                .setProjectName("$");
 
-            Assert.assertFalse(isOkButtonEnabled, "Кнопка 'OK' должна быть заблокирована при вводе символа '$'");
+        Assert.assertEquals(newItemPage.getErrorText(), "» ‘$’ is an unsafe character");
+        Assert.assertFalse(newItemPage.isOkButtonEnabled(), "Кнопка OK должна быть неактивна");
     }
 }
