@@ -19,23 +19,22 @@ public class GlobalViewTest extends BaseTest {
     @Test
     public void testCheckPlainTextInputFieldIsOpened(){
         HomePage homePage = new HomePage(getDriver());
-        GlobalViewPage globalViewPage = new GlobalViewPage(getDriver());
 
-        homePage.clickDescription();
+        GlobalViewPage globalViewPage = homePage.clickDescription();
 
-        Assert.assertTrue(globalViewPage.descriptionInputIsVisible());
-        Assert.assertEquals(globalViewPage.getPreviewText(), "Plain text\n" +
+        Assert.assertEquals(
+                globalViewPage.getPreviewText(), "Plain text\n" +
                 PREVIEWTEXT);
     }
 
     @Test
     public void testAddViewDescription() {
         HomePage homePage = new HomePage(getDriver());
-        GlobalViewPage globalViewPage = new GlobalViewPage(getDriver());
-        homePage.clickDescription();
-        globalViewPage.descriptionInputIsVisible();
-        globalViewPage.getDescriptionInput().sendKeys(DESCRIPTION_MESSAGE);
-        globalViewPage.saveButtonIsVisible().click();
+
+        GlobalViewPage globalViewPage = homePage.clickDescription();
+
+        globalViewPage.descriptionInputIsVisible()
+                .saveButtonIsVisible();
 
         Assert.assertEquals(globalViewPage.getDescriptionText(), DESCRIPTION_MESSAGE);
     }
@@ -103,4 +102,3 @@ public class GlobalViewTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.className("textarea-hide-preview")).isDisplayed());
         Assert.assertEquals(getDriver().findElement(By.className("textarea-preview")).getText(), "textInput");
     }
-}

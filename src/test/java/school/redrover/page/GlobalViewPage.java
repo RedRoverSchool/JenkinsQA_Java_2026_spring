@@ -24,17 +24,19 @@ public class GlobalViewPage extends BasePage{
         return getDriver().findElement(PREIVEW_CONTAINER).getText();
     }
 
-    public boolean descriptionInputIsVisible() {
+    public GlobalViewPage descriptionInputIsVisible() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(DESCRIPTION_INPUT));
-        return !getDriver().findElements(DESCRIPTION_INPUT).isEmpty();
+        return this;
     }
 
     public WebElement getDescriptionInput() {
         return getDriver().findElement(DESCRIPTION_INPUT);
     }
 
-    public WebElement saveButtonIsVisible() {
-        return  getWait5().until(ExpectedConditions.elementToBeClickable(SAVE_BUTTON));
+    public GlobalViewPage saveButtonIsVisible() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(SAVE_BUTTON));
+        GlobalViewPage globalViewPage = new GlobalViewPage(getDriver());
+        return globalViewPage;
     }
 
     public String getDescriptionText() {

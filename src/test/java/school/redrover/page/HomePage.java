@@ -72,7 +72,9 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public void clickDescription() {
+    public GlobalViewPage clickDescription() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
+        GlobalViewPage globalViewPage = new GlobalViewPage(getDriver());
+        return globalViewPage;
     }
 }
