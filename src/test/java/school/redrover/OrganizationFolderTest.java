@@ -25,7 +25,7 @@ public class OrganizationFolderTest extends BaseTest {
 
     @Test
     public void testCreate() {
-        TestUtils.createJob(getDriver(), getWait10(), ORG_FOLDER_NAME, TestUtils.JobType.FOLDER);
+        TestUtils.createJob(getDriver(), ORG_FOLDER_NAME, TestUtils.JobType.FOLDER);
         goToMainPage();
 
         Assert.assertEquals(

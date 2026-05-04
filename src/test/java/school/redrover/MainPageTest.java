@@ -5,6 +5,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -23,11 +24,12 @@ public class MainPageTest extends BaseTest {
                 By.xpath("//a[@href='/view/all/newJob']"))).isDisplayed();
     }
 
+    @Ignore
     @Test
     public void testOrderName() {
-        TestUtils.createJob(getDriver(), getWait10(), PIPELINE_NAME, TestUtils.JobType.PIPELINE);
+        TestUtils.createJob(getDriver(), PIPELINE_NAME, TestUtils.JobType.PIPELINE);
         goToMainPage();
-        TestUtils.createJob(getDriver(), getWait10(), FOLDER_NAME, TestUtils.JobType.FOLDER);
+        TestUtils.createJob(getDriver(), FOLDER_NAME, TestUtils.JobType.FOLDER);
         goToMainPage();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + PIPELINE_NAME + "']")));

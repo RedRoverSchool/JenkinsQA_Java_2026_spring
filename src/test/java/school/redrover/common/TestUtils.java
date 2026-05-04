@@ -1,11 +1,7 @@
 package school.redrover.common;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import school.redrover.page.*;
 
 public class TestUtils {
 
@@ -28,27 +24,37 @@ public class TestUtils {
         }
     }
 
-    private static void fillJobCreationForm (WebDriver driver, WebDriverWait wait, String projectName, JobType jobType) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='name']"))).sendKeys(projectName);
-
-        WebElement jobElement = driver.findElement(By.xpath("//span[text()='%s']".formatted(jobType.getDisplayName())));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", jobElement);
-        jobElement.click();
-
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("Submit")));
+    private static BaseConfigPage getConfigPage(JobType jobType, WebDriver driver) {
+        return switch (jobType) {
+            case PIPELINE -> new PipelineProjectConfigPage(driver);
+            case FREESTYLE -> new FreestyleProjectConfigPage(driver);
+            case MULTICONFIGURATION -> new MulticonfigurationConfigPage(driver);
+            case FOLDER -> new FolderConfigPage(driver);
+            case MULTIBRANCH_PIPELINE -> new MultibranchConfigPage(driver);
+            case ORGANIZATION_FOLDER -> new OrganizationFolderConfigPage(driver);
+        };
     }
 
-    public static void createJob (WebDriver driver, WebDriverWait wait, String projectName, JobType jobType) {
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
-        fillJobCreationForm(driver, wait, projectName, jobType);
+    public static void createJob(WebDriver driver, String projectName, JobType jobType) {
+        BaseConfigPage configPage = getConfigPage(jobType, driver);
+        new HomePage(driver)
+                .clickItemNewJob()
+                .setProjectName(projectName)
+                .scrollToTypeOfProject(jobType)
+                .selectItemType(jobType)
+                .clickOK(configPage)
+                .goHomePage();
     }
 
-    public static void createNestedJob (WebDriver driver, WebDriverWait wait, String projectName, String childName, JobType jobType) {
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(projectName)))).click();
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']/span"), projectName));
-
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='New Item']/ancestor::a"))).click();
-        fillJobCreationForm(driver, wait, childName, jobType);
+    public static void createNestedJob(WebDriver driver, String projectName, String childName, JobType jobType) {
+        BaseConfigPage configPage = getConfigPage(jobType, driver);
+        new HomePage(driver)
+                .clickOnProject(new FolderPage(driver), projectName)
+                .clickNewItem()
+                .setProjectName(childName)
+                .scrollToTypeOfProject(jobType)
+                .selectItemType(jobType)
+                .clickOK(configPage)
+                .goHomePage();
     }
 }

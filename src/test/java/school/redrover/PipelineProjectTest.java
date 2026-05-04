@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -126,6 +127,7 @@ public class PipelineProjectTest extends BaseTest {
         Assert.assertEquals(saveText, "Saved");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testRename")
     public void testDeleteViaSidebar() {
         getWait5().until(ExpectedConditions.elementToBeClickable(

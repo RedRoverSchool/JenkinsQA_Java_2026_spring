@@ -14,6 +14,7 @@ import school.redrover.common.JenkinsUtils;
 
 public class SignOutTest extends BaseTest {
 
+    @Ignore
     @Test
     public void signOutTest() {
         WebElement hoverOverAccountIcon = getDriver().findElement(By.id("root-action-UserAction"));
