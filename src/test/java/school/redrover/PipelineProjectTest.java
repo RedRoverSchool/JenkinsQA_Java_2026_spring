@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -10,7 +9,7 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.CreateProjectPage;
 import school.redrover.page.HomePage;
-import school.redrover.page.PipelinePage;
+import school.redrover.page.PipelineProjectPage;
 
 import java.util.List;
 
@@ -51,7 +50,7 @@ public class PipelineProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateWithDuplicateName")
     public void testAddDescription() {
         String descriptionText = new HomePage(getDriver())
-                .clickOnProject(new PipelinePage(getDriver()), PROJECT_NAME)
+                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
                 .clickAddDescription()
                 .enterDescription(DESCRIPTION_TEXT)
                 .clickSaveDescription()
@@ -62,18 +61,41 @@ public class PipelineProjectTest extends BaseTest {
 
     @Ignore
     @Test(dependsOnMethods = "testAddDescription")
+    public void testDisable() {
+        String warningText = new HomePage(getDriver())
+                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
+                .clickConfigureSidebarButton()
+                .toggleProjectState()
+                .clickSaveButton()
+                .getDisabledWarningText();
+
+        Assert.assertTrue(warningText.contains("This project is currently disabled"));
+    }
+
+    @Test(dependsOnMethods = "testDisable")
+    public void testEnable() {
+        boolean isBuildNowButtonDisplayed = new HomePage(getDriver())
+                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
+                .clickConfigureSidebarButton()
+                .toggleProjectState()
+                .clickSaveButton()
+                .isBuildNowDisplayed();
+
+        Assert.assertTrue(isBuildNowButtonDisplayed);
+    }
+
+    @Test(dependsOnMethods = "testEnable")
     public void testRename() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(PROJECT_NAME)))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/job/%s/confirm-rename']".formatted(PROJECT_NAME)))).click();
+        List<String> jobList = new HomePage(getDriver())
+                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
+                .clickRenameSidebarButton()
+                .updateProjectName(RENAME_PIPELINE)
+                .clickRenameButton()
+                .goHomePage()
+                .getProjectList();
 
-        WebElement inputField = getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='newName']")));
-        inputField.clear();
-        inputField.sendKeys(RENAME_PIPELINE);
-        getDriver().findElement(By.xpath("//button[@value='Rename']")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-head-icon"))).click();
-
-        Assert.assertEquals(getDriver().findElement(By.cssSelector(".jenkins-table__link > span:first-child")).getText(),
-                RENAME_PIPELINE);
+        Assert.assertEquals(jobList.size(), 1);
+        Assert.assertEquals(jobList.getFirst(), RENAME_PIPELINE);
     }
 
     @Test
