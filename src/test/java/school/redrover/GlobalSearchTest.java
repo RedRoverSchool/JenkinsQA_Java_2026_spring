@@ -2,10 +2,16 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import java.util.Random;
+
+import school.redrover.page.CreateProjectPage;
+import school.redrover.page.GlobalSearchPage;
+import school.redrover.page.HomePage;
 
 public class GlobalSearchTest extends BaseTest {
 
@@ -13,12 +19,14 @@ public class GlobalSearchTest extends BaseTest {
     private static final By SEARCH_INPUT_FIELD = By.xpath("//div[contains(@class,'jenkins-search')]//input");
     private static final String TEXT_TO_SEARCH = "test12321";
 
-    private void createFolder(String folderName) {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(folderName);
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@type='submit']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='app-jenkins-logo']"))).click();
+    public void createFolder(String folderName) {
+
+        new HomePage(getDriver()).clickItemNewJob()
+                .setProjectName(folderName)
+                .selectFolder()
+                .clickOkButton()
+                .clickSave()
+                .goHomePage();
     }
 
     public static String randomString(int length){
@@ -42,13 +50,13 @@ public class GlobalSearchTest extends BaseTest {
 
     @Test
     public void testClearingTheSearchField(){
-        getWait5().until(ExpectedConditions.elementToBeClickable(SEARCH_BUTTON)).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(SEARCH_INPUT_FIELD));
-        WebElement searchInput = getDriver().findElement(SEARCH_INPUT_FIELD);
-        searchInput.sendKeys(TEXT_TO_SEARCH);
-        searchInput.clear();
+        GlobalSearchPage page = new GlobalSearchPage(getDriver())
+                .findSearchButton()
+                .clickSearchInputField()
+                .typeSearchQuery(TEXT_TO_SEARCH)
+                .clearSearchField();
 
-        Assert.assertEquals(searchInput.getAttribute("value"), "");
+        Assert.assertEquals(page.getSearchInputValue(), "");
     }
 
     @Test
