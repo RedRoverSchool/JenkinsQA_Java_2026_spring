@@ -85,7 +85,7 @@ public class CreateProjectPage extends BasePage {
     }
 
     public String getErrorText() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class, 'validation-error') or @id='itemname-invalid']"))).getText();
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
     }
 
     public boolean isOkButtonEnabled() {
