@@ -1,11 +1,8 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.CreateProjectPage;
 import school.redrover.page.HomePage;
 
 import java.util.List;
@@ -13,7 +10,6 @@ import java.util.List;
 public class NewItemTest extends BaseTest {
 
     private static final String JOB_NAME = "existing_job_01";
-    private static final String ERROR_MESSAGE = "» A job already exists with the name ‘existing_job_01’";
 
     @Test
     public void testValidName() {
@@ -41,28 +37,24 @@ public class NewItemTest extends BaseTest {
     }
 
     @Test
-    public void testSelectAnItemType() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
-        getDriver().findElement(By.id("name")).sendKeys("Select an item type test");
-        getDriver().findElement(By.xpath("//div[contains(text(), 'Build, test')]")).click();
+    public void testEmptyName() {
+        String actualError = new HomePage(getDriver())
+                .goHomePage()
+                .clickItemNewJob()
+                .getErrorText();
 
-        Assert.assertTrue(getDriver().findElement(By.id("ok-button")).isEnabled());
+        Assert.assertTrue(actualError.contains("This field cannot be empty, please enter a valid name"),
+                "Текст ошибки не совпадает. Ожидался текст о пустом поле, но получено: " + actualError);
     }
 
     @Test
-    public void testSelectItemTypeWithEmptyName() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
-        getDriver().findElement(By.xpath("//div[contains(text(), 'Build, test')]")).click();
+    public void testInvalidName() {
+        boolean isOkButtonEnabled = new HomePage(getDriver())
+                .goHomePage()
+                .clickItemNewJob()
+                .setProjectName("$")
+                .isOkButtonEnabled();
 
-        Assert.assertEquals(getDriver().findElement(By.id("itemname-required")).getText(),
-                "» This field cannot be empty, please enter a valid name");
-    }
-
-    @Test
-    public void testSelectItemTypeWithInvalidName() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
-        getDriver().findElement(By.id("name")).sendKeys("$");
-
-        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
+            Assert.assertFalse(isOkButtonEnabled, "Кнопка 'OK' должна быть заблокирована при вводе символа '$'");
     }
 }
