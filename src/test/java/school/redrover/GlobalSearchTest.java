@@ -20,8 +20,10 @@ public class GlobalSearchTest extends BaseTest {
                 .setProjectName(folderName)
                 .selectFolder()
                 .clickOkButton()
-                .clickSave()
-                .goHomePage();
+                .clickSave();
+
+        new GlobalSearchPage(getDriver())
+                .goHomePageSafely();
     }
 
     public static String randomString(int length){

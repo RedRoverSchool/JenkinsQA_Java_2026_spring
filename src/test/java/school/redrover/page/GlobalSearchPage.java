@@ -44,5 +44,16 @@ public class GlobalSearchPage extends BasePage {
                 .getAttribute("value");
     }
 
+    public GlobalSearchPage goHomePageSafely() {
+        By logo = By.id("jenkins-head-icon");
+        By newJobLink = By.xpath("//a[@href='/view/all/newJob']");
+
+        getWait10().until(ExpectedConditions.refreshed(
+                ExpectedConditions.elementToBeClickable(logo))).click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(newJobLink));
+
+        return this;
+    }
 
 }
