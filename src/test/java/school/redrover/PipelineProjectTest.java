@@ -113,16 +113,14 @@ public class PipelineProjectTest extends BaseTest {
 
     @Test
     public void testApplyProjectDescription() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
+        String saveText = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectPipelineProjectAndClickOk()
+                .enterDescription(DESCRIPTION_TEXT)
+                .clickApply()
+                .getSaveText();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated((By.id("name")))).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']"))).sendKeys(DESCRIPTION_TEXT);
-        getDriver().findElement(By.name("Apply")).click();
-
-        String saveText = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText();
         Assert.assertEquals(saveText, "Saved");
     }
 
