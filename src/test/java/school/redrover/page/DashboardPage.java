@@ -5,10 +5,8 @@ import org.openqa.selenium.WebDriver;
 
 public class DashboardPage extends BasePage {
 
-    public DashboardPage(WebDriver driver) {
-        super(driver);
-    }
-    //todo: перепишите на нормальный метод)
+    public DashboardPage(WebDriver driver) { super(driver); }
+
     public MyItemPage selectItem() {
         getDriver().findElement(By.xpath("//span[text()=\"My Item\"]")).click();
 
