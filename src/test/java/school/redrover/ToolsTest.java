@@ -46,4 +46,21 @@ public class ToolsTest extends BaseTest {
                 .isGlobalPathFieldDisplayed());
     }
 
+    @Test
+    public void testAddJDK() {
+        ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
+                .goToTools();
+
+        toolsPage
+                .clickAddJDKButton()
+                .setJDKName("TestName")
+                .setJavaPath("/test/path/toJDK")
+                .clickSaveButton();
+
+        Assert.assertTrue(new ManagePage(getDriver())
+                .goToTools()
+                .isEditDisplayed());
+
+    }
+
 }
