@@ -14,7 +14,8 @@ public class BuildHistoryPage extends BasePage {
     }
 
     public BuildHistoryPage clickDropDownMenu(String jobName){
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("(//button[contains(@data-href, '/job/%s/')])[2]".formatted(jobName)))).click();
+        getWait5().until(ExpectedConditions
+                .elementToBeClickable(By.xpath("//a[@class='jenkins-badge model-link' and contains(@href, '/job/%s/')]".formatted(jobName)))).click();
 
         return this;
     }
