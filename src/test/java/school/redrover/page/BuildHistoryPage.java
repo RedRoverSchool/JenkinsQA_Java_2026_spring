@@ -14,12 +14,7 @@ public class BuildHistoryPage extends BasePage {
     }
 
     public BuildHistoryPage clickDropDownMenu(String jobName){
-        //Wait for page loading
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-badge model-link']")));
-
-        Actions action = new Actions(getDriver());
-        action.moveToElement(getDriver().findElement(By.xpath("//a[@class='jenkins-badge model-link']"))).perform();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("(//button[contains(@data-href, '/job/%s/')])[1]".formatted(jobName)))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("(//button[contains(@data-href, '/job/%s/')])[2]".formatted(jobName)))).click();
 
         return this;
     }
