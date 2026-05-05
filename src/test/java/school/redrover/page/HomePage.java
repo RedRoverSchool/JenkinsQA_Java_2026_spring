@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.BuildHistoryTest;
 
 import java.util.List;
 
@@ -76,6 +77,12 @@ public class HomePage extends BasePage {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
 
         return new GlobalViewPage(getDriver());
+    }
+
+    public BuildHistoryPage clickBuildHistory(){
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/builds']"))).click();
+
+        return new BuildHistoryPage(getDriver());
     }
 
     public String getViewDescriptionText() {
