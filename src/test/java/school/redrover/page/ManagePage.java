@@ -17,5 +17,10 @@ public class ManagePage extends BasePage {
         return new ToolsPage(getDriver());
     }
 
+    public UserManagementPage goToUserManagement() {
+        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+        return new UserManagementPage(getDriver());
+    }
+
 
 }

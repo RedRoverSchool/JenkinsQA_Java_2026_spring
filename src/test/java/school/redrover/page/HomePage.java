@@ -81,4 +81,10 @@ public class HomePage extends BasePage {
     public String getViewDescriptionText() {
         return getDriver().findElement(By.id("description-content")).getText();
     }
+
+    private final By userButton = By.id("root-action-UserAction");
+
+    public boolean isUserButtonDisplayed() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(userButton)).isDisplayed();
+    }
 }
