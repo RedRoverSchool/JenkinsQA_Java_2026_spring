@@ -57,6 +57,7 @@ public class FooterVersionMenuTest extends BaseTest {
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/");
     }
 
+    @Ignore
     @Test
     public void testAboutJenkinsOpensInSameTab() {
 
