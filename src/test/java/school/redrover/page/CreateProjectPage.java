@@ -84,11 +84,24 @@ public class CreateProjectPage extends BasePage {
         return jobconfig;
     }
 
-    public String getErrorText() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+    public String getErrorEmptyText() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-required")));
+        return getDriver().findElement(By.id("itemname-required")).getText();
+    }
+
+    public String getErrorInvalidText() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid")));
+        return getDriver().findElement(By.id("itemname-invalid")).getText();
     }
 
     public boolean isOkButtonEnabled() {
         return getDriver().findElement(By.id("ok-button")).isEnabled();
     }
+
+    public CreateProjectPage clickOutside() {getDriver().findElement(By.id("main-panel")).click();
+        return this;
+    }
 }
+
+
+

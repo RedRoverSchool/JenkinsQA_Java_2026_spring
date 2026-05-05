@@ -32,7 +32,7 @@ public class NewItemTest extends BaseTest {
                 .clickItemNewJob()
                 .setProjectName(JOB_NAME)
                 .selectPipelineProject()
-                .getErrorText();
+                .getErrorInvalidText();
 
         Assert.assertEquals(actualError, "» A job already exists with the name ‘existing_job_01’");
     }
@@ -42,10 +42,10 @@ public class NewItemTest extends BaseTest {
         String actualError = new HomePage(getDriver())
                 .goHomePage()
                 .clickItemNewJob()
-                .getErrorText();
+                .clickOutside()
+                .getErrorEmptyText();
 
-        Assert.assertTrue(actualError.contains("This field cannot be empty, please enter a valid name"),
-                "Текст ошибки не совпадает. Ожидался текст о пустом поле, но получено: " + actualError);
+        Assert.assertEquals(actualError, "» This field cannot be empty, please enter a valid name");
     }
 
     @Test
@@ -55,7 +55,7 @@ public class NewItemTest extends BaseTest {
                 .clickItemNewJob()
                 .setProjectName("$");
 
-        Assert.assertEquals(newItemPage.getErrorText(), "» ‘$’ is an unsafe character");
+        Assert.assertEquals(newItemPage.getErrorInvalidText(), "» ‘$’ is an unsafe character");
         Assert.assertFalse(newItemPage.isOkButtonEnabled(), "Кнопка OK должна быть неактивна");
     }
 }
