@@ -70,6 +70,20 @@ public class HomePage extends BasePage {
 
         return this;
     }
+    public HomePage  runningBuildForTesting(){
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href, 'build?delay=0sec')]"))).click();
+
+        return this;
+    }
+
+    public BuildHistoryPage clickHistoryBuilds (){
+        getDriver().findElement(By.xpath("//a[@href='/view/all/builds']")).click();
+
+        return new BuildHistoryPage(getDriver());
+    }
+
+
+
 
     public HomePage confirmDelete(String projectName) {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();

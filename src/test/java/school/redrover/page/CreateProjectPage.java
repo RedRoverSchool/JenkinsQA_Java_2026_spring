@@ -101,6 +101,18 @@ public class CreateProjectPage extends BasePage {
     public CreateProjectPage clickOutside() {getDriver().findElement(By.id("main-panel")).click();
         return this;
     }
+
+    public MulticonfigurationConfigPage selectMultiСonfigurationProjectAndClickOk() {
+        getDriver().findElement(By.xpath("//span[text()='Multi-configuration project']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
+
+        return new MulticonfigurationConfigPage(getDriver());
+    }
+
+
+
 }
 
 
