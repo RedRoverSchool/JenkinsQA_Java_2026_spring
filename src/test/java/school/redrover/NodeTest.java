@@ -1,12 +1,9 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,102 +14,74 @@ public class NodeTest extends BaseTest {
     private static final String DESCRIPTION = "Use only for urgent tasks";
     private static final String DIR = "D:\\Jenkins\\NewTestNode";
     private static final String LABELS = "Urgent";
+    private static final String USAGE = "EXCLUSIVE";
 
-    @Ignore
     @Test
     public void testCreateNewNode(){
 
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
-        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
-        getDriver().findElement(By.xpath("//a[@href='new']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(NEW_NODE_NAME);
-        getDriver().findElement(By.className("jenkins-radio__label")).click();
-        getDriver().findElement(By.xpath("//button[@value='Create']")).click();
+        List<String> nodesList = new HomePage(getDriver())
+                .goManagePage()
+                .goToNodes()
+                .createNewNode(NEW_NODE_NAME)
+                .getNodesList();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@value='Save']"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='main-panel']//h1")));
-
-        List<String> actualNodeList = getDriver().findElements(By
-                        .xpath("//a[@class = 'jenkins-table__link model-link inside']"))
-                .stream()
-                .map(WebElement::getText)
-                .toList();
-
-        Assert.assertTrue(actualNodeList.contains(NEW_NODE_NAME));
+        Assert.assertTrue(nodesList.contains(NEW_NODE_NAME));
     }
 
-    @Ignore
     @Test (dependsOnMethods = "testCreateNewNode")
     public void testNodeConfiguration(){
 
-        List<String> expectAttributes= new ArrayList<>(List.of(DESCRIPTION, LABELS));
-        List<String> actualAttributes= new ArrayList<>();
+        List<String> expectAttributes = new ArrayList<>(List.of(DESCRIPTION, LABELS));
 
-        goToNewNodeManagementPage();
-
-        getDriver().findElement(By.xpath("//a[@href='/computer/%s/configure']"
-                .formatted(NEW_NODE_NAME.replace(" ", "%20")))).click();
-        getDriver().findElement(By.xpath("//textarea[@name='nodeDescription']")).sendKeys(DESCRIPTION);
-        getDriver().findElement(By.xpath("//input[@name='_.remoteFS']")).sendKeys(DIR);
-        getDriver().findElement(By.xpath("//input[@name='_.labelString']")).sendKeys(LABELS);
-        getDriver().findElement(By.xpath("//select[@name='mode']")).click();
-        getDriver().findElement(By.xpath("//option[@value='EXCLUSIVE']")).click();
-        getDriver().findElement(By.xpath("//button[@value='Save']")).click();
-
-        actualAttributes.add(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content")))
-                .getText());
-
-        actualAttributes.add(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@href='/label/%s']".formatted(LABELS)))).getText());
+        List<String> actualAttributes = new HomePage(getDriver())
+                .goManagePage()
+                .goToNodes()
+                .goToNodeManagementPage(NEW_NODE_NAME)
+                .goToNodeConfigPage(NEW_NODE_NAME)
+                .changeDescription(DESCRIPTION)
+                .changeDir(DIR)
+                .changeLabel(LABELS)
+                .changeUsage(USAGE)
+                .saveChanges()
+                .getConfigDescriptionList(LABELS);
 
         Assert.assertEquals(actualAttributes, expectAttributes);
     }
 
-    @Ignore
     @Test (dependsOnMethods = "testNodeConfiguration")
     public void testMarkNodeOffline(){
-        goToNewNodeManagementPage();
+        boolean isNodeOffline = new HomePage(getDriver())
+                .goManagePage()
+                .goToNodes()
+                .goToNodeManagementPage(NEW_NODE_NAME)
+                .markNodeOffline()
+                .isNodeOffline();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//form [@action='markOffline']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button [@name='Submit']"))).click();
-
-        Assert.assertEquals(getDriver().findElement(By.className("message")).getText(), "Disconnected by admin");
+        Assert.assertTrue(isNodeOffline);
     }
 
-    @Ignore
     @Test (dependsOnMethods = "testMarkNodeOffline")
     public void testBringTheNodeBackOnline(){
-        goToNewNodeManagementPage();
+        boolean isNodeOnline = new HomePage(getDriver())
+                .goManagePage()
+                .goToNodes()
+                .goToNodeManagementPage(NEW_NODE_NAME)
+                .bringNodeBackOnline()
+                .isNodeOnline();
 
-        WebElement submitButton = getDriver().findElement(By.className("jenkins-button--primary"));
-        submitButton.click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//form [@action='markOffline']")).getText()
-                ,"Mark this node temporarily offline");
+        Assert.assertTrue(isNodeOnline);
     }
 
-    @Ignore
     @Test (dependsOnMethods = "testBringTheNodeBackOnline")
     public void testDeleteNode(){
 
-        goToNewNodeManagementPage();
-
-        getDriver().findElement(By.className("icon-edit-delete")).click();
-        getDriver().findElement(By.xpath("//button [@data-id='ok']")).click();
-
-        List<String> actualNodeList = getDriver().findElements(By
-                        .xpath("//a[@class = 'jenkins-table__link model-link inside']"))
-                .stream()
-                .map(WebElement::getText)
-                .toList();
+        List<String> actualNodeList = new HomePage(getDriver())
+                .goManagePage()
+                .goToNodes()
+                .goToNodeManagementPage(NEW_NODE_NAME)
+                .deleteNode()
+                .getNodesList();
 
         Assert.assertFalse(actualNodeList.contains(NEW_NODE_NAME));
-    }
-
-    private void goToNewNodeManagementPage(){
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
-        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
-        getDriver().findElement(By.xpath("//a[@href='../computer/%s/']"
-                .formatted(NEW_NODE_NAME.replace(" ", "%20")))).click();
     }
 }
