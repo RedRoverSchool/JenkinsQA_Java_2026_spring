@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
+
 public class ToolsPage extends BasePage {
 
     public ToolsPage(WebDriver driver) {
@@ -78,9 +79,23 @@ public class ToolsPage extends BasePage {
     }
 
     public boolean isEditDisplayed() {
-        return getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//span[@tooltip='One or more fields in this block have been edited.']"))
-        ).isDisplayed();
+        return !getDriver().findElements(
+                By.xpath("//span[@tooltip='One or more fields in this block have been edited.']")
+        ).isEmpty();
+    }
+
+    public ToolsPage deleteAllJDKs() {
+        By deleteButton = By.xpath("//span[normalize-space()='Delete']");
+
+        while (!getDriver().findElements(deleteButton).isEmpty()) {
+            WebElement button = getDriver().findElements(deleteButton).get(0);
+            button.click();
+
+            getWait5().until(
+                    ExpectedConditions.stalenessOf(button)
+            );
+        }
+
+        return this;
     }
 }

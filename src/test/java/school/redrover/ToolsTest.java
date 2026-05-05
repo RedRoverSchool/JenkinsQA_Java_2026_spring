@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -11,7 +10,6 @@ import school.redrover.page.ToolsPage;
 
 public class ToolsTest extends BaseTest {
 
-    @Ignore
     @Test
     public void testOpenToolsPage() {
         new HomePage(getDriver()).goManagePage()
@@ -20,7 +18,6 @@ public class ToolsTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Tools");
     }
 
-    @Ignore
     @Test
     public void testSimpleMavenConfiguration() {
         ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
@@ -35,7 +32,6 @@ public class ToolsTest extends BaseTest {
                 .isSimplePathFieldDisplayed());
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testSimpleMavenConfiguration")
     public void testGlobalMavenConfiguration() {
         ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
@@ -50,7 +46,6 @@ public class ToolsTest extends BaseTest {
                 .isGlobalPathFieldDisplayed());
     }
 
-    @Ignore
     @Test
     public void testAddJDK() {
         ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
@@ -66,6 +61,21 @@ public class ToolsTest extends BaseTest {
                 .goToTools()
                 .isEditDisplayed());
 
+    }
+
+    @Test(dependsOnMethods = "testAddJDK")
+    public void deleteJDK() {
+        ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
+                .goToTools();
+
+        toolsPage
+                .clickJDKInstallationsButton()
+                .deleteAllJDKs()
+                .clickSaveButton();
+
+        Assert.assertFalse(new ManagePage(getDriver())
+                .goToTools().
+                isEditDisplayed());
     }
 
 }
