@@ -17,5 +17,8 @@ public class ManagePage extends BasePage {
         return new ToolsPage(getDriver());
     }
 
-
+    public CredentialsPage goToCredentials() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='credentials']"))).click();
+        return new CredentialsPage(getDriver());
+    }
 }
