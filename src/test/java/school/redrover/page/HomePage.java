@@ -94,4 +94,10 @@ public class HomePage extends BasePage {
         return new ManagePage(getDriver());
     }
 
+    public HomePage clickScheduleBuild(String jobName) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("(//a[@href='job/%s/build?delay=0sec'])[1]".formatted(jobName)))).click();
+
+        return this;
+    }
+
 }

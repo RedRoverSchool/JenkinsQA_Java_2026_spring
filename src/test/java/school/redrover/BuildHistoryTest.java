@@ -6,10 +6,16 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
+import school.redrover.page.FreestyleProjectConfigPage;
 import school.redrover.page.HomePage;
+import school.redrover.page.PipelineProjectConfigPage;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static school.redrover.common.TestUtils.JobType.FREESTYLE;
+import static school.redrover.common.TestUtils.JobType.PIPELINE;
 
 public class BuildHistoryTest extends BaseTest {
 
@@ -26,5 +32,24 @@ public class BuildHistoryTest extends BaseTest {
         } catch (Exception e) {}
 
         Assert.assertEquals(buildHistoryList.size(), 0);
+    }
+
+    @Test
+    public void deleteWarningMessage(){
+        final String jobName = "TestProject";
+
+        new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(jobName)
+                .selectItemType(FREESTYLE)
+                .clickOK(new FreestyleProjectConfigPage(getDriver()))
+                .goHomePage()
+                .clickScheduleBuild(jobName)
+                .clickBuildHistory()
+                .clickDropDownMenu(jobName)
+                .clickDeleteBuild();
+
+        String warningMessage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='jenkins-!-margin-right-1']"))).getText();
+        Assert.assertEquals(warningMessage, "Delete the build ‘#1’?");
     }
 }
