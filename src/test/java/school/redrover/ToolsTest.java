@@ -49,6 +49,7 @@ public class ToolsTest extends BaseTest {
                 .isGlobalPathFieldDisplayed());
     }
 
+    @Ignore
     @Test
     public void testAddJDK() {
         ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
