@@ -77,5 +77,4 @@ public class ToolsTest extends BaseTest {
                 .goToTools().
                 isEditDisplayed());
     }
-
 }
