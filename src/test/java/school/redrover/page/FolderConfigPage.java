@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class FolderConfigPage extends BaseConfigPage {
+public class FolderConfigPage extends BaseConfigPage<FolderConfigPage> {
     public FolderConfigPage(WebDriver driver) {
         super(driver);
     }

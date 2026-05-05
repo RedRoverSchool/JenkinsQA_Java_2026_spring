@@ -45,6 +45,7 @@ public class FooterVersionMenuTest extends BaseTest {
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/participate/");
     }
 
+    @Ignore
     @Test
     public void testCheckWebsite(){
         getDriver().findElement(

@@ -23,9 +23,7 @@ public class ManagePage extends BasePage {
     }
 
     public CredentialsPage goToCredentials() {
-        getDriver().findElement(By.xpath("//a[contains(@href, 'credentials')]")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='credentials']"))).click();
         return new CredentialsPage(getDriver());
     }
-
-
 }
