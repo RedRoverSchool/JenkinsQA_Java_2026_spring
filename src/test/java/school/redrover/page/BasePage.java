@@ -19,7 +19,7 @@ public class BasePage extends BaseModel {
     }
 
     public ManagePage goManagePage() {
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
         return new ManagePage(getDriver());
     }
