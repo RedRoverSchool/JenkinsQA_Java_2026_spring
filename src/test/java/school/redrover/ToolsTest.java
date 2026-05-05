@@ -57,9 +57,7 @@ public class ToolsTest extends BaseTest {
                 .setJavaPath("/test/path/toJDK")
                 .clickSaveButton();
 
-        Assert.assertTrue(new ManagePage(getDriver())
-                .goToTools()
-                .isEditDisplayed());
+        Assert.assertTrue(toolsPage.isEditDisplayed());
 
     }
 
@@ -73,8 +71,6 @@ public class ToolsTest extends BaseTest {
                 .deleteAllJDKs()
                 .clickSaveButton();
 
-        Assert.assertFalse(new ManagePage(getDriver())
-                .goToTools().
-                isEditDisplayed());
+        Assert.assertFalse(toolsPage.isEditDisplayed());
     }
 }
