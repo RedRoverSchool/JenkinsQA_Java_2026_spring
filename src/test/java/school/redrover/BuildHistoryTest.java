@@ -1,30 +1,36 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.HomePage;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import school.redrover.common.TestUtils;
+import school.redrover.page.*;
 public class BuildHistoryTest extends BaseTest {
 
+
+
     @Test
-    public void testEmptyBuild(){
-        new HomePage(getDriver()).clickBuildHistory();
-        List<String> buildHistoryList = new ArrayList<>();
+    public void testStarBuild() {
+        BuildHistoryPage homePage = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName("TEST")
+                .selectItemType(TestUtils.JobType.MULTICONFIGURATION)
+                .selectMultiСonfigurationProjectAndClickOk()
+                .goHomePage()
+                .runningBuildForTesting()
+                .clickHistoryBuilds();
 
-        try {
-            for (WebElement webElement
-                    : getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//a[@class='jenkins-table__link model-link']")))) {
-                buildHistoryList.add(webElement.getText());
-            }
-        } catch (Exception e) {}
+        Assert.assertTrue(getDriver().findElement(By.xpath("//tbody/tr[1]/td[1]/div[1]//*[name()='svg']")).isDisplayed());
+    }
 
-        Assert.assertEquals(buildHistoryList.size(), 0);
+    @Test(dependsOnMethods = "testStarBuild")
+    public void testDisplayInformationConsole() {
+        String consoleText = new HomePage(getDriver())
+                .clickHistoryBuilds()
+                .clickConsole()
+                .getConsoleOutputText();
+
+        Assert.assertTrue(consoleText.contains("Finished: SUCCESS"), "Билд не завершился успешно");
     }
 }
