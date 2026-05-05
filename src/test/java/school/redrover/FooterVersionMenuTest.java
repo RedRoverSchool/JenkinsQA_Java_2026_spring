@@ -13,6 +13,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.JenkinsUtils;
+import school.redrover.page.HomePage;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -59,41 +60,27 @@ public class FooterVersionMenuTest extends BaseTest {
     @Test
     public void testAboutJenkinsOpensInSameTab() {
 
-        String currentUrl = getDriver().getCurrentUrl();
-        String baseUrl = currentUrl.replaceFirst("(https?://[^/]+).*", "$1");
+        String baseUrl = getDriver().getCurrentUrl().replaceFirst("(https?://[^/]+).*", "$1");
         getDriver().get(baseUrl);
 
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+        HomePage homePage = new HomePage(getDriver());
 
-        List<WebElement> versionLinks = getDriver().findElements(
-                By.xpath("//footer//a[contains(text(),'Jenkins')]"));
+        homePage.scrollToBottom()
+                .clickJenkinsVersionLink();
 
-        if (versionLinks.isEmpty()) {
-            System.out.println("Ссылка с версией Jenkins не найдена в футере. Тест пропущен.");
-            return;
-        }
-
-        WebElement jenkinsVersionLink = versionLinks.get(0);
-        jenkinsVersionLink.click();
-
-        List<WebElement> aboutMenus = getWait5().until(
-                ExpectedConditions.visibilityOfAllElementsLocatedBy(
-                        By.xpath("//a[contains(text(),'About Jenkins')]")));
-
-        if (aboutMenus.isEmpty()) {
-            System.out.println("Пункт 'About Jenkins' не найден. Тест пропущен.");
+        if (!homePage.isAboutJenkinsPresent()) {
+            System.out.println("'About Jenkins' menu item not found. Test skipped.");
             return;
         }
 
         String originalWindow = getDriver().getWindowHandle();
-        aboutMenus.get(0).click();
+
+        homePage.clickAboutJenkins();
 
         Assert.assertEquals(getDriver().getWindowHandles().size(), 1,
-                "Открылось новое окно или вкладка");
-
+                "A new window or tab was opened");
         Assert.assertEquals(getDriver().getWindowHandle(), originalWindow,
-                "Фокус переключился на другое окно");
-    }
+                "Focus switched to another window");
 
+}
 }
