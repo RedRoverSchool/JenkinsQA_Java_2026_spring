@@ -17,6 +17,14 @@ public class ManagePage extends BasePage {
         return new ToolsPage(getDriver());
     }
 
+    public NodesPage goToNodes() {
+        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+
+        return new NodesPage(getDriver());
+    }
+
+
     public CredentialsPage goToCredentials() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='credentials']"))).click();
         return new CredentialsPage(getDriver());
