@@ -87,4 +87,10 @@ public class HomePage extends BasePage {
     public boolean isUserButtonDisplayed() {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(userButton)).isDisplayed();
     }
+
+    public ManagePage clickManageJenkins() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("root-action-ManageJenkinsAction"))).click();
+        return new ManagePage(getDriver());
+    }
+
 }
