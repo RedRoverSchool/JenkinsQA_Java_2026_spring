@@ -93,4 +93,9 @@ public class HomePage extends BasePage {
         return new ManagePage(getDriver());
     }
 
+    public BuildHistoryPage clickBuildHistory() {
+        getDriver().findElement(By.xpath("//a[contains(@href, '/buildHistory')]")).click();
+        return new BuildHistoryPage(getDriver());
+    }
+
 }
