@@ -21,4 +21,20 @@ public class PipelineProjectConfigPage extends BaseConfigPage<PipelineProjectCon
 
         return new PipelineProjectPage(getDriver());
     }
+
+    public PipelineProjectConfigPage enterDescription(String description) {
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
+
+        return this;
+    }
+
+    public PipelineProjectConfigPage clickApply() {
+        getDriver().findElement(By.name("Apply")).click();
+
+        return this;
+    }
+
+    public String getSaveText() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText();
+    }
 }
