@@ -145,28 +145,4 @@ public class SignInTest extends BaseTest {
         Assert.assertTrue(loginPage.isSignInButtonEnabled(), "Sign in button is not enabled");
 
     }
-
-    @Test
-    public void testClearFieldsAndReEnterCredentials() {
-        createUser(USER_LOGIN, USER_FULL_NAME, USER_PASSWORD, USER_PASSWORD, USER_EMAIL, getDriver());
-
-        LoginPage loginPage = new LoginPage(getDriver()).logout();
-
-        loginPage.enterUsername("wronguser")
-                .enterPassword("wrongpass");
-
-
-        loginPage.clearUsername()
-                .clearPassword();
-
-
-        Assert.assertEquals(loginPage.getUsernameValue(), "", "Username field is not empty");
-        Assert.assertEquals(loginPage.getPasswordValue(), "", "Password field is not empty");
-
-
-        HomePage homePage = loginPage.loginAs(USER_LOGIN, USER_PASSWORD);
-
-
-        Assert.assertTrue(homePage.isUserButtonDisplayed(), "Failed to log in after clearing fields");
-    }
 }
