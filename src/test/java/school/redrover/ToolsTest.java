@@ -73,7 +73,7 @@ public class ToolsTest extends BaseTest {
                 .deleteAllJDKs()
                 .clickSaveButton();
 
-        Assert.assertTrue(new ManagePage(getDriver())
+        Assert.assertFalse(new ManagePage(getDriver())
                 .goToTools()
                 .isEditDisplayed());
     }
