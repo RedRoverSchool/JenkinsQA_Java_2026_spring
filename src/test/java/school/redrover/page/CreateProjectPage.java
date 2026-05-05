@@ -41,6 +41,12 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
+    public CreateProjectPage selectPipelineProject() {
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+
+        return this;
+    }
+
     public PipelineProjectConfigPage selectPipelineProjectAndClickOk() {
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
         getDriver().findElement(By.id("ok-button")).click();
