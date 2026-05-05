@@ -26,4 +26,9 @@ public class ManagePage extends BasePage {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='credentials']"))).click();
         return new CredentialsPage(getDriver());
     }
+
+    public NodesPage goToNodes() {
+        getDriver().findElement(By.xpath("//a[contains(@href, 'computer')]")).click();
+        return new NodesPage(getDriver());
+    }
 }
