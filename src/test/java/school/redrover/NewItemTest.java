@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.CreateProjectPage;
@@ -64,5 +65,21 @@ public class NewItemTest extends BaseTest {
         getDriver().findElement(By.id("name")).sendKeys("$");
 
         Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
+    }
+    @DataProvider(name = "invalid characters")
+    public Object[][] getData() {
+            return new Object[][]{{"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"},{"!"},{"?"},{"."}
+        };
+    }
+    @Test(dataProvider = "invalid characters")
+    public void testInvalidCharactersInName(String invalidCharacter) {
+        String invalidProjectName = "test" + invalidCharacter;
+
+        String actualErrorMessage = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(invalidProjectName)
+                .getErrorText();
+
+        Assert.assertEquals(actualErrorMessage, "» ‘" + invalidCharacter + "’ is an unsafe character");
     }
 }
