@@ -56,6 +56,6 @@ public class NewItemTest extends BaseTest {
                 .setProjectName("$");
 
         Assert.assertEquals(newItemPage.getErrorInvalidText(), "» ‘$’ is an unsafe character");
-        Assert.assertFalse(newItemPage.isOkButtonEnabled(), "Кнопка OK должна быть неактивна");
+        Assert.assertFalse(newItemPage.isOkButtonEnabled(), "The OK button should be inactive");
     }
 }
