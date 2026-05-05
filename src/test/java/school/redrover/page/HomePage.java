@@ -27,7 +27,12 @@ public class HomePage extends BasePage {
     }
 
     public <JobPage extends BasePage> JobPage clickOnProject(JobPage jobpage, String projectName) {
-        getDriver().findElement(By.xpath("//td/a[contains(@href, '%s')]".formatted(projectName))).click();
+        WebElement projectNameEl = getDriver().findElement(By.xpath("//a[contains(@href, '%s')]/span".formatted(projectName)));
+        new Actions(getDriver())
+                .moveToElement(projectNameEl, 2, 2)
+                .click()
+                .perform();
+
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@class, 'task-link')]//span[text()='Status']")));
 
         return jobpage;
