@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class PipelineProjectConfigPage extends BaseConfigPage {
+public class PipelineProjectConfigPage extends BaseConfigPage<PipelineProjectConfigPage> {
 
     public PipelineProjectConfigPage(WebDriver driver) {
         super(driver);
