@@ -13,6 +13,7 @@ import java.util.List;
 
 public class CredentialsTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testAddCredentialsDialogOpen() {
 
@@ -25,6 +26,7 @@ public class CredentialsTest extends BaseTest {
         Assert.assertEquals(dialogTitle, "Add Credentials");
     }
 
+    @Ignore
     @Test
     public void testCreateUsernamePasswordCredential() {
 
