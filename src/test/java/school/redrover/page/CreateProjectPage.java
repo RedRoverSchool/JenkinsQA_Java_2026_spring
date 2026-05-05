@@ -41,6 +41,12 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
+    public CreateProjectPage selectPipelineProject() {
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+
+        return this;
+    }
+
     public PipelineProjectConfigPage selectPipelineProjectAndClickOk() {
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
         getDriver().findElement(By.id("ok-button")).click();
@@ -70,12 +76,12 @@ public class CreateProjectPage extends BasePage {
         return new FreestyleProjectConfigPage(getDriver());
     }
 
-    public <JobConfigPage extends BasePage> JobConfigPage clickOK(JobConfigPage jobconfig) {
+    public <JobConfigPage extends BasePage> JobConfigPage clickOK(JobConfigPage jobConfig) {
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         // waiting for the configuration page
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
 
-        return jobconfig;
+        return jobConfig;
     }
 
     public String getErrorText() {

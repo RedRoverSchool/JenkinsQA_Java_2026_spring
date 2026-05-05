@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.BuildHistoryTest;
 
 import java.util.List;
 
@@ -26,7 +27,12 @@ public class HomePage extends BasePage {
     }
 
     public <JobPage extends BasePage> JobPage clickOnProject(JobPage jobpage, String projectName) {
-        getDriver().findElement(By.xpath("//td/a[contains(@href, '%s')]".formatted(projectName))).click();
+        WebElement projectNameEl = getDriver().findElement(By.xpath("//a[contains(@href, '%s')]/span".formatted(projectName)));
+        new Actions(getDriver())
+                .moveToElement(projectNameEl, 2, 2)
+                .click()
+                .perform();
+
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@class, 'task-link')]//span[text()='Status']")));
 
         return jobpage;
@@ -78,7 +84,19 @@ public class HomePage extends BasePage {
         return new GlobalViewPage(getDriver());
     }
 
+    public BuildHistoryPage clickBuildHistory(){
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/builds']"))).click();
+
+        return new BuildHistoryPage(getDriver());
+    }
+
     public String getViewDescriptionText() {
         return getDriver().findElement(By.id("description-content")).getText();
     }
+
+    public ManagePage clickManageJenkins() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("root-action-ManageJenkinsAction"))).click();
+        return new ManagePage(getDriver());
+    }
+
 }

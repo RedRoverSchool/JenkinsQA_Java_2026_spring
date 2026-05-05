@@ -68,4 +68,17 @@ public class FolderPage extends BasePage {
         return new CreateProjectPage(getDriver());
     }
 
+    public CreateFolderViewPage clickNewView() {
+        getDriver().findElement(By.xpath("//a[contains(@href, 'newView')]")).click();
+        getWait2().until(ExpectedConditions.textToBePresentInElementLocated(
+                By.xpath("//div[contains(@class, 'jenkins-form-label')]"),
+                "View name"
+        ));
+        return new CreateFolderViewPage(getDriver());
+    }
+
+    public String getCurrentView(){
+        return getDriver().findElement(By.xpath("//div[@class='tab active']/a")).getText();
+    }
+
 }

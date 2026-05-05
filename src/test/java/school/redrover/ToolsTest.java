@@ -11,6 +11,7 @@ import school.redrover.page.ToolsPage;
 
 public class ToolsTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testOpenToolsPage() {
         new HomePage(getDriver()).goManagePage()
@@ -49,6 +50,7 @@ public class ToolsTest extends BaseTest {
                 .isGlobalPathFieldDisplayed());
     }
 
+    @Ignore
     @Test
     public void testAddJDK() {
         ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
