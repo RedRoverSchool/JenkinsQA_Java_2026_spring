@@ -312,4 +312,27 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(actualError.contains("Failed to connect to repository"),
                 "Ожидаемый текст ошибки не найден" + actualError);
     }
+
+    @Test(dependsOnMethods = "testCreate")
+    public void testEnableDeleteWorkspaceBeforeBuildStarts() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='" + PROJECT_NAME + "']")))
+                .click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href,'configure')]")))
+                .click();
+
+        WebElement checkboxLabel = getWait10().until(
+                ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(.,'Delete workspace before build starts')]")));
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].scrollIntoView({block:'center'});", checkboxLabel);
+
+        checkboxLabel.click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href,'configure')]")))
+                .click();
+        WebElement actualCheckbox = getWait10().until(
+                ExpectedConditions.presenceOfElementLocated(By.name("hudson-plugins-ws_cleanup-PreBuildCleanup")));
+
+        Assert.assertTrue(actualCheckbox.isSelected());
+    }
 }

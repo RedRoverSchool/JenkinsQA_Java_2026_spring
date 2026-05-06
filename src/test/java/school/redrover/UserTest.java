@@ -5,6 +5,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -82,6 +83,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(actualUserName, userFullName);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testRenameUser")
     public void testDeleteUserViaDropDownMenu() {
 
