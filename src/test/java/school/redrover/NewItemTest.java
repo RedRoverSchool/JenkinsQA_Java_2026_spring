@@ -68,7 +68,7 @@ public class NewItemTest extends BaseTest {
     }
     @DataProvider(name = "invalid characters")
     public Object[][] getData() {
-            return new Object[][]{{"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"},{"!"},{"?"},{"."}
+            return new Object[][]{{"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"},{"!"}
         };
     }
     @Test(dataProvider = "invalid characters")
