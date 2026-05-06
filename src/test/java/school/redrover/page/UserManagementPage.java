@@ -16,7 +16,7 @@ public class UserManagementPage extends BasePage{
         super(driver);
     }
 
-    public CreateUserPage clickAddUser() {
+    public CreateUserPage clickCreateUserButton() {
         getDriver().findElement(addUserButton).click();
         return new CreateUserPage(getDriver());
     }
