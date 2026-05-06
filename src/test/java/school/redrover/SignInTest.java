@@ -18,7 +18,7 @@ public class SignInTest extends BaseTest {
     private void createUser(String userLogin, String userFullName, String password,
                             String retryPassword, String userMail, WebDriver driver) {
         new HomePage(driver)
-                .goManagePage()
+                .clickManageButton()
                 .goToUserManagement()   // этот метод должен быть в ManagePage
                 .clickAddUser()         // этот метод должен быть в UserManagementPage
                 .setUsername(userLogin)
