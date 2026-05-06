@@ -24,23 +24,16 @@ public class MultibranchPipelineTest extends BaseTest {
 
 	@Test
 	public void testCreate() {
-		getWait10().until(ExpectedConditions.elementToBeClickable(
-				By.xpath("//a[normalize-space()='New Item']"))).click();
-		WebElement nameInput = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
-		nameInput.clear();
-		nameInput.sendKeys(PROJECT_NAME);
+		List<String> projectList = new HomePage(getDriver())
+				.clickItemNewJob()
+				.setProjectName(PROJECT_NAME)
+				.selectMultibranchPipline()
+				.clickOkButton()
+				.goHomePage()
+				.getProjectList();
 
-		WebElement jobElement = getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']"));
-		((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", jobElement);
-		jobElement.click();
-		getDriver().findElement(By.id("ok-button")).click();
-
-		getWait10().until(ExpectedConditions.elementToBeClickable(By.className("app-jenkins-logo")));
-		getDriver().findElement(By.className("app-jenkins-logo")).click();
-
-		WebElement actualProjectName = getWait10().until(
-				ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME))));
-		Assert.assertEquals(actualProjectName.getText(), PROJECT_NAME);
+		Assert.assertEquals(projectList.size(), 1);
+		Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);
 	}
 
 	@Ignore

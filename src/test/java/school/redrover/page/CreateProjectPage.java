@@ -104,6 +104,12 @@ public class CreateProjectPage extends BasePage {
     public CreateProjectPage clickOutside() {getDriver().findElement(By.id("main-panel")).click();
         return this;
     }
+
+    public CreateProjectPage selectMultibranchPipline() {
+        getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']")).click();
+
+        return this;
+    }
 }
 
 
