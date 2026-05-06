@@ -75,11 +75,12 @@ public class NewItemTest extends BaseTest {
     public void testInvalidCharactersInName(String invalidCharacter) {
         String invalidProjectName = "test" + invalidCharacter;
 
-        String actualErrorMessage = new HomePage(getDriver())
+        String errorMessage = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(invalidProjectName)
+                .selectPipelineProject()
                 .getErrorText();
 
-        Assert.assertEquals(actualErrorMessage, "» ‘" + invalidCharacter + "’ is an unsafe character");
+        Assert.assertEquals(errorMessage, "» ‘" + invalidCharacter + "’ is an unsafe character");
     }
 }
