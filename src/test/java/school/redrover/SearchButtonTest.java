@@ -122,4 +122,5 @@ public class SearchButtonTest extends BaseTest {
 //
 //        Assert.assertTrue(getDriver().findElement(SEARCH_INPUT_FIELD).isDisplayed());
 //    }
+
 }
