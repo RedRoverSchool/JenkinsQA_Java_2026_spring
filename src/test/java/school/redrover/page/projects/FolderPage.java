@@ -1,9 +1,13 @@
-package school.redrover.page;
+package school.redrover.page.projects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.page.CreateFolderViewPage;
+import school.redrover.page.CreateProjectPage;
+import school.redrover.page.projectsConfig.FolderConfigPage;
+import school.redrover.page.common.BasePage;
 
 import java.util.regex.Pattern;
 

@@ -6,6 +6,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import javax.swing.*;
+import school.redrover.page.common.BasePage;
 
 public class BuildHistoryPage extends BasePage {
 

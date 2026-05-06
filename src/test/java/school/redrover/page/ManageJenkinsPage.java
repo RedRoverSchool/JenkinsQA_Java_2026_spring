@@ -3,8 +3,9 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.page.common.BasePage;
 
-public class ManageJenkinsPage extends BasePage{
+public class ManageJenkinsPage extends BasePage {
 
     private By userManagementLink = By.xpath("//a[@href='securityRealm/']");
     private By addUserButton = By.xpath("//div[@class='jenkins-app-bar__controls']");

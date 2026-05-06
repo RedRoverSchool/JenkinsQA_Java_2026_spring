@@ -4,8 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.JenkinsUtils;
+import school.redrover.page.common.BasePage;
 
-public class LoginPage extends BasePage{
+public class LoginPage extends BasePage {
     private static final By USERNAME_FIELD = By.cssSelector("#j_username");
     private static final By PASSWORD_FIELD = By.cssSelector("#j_password");
     private static final By SIGN_IN_BUTTON = By.xpath("//button[text()='Sign in']");
