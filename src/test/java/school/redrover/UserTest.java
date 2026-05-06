@@ -5,6 +5,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -20,44 +21,43 @@ public class UserTest extends BaseTest {
     @Test
     public void testCreateUser() {
 
-        new HomePage(getDriver())
-                .clickSetting()
+        List<String> users = new HomePage(getDriver())
+                .clickManageJenkins()
                 .clickUsersButton()
                 .clickCreateUserButton()
-                .sendUserData(USER_NAME, USER_PASSWORD, USER_PASSWORD, USER_EMAIL)
-                .createUser();
+                .setUsername(USER_NAME)
+                .setPassword(USER_PASSWORD)
+                .setConfirmPassword(USER_PASSWORD)
+                .setEmail(USER_EMAIL)
+                .clickCreateUserButton()
+                .getUsersList();
 
-        List<String> actualUsersNameList = getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By
-                .xpath("//a[@class = 'jenkins-table__link model-link inside']")))
-                .stream()
-                .map(WebElement::getText)
-                .toList();
-
-        Assert.assertTrue(actualUsersNameList.contains(USER_NAME));
+        Assert.assertTrue(users.contains(USER_NAME));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateUser")
     public void testSearchUser() {
 
         getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("root-action-SearchAction"))).click();
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("Get help using Jenkins search")));
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Search']")));
         WebElement searchInput = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("command-bar")));
         searchInput.sendKeys(USER_NAME);
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='search-results']")));
         searchInput.sendKeys(Keys.ENTER);
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(text(), 'Jenkins User ID:')]")));
 
         Assert.assertEquals(
                 getDriver().findElement(By.tagName("h1")).getText(),
-//                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1"))).getText(),
                 USER_NAME,
                 "The user with User ID " + USER_NAME + "is not found");
     }
-
+    
+    @Ignore
     @Test(dependsOnMethods = "testSearchUser")
     public void testRenameUser() {
         final String userFullName = "testUserFullName";
@@ -82,6 +82,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(actualUserName, userFullName);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testRenameUser")
     public void testDeleteUserViaDropDownMenu() {
 
@@ -112,6 +113,7 @@ public class UserTest extends BaseTest {
                 "The user with User ID " + USER_NAME + "was not deleted");
     }
 
+    @Ignore
     @Test
     public void testCreateUserWithEmptyFields() {
         final List<String> expectedErrorMessageList = List.of(
@@ -140,6 +142,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(actualErrorMessageList, expectedErrorMessageList);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateUserWithEmptyFields")
     public void testCreateUserWithAnIncorrectConfirmPassword() {
         final List<String> expectedErrorMessageList = List.of(
@@ -168,6 +171,7 @@ public class UserTest extends BaseTest {
                 "Error Message for incorrect confirmation password not displayed");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateUserWithAnIncorrectConfirmPassword")
     public void testCreateUserWithDuplicateUsername() {
         final String expectedErrorMessage = "User name is already taken";

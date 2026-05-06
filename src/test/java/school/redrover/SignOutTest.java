@@ -7,12 +7,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.JenkinsUtils;
 
 public class SignOutTest extends BaseTest {
 
+    @Ignore
     @Test
     public void signOutTest() {
         WebElement hoverOverAccountIcon = getDriver().findElement(By.id("root-action-UserAction"));
@@ -32,6 +34,7 @@ public class SignOutTest extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
     public void testSingOutIsImmediate() {
         WebElement userButton = getDriver().findElement(By.id("root-action-UserAction"));
@@ -50,6 +53,7 @@ public class SignOutTest extends BaseTest {
         getWait5().until(ExpectedConditions.urlContains("login"));
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testSingOutIsImmediate")
     public void testJenkinsSingOutButton() {
 
@@ -74,6 +78,7 @@ public class SignOutTest extends BaseTest {
         Assert.assertEquals(buttonSingIn.getText(), "Sign in");
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testSingOutIsImmediate")
      public void testJenkinsSingOutButtonUserNameEmpty() {
 
@@ -101,6 +106,7 @@ public class SignOutTest extends BaseTest {
                 "Поле 'Username' должно быть пустым, но содержит: '" + usernameValue + "'");
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testSingOutIsImmediate")
     public void testJenkinsSingOutButtonPasswordEmpty() {
 

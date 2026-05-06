@@ -1,11 +1,13 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
+import school.redrover.page.CreateProjectPage;
+import school.redrover.page.HomePage;
+import school.redrover.page.projects.PipelineProjectPage;
+import java.util.List;
 
 public class PipelineProjectTest extends BaseTest {
 
@@ -14,83 +16,118 @@ public class PipelineProjectTest extends BaseTest {
     private static final String RENAME_PIPELINE = "RenamedPipeline";
 
     @Test
-    public void testCreateWithValidName() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
+    public void testCreate() {
+        List<String> jobList = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectPipelineProjectAndClickOk()
+                .goHomePage()
+                .getProjectList();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated((By.id("name")))).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.name("Submit")));
-        getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']")).click();
-
-        Assert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-table__link > span:first-child"))).getText(),
-                PROJECT_NAME);
+        Assert.assertListContainsObject(
+                jobList,
+                PROJECT_NAME,
+                "Pipeline is not created");
     }
 
-    @Test(dependsOnMethods = "testCreateWithValidName")
+    @Test(dependsOnMethods = "testCreate")
     public void testCreateWithDuplicateName() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
+        String errorText = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectItemType(TestUtils.JobType.PIPELINE)
+                .getErrorInvalidText();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated((By.id("name")))).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='itemname-invalid']")).getText(),
+        Assert.assertEquals(
+                errorText,
                 "» A job already exists with the name ‘%s’".formatted(PROJECT_NAME));
     }
 
     @Test(dependsOnMethods = "testCreateWithDuplicateName")
     public void testAddDescription() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(PROJECT_NAME)))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']"))).sendKeys(DESCRIPTION_TEXT);
-        getDriver().findElement(By.xpath("//button[@value='Save']")).click();
+        String descriptionText = new HomePage(getDriver())
+                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
+                .clickAddDescription()
+                .enterDescription(DESCRIPTION_TEXT)
+                .clickSaveDescription()
+                .getDescriptionText();
 
-        Assert.assertEquals(
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText(),
-                DESCRIPTION_TEXT);
+        Assert.assertEquals(descriptionText, DESCRIPTION_TEXT);
     }
 
     @Test(dependsOnMethods = "testAddDescription")
+    public void testDisable() {
+        String warningText = new HomePage(getDriver())
+                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
+                .clickConfigureSidebarButton()
+                .toggleProjectState()
+                .clickSaveButton()
+                .getDisabledWarningText();
+
+        Assert.assertTrue(warningText.contains("This project is currently disabled"));
+    }
+
+    @Test(dependsOnMethods = "testDisable")
+    public void testEnable() {
+        boolean isBuildNowButtonDisplayed = new HomePage(getDriver())
+                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
+                .clickConfigureSidebarButton()
+                .toggleProjectState()
+                .clickSaveButton()
+                .isBuildNowDisplayed();
+
+        Assert.assertTrue(isBuildNowButtonDisplayed);
+    }
+
+    @Test(dependsOnMethods = "testEnable")
     public void testRename() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(PROJECT_NAME)))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/job/%s/confirm-rename']".formatted(PROJECT_NAME)))).click();
+        List<String> jobList = new HomePage(getDriver())
+                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
+                .clickRenameSidebarButton()
+                .updateProjectName(RENAME_PIPELINE)
+                .clickRenameButton()
+                .goHomePage()
+                .getProjectList();
 
-        WebElement inputField = getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='newName']")));
-        inputField.clear();
-        inputField.sendKeys(RENAME_PIPELINE);
-        getDriver().findElement(By.xpath("//button[@value='Rename']")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-head-icon"))).click();
-
-        Assert.assertEquals(getDriver().findElement(By.cssSelector(".jenkins-table__link > span:first-child")).getText(),
-                RENAME_PIPELINE);
+        Assert.assertEquals(jobList.size(), 1);
+        Assert.assertEquals(jobList.getFirst(), RENAME_PIPELINE);
     }
 
     @Test
     public void testCreateWithEmptyName() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Pipeline']"))).click();
+        CreateProjectPage createProjectPage = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(" ")
+                .selectItemType(TestUtils.JobType.PIPELINE);
 
         Assert.assertEquals(
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='itemname-required']"))).getText(),
+                createProjectPage.getErrorEmptyText(),
                 "» This field cannot be empty, please enter a valid name");
 
-        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
+        Assert.assertFalse(
+                createProjectPage.isOkButtonEnabled());
     }
 
     @Test
     public void testApplyProjectDescription() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
+        String saveText = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectPipelineProjectAndClickOk()
+                .enterDescription(DESCRIPTION_TEXT)
+                .clickApply()
+                .getSaveText();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated((By.id("name")))).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']"))).sendKeys(DESCRIPTION_TEXT);
-        getDriver().findElement(By.name("Apply")).click();
-
-        String saveText = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText();
         Assert.assertEquals(saveText, "Saved");
+    }
+
+    @Test(dependsOnMethods = "testRename")
+    public void testDeleteViaSidebar() {
+        List<String> jobList = new HomePage(getDriver())
+                .clickOnProject(new PipelineProjectPage(getDriver()), RENAME_PIPELINE)
+                .deletePipelineAndConfirm()
+                .getProjectList();
+
+        Assert.assertListNotContainsObject(jobList, RENAME_PIPELINE, "Pipeline is not deleted");
     }
 }
