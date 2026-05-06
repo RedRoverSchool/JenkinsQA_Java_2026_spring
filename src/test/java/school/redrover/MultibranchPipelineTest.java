@@ -10,8 +10,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
-import school.redrover.page.HomePage;
-import school.redrover.page.projectsConfig.MultibranchConfigPage;
+import school.redrover.page.projects.MultibranchProjectPage;
 
 import java.util.List;
 
@@ -97,7 +96,7 @@ public class MultibranchPipelineTest extends BaseTest {
 	public void testDeleteProjectViaSideMenu() {
 
 		List<String> projectList = TestUtils.createJob(getDriver(), PPROJECT_NAME_DELETE, TestUtils.JobType.MULTIBRANCH_PIPELINE)
-				.clickOnProject(new MultibranchConfigPage(getDriver()), PPROJECT_NAME_DELETE)
+				.clickOnProject(new MultibranchProjectPage(getDriver()), PPROJECT_NAME_DELETE)
 				.clickDeleteInSideMenu()
 				.confirmDelete()
 				.getProjectList();

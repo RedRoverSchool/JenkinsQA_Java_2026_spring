@@ -11,12 +11,6 @@ public class MultibranchConfigPage extends BaseConfigPage<MultibranchConfigPage>
         super(driver);
     }
 
-    public MultibranchConfigPage clickDeleteInSideMenu() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(., 'Delete Multibranch Pipeline')]"))).click();
-
-        return this;
-    }
-
     public HomePage confirmDelete() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();
 
