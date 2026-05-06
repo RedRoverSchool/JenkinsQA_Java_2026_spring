@@ -77,8 +77,9 @@ public class FolderPage extends BasePage {
         return new CreateFolderViewPage(getDriver());
     }
 
-    public String getCurrentView(){
-        return getDriver().findElement(By.xpath("//div[@class='tab active']/a")).getText();
+    public String getCurrentViewName(){
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='tab active']/a"))).getText();
     }
 
 }
