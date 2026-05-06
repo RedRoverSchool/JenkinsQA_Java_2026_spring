@@ -41,7 +41,7 @@ public class CreateUserPage extends BaseConfigPage{
         return this;
     }
 
-    public UserManagementPage clickSubmit() {
+    public UserManagementPage clickCreateUserButton() {
         getDriver().findElement(submitButton).click();
         return new UserManagementPage(getDriver());
     }

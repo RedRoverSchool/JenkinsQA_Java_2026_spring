@@ -19,14 +19,14 @@ public class SignInTest extends BaseTest {
                             String retryPassword, String userMail, WebDriver driver) {
         new HomePage(driver)
                 .goManagePage()
-                .goToUserManagement()   // этот метод должен быть в ManagePage
-                .clickAddUser()         // этот метод должен быть в UserManagementPage
+                .clickUsersButton()   // этот метод должен быть в ManagePage
+                .clickCreateUserButton()         // этот метод должен быть в UserManagementPage
                 .setUsername(userLogin)
                 .setFullName(userFullName)
                 .setPassword(password)
                 .setConfirmPassword(retryPassword)
                 .setEmail(userMail)
-                .clickSubmit();
+                .clickCreateUserButton();
     }
 
     final private String USER_LOGIN = "Berendey";

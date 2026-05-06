@@ -21,20 +21,18 @@ public class UserTest extends BaseTest {
     @Test
     public void testCreateUser() {
 
-        new HomePage(getDriver())
-                .clickSetting()
+        List<String> users = new HomePage(getDriver())
+                .clickManageJenkins()
                 .clickUsersButton()
                 .clickCreateUserButton()
-                .sendUserData(USER_NAME, USER_PASSWORD, USER_PASSWORD, USER_EMAIL)
-                .createUser();
+                .setUsername(USER_NAME)
+                .setPassword(USER_PASSWORD)
+                .setConfirmPassword(USER_PASSWORD)
+                .setEmail(USER_EMAIL)
+                .clickCreateUserButton()
+                .getUsersList();
 
-        List<String> actualUsersNameList = getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By
-                .xpath("//a[@class = 'jenkins-table__link model-link inside']")))
-                .stream()
-                .map(WebElement::getText)
-                .toList();
-
-        Assert.assertTrue(actualUsersNameList.contains(USER_NAME));
+        Assert.assertTrue(users.contains(USER_NAME));
     }
 
     @Ignore
