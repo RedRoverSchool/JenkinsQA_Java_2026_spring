@@ -2,52 +2,50 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class FreestyleProjectConfigPage extends BaseModel {
+public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectConfigPage> {
 
     public FreestyleProjectConfigPage(WebDriver driver) {
         super(driver);
     }
 
-    public FreestyleProjectConfigPage waitToLoadConfigurePage(){
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[@id='general']")));
+    public FreestyleProjectPage clickSubmitButton() {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
 
-        return new FreestyleProjectConfigPage(getDriver());
-    }
-
-    public FreestyleProjectConfigPage clickTriggerButton(){
-        getDriver().findElement(By.xpath("//button[@data-section-id='triggers']")).click();
-
-        return new FreestyleProjectConfigPage(getDriver());
-    }
-
-    public FreestyleProjectConfigPage clickTrigger(String triggerTitle){
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(getDriver().findElement(By.xpath("//label[text()='%s']".formatted(triggerTitle)))).perform();
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[text()='%s']".formatted(triggerTitle)))).click();
-
-        return new FreestyleProjectConfigPage(getDriver());
-    }
-
-    public FreestyleProjectConfigPage fillTriggerTokenField(String token){
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='authToken']"))).sendKeys(token);
-
-        return new FreestyleProjectConfigPage(getDriver());
-    }
-
-    public FreestyleProjectPage clickSaveButton(){
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        // todo: изменить ожидание FreestyleProjectPage, чтобы не работало с url
+        getWait10().until(ExpectedConditions.not(ExpectedConditions.urlContains("configure")));
 
         return new FreestyleProjectPage(getDriver());
     }
 
-    public BasePage goToBasePage(){
-        getDriver().findElement(By.xpath("//a[@class='app-jenkins-logo']")).click();
+    public FreestyleProjectConfigPage fillDescription(String descriptiontext) {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.name("description")))
+                .sendKeys(descriptiontext);
 
-        return new BasePage(getDriver());
+        return this;
     }
 
+    public FreestyleProjectConfigPage clickCheckBoxGitHub() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                        By.xpath("//label[contains(text(),'GitHub project')]")))
+                .click();
+        return this;
+    }
+
+    public FreestyleProjectConfigPage fillGitURL(String repoURL) {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.name("_.projectUrlStr"))).
+                sendKeys(repoURL);
+        return this;
+    }
+
+    public FreestyleProjectConfigPage clickSave() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                        By.name("Submit")))
+                .click();
+        return this;
+    }
 
 }

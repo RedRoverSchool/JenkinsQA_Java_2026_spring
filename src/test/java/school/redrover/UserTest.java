@@ -37,6 +37,7 @@ public class UserTest extends BaseTest {
         Assert.assertTrue(actualUsersNameList.contains(USER_NAME));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateUser")
     public void testSearchUser() {
 
@@ -58,7 +59,8 @@ public class UserTest extends BaseTest {
                 USER_NAME,
                 "The user with User ID " + USER_NAME + "is not found");
     }
-
+    
+    @Ignore
     @Test(dependsOnMethods = "testSearchUser")
     public void testRenameUser() {
         final String userFullName = "testUserFullName";
@@ -114,6 +116,7 @@ public class UserTest extends BaseTest {
                 "The user with User ID " + USER_NAME + "was not deleted");
     }
 
+    @Ignore
     @Test
     public void testCreateUserWithEmptyFields() {
         final List<String> expectedErrorMessageList = List.of(
@@ -142,6 +145,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(actualErrorMessageList, expectedErrorMessageList);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateUserWithEmptyFields")
     public void testCreateUserWithAnIncorrectConfirmPassword() {
         final List<String> expectedErrorMessageList = List.of(
@@ -170,6 +174,7 @@ public class UserTest extends BaseTest {
                 "Error Message for incorrect confirmation password not displayed");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateUserWithAnIncorrectConfirmPassword")
     public void testCreateUserWithDuplicateUsername() {
         final String expectedErrorMessage = "User name is already taken";

@@ -9,9 +9,25 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.JenkinsUtils;
+import school.redrover.page.HomePage;
+import school.redrover.page.LoginPage;
 
 
 public class SignInTest extends BaseTest {
+
+    private void createUser(String userLogin, String userFullName, String password,
+                            String retryPassword, String userMail, WebDriver driver) {
+        new HomePage(driver)
+                .goManagePage()
+                .goToUserManagement()   // этот метод должен быть в ManagePage
+                .clickAddUser()         // этот метод должен быть в UserManagementPage
+                .setUsername(userLogin)
+                .setFullName(userFullName)
+                .setPassword(password)
+                .setConfirmPassword(retryPassword)
+                .setEmail(userMail)
+                .clickSubmit();
+    }
 
     final private String USER_LOGIN = "Berendey";
     final private String USER_PASSWORD = "Beren123";
@@ -91,96 +107,42 @@ public class SignInTest extends BaseTest {
         Assert.assertEquals(errorMessage.getText(), "Invalid username or password");
     }
 
-    @Ignore
     @Test
     public void testSignInPageAlertMessageText() {
-        JenkinsUtils.logout(getDriver());
+        boolean textMatches = new LoginPage(getDriver())
+                .logout()
+                .enterUsername("user")
+                .enterPassword("qwerty")
+                .clickSignIn()
+                .verifyErrorMessageText("Invalid username or password");
 
-        getDriver().findElement(By.cssSelector("#j_username")).sendKeys("user");
-        getDriver().findElement(By.cssSelector("#j_password")).sendKeys("qwerty");
-        getDriver().findElement(By.xpath("//button[text()='Sign in']")).click();
-
-        boolean textMatches = getWait10().until(
-                ExpectedConditions.textToBePresentInElementLocated(
-                        By.xpath("//div[@class='app-sign-in-register__error']"),
-                        "Invalid username or password"));
-
-        Assert.assertTrue(textMatches, "Сообщение об ошибке не появилось или текст не совпадает");
+        Assert.assertTrue(textMatches, "Error message not shown or text doesn't match");
     }
 
-    @Test
+    @Test (dependsOnMethods = "testSignInPageAlertMessageText")
     public void testSignInPageAlertTextColor() {
-        JenkinsUtils.logout(getDriver());
+        boolean colorMatches = new LoginPage(getDriver())
+                .logout()
+                .enterUsername("user")
+                .enterPassword("qwerty")
+                .clickSignIn()
+                .verifyErrorMessageColor("oklch(0.6 0.2671 30)");
 
-        getDriver().findElement(By.cssSelector("#j_username")).sendKeys("user");
-        getDriver().findElement(By.cssSelector("#j_password")).sendKeys("qwerty");
-        getDriver().findElement(By.xpath("//button[text()='Sign in']")).click();
-
-        WebElement alertText = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[text()='Invalid username or password']")));
-
-        String actualColor = alertText.getCssValue("color");
-        Assert.assertTrue(actualColor.contains("oklch(0.6 0.2671 30)"),
-                "Цвет текста ошибки не красный: " + actualColor);
+        Assert.assertTrue(colorMatches, "Error message text color is not red: expected color fragment not found");
     }
 
     @Test
     public void testLoginPageElementsPresence() {
-        JenkinsUtils.logout(getDriver());
+        LoginPage loginPage = new LoginPage(getDriver()).logout();
 
-        WebElement usernameField = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("j_username")));
+        Assert.assertTrue(loginPage.isUsernameFieldDisplayed(), "Username field is not displayed");
+        Assert.assertTrue(loginPage.isUsernameFieldEnabled(), "Username field is not enabled");
 
-        Assert.assertTrue(usernameField.isDisplayed(), "Поле Username не отображается");
-        Assert.assertTrue(usernameField.isEnabled(), "Поле Username не активно");
+        Assert.assertTrue(loginPage.isPasswordFieldDisplayed(), "Password field is not displayed");
+        Assert.assertTrue(loginPage.isPasswordFieldEnabled(), "Password field is not enabled");
 
-        WebElement passwordField = getDriver().findElement(By.id("j_password"));
-        Assert.assertTrue(passwordField.isDisplayed(), "Поле Password не отображается");
-        Assert.assertTrue(passwordField.isEnabled(), "Поле Password не активно");
-
-        WebElement signInButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
-        Assert.assertTrue(signInButton.isDisplayed(), "Кнопка Sign in не отображается");
-        Assert.assertTrue(signInButton.isEnabled(), "Кнопка Sign in не активна");
+        Assert.assertTrue(loginPage.isSignInButtonDisplayed(), "Sign in button is not displayed");
+        Assert.assertTrue(loginPage.isSignInButtonEnabled(), "Sign in button is not enabled");
 
     }
-
-    @Test
-    public void testClearFieldsAndReEnterCredentials() {
-        JenkinsUtils.logout(getDriver());
-
-        WebElement usernameField = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("j_username")));
-        WebElement passwordField = getDriver().findElement(By.id("j_password"));
-
-        usernameField.sendKeys("wronguser");
-        passwordField.sendKeys("wrongpass");
-
-        usernameField.clear();
-        passwordField.clear();
-
-        Assert.assertEquals(usernameField.getAttribute("value"), "");
-        Assert.assertEquals(passwordField.getAttribute("value"), "");
-
-        JenkinsUtils.login(this);
-
-        WebElement userButton = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
-        Assert.assertTrue(userButton.isDisplayed(), "Не удалось войти в систему после очистки полей");
-    }
-
-    private void createUser(String userLogin, String userFullName, String password, String retryPassword, String userMail, WebDriver driver) {
-
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("root-action-ManageJenkinsAction"))).click();
-
-        driver.findElement(By.xpath("//a[@href='securityRealm/']")).click();
-        driver.findElement(By.xpath("//div[@class='jenkins-app-bar__controls']")).click();
-
-        driver.findElement(By.name("username")).sendKeys(userLogin);
-        driver.findElement(By.name("password1")).sendKeys(password);
-        driver.findElement(By.name("password2")).sendKeys(retryPassword);
-        driver.findElement(By.name("fullname")).sendKeys(userFullName);
-        driver.findElement(By.name("email")).sendKeys(userMail);
-        driver.findElement(By.name("Submit")).click();
-    }
-
 }

@@ -1,14 +1,13 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.*;
+
+import java.util.List;
 
 
 public class OrganizationFolderTest extends BaseTest {
@@ -16,45 +15,46 @@ public class OrganizationFolderTest extends BaseTest {
     public static final String DESCRIPTION_TEXT = "Description: New project";
     public static final String DISPLAY_NAME = "OrgFolderDisplayName";
 
-    private void goToMainPage() {
-        WebElement logo = getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a.app-jenkins-logo")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", logo);
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@href='/view/all/newJob']"))).isDisplayed();
-    }
-
     @Test
     public void testCreate() {
-        TestUtils.createJob(getDriver(), getWait10(), ORG_FOLDER_NAME, TestUtils.JobType.FOLDER);
-        goToMainPage();
+        List<String> joblist = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(ORG_FOLDER_NAME)
+                .scrollToTypeOfProject(TestUtils.JobType.ORGANIZATION_FOLDER)
+                .selectItemType(TestUtils.JobType.ORGANIZATION_FOLDER)
+                .clickOK(new OrganizationFolderConfigPage(getDriver()))
+                .goHomePage()
+                .getProjectList();
 
-        Assert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated( By.cssSelector(".jenkins-table__link > span:first-child"))).getText(), ORG_FOLDER_NAME);
-    }
-
-    @Test(dependsOnMethods = "testCreate")
-    public void testAddDescription() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(ORG_FOLDER_NAME)))).click();
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//textarea[@name='description']"))).sendKeys(DESCRIPTION_TEXT);
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@value='Save']"))).click();
-
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.id("description-content"), DESCRIPTION_TEXT));
-
-        Assert.assertEquals(
-                getDriver().findElement(By.id("description-content")).getText(), DESCRIPTION_TEXT);
+        Assert.assertEquals(joblist.size(), 1);
+        Assert.assertEquals(joblist.getFirst(), ORG_FOLDER_NAME);
     }
 
     @Ignore
     @Test(dependsOnMethods = "testCreate")
-    public void testAddDisplayName () {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(ORG_FOLDER_NAME)))).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/job/%s/configure']".formatted(ORG_FOLDER_NAME)))).click();
+    public void testAddDescription() {
+        String actualDescriptionText = new HomePage(getDriver())
+                .clickOnProject(new OrganizationFolderPage(getDriver()), ORG_FOLDER_NAME)
+                .clickAddDescription()
+                .enterDescription(DESCRIPTION_TEXT)
+                .clickSaveDescription()
+                .getTextOfDescription();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='_.displayNameOrNull']"))).sendKeys(DISPLAY_NAME);
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@value='Save']"))).click();
+        Assert.assertEquals(actualDescriptionText, DESCRIPTION_TEXT);
+    }
 
-        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1"))).getText(), DISPLAY_NAME);
+
+    @Test(dependsOnMethods = "testCreate")
+    public void testAddDisplayName() {
+        List<String> jobnewlist = new HomePage(getDriver())
+                .clickOnProject(new OrganizationFolderPage(getDriver()), ORG_FOLDER_NAME)
+                .clickConfigure()
+                .enterDisplayName(DISPLAY_NAME)
+                .clickSave(new OrganizationFolderPage(getDriver()))
+                .goHomePage()
+                .getProjectList();
+
+        Assert.assertEquals(jobnewlist.size(), 1);
+        Assert.assertEquals(jobnewlist.getFirst(), DISPLAY_NAME);
     }
 }

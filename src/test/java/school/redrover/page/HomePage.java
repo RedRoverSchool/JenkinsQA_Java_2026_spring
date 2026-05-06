@@ -1,13 +1,19 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.List;
 
 public class HomePage extends BasePage {
+
+    private static final By SEARCH_BUTTON = By.xpath("//button[@id='root-action-SearchAction']");
+    private static final By SEARCH_INPUT_FIELD = By.xpath("//input[@id='command-bar']");
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -24,10 +30,116 @@ public class HomePage extends BasePage {
                 .stream().map(WebElement::getText).toList();
     }
 
-    public ManageJenkinsPage clickSetting() {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("root-action-ManageJenkinsAction"))).click();
+    public <JobPage extends BasePage> JobPage clickOnProject(JobPage jobpage, String projectName) {
+        WebElement projectNameEl = getDriver().findElement(By.xpath("//a[contains(@href, '%s')]/span".formatted(projectName)));
+        new Actions(getDriver())
+                .moveToElement(projectNameEl, 2, 2)
+                .click()
+                .perform();
 
-        return new ManageJenkinsPage(getDriver());
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@class, 'task-link')]//span[text()='Status']")));
 
+        return jobpage;
     }
+
+    public HomePage search(String name, boolean pressEnter) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                SEARCH_BUTTON)).click();
+
+        WebElement input = getDriver().findElement(SEARCH_INPUT_FIELD);
+        input.sendKeys(name);
+
+        if (pressEnter) {
+            input.sendKeys(Keys.ENTER);
+        }
+
+        return new HomePage(getDriver());
+    }
+
+    public HomePage search(String name) {
+        return search(name, false);  // По умолчанию не нажимаем Enter
+    }
+
+    public GlobalViewPage chooseSearchingResult(String name) {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath(String.format("//*[@id='search-results']/a[@href='/job/%s/']", name)))).click();
+
+        return new GlobalViewPage(getDriver());
+    }
+
+    public List<String> getSearchList() {
+        return getDriver().findElements(By.cssSelector("#search-results"))
+                .stream().map(WebElement::getText).toList();
+    }
+
+    public HomePage openProjectDropdownMenu(String projectName) {
+        WebElement row = getDriver().findElement(By.id("job_" + projectName));
+        new Actions(getDriver()).moveToElement(row).perform();
+        row.findElement(By.className("jenkins-menu-dropdown-chevron")).click();
+
+        return this;
+    }
+
+    public HomePage clickDeleteInDropdown() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@href, 'doDelete')]"))).click();
+
+        return this;
+    }
+
+    public HomePage confirmDelete(String projectName) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();
+        getWait5().until(ExpectedConditions.invisibilityOfElementLocated(By.id("job_" + projectName)));
+
+        return this;
+    }
+
+    public GlobalViewPage clickDescription() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
+
+        return new GlobalViewPage(getDriver());
+    }
+
+    public String getViewDescriptionText() {
+        return getDriver().findElement(By.id("description-content")).getText();
+    }
+
+    private final By userButton = By.id("root-action-UserAction");
+
+    public boolean isUserButtonDisplayed() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(userButton)).isDisplayed();
+    }
+
+    public ManagePage clickManageJenkins() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("root-action-ManageJenkinsAction"))).click();
+        return new ManagePage(getDriver());
+    }
+
+    public BuildHistoryPage clickBuildHistory() {
+        getDriver().findElement(By.xpath("//a[contains(@href, '/buildHistory')]")).click();
+        return new BuildHistoryPage(getDriver());
+    }
+
+    public HomePage scrollToBottom() {
+        ((JavascriptExecutor) getDriver()).executeScript("window.scrollTo(0, document.body.scrollHeight);");
+        return this;
+    }
+
+    public HomePage clickJenkinsVersionLink() {
+        WebElement link = getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//footer//a[contains(text(),'Jenkins')]")));
+        link.click();
+        return this;
+    }
+
+    public HomePage clickAboutJenkins() {
+        WebElement about = getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[contains(text(),'About Jenkins')]")));
+        about.click();
+        return this;
+    }
+
+    public boolean isAboutJenkinsPresent() {
+        return !getDriver().findElements(By.xpath("//a[contains(text(),'About Jenkins')]")).isEmpty();
+    }
+
 }

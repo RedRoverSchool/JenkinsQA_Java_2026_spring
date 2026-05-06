@@ -26,9 +26,9 @@ public class BreadcrumbTest extends BaseTest {
 
     @Test
     public void testNavigateToParentFolder() {
-        TestUtils.createJob(getDriver(), getWait10(), FOLDER_PARENT, TestUtils.JobType.FOLDER);
+        TestUtils.createJob(getDriver(), FOLDER_PARENT, TestUtils.JobType.FOLDER);
         goToMainPage();
-        TestUtils.createNestedJob(getDriver(), getWait10(), FOLDER_PARENT, FOLDER_CHILD, TestUtils.JobType.FOLDER);
+        TestUtils.createNestedJob(getDriver(), FOLDER_PARENT, FOLDER_CHILD, TestUtils.JobType.FOLDER);
         goToMainPage();
 
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_PARENT)))).click();
