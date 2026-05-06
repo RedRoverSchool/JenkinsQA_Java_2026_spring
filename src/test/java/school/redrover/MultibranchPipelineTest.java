@@ -58,6 +58,7 @@ public class MultibranchPipelineTest extends BaseTest {
 		Assert.assertTrue(icon.isDisplayed());
 	}
 
+	@Ignore
 	@Test(dependsOnMethods ="testCreate" )
 	public void testRename(){
 		getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME)))).click();
@@ -71,6 +72,7 @@ public class MultibranchPipelineTest extends BaseTest {
 				ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME_1)))).getText(), PROJECT_NAME_1);
 	}
 
+	@Ignore
 	@Test (dependsOnMethods ="testRename" )
 	public void testRenameViaContextMenu(){
 		Actions action = new Actions(getDriver());

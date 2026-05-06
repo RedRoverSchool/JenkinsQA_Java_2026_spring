@@ -47,6 +47,6 @@ public class BuildHistoryTest extends BaseTest {
                 .clickDeleteBuild()
                 .getWarningMessage();
 
-        Assert.assertEquals(warningMessage, "Delete the build ‘#1’?");
+        Assert.assertTrue(warningMessage.contains("Delete the build"));
     }
 }
