@@ -41,7 +41,7 @@ public class UserTest extends BaseTest {
         getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("root-action-SearchAction"))).click();
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("Get help using Jenkins search")));
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Search']")));
         WebElement searchInput = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("command-bar")));
         searchInput.sendKeys(USER_NAME);
 
@@ -52,7 +52,6 @@ public class UserTest extends BaseTest {
 
         Assert.assertEquals(
                 getDriver().findElement(By.tagName("h1")).getText(),
-//                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1"))).getText(),
                 USER_NAME,
                 "The user with User ID " + USER_NAME + "is not found");
     }
