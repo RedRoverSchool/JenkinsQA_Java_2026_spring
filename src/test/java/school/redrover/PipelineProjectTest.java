@@ -46,7 +46,7 @@ public class PipelineProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateWithDuplicateName")
     public void testAddDescription() {
         String descriptionText = new HomePage(getDriver())
-                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
+                .clickOnProject(PROJECT_NAME, new PipelineProjectPage(getDriver()))
                 .clickAddDescription()
                 .enterDescription(DESCRIPTION_TEXT)
                 .clickSaveDescription()
@@ -58,7 +58,7 @@ public class PipelineProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testAddDescription")
     public void testDisable() {
         String warningText = new HomePage(getDriver())
-                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
+                .clickOnProject(PROJECT_NAME, new PipelineProjectPage(getDriver()))
                 .clickConfigureSidebarButton()
                 .toggleProjectState()
                 .clickSaveButton()
@@ -70,7 +70,7 @@ public class PipelineProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testDisable")
     public void testEnable() {
         boolean isBuildNowButtonDisplayed = new HomePage(getDriver())
-                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
+                .clickOnProject(PROJECT_NAME, new PipelineProjectPage(getDriver()))
                 .clickConfigureSidebarButton()
                 .toggleProjectState()
                 .clickSaveButton()
@@ -82,7 +82,7 @@ public class PipelineProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testEnable")
     public void testRename() {
         List<String> jobList = new HomePage(getDriver())
-                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
+                .clickOnProject(PROJECT_NAME, new PipelineProjectPage(getDriver()))
                 .clickRenameSidebarButton()
                 .updateProjectName(RENAME_PIPELINE)
                 .clickRenameButton()
@@ -124,7 +124,7 @@ public class PipelineProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testRename")
     public void testDeleteViaSidebar() {
         List<String> jobList = new HomePage(getDriver())
-                .clickOnProject(new PipelineProjectPage(getDriver()), RENAME_PIPELINE)
+                .clickOnProject(RENAME_PIPELINE, new PipelineProjectPage(getDriver()))
                 .deletePipelineAndConfirm()
                 .getProjectList();
 

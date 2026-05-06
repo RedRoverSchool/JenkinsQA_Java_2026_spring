@@ -6,24 +6,25 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.CreateFolderViewPage;
 import school.redrover.page.CreateProjectPage;
+import school.redrover.page.common.BaseProjectPage;
 import school.redrover.page.projectsConfig.FolderConfigPage;
-import school.redrover.page.common.BasePage;
 
 import java.util.regex.Pattern;
 
-public class FolderPage extends BasePage {
-    public FolderPage(WebDriver driver) {
+public class FolderProjectPage extends BaseProjectPage {
+
+    public FolderProjectPage(WebDriver driver) {
         super(driver);
     }
 
-    public FolderPage clickRename(String projectName) {
+    public FolderProjectPage clickRename(String projectName) {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("svg[tooltip='Folder']")));
         getDriver().findElement(By.xpath("//a[@href='/job/%s/confirm-rename']".formatted(projectName))).click();
 
         return this;
     }
 
-    public FolderPage enterNewName(String newName) {
+    public FolderProjectPage enterNewName(String newName) {
         WebElement newNameEl = getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='newName']")));
         newNameEl.clear();
         newNameEl.sendKeys(newName);
@@ -31,27 +32,27 @@ public class FolderPage extends BasePage {
         return this;
     }
 
-    public FolderPage clickRenameButton() {
+    public FolderProjectPage clickRenameButton() {
         getDriver().findElement(By.xpath("//button[@value='Rename']")).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("svg[tooltip='Folder']")));
 
         return this;
     }
 
-    public FolderPage clickAddDescription() {
+    public FolderProjectPage clickAddDescription() {
         getDriver().findElement(By.id("description-link")).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']")));
 
         return this;
     }
 
-    public FolderPage enterDescription(String description) {
+    public FolderProjectPage enterDescription(String description) {
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
 
         return this;
     }
 
-    public FolderPage clickSaveDescription() {
+    public FolderProjectPage clickSaveDescription() {
         getDriver().findElement(By.xpath("//button[@value='Save']")).click();
         getWait2().until(ExpectedConditions.textMatches(By.id("description-content"), Pattern.compile("\\S")));
 

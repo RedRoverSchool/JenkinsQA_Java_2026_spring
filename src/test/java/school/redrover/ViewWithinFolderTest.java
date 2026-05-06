@@ -4,7 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.projects.FolderPage;
+import school.redrover.page.projects.FolderProjectPage;
 import school.redrover.page.HomePage;
 
 public class ViewWithinFolderTest extends BaseTest {
@@ -21,7 +21,7 @@ public class ViewWithinFolderTest extends BaseTest {
                 .selectFolder()
                 .clickOkButton()
                 .goHomePage()
-                .clickOnProject(new FolderPage(getDriver()), FOLDER_NAME)
+                .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .clickNewView()
                 .setProjectName(VIEW_NAME)
                 .chooseMyView()

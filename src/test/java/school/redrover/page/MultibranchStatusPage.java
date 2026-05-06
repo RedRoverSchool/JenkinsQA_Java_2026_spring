@@ -3,9 +3,9 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.page.common.BasePage;
+import school.redrover.page.common.BaseProjectPage;
 
-public class MultibranchStatusPage extends BasePage {
+public class MultibranchStatusPage extends BaseProjectPage {
 
     public MultibranchStatusPage(WebDriver driver) {
         super(driver);

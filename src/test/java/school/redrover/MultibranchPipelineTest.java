@@ -98,7 +98,7 @@ public class MultibranchPipelineTest extends BaseTest {
 		TestUtils.createJob(getDriver(),PPROJECT_NAME_DELETE, TestUtils.JobType.MULTIBRANCH_PIPELINE);
 
 		List<String> projectList = new HomePage(getDriver())
-				.clickOnProject(new MultibranchStatusPage(getDriver()),PPROJECT_NAME_DELETE)
+				.clickOnProject(PPROJECT_NAME_DELETE, new MultibranchStatusPage(getDriver()))
 				.clickDeleteInSideMenu()
 				.confirmDelete()
 				.getProjectList();

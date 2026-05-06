@@ -5,11 +5,11 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
+import school.redrover.page.common.BaseProjectPage;
 import school.redrover.page.projectsConfig.PipelineProjectConfigPage;
 import school.redrover.page.PipelineProjectRenamePage;
-import school.redrover.page.common.BasePage;
 
-public class PipelineProjectPage extends BasePage {
+public class PipelineProjectPage extends BaseProjectPage {
 
     public PipelineProjectPage(WebDriver driver) {
         super(driver);
