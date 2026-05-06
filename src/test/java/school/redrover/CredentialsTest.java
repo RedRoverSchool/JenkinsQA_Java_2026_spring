@@ -49,7 +49,6 @@ public class CredentialsTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateUsernamePasswordCredential")
     public void testDeleteCredentials() {
-//        getDriver().navigate().refresh();
 
         boolean isDeleted = new HomePage(getDriver())
                 .clickManageJenkins()
