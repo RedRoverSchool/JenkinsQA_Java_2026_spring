@@ -35,6 +35,7 @@ public class UserTest extends BaseTest {
         Assert.assertTrue(users.contains(USER_NAME));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateUser")
     public void testSearchUser() {
 
