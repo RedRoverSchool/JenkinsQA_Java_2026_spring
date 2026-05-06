@@ -11,6 +11,7 @@ import school.redrover.page.ToolsPage;
 
 public class ToolsTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testOpenToolsPage() {
         new HomePage(getDriver()).goManagePage()

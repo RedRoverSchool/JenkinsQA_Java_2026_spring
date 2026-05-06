@@ -10,14 +10,16 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
-import school.redrover.page.BaseConfigPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.MultibranchStatusPage;
+
+import java.util.List;
 
 
 public class MultibranchPipelineTest extends BaseTest {
 	private final static String PROJECT_NAME = "MultibranchPipelineProject";
 	private final static String PROJECT_NAME_1 = "MultibranchPipelineProject1";
+	private final static String PPROJECT_NAME_DELETE = "Project_To_Delete";
 	private final static By PROJECT_NAME_FIELD = By.xpath("//input[@name='newName']");
 
 	@Test
@@ -93,38 +95,26 @@ public class MultibranchPipelineTest extends BaseTest {
 
 	@Test
 	public void testDeleteProjectViaSideMenu() {
+		TestUtils.createJob(getDriver(),PPROJECT_NAME_DELETE, TestUtils.JobType.MULTIBRANCH_PIPELINE);
 
-		String projectName = "Project_To_Delete";
-
-		HomePage homePage = new HomePage(getDriver())
-				.clickItemNewJob()
-				.setProjectName(projectName)
-				.selectItemType(TestUtils.JobType.MULTIBRANCH_PIPELINE)
-				.clickOK(new BaseConfigPage(getDriver()))
-				.clickSave(new MultibranchStatusPage(getDriver()))
+		List<String> projectList = new HomePage(getDriver())
+				.clickOnProject(new MultibranchStatusPage(getDriver()),PPROJECT_NAME_DELETE)
 				.clickDeleteInSideMenu()
-				.confirmDelete();
+				.confirmDelete()
+				.getProjectList();
 
-		Assert.assertFalse(homePage.getProjectList().contains(projectName));
+		Assert.assertEquals(projectList.size(), 0);
 	}
 
 	@Test
 	public void testDeleteProjectViaDashboardMenu() {
-
-		String projectName = "Project_To_Delete_Via_Menu";
-
-		HomePage homePage = new HomePage(getDriver())
-				.clickItemNewJob()
-				.setProjectName(projectName)
-				.selectItemType(TestUtils.JobType.MULTIBRANCH_PIPELINE)
-				.clickOK(new BaseConfigPage(getDriver()))
-				.clickSave(new MultibranchStatusPage(getDriver()))
-				.goHomePage()
-				.openProjectDropdownMenu(projectName)
+		TestUtils.createJob(getDriver(),PPROJECT_NAME_DELETE, TestUtils.JobType.MULTIBRANCH_PIPELINE);
+		List<String> projectList = new HomePage(getDriver())
+				.openProjectDropdownMenu(PPROJECT_NAME_DELETE)
 				.clickDeleteInDropdown()
-				.confirmDelete(projectName);
+				.confirmDelete(PPROJECT_NAME_DELETE)
+				.getProjectList();
 
-		Assert.assertFalse(homePage.getProjectList().contains(projectName));
+		Assert.assertEquals(projectList.size(), 0);
 	}
-
 }

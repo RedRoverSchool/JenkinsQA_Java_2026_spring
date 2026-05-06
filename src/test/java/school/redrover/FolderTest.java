@@ -79,6 +79,7 @@ public class FolderTest extends BaseTest {
                 .clickAddMetric()
                 .chooseFilterChildName()
                 .enterChildName(HEALTH_METRICS_CHILD_NAME)
+                .clickApply()
                 .clickSave(new FolderPage(getDriver()))
                 .clickConfigure()
                 .clickHealthMetrics()

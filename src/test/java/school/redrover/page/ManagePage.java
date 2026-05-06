@@ -17,8 +17,18 @@ public class ManagePage extends BasePage {
         return new ToolsPage(getDriver());
     }
 
+    public UserManagementPage goToUserManagement() {
+        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+        return new UserManagementPage(getDriver());
+    }
+
     public CredentialsPage goToCredentials() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='credentials']"))).click();
         return new CredentialsPage(getDriver());
+    }
+
+    public NodesPage goToNodes() {
+        getDriver().findElement(By.xpath("//a[contains(@href, 'computer')]")).click();
+        return new NodesPage(getDriver());
     }
 }

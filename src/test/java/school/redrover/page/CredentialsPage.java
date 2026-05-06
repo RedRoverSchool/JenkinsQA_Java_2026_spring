@@ -1,7 +1,9 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class CredentialsPage extends BasePage {
@@ -35,5 +37,22 @@ public class CredentialsPage extends BasePage {
     public boolean isCredentialVisible(String id) {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//*[contains(text(), '" + id + "')]"))).isDisplayed();
+    }
+
+    public CredentialsPage deleteCredentialAction(String id) {
+
+        By moreActionsByRowId = By.xpath("//div[contains(@class, 'credentials-card')][.//a[contains(@href, '" + id + "')]]//button[@tooltip='More actions']");
+
+        WebElement moreActions = getWait10().until(ExpectedConditions.presenceOfElementLocated(moreActionsByRowId));
+                getWait5().until((ExpectedConditions.elementToBeClickable(moreActions))).click();
+
+                getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//*[contains(text(), 'Delete credential')]"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-id='ok']"))).click();
+        return this;
+    }
+
+    public boolean isCredentialDeleted(String id) {
+        return  getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//td[contains(text(), '" + id + "')]")));
     }
 }
