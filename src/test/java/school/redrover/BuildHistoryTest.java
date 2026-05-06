@@ -17,7 +17,6 @@ import static school.redrover.common.TestUtils.JobType.FREESTYLE;
 
 public class BuildHistoryTest extends BaseTest {
 
-    @Ignore
     @Test
     public void testEmptyBuild(){
         new HomePage(getDriver()).clickBuildHistory();

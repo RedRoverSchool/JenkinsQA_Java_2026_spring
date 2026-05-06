@@ -121,7 +121,8 @@ public class HomePage extends BasePage {
     }
 
     public BuildHistoryPage clickBuildHistory() {
-        getDriver().findElement(By.xpath("//a[contains(@href, '/buildHistory')]")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = '/view/all/builds']"))).click();
+
         return new BuildHistoryPage(getDriver());
     }
 
