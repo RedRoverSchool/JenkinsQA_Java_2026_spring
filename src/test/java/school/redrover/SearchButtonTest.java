@@ -77,7 +77,6 @@ public class SearchButtonTest extends BaseTest {
                 .getText(), FOLDER_NAME);
     }
 
-    @Ignore
     @Test
     public void testSearchPartialWords() {
         final String folderName1 = "Partialtest";
@@ -122,5 +121,4 @@ public class SearchButtonTest extends BaseTest {
 //
 //        Assert.assertTrue(getDriver().findElement(SEARCH_INPUT_FIELD).isDisplayed());
 //    }
-
 }
