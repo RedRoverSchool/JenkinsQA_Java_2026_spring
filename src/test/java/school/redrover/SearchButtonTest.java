@@ -112,4 +112,14 @@ public class SearchButtonTest extends BaseTest {
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p//span")))
                 .getText(), "No results for");
     }
+
+//    @Test
+//    public void testOpenSearchByKeyboard(){
+//        new BasePage(getDriver())
+//                .waitToLoadBasePage()
+//                .pushCtrlK()
+//                .verifyThatSearchAppeared();
+//
+//        Assert.assertTrue(getDriver().findElement(SEARCH_INPUT_FIELD).isDisplayed());
+//    }
 }
