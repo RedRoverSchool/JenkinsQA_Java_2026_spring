@@ -79,7 +79,7 @@ public class NewItemTest extends BaseTest {
                 .clickItemNewJob()
                 .setProjectName(invalidProjectName)
                 .selectPipelineProject()
-                .getErrorText();
+                .getErrorInvalidText();
 
         Assert.assertEquals(errorMessage, "» ‘" + invalidCharacter + "’ is an unsafe character");
     }
