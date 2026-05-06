@@ -1,8 +1,10 @@
-package school.redrover.page;
+package school.redrover.page.projects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.page.projectsConfig.OrganizationFolderConfigPage;
+import school.redrover.page.common.BasePage;
 
 import java.util.regex.Pattern;
 

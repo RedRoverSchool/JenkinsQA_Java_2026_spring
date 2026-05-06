@@ -6,7 +6,7 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.CreateProjectPage;
 import school.redrover.page.HomePage;
-import school.redrover.page.PipelineProjectPage;
+import school.redrover.page.projects.PipelineProjectPage;
 import java.util.List;
 
 public class PipelineProjectTest extends BaseTest {

@@ -1,10 +1,10 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.page.common.BasePage;
 
 public class CredentialsPage extends BasePage {
     public CredentialsPage(WebDriver driver) {super(driver);}
