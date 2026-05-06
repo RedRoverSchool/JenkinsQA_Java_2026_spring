@@ -1,6 +1,7 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,6 +11,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.util.List;
 
 public class HomePage extends BasePage {
+
+    private static final By SEARCH_BUTTON = By.xpath("//button[@id='root-action-SearchAction']");
+    private static final By SEARCH_INPUT_FIELD = By.xpath("//input[@id='command-bar']");
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -38,18 +42,29 @@ public class HomePage extends BasePage {
         return jobpage;
     }
 
-    public HomePage search(String name) {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#root-action-SearchAction"))).click();
-        getDriver().findElement(By.xpath("//input[@id='command-bar']")).sendKeys(name);
+    public HomePage search(String name, boolean pressEnter) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                SEARCH_BUTTON)).click();
+
+        WebElement input = getDriver().findElement(SEARCH_INPUT_FIELD);
+        input.sendKeys(name);
+
+        if (pressEnter) {
+            input.sendKeys(Keys.ENTER);
+        }
 
         return new HomePage(getDriver());
     }
 
-    public HomePage chooseSearchingResult(String name) {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated
-                (By.xpath("//*[@id='search-results']/a[@href='/job/" + name + "/']"))).click();
+    public HomePage search(String name) {
+        return search(name, false);  // По умолчанию не нажимаем Enter
+    }
 
-        return this;
+    public GlobalViewPage chooseSearchingResult(String name) {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath(String.format("//*[@id='search-results']/a[@href='/job/%s/']", name)))).click();
+
+        return new GlobalViewPage(getDriver());
     }
 
     public List<String> getSearchList() {

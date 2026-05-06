@@ -36,7 +36,7 @@ public class PipelineProjectTest extends BaseTest {
                 .clickItemNewJob()
                 .setProjectName(PROJECT_NAME)
                 .selectItemType(TestUtils.JobType.PIPELINE)
-                .getErrorText();
+                .getErrorInvalidText();
 
         Assert.assertEquals(
                 errorText,
@@ -101,7 +101,7 @@ public class PipelineProjectTest extends BaseTest {
                 .selectItemType(TestUtils.JobType.PIPELINE);
 
         Assert.assertEquals(
-                createProjectPage.getErrorText(),
+                createProjectPage.getErrorEmptyText(),
                 "» This field cannot be empty, please enter a valid name");
 
         Assert.assertFalse(

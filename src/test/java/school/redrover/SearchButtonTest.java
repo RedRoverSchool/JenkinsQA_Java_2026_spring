@@ -1,10 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -14,8 +12,6 @@ import java.util.Random;
 
 public class SearchButtonTest extends BaseTest {
 
-    private static final By SEARCH_BUTTON = By.xpath("//button[@id='root-action-SearchAction']");
-    private static final By SEARCH_INPUT_FIELD = By.xpath("//input[@id='command-bar']");
     private final String FOLDER_NAME = "TEST";
 
     public static String randomLatinString(int length) {
@@ -34,47 +30,40 @@ public class SearchButtonTest extends BaseTest {
         return sb.toString();
     }
 
-    @Ignore
     @Test
     public void testSearchExistingJob() {
 
-        new HomePage(getDriver())
+        String titleJob = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(FOLDER_NAME)
                 .selectFolder()
                 .clickOkButton()
                 .goHomePage()
                 .search(FOLDER_NAME)
-                .chooseSearchingResult(FOLDER_NAME);
+                .chooseSearchingResult(FOLDER_NAME)
+                .getJobTitle();
 
-        Assert.assertEquals(getDriver()
-                .findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
-                .getText(), FOLDER_NAME);
+        Assert.assertEquals(titleJob, FOLDER_NAME);
     }
 
-    @Ignore
     @Test
     public void testEmptyQuery() {
 
-        getDriver().findElement(SEARCH_BUTTON).click();
-        getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(Keys.ENTER);
+        new HomePage(getDriver())
+                .search("", true);
 
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/doc/book/using/searchbox/");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testSearchExistingJob")
     public void testCaseInsensitivity() {
 
-        getDriver().findElement(SEARCH_BUTTON).click();
-        getDriver().findElement(SEARCH_INPUT_FIELD).sendKeys(FOLDER_NAME.toLowerCase());
+        String titleJob = new HomePage(getDriver())
+                .search(FOLDER_NAME.toLowerCase())
+                .chooseSearchingResult(FOLDER_NAME)
+                .getJobTitle();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated
-                (By.xpath("//*[@id='search-results']/a[@href='/job/" + FOLDER_NAME + "/']"))).click();
-
-        Assert.assertEquals(getDriver()
-                .findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
-                .getText(), FOLDER_NAME);
+        Assert.assertEquals(titleJob, FOLDER_NAME);
     }
 
     @Test
@@ -111,14 +100,4 @@ public class SearchButtonTest extends BaseTest {
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p//span")))
                 .getText(), "No results for");
     }
-
-//    @Test
-//    public void testOpenSearchByKeyboard(){
-//        new BasePage(getDriver())
-//                .waitToLoadBasePage()
-//                .pushCtrlK()
-//                .verifyThatSearchAppeared();
-//
-//        Assert.assertTrue(getDriver().findElement(SEARCH_INPUT_FIELD).isDisplayed());
-//    }
 }

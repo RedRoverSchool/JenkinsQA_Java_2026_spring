@@ -14,6 +14,7 @@ public class GlobalViewPage extends BasePage{
     private static final By PREIVEW_CONTAINER = By.className("textarea-preview-container");
     private static final By SAVE_BUTTON = By.xpath("//button[@name='Submit']");
     private static final By DESCRIPTION_MESSAGE = By.id("description-content");
+    private static final By JOB_NAME = By.xpath("//h1[@class='job-index-headline page-headline']");
 
     public GlobalViewPage(WebDriver driver) {
         super(driver);
@@ -21,6 +22,10 @@ public class GlobalViewPage extends BasePage{
 
     public String getPreviewText() {
         return getDriver().findElement(PREIVEW_CONTAINER).getText();
+    }
+
+    public String getJobTitle() {
+        return getWait5().until(ExpectedConditions.presenceOfElementLocated(JOB_NAME)).getText();
     }
 
     public GlobalViewPage enterDescription(String textInput) {
