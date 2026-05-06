@@ -2,6 +2,8 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import school.redrover.page.common.BasePage;
+import school.redrover.page.projects.FolderPage;
 
 public class CreateFolderViewPage extends BasePage {
 

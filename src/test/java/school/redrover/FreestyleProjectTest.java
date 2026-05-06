@@ -9,8 +9,6 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.CreateProjectPage;
-import school.redrover.page.FreestyleProjectConfigPage;
 import school.redrover.page.HomePage;
 
 import java.util.Arrays;
