@@ -2,11 +2,11 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.BuildHistoryTest;
 
 import java.util.List;
 
@@ -99,19 +99,47 @@ public class HomePage extends BasePage {
         return new GlobalViewPage(getDriver());
     }
 
-    public BuildHistoryPage clickBuildHistory(){
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/builds']"))).click();
-
-        return new BuildHistoryPage(getDriver());
-    }
-
     public String getViewDescriptionText() {
         return getDriver().findElement(By.id("description-content")).getText();
+    }
+
+    private final By userButton = By.id("root-action-UserAction");
+
+    public boolean isUserButtonDisplayed() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(userButton)).isDisplayed();
     }
 
     public ManagePage clickManageJenkins() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("root-action-ManageJenkinsAction"))).click();
         return new ManagePage(getDriver());
+    }
+
+    public BuildHistoryPage clickBuildHistory() {
+        getDriver().findElement(By.xpath("//a[contains(@href, '/buildHistory')]")).click();
+        return new BuildHistoryPage(getDriver());
+    }
+
+    public HomePage scrollToBottom() {
+        ((JavascriptExecutor) getDriver()).executeScript("window.scrollTo(0, document.body.scrollHeight);");
+        return this;
+    }
+
+    public HomePage clickJenkinsVersionLink() {
+        WebElement link = getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//footer//a[contains(text(),'Jenkins')]")));
+        link.click();
+        return this;
+    }
+
+    public HomePage clickAboutJenkins() {
+        WebElement about = getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[contains(text(),'About Jenkins')]")));
+        about.click();
+        return this;
+    }
+
+    public boolean isAboutJenkinsPresent() {
+        return !getDriver().findElements(By.xpath("//a[contains(text(),'About Jenkins')]")).isEmpty();
     }
 
 }

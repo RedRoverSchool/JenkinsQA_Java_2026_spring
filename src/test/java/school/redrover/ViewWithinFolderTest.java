@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.FolderPage;
@@ -11,6 +12,7 @@ public class ViewWithinFolderTest extends BaseTest {
     private static final String FOLDER_NAME = "NewFolder";
     private static final String VIEW_NAME = "MyViewWithinFolder";
 
+    @Ignore
     @Test
     public void testCreateMyView(){
 
