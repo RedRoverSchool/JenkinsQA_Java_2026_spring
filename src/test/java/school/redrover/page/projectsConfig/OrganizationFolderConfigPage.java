@@ -1,9 +1,10 @@
-package school.redrover.page;
+package school.redrover.page.projectsConfig;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import school.redrover.page.common.BaseConfigPage;
 
-public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFolderConfigPage>{
+public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFolderConfigPage> {
     public OrganizationFolderConfigPage(WebDriver driver) {
         super(driver);
     }

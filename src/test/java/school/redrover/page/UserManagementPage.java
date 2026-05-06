@@ -4,19 +4,20 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.page.common.BasePage;
 
 import java.util.List;
 
 public class UserManagementPage extends BasePage{
 
-    private By createUserButton = By.xpath("//div[@class='jenkins-app-bar__controls']");
+    private By addUserButton = By.xpath("//div[@class='jenkins-app-bar__controls']");
 
     public UserManagementPage(WebDriver driver) {
         super(driver);
     }
 
-    public CreateUserPage clickCreateUserButton() {
-        getDriver().findElement(createUserButton).click();
+    public CreateUserPage clickAddUser() {
+        getDriver().findElement(addUserButton).click();
         return new CreateUserPage(getDriver());
     }
 

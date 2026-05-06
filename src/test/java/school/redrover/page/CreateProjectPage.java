@@ -6,6 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.TestUtils;
+import school.redrover.page.common.BasePage;
+import school.redrover.page.projectsConfig.FreestyleProjectConfigPage;
+import school.redrover.page.projectsConfig.PipelineProjectConfigPage;
 
 public class CreateProjectPage extends BasePage {
 
