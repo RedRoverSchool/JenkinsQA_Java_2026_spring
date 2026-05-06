@@ -49,4 +49,5 @@ public class BuildHistoryTest extends BaseTest {
 
         Assert.assertTrue(warningMessage.contains("Delete the build"));
     }
+
 }
