@@ -2,7 +2,10 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.util.List;
 
 public class ManagePage extends BasePage {
 
@@ -28,5 +31,12 @@ public class ManagePage extends BasePage {
     public CredentialsPage goToCredentials() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='credentials']"))).click();
         return new CredentialsPage(getDriver());
+    }
+
+    public List<String> getSectionTitle() {
+        return getDriver().findElements(By.cssSelector(".jenkins-section__title"))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
     }
 }

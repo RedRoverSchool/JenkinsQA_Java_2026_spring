@@ -7,6 +7,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -126,44 +127,23 @@ public class ManagePageTest extends BaseTest {
     }
 
     @Test
-    public void testOpenConfigureSystemPage() {
+    public void testSectionsDisplayed() {
 
-        WebElement manageJenkinsIcon = getWait10()
-                .until(ExpectedConditions.elementToBeClickable(MANAGE_JENKINS_LINK));
-        manageJenkinsIcon.click();
-
-        getWait10().until(ExpectedConditions.urlContains("/manage"));
-
-        WebElement configureSystemLink = getWait5()
-                .until(ExpectedConditions.elementToBeClickable(CONFIGURE_SYSTEM_LINK));
-        configureSystemLink.click();
-
-        getWait2().until(ExpectedConditions.urlContains("/configure"));
-        Assert.assertTrue(getDriver().getCurrentUrl().contains("/configure"),
-                "User should be redirected to Configure System page");
-    }
-
-    @Test
-    public void testSystemSettingsHaveFields() {
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(MANAGE_JENKINS_LINK)).click();
-        getWait10().until(ExpectedConditions.urlContains("/manage"));
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(CONFIGURE_SYSTEM_LINK)).click();
-        getWait10().until(ExpectedConditions.urlContains("/configure"));
-
-        List<String> expectedSections = Arrays.asList(
-                "general",
-                "jenkins-location",
-                "global-properties"
+        List<String> expectedSectionTitles = List.of(
+                "System Configuration",
+                "Security",
+                "Status Information",
+                "Troubleshooting",
+                "Tools and Actions"
         );
 
-        for (String sectionId : expectedSections) {
-            WebElement section = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id(sectionId)));
-            Assert.assertTrue(section.isDisplayed(),
-                    "Section with id '" + sectionId + "' should be displayed on Configure System page");
-        }
+        List<String> actualSectionTitles = new HomePage(getDriver())
+                .goManagePage()
+                .getSectionTitle();
+
+        Assert.assertEquals(actualSectionTitles, expectedSectionTitles);
     }
+
 
     @Test
     public void testChangeDarkTheme(){
