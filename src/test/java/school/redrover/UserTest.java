@@ -48,8 +48,6 @@ public class UserTest extends BaseTest {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='search-results']")));
         searchInput.sendKeys(Keys.ENTER);
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
-
         Assert.assertEquals(
                 getDriver().findElement(By.tagName("h1")).getText(),
                 USER_NAME,
