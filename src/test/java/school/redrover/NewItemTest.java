@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.CreateProjectPage;
@@ -57,5 +58,22 @@ public class NewItemTest extends BaseTest {
 
         Assert.assertEquals(newItemPage.getErrorInvalidText(), "» ‘$’ is an unsafe character");
         Assert.assertFalse(newItemPage.isOkButtonEnabled(), "The OK button should be inactive");
+    }
+    @DataProvider(name = "invalid characters")
+    public Object[][] getData() {
+            return new Object[][]{{"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"},{"!"}
+        };
+    }
+    @Test(dataProvider = "invalid characters")
+    public void testInvalidCharactersInName(String invalidCharacter) {
+        String invalidProjectName = "test" + invalidCharacter;
+
+        String errorMessage = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(invalidProjectName)
+                .selectPipelineProject()
+                .getErrorInvalidText();
+
+        Assert.assertEquals(errorMessage, "» ‘" + invalidCharacter + "’ is an unsafe character");
     }
 }
