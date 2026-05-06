@@ -3,23 +3,31 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class PipelineProjectPage extends BasePage {
+
+    @FindBy(id = "description-link")
+    private WebElement descriptionLinkElement;
+
+    @FindBy(xpath = "//textarea[@name='description']")
+    private WebElement descriptionElement;
 
     public PipelineProjectPage(WebDriver driver) {
         super(driver);
     }
 
     public PipelineProjectPage clickAddDescription() {
-        getDriver().findElement(By.id("description-link")).click();
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//textarea[@name='description']")));
+        descriptionLinkElement.click();
+        getWait5().until(ExpectedConditions.visibilityOf(descriptionElement));
 
         return this;
     }
 
     public PipelineProjectPage enterDescription(String description) {
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
+        descriptionElement.sendKeys(description);
 
         return this;
     }

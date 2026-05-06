@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -57,8 +58,11 @@ public class PipelineProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testAddDescription")
     public void testDisable() {
+        PipelineProjectPage pipelineProjectPage = new PipelineProjectPage(getDriver());
+        //PageFactory.initElements(getDriver(), pipelineProjectPage);
+
         String warningText = new HomePage(getDriver())
-                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
+                .clickOnProject(pipelineProjectPage, PROJECT_NAME)
                 .clickConfigureSidebarButton()
                 .toggleProjectState()
                 .clickSaveButton()
