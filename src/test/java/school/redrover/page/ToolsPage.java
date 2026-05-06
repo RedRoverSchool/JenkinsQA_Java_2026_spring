@@ -13,7 +13,7 @@ public class ToolsPage extends BasePage {
         super(driver);
     }
 
-    public ToolsPage selectSimpleMavenOption(String option) {
+    public ToolsPage selectMavenOption(String option) {
         WebElement dropMenu = getDriver().findElement(
                 By.xpath("(//select[contains(@class,'jenkins-select__input')])[1]"));
 
@@ -22,7 +22,7 @@ public class ToolsPage extends BasePage {
         return this;
     }
 
-    public boolean isSimplePathFieldDisplayed() {
+    public boolean isPathFieldAppears() {
         return getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(
                         By.xpath("(//input[@name='_.path'])[1]"))).isDisplayed();
@@ -46,7 +46,7 @@ public class ToolsPage extends BasePage {
         return this;
     }
 
-    public boolean isGlobalPathFieldDisplayed() {
+    public boolean isGlobalPathFieldAppears() {
         return getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(
                         By.xpath("(//input[@name='_.path'])[2]"))).isDisplayed();
@@ -97,5 +97,9 @@ public class ToolsPage extends BasePage {
         }
 
         return this;
+    }
+
+    public String getHeaderText() {
+        return getDriver().findElement(By.xpath("//h1")).getText();
     }
 }
