@@ -115,8 +115,15 @@ public class HomePage extends BasePage {
         return new ManagePage(getDriver());
     }
 
+    public HomePage clickScheduleBuild(String jobName) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("(//a[@href='job/%s/build?delay=0sec'])[1]".formatted(jobName)))).click();
+
+        return this;
+    }
+
     public BuildHistoryPage clickBuildHistory() {
-        getDriver().findElement(By.xpath("//a[contains(@href, '/buildHistory')]")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = '/view/all/builds']"))).click();
+
         return new BuildHistoryPage(getDriver());
     }
 
