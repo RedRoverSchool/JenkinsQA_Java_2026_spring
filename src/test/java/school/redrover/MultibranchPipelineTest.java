@@ -11,6 +11,8 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.MultibranchStatusPage;
+import school.redrover.page.projects.MultibranchProjectPage;
+
 import java.util.List;
 
 
@@ -18,6 +20,7 @@ public class MultibranchPipelineTest extends BaseTest {
 	private final static String PROJECT_NAME = "MultibranchPipelineProject";
 	private final static String PROJECT_NAME_1 = "MultibranchPipelineProject1";
 	private final static String PROJECT_NAME_DELETE = "Project_To_Delete";
+	private final static By PROJECT_NAME_FIELD = By.xpath("//input[@name='newName']");
 
 	@Test
 	public void testCreate() {
@@ -86,10 +89,9 @@ public class MultibranchPipelineTest extends BaseTest {
 
 	@Test
 	public void testDeleteProjectViaSideMenu() {
-		TestUtils.createJob(getDriver(),PROJECT_NAME_DELETE, TestUtils.JobType.MULTIBRANCH_PIPELINE);
 
-		List<String> projectList = new HomePage(getDriver())
-				.clickOnProject(new MultibranchStatusPage(getDriver()),PROJECT_NAME_DELETE)
+		List<String> projectList = TestUtils.createJob(getDriver(), PROJECT_NAME_DELETE, TestUtils.JobType.MULTIBRANCH_PIPELINE)
+				.clickOnProject(new MultibranchProjectPage(getDriver()), PROJECT_NAME_DELETE)
 				.clickDeleteInSideMenu()
 				.confirmDelete()
 				.getProjectList();
@@ -99,8 +101,8 @@ public class MultibranchPipelineTest extends BaseTest {
 
 	@Test
 	public void testDeleteProjectViaDashboardMenu() {
-		TestUtils.createJob(getDriver(),PROJECT_NAME_DELETE, TestUtils.JobType.MULTIBRANCH_PIPELINE);
-		List<String> projectList = new HomePage(getDriver())
+
+		List<String> projectList = TestUtils.createJob(getDriver(), PROJECT_NAME_DELETE, TestUtils.JobType.MULTIBRANCH_PIPELINE)
 				.openProjectDropdownMenu(PROJECT_NAME_DELETE)
 				.clickDeleteInDropdown()
 				.confirmDelete(PROJECT_NAME_DELETE)

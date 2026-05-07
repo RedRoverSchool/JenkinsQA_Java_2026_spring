@@ -7,4 +7,5 @@ public class MultibranchConfigPage extends BaseConfigPage<MultibranchConfigPage>
     public MultibranchConfigPage(WebDriver driver) {
         super(driver);
     }
+
 }
