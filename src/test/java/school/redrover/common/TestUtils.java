@@ -2,6 +2,9 @@ package school.redrover.common;
 
 import org.openqa.selenium.WebDriver;
 import school.redrover.page.*;
+import school.redrover.page.common.BaseConfigPage;
+import school.redrover.page.projects.FolderPage;
+import school.redrover.page.projectsConfig.*;
 
 public class TestUtils {
 

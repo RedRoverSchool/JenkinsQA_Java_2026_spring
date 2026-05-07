@@ -1,15 +1,20 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.BuildHistoryTest;
+import school.redrover.page.common.BasePage;
 
 import java.util.List;
 
 public class HomePage extends BasePage {
+
+    private static final By SEARCH_BUTTON = By.xpath("//button[@id='root-action-SearchAction']");
+    private static final By SEARCH_INPUT_FIELD = By.xpath("//input[@id='command-bar']");
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -38,18 +43,29 @@ public class HomePage extends BasePage {
         return jobpage;
     }
 
-    public HomePage search(String name) {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#root-action-SearchAction"))).click();
-        getDriver().findElement(By.xpath("//input[@id='command-bar']")).sendKeys(name);
+    public HomePage search(String name, boolean pressEnter) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                SEARCH_BUTTON)).click();
+
+        WebElement input = getDriver().findElement(SEARCH_INPUT_FIELD);
+        input.sendKeys(name);
+
+        if (pressEnter) {
+            input.sendKeys(Keys.ENTER);
+        }
 
         return new HomePage(getDriver());
     }
 
-    public HomePage chooseSearchingResult(String name) {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated
-                (By.xpath("//*[@id='search-results']/a[@href='/job/" + name + "/']"))).click();
+    public HomePage search(String name) {
+        return search(name, false);  // По умолчанию не нажимаем Enter
+    }
 
-        return this;
+    public GlobalViewPage chooseSearchingResult(String name) {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath(String.format("//*[@id='search-results']/a[@href='/job/%s/']", name)))).click();
+
+        return new GlobalViewPage(getDriver());
     }
 
     public List<String> getSearchList() {
@@ -90,19 +106,54 @@ public class HomePage extends BasePage {
         return new GlobalViewPage(getDriver());
     }
 
-    public BuildHistoryPage clickBuildHistory(){
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/builds']"))).click();
-
-        return new BuildHistoryPage(getDriver());
-    }
-
     public String getViewDescriptionText() {
         return getDriver().findElement(By.id("description-content")).getText();
+    }
+
+    private final By userButton = By.id("root-action-UserAction");
+
+    public boolean isUserButtonDisplayed() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(userButton)).isDisplayed();
     }
 
     public ManagePage clickManageJenkins() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("root-action-ManageJenkinsAction"))).click();
         return new ManagePage(getDriver());
+    }
+
+    public HomePage clickScheduleBuild(String jobName) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("(//a[@href='job/%s/build?delay=0sec'])[1]".formatted(jobName)))).click();
+
+        return this;
+    }
+
+    public BuildHistoryPage clickBuildHistory() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = '/view/all/builds']"))).click();
+
+        return new BuildHistoryPage(getDriver());
+    }
+
+    public HomePage scrollToBottom() {
+        ((JavascriptExecutor) getDriver()).executeScript("window.scrollTo(0, document.body.scrollHeight);");
+        return this;
+    }
+
+    public HomePage clickJenkinsVersionLink() {
+        WebElement link = getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//footer//a[contains(text(),'Jenkins')]")));
+        link.click();
+        return this;
+    }
+
+    public HomePage clickAboutJenkins() {
+        WebElement about = getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[contains(text(),'About Jenkins')]")));
+        about.click();
+        return this;
+    }
+
+    public boolean isAboutJenkinsPresent() {
+        return !getDriver().findElements(By.xpath("//a[contains(text(),'About Jenkins')]")).isEmpty();
     }
 
 }
