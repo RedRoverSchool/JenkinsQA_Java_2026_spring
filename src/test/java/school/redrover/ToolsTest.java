@@ -78,7 +78,7 @@ public class ToolsTest extends BaseTest {
         Assert.assertEquals(attributesJDK.get(1), "/test/updatePath/toJDK");
     }
 
-    @Test(dependsOnMethods = "testAddJDK")
+    @Test(dependsOnMethods = "testEditExistingJDK")
     public void testDeleteJDK() {
         boolean isEditButtonAppears = new HomePage(getDriver())
                 .clickManageButton()
