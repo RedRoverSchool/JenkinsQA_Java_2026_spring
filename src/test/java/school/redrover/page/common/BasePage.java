@@ -2,6 +2,7 @@ package school.redrover.page.common;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
 import school.redrover.page.ManagePage;
@@ -21,8 +22,9 @@ public class BasePage extends BaseModel {
     }
 
     public ManagePage clickManageButton() {
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("root-action-ManageJenkinsAction"))).click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+
         return new ManagePage(getDriver());
     }
 
