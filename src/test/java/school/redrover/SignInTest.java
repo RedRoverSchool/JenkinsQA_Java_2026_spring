@@ -27,6 +27,7 @@ public class SignInTest extends BaseTest {
                 .setConfirmPassword(retryPassword)
                 .setEmail(userMail)
                 .clickSubmit();
+
     }
 
     final private String USER_LOGIN = "Berendey";
