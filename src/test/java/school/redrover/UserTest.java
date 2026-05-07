@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.util.List;
 
@@ -20,20 +21,18 @@ public class UserTest extends BaseTest {
     @Test
     public void testCreateUser() {
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("root-action-ManageJenkinsAction"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='securityRealm/']"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='addUser']"))).click();
+        List<String> users = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsersButton()
+                .clickCreateUserButton()
+                .setUsername(USER_NAME)
+                .setPassword(USER_PASSWORD)
+                .setConfirmPassword(USER_PASSWORD)
+                .setEmail(USER_EMAIL)
+                .clickCreateUserButton()
+                .getUsersList();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@name= 'Submit']")));
-        sendUserDataAndSubmit(USER_NAME, USER_PASSWORD, USER_PASSWORD, USER_EMAIL);
-
-        List<String> actualUsersNameList = getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By
-                .xpath("//a[@class = 'jenkins-table__link model-link inside']")))
-                .stream()
-                .map(WebElement::getText)
-                .toList();
-
-        Assert.assertTrue(actualUsersNameList.contains(USER_NAME));
+        Assert.assertTrue(users.contains(USER_NAME));
     }
 
     @Ignore
@@ -43,14 +42,17 @@ public class UserTest extends BaseTest {
         getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("root-action-SearchAction"))).click();
 
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Search']")));
         WebElement searchInput = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("command-bar")));
         searchInput.sendKeys(USER_NAME);
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='search-results']/p")));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='search-results']")));
         searchInput.sendKeys(Keys.ENTER);
 
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(text(), 'Jenkins User ID:')]")));
+
         Assert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1"))).getText(),
+                getDriver().findElement(By.tagName("h1")).getText(),
                 USER_NAME,
                 "The user with User ID " + USER_NAME + "is not found");
     }

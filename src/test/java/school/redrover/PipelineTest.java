@@ -5,27 +5,25 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
+
+import java.util.List;
 
 public class PipelineTest extends BaseTest {
 
-    @Ignore
     @Test
     public void testCreatePipeline() {
         final String projectName = "new Pipeline";
 
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(projectName);
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        List<String> projectList = new HomePage(getDriver()).clickItemNewJob()
+                .setProjectName(projectName)
+                .createPipeline()
+                .goHomePage()
+                .getProjectList();
 
-        getWait10().until(ExpectedConditions.urlContains("/configure"));
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-jenkins-logo"))).click();
-
-        WebElement actualProjectName = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(projectName)));
-        Assert.assertEquals(actualProjectName.getText(), projectName);
+        Assert.assertEquals(projectList.getFirst(), projectName);
     }
 
     @Test

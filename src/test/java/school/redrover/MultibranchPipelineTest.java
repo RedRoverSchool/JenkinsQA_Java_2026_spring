@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -11,16 +10,14 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
-import school.redrover.page.MultibranchStatusPage;
-
+import school.redrover.page.projects.MultibranchProjectPage;
 import java.util.List;
 
 
 public class MultibranchPipelineTest extends BaseTest {
 	private final static String PROJECT_NAME = "MultibranchPipelineProject";
 	private final static String PROJECT_NAME_1 = "MultibranchPipelineProject1";
-	private final static String PPROJECT_NAME_DELETE = "Project_To_Delete";
-	private final static By PROJECT_NAME_FIELD = By.xpath("//input[@name='newName']");
+	private final static String PROJECT_NAME_DELETE = "Project_To_Delete";
 
 	@Test
 	public void testCreate() {
@@ -53,8 +50,7 @@ public class MultibranchPipelineTest extends BaseTest {
 		Assert.assertTrue(icon.isDisplayed());
 	}
 
-	@Ignore
-	@Test(dependsOnMethods ="testCreate" )
+	@Test(dependsOnMethods = "testCreate")
 	public void testRename(){
 		getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME)))).click();
 		getDriver().findElement(By.xpath("//a[contains(@href,'job') and ./span[text()='Rename']]")).click();
@@ -63,35 +59,29 @@ public class MultibranchPipelineTest extends BaseTest {
 		getDriver().findElement(By.name("Submit")).click();
 		getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-jenkins-logo"))).click();
 
- 		Assert.assertEquals(getWait10().until(
+		Assert.assertEquals(getWait10().until(
 				ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME_1)))).getText(), PROJECT_NAME_1);
 	}
 
-	@Ignore
-	@Test (dependsOnMethods ="testRename" )
+	@Test (dependsOnMethods = "testRename")
 	public void testRenameViaContextMenu(){
-		Actions action = new Actions(getDriver());
-		action.moveToElement(getDriver().findElement(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME_1)))).perform();
+		List<String> projectList = new HomePage(getDriver())
+				.openProjectDropdownMenu(PROJECT_NAME_1)
+				.clickRenameInDropdown()
+				.setNewProjectName(PROJECT_NAME)
+				.clickRenameButton()
+				.goHomePage()
+				.getProjectList();
 
-		getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='jenkins-menu-dropdown-chevron']"))).click();
-		getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href, 'rename')]"))).click();
-
-		WebElement nameField = getDriver().findElement(PROJECT_NAME_FIELD);
-		nameField.clear();
-		nameField.findElement(PROJECT_NAME_FIELD).sendKeys(PROJECT_NAME);
-		getDriver().findElement(By.name("Submit")).click();
-		getWait5().until(ExpectedConditions.elementToBeClickable(By.className("app-jenkins-logo")));
-		getDriver().findElement(By.className("app-jenkins-logo")).click();
-
-		Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME)))).getText(), PROJECT_NAME);
+		Assert.assertEquals(projectList.size(), 1);
+		Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);
 	}
 
 	@Test
 	public void testDeleteProjectViaSideMenu() {
-		TestUtils.createJob(getDriver(),PPROJECT_NAME_DELETE, TestUtils.JobType.MULTIBRANCH_PIPELINE);
 
-		List<String> projectList = new HomePage(getDriver())
-				.clickOnProject(new MultibranchStatusPage(getDriver()),PPROJECT_NAME_DELETE)
+		List<String> projectList = TestUtils.createJob(getDriver(), PROJECT_NAME_DELETE, TestUtils.JobType.MULTIBRANCH_PIPELINE)
+				.clickOnProject(PROJECT_NAME_DELETE, new MultibranchProjectPage(getDriver()))
 				.clickDeleteInSideMenu()
 				.confirmDelete()
 				.getProjectList();
@@ -101,11 +91,11 @@ public class MultibranchPipelineTest extends BaseTest {
 
 	@Test
 	public void testDeleteProjectViaDashboardMenu() {
-		TestUtils.createJob(getDriver(),PPROJECT_NAME_DELETE, TestUtils.JobType.MULTIBRANCH_PIPELINE);
-		List<String> projectList = new HomePage(getDriver())
-				.openProjectDropdownMenu(PPROJECT_NAME_DELETE)
+
+		List<String> projectList = TestUtils.createJob(getDriver(), PROJECT_NAME_DELETE, TestUtils.JobType.MULTIBRANCH_PIPELINE)
+				.openProjectDropdownMenu(PROJECT_NAME_DELETE)
 				.clickDeleteInDropdown()
-				.confirmDelete(PPROJECT_NAME_DELETE)
+				.confirmDelete(PROJECT_NAME_DELETE)
 				.getProjectList();
 
 		Assert.assertEquals(projectList.size(), 0);

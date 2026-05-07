@@ -3,7 +3,7 @@ package school.redrover.common;
 import org.openqa.selenium.WebDriver;
 import school.redrover.page.*;
 import school.redrover.page.common.BaseConfigPage;
-import school.redrover.page.projects.FolderPage;
+import school.redrover.page.projects.FolderProjectPage;
 import school.redrover.page.projectsConfig.*;
 
 public class TestUtils {
@@ -38,9 +38,9 @@ public class TestUtils {
         };
     }
 
-    public static void createJob(WebDriver driver, String projectName, JobType jobType) {
+    public static HomePage createJob(WebDriver driver, String projectName, JobType jobType) {
         BaseConfigPage configPage = getConfigPage(jobType, driver);
-        new HomePage(driver)
+        return new HomePage(driver)
                 .clickItemNewJob()
                 .setProjectName(projectName)
                 .scrollToTypeOfProject(jobType)
@@ -52,7 +52,7 @@ public class TestUtils {
     public static void createNestedJob(WebDriver driver, String projectName, String childName, JobType jobType) {
         BaseConfigPage configPage = getConfigPage(jobType, driver);
         new HomePage(driver)
-                .clickOnProject(new FolderPage(driver), projectName)
+                .clickOnProject(projectName, new FolderProjectPage(driver))
                 .clickNewItem()
                 .setProjectName(childName)
                 .scrollToTypeOfProject(jobType)

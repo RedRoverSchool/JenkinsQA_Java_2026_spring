@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.projectsConfig.FolderConfigPage;
-import school.redrover.page.projects.FolderPage;
+import school.redrover.page.projects.FolderProjectPage;
 import school.redrover.page.HomePage;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testCreate")
     public void testRename() {
         List<String> jobnewlist = new HomePage(getDriver())
-                .clickOnProject(new FolderPage(getDriver()), FOLDER_NAME)
+                .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .clickRename(FOLDER_NAME)
                 .enterNewName(FOLDER_NEW_NAME)
                 .clickRenameButton()
@@ -62,7 +62,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testRename")
     public void testAddDescription() {
         new HomePage(getDriver())
-                .clickOnProject(new FolderPage(getDriver()), FOLDER_NEW_NAME)
+                .clickOnProject(FOLDER_NEW_NAME, new FolderProjectPage(getDriver()))
                 .clickAddDescription()
                 .enterDescription(DESCRIPTION_TEXT)
                 .clickSaveDescription();
@@ -73,14 +73,14 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testAddDescription")
     public void testHealthMetrics() {
         String actualText = new HomePage(getDriver())
-                .clickOnProject(new FolderPage(getDriver()), FOLDER_NEW_NAME)
+                .clickOnProject(FOLDER_NEW_NAME, new FolderProjectPage(getDriver()))
                 .clickConfigure()
                 .clickHealthMetrics()
                 .clickAddMetric()
                 .chooseFilterChildName()
                 .enterChildName(HEALTH_METRICS_CHILD_NAME)
                 .clickApply()
-                .clickSave(new FolderPage(getDriver()))
+                .clickSave(new FolderProjectPage(getDriver()))
                 .clickConfigure()
                 .clickHealthMetrics()
                 .getTextOfMetric();
@@ -90,12 +90,12 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testRename")
     public void createNestedFolderTest() {
         new HomePage(getDriver())
-                .clickOnProject(new FolderPage(getDriver()), FOLDER_NEW_NAME)
+                .clickOnProject(FOLDER_NEW_NAME, new FolderProjectPage(getDriver()))
                 .clickNewItem()
                 .setProjectName(NESTED_FOLDER)
                 .selectItemType(TestUtils.JobType.PIPELINE)
                 .clickOK(new FolderConfigPage(getDriver()))
-                .clickSave(new FolderPage(getDriver()));
+                .clickSave(new FolderProjectPage(getDriver()));
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']/span")).getText(), NESTED_FOLDER);
     }
