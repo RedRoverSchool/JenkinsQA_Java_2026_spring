@@ -95,7 +95,6 @@ public class ToolsPage extends BasePage {
                     ExpectedConditions.stalenessOf(button)
             );
         }
-
         return this;
     }
 
