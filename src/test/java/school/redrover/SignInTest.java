@@ -19,14 +19,14 @@ public class SignInTest extends BaseTest {
                             String retryPassword, String userMail, WebDriver driver) {
         new HomePage(driver)
                 .clickManageButton()
-                .goToUserManagement()  
-                .clickAddUser()        
+                .clickUsersButton()
+                .clickCreateUserButton()
                 .setUsername(userLogin)
                 .setFullName(userFullName)
                 .setPassword(password)
                 .setConfirmPassword(retryPassword)
                 .setEmail(userMail)
-                .clickSubmit();
+                .clickCreateUserButton();
 
     }
 
