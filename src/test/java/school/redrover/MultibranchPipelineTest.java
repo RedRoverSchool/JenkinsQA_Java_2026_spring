@@ -19,7 +19,6 @@ public class MultibranchPipelineTest extends BaseTest {
 	private final static String PROJECT_NAME_1 = "MultibranchPipelineProject1";
 	private final static String PROJECT_NAME_DELETE = "Project_To_Delete";
 
-
 	@Test
 	public void testCreate() {
 		getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -67,7 +66,7 @@ public class MultibranchPipelineTest extends BaseTest {
 		getDriver().findElement(By.name("Submit")).click();
 		getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-jenkins-logo"))).click();
 
- 		Assert.assertEquals(getWait10().until(
+		Assert.assertEquals(getWait10().until(
 				ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME_1)))).getText(), PROJECT_NAME_1);
 	}
 
@@ -77,8 +76,9 @@ public class MultibranchPipelineTest extends BaseTest {
 				.openProjectDropdownMenu(PROJECT_NAME_1)
 				.clickRenameInDropdown()
 				.setNewProjectName(PROJECT_NAME)
-				.submitNewProjectName()
-				.goHomePage().getProjectList();
+				.clickRenameButton()
+				.goHomePage()
+				.getProjectList();
 
 		Assert.assertEquals(projectList.size(), 1);
 		Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);

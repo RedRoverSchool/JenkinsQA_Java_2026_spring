@@ -22,15 +22,11 @@ public class RenameProjectPage extends BasePage {
         return this;
     }
 
-    public RenameProjectPage submitNewProjectName(){
+    public RenameProjectPage clickRenameButton(){
         getDriver().findElement(SUBMIT_BUTTON).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
         return this;
     }
 
-    @Override
-    public HomePage goHomePage() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.className("app-jenkins-logo")));
-        getDriver().findElement(By.className("app-jenkins-logo")).click();
-        return new HomePage(getDriver());
-    }
+
 }
