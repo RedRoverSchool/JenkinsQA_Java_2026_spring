@@ -22,7 +22,7 @@ public class UserTest extends BaseTest {
     public void testCreateUser() {
 
         List<String> users = new HomePage(getDriver())
-                .clickManageJenkins()
+                .clickManageButton()
                 .clickUsersButton()
                 .clickCreateUserButton()
                 .setUsername(USER_NAME)
