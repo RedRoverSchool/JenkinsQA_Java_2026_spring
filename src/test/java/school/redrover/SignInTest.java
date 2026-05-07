@@ -19,8 +19,8 @@ public class SignInTest extends BaseTest {
                             String retryPassword, String userMail, WebDriver driver) {
         new HomePage(driver)
                 .clickManageButton()
-                .goToUserManagement()   // этот метод должен быть в ManagePage
-                .clickAddUser()         // этот метод должен быть в UserManagementPage
+                .goToUserManagement()  
+                .clickAddUser()        
                 .setUsername(userLogin)
                 .setFullName(userFullName)
                 .setPassword(password)
