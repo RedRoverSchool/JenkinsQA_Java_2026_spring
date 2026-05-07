@@ -7,19 +7,22 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class RenameProjectPage extends BasePage {
 
+    private static final By NEW_NAME_INPUT = By.xpath("//input[@name='newName']");
+    private static final By SUBMIT_BUTTON = By.name("Submit");
+
     public RenameProjectPage(WebDriver driver) {
         super(driver);
     }
 
     public RenameProjectPage setNewProjectName(String projectName){
-        WebElement nameField = getDriver().findElement(By.xpath("//input[@name='newName']"));
+        WebElement nameField = getDriver().findElement(NEW_NAME_INPUT);
         nameField.clear();
         nameField.sendKeys(projectName);
         return this;
     }
 
     public RenameProjectPage submitNewProjectName(){
-        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(SUBMIT_BUTTON).click();
         return this;
     }
 
