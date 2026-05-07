@@ -3,7 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import school.redrover.page.common.BasePage;
-import school.redrover.page.projects.FolderPage;
+import school.redrover.page.projects.FolderProjectPage;
 
 public class CreateFolderViewPage extends BasePage {
 
@@ -23,10 +23,10 @@ public class CreateFolderViewPage extends BasePage {
         return this;
     }
 
-    public FolderPage clickCreateButton() {
+    public FolderProjectPage clickCreateButton() {
         getDriver().findElement(By.id("ok")).click();
 
-        return new FolderPage(getDriver());
+        return new FolderProjectPage(getDriver());
     }
 
 

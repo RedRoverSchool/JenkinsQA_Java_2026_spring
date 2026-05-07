@@ -36,7 +36,7 @@ public class OrganizationFolderTest extends BaseTest {
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescription() {
         String actualDescriptionText = new HomePage(getDriver())
-                .clickOnProject(new OrganizationFolderPage(getDriver()), ORG_FOLDER_NAME)
+                .clickOnProject(ORG_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
                 .clickAddDescription()
                 .enterDescription(DESCRIPTION_TEXT)
                 .clickSaveDescription()
@@ -49,7 +49,7 @@ public class OrganizationFolderTest extends BaseTest {
     @Test(dependsOnMethods = "testCreate")
     public void testAddDisplayName() {
         List<String> jobnewlist = new HomePage(getDriver())
-                .clickOnProject(new OrganizationFolderPage(getDriver()), ORG_FOLDER_NAME)
+                .clickOnProject(ORG_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
                 .clickConfigure()
                 .enterDisplayName(DISPLAY_NAME)
                 .clickSave(new OrganizationFolderPage(getDriver()))

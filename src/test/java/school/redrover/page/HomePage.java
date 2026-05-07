@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
+import school.redrover.page.common.BaseProjectPage;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class HomePage extends BasePage {
                 .stream().map(WebElement::getText).toList();
     }
 
-    public <JobPage extends BasePage> JobPage clickOnProject(JobPage jobpage, String projectName) {
+    public <ProjectPage extends BaseProjectPage> ProjectPage clickOnProject(String projectName, ProjectPage projectPage) {
         WebElement projectNameEl = getDriver().findElement(By.xpath("//a[contains(@href, '%s')]/span".formatted(projectName)));
         new Actions(getDriver())
                 .moveToElement(projectNameEl, 2, 2)
@@ -40,7 +41,7 @@ public class HomePage extends BasePage {
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@class, 'task-link')]//span[text()='Status']")));
 
-        return jobpage;
+        return projectPage;
     }
 
     public HomePage search(String name, boolean pressEnter) {
