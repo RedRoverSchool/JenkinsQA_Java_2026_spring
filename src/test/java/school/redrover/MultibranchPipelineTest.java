@@ -52,15 +52,16 @@ public class MultibranchPipelineTest extends BaseTest {
 
 	@Test(dependsOnMethods = "testCreate")
 	public void testRename(){
-		getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME)))).click();
-		getDriver().findElement(By.xpath("//a[contains(@href,'job') and ./span[text()='Rename']]")).click();
-		getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
-		getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(PROJECT_NAME_1);
-		getDriver().findElement(By.name("Submit")).click();
-		getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-jenkins-logo"))).click();
+		List<String> projectList = new HomePage(getDriver())
+				.clickOnProject(PROJECT_NAME,new MultibranchProjectPage(getDriver()))
+				.clickRename(PROJECT_NAME)
+				.enterNewName(PROJECT_NAME_1)
+				.clickRenameButton()
+				.goHomePage()
+				.getProjectList();
 
-		Assert.assertEquals(getWait10().until(
-				ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME_1)))).getText(), PROJECT_NAME_1);
+		Assert.assertEquals(projectList.size(), 1);
+		Assert.assertEquals(projectList.getFirst(), PROJECT_NAME_1);
 	}
 
 	@Test (dependsOnMethods = "testRename")
