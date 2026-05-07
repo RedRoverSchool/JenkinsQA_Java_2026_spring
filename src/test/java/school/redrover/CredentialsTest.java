@@ -13,7 +13,7 @@ public class CredentialsTest extends BaseTest {
     public void testAddCredentialsDialogOpen() {
 
         String dialogTitle = new HomePage(getDriver())
-                .clickManageJenkins()
+                .clickManageButton()
                 .clickCredentials()
                 .clickAddCredentialsButton()
                 .getDialogTitle();
@@ -31,7 +31,7 @@ public class CredentialsTest extends BaseTest {
         String desc = "Test Description " + timestamp;
 
         boolean isCreated = new HomePage(getDriver())
-                .clickManageJenkins()
+                .clickManageButton()
                 .clickCredentials()
                 .clickAddCredentialsButton()
                 .createUsernameWithPassword(user, pass, id, desc)
@@ -44,7 +44,7 @@ public class CredentialsTest extends BaseTest {
     public void testDeleteCredentials() {
 
         boolean isDeleted = new HomePage(getDriver())
-                .clickManageJenkins()
+                .clickManageButton()
                 .clickCredentials()
                 .clickDeleteCredential(id)
                 .isCredentialDeleted(id);
