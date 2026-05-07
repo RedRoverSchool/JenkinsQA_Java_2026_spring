@@ -60,7 +60,7 @@ public class ToolsTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testAddJDK")
-    public void deleteJDK() {
+    public void testdeleteJDK() {
         boolean isEditButtonAppears = new HomePage(getDriver())
                 .clickManageButton()
                 .clickToolsButton()
