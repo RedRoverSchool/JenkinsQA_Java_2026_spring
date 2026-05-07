@@ -38,9 +38,9 @@ public class TestUtils {
         };
     }
 
-    public static void createJob(WebDriver driver, String projectName, JobType jobType) {
+    public static HomePage createJob(WebDriver driver, String projectName, JobType jobType) {
         BaseConfigPage configPage = getConfigPage(jobType, driver);
-        new HomePage(driver)
+        return new HomePage(driver)
                 .clickItemNewJob()
                 .setProjectName(projectName)
                 .scrollToTypeOfProject(jobType)
