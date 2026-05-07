@@ -97,8 +97,4 @@ public class ToolsPage extends BasePage {
         }
         return this;
     }
-
-    public String getHeaderText() {
-        return getDriver().findElement(By.xpath("//h1")).getText();
-    }
 }
