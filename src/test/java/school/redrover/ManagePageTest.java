@@ -4,11 +4,10 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,18 +29,11 @@ public class ManagePageTest extends BaseTest {
         return getDriver().findElement(HEADER).getText();
     }
 
-    @Ignore
     @Test
     public void testsPageItems() {
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-section__item']")));
-
-        List<WebElement> items = getDriver().findElements(By.xpath("//div[@class='jenkins-section__item']/a/dl/dt"));
-
-        List<String> actualItems = new ArrayList<>();
-        for (WebElement item : items) {
-            actualItems.add(item.getText());
-        }
+        List<String> actualItems = new HomePage(getDriver())
+                .clickManageButton()
+                .getManageItems();
 
         Assert.assertEquals(actualItems, expectedItems);
     }
@@ -57,17 +49,12 @@ public class ManagePageTest extends BaseTest {
 
     @Test(dataProvider = "caseInSensitive")
     public void testSearchCaseInsensitive(String input, String expOutput) {
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(MANAGE_JENKINS_LINK)).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), "Manage Jenkins"));
-
-        WebElement searchBar = getDriver().findElement(SEARCH_BAR);
-        searchBar.sendKeys(input);
-
-        String actualOutput = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@class, 'jenkins-dropdown__item')]"))).getText();
+        String actualOutput = new HomePage(getDriver())
+                .clickManageButton()
+                .searchBarInput(input)
+                .getActualOutPut();
 
         Assert.assertEquals(actualOutput, expOutput);
-
     }
 
     @DataProvider

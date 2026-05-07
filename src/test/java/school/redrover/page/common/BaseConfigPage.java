@@ -24,6 +24,5 @@ public abstract class BaseConfigPage<T extends BaseConfigPage<T>> extends BasePa
     public T enterDescription(String description) {
         getDriver().findElement(By.xpath("//textarea[contains(@name, 'description')]")).sendKeys(description);
         return (T) this;
-
     }
 }

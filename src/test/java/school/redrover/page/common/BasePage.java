@@ -25,4 +25,8 @@ public class BasePage extends BaseModel {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
         return new ManagePage(getDriver());
     }
+
+    public String getHeaderText() {
+        return getDriver().findElement(By.xpath("//h1")).getText();
+    }
 }
