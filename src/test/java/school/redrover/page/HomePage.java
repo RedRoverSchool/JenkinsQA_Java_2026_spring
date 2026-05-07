@@ -87,6 +87,12 @@ public class HomePage extends BasePage {
         return this;
     }
 
+    public RenameProjectPage clickRenameInDropdown() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href, 'rename')]"))).click();
+
+        return new RenameProjectPage(getDriver());
+    }
+
     public HomePage confirmDelete(String projectName) {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();
         getWait5().until(ExpectedConditions.invisibilityOfElementLocated(By.id("job_" + projectName)));
