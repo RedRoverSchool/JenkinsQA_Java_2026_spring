@@ -3,6 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.page.common.BasePage;
 
 public class ManagePage extends BasePage {
 
@@ -10,15 +11,25 @@ public class ManagePage extends BasePage {
         super(driver);
     }
 
-    public ToolsPage goToTools() {
+    public ToolsPage clickToolsButton() {
         getDriver().findElement(By.xpath("//a[@href='configureTools']")).click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
 
         return new ToolsPage(getDriver());
     }
 
+    public UserManagementPage clickUsersButton() {
+        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+        return new UserManagementPage(getDriver());
+    }
+
     public CredentialsPage goToCredentials() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='credentials']"))).click();
         return new CredentialsPage(getDriver());
+    }
+
+    public NodesPage goToNodes() {
+        getDriver().findElement(By.xpath("//a[contains(@href, 'computer')]")).click();
+        return new NodesPage(getDriver());
     }
 }

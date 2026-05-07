@@ -1,8 +1,7 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.CreateProjectPage;
@@ -13,7 +12,6 @@ import java.util.List;
 public class NewItemTest extends BaseTest {
 
     private static final String JOB_NAME = "existing_job_01";
-    private static final String ERROR_MESSAGE = "» A job already exists with the name ‘existing_job_01’";
 
     @Test
     public void testValidName() {
@@ -35,34 +33,47 @@ public class NewItemTest extends BaseTest {
                 .clickItemNewJob()
                 .setProjectName(JOB_NAME)
                 .selectPipelineProject()
-                .getErrorText();
+                .getErrorInvalidText();
 
         Assert.assertEquals(actualError, "» A job already exists with the name ‘existing_job_01’");
     }
 
     @Test
-    public void testSelectAnItemType() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
-        getDriver().findElement(By.id("name")).sendKeys("Select an item type test");
-        getDriver().findElement(By.xpath("//div[contains(text(), 'Build, test')]")).click();
+    public void testEmptyName() {
+        String actualError = new HomePage(getDriver())
+                .goHomePage()
+                .clickItemNewJob()
+                .clickOutside()
+                .getErrorEmptyText();
 
-        Assert.assertTrue(getDriver().findElement(By.id("ok-button")).isEnabled());
+        Assert.assertEquals(actualError, "» This field cannot be empty, please enter a valid name");
     }
 
     @Test
-    public void testSelectItemTypeWithEmptyName() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
-        getDriver().findElement(By.xpath("//div[contains(text(), 'Build, test')]")).click();
+    public void testInvalidName() {
+        CreateProjectPage newItemPage = new HomePage(getDriver())
+                .goHomePage()
+                .clickItemNewJob()
+                .setProjectName("$");
 
-        Assert.assertEquals(getDriver().findElement(By.id("itemname-required")).getText(),
-                "» This field cannot be empty, please enter a valid name");
+        Assert.assertEquals(newItemPage.getErrorInvalidText(), "» ‘$’ is an unsafe character");
+        Assert.assertFalse(newItemPage.isOkButtonEnabled(), "The OK button should be inactive");
     }
+    @DataProvider(name = "invalid characters")
+    public Object[][] getData() {
+            return new Object[][]{{"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"},{"!"}
+        };
+    }
+    @Test(dataProvider = "invalid characters")
+    public void testInvalidCharactersInName(String invalidCharacter) {
+        String invalidProjectName = "test" + invalidCharacter;
 
-    @Test
-    public void testSelectItemTypeWithInvalidName() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
-        getDriver().findElement(By.id("name")).sendKeys("$");
+        String errorMessage = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(invalidProjectName)
+                .selectPipelineProject()
+                .getErrorInvalidText();
 
-        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
+        Assert.assertEquals(errorMessage, "» ‘" + invalidCharacter + "’ is an unsafe character");
     }
 }
