@@ -29,12 +29,12 @@ public class ManagePage extends BasePage {
         return new UserManagementPage(getDriver());
     }
 
-    public CredentialsPage goToCredentials() {
+    public CredentialsPage clickCredentialsButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='credentials']"))).click();
         return new CredentialsPage(getDriver());
     }
 
-    public NodesPage goToNodes() {
+    public NodesPage clickNodesButton() {
         getDriver().findElement(By.xpath("//a[contains(@href, 'computer')]")).click();
         return new NodesPage(getDriver());
     }

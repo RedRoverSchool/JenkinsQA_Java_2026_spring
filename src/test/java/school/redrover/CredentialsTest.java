@@ -1,16 +1,9 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.CredentialsPage;
 import school.redrover.page.HomePage;
-
-import java.util.List;
 
 public class CredentialsTest extends BaseTest {
 
@@ -21,7 +14,7 @@ public class CredentialsTest extends BaseTest {
 
         String dialogTitle = new HomePage(getDriver())
                 .clickManageJenkins()
-                .goToCredentials()
+                .clickCredentialsButton()
                 .openAddCredentialsDialog()
                 .getDialogTitle();
 
@@ -39,7 +32,7 @@ public class CredentialsTest extends BaseTest {
 
         boolean isCreated = new HomePage(getDriver())
                 .clickManageJenkins()
-                .goToCredentials()
+                .clickCredentialsButton()
                 .openAddCredentialsDialog()
                 .createUsernameWithPassword(user, pass, id, desc)
                 .isCredentialVisible(id);
@@ -52,7 +45,7 @@ public class CredentialsTest extends BaseTest {
 
         boolean isDeleted = new HomePage(getDriver())
                 .clickManageJenkins()
-                .goToCredentials()
+                .clickCredentialsButton()
                 .deleteCredentialAction(id)
                 .isCredentialDeleted(id);
 
