@@ -20,7 +20,7 @@ public class NodeTest extends BaseTest {
     public void testCreateNewNode(){
 
         List<String> nodesList = new HomePage(getDriver())
-                .goManagePage()
+                .clickManageButton()
                 .goToNodes()
                 .createNewNode(NEW_NODE_NAME)
                 .getNodesList();
@@ -34,7 +34,7 @@ public class NodeTest extends BaseTest {
         List<String> expectAttributes = new ArrayList<>(List.of(DESCRIPTION, LABELS));
 
         List<String> actualAttributes = new HomePage(getDriver())
-                .goManagePage()
+                .clickManageButton()
                 .goToNodes()
                 .goToNodeManagementPage(NEW_NODE_NAME)
                 .goToNodeConfigPage(NEW_NODE_NAME)
@@ -51,7 +51,7 @@ public class NodeTest extends BaseTest {
     @Test (dependsOnMethods = "testNodeConfiguration")
     public void testMarkNodeOffline(){
         boolean isNodeOffline = new HomePage(getDriver())
-                .goManagePage()
+                .clickManageButton()
                 .goToNodes()
                 .goToNodeManagementPage(NEW_NODE_NAME)
                 .markNodeOffline()
@@ -63,7 +63,7 @@ public class NodeTest extends BaseTest {
     @Test (dependsOnMethods = "testMarkNodeOffline")
     public void testBringTheNodeBackOnline(){
         boolean isNodeOnline = new HomePage(getDriver())
-                .goManagePage()
+                .clickManageButton()
                 .goToNodes()
                 .goToNodeManagementPage(NEW_NODE_NAME)
                 .bringNodeBackOnline()
@@ -76,7 +76,7 @@ public class NodeTest extends BaseTest {
     public void testDeleteNode(){
 
         List<String> actualNodeList = new HomePage(getDriver())
-                .goManagePage()
+                .clickManageButton()
                 .goToNodes()
                 .goToNodeManagementPage(NEW_NODE_NAME)
                 .deleteNode()

@@ -13,7 +13,7 @@ public class ToolsPage extends BasePage {
         super(driver);
     }
 
-    public ToolsPage selectSimpleMavenOption(String option) {
+    public ToolsPage selectMavenOption(String option) {
         WebElement dropMenu = getDriver().findElement(
                 By.xpath("(//select[contains(@class,'jenkins-select__input')])[1]"));
 
@@ -22,7 +22,7 @@ public class ToolsPage extends BasePage {
         return this;
     }
 
-    public boolean isSimplePathFieldDisplayed() {
+    public boolean isPathFieldAppears() {
         return getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(
                         By.xpath("(//input[@name='_.path'])[1]"))).isDisplayed();
@@ -46,7 +46,7 @@ public class ToolsPage extends BasePage {
         return this;
     }
 
-    public boolean isGlobalPathFieldDisplayed() {
+    public boolean isGlobalPathFieldAppears() {
         return getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(
                         By.xpath("(//input[@name='_.path'])[2]"))).isDisplayed();
@@ -79,9 +79,26 @@ public class ToolsPage extends BasePage {
     }
 
     public boolean isEditDisplayed() {
-        return getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//span[@tooltip='One or more fields in this block have been edited.']"))
-        ).isDisplayed();
+        return !getDriver().findElements(
+                By.xpath("//span[@tooltip='One or more fields in this block have been edited.']")
+        ).isEmpty();
+    }
+
+    public ToolsPage deleteAllJDKs() {
+        By deleteButton = By.xpath("//span[normalize-space()='Delete']");
+
+        while (!getDriver().findElements(deleteButton).isEmpty()) {
+            WebElement button = getDriver().findElements(deleteButton).get(0);
+            button.click();
+
+            getWait5().until(
+                    ExpectedConditions.stalenessOf(button)
+            );
+        }
+        return this;
+    }
+
+    public String getHeaderText() {
+        return getDriver().findElement(By.xpath("//h1")).getText();
     }
 }

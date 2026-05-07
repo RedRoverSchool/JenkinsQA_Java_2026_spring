@@ -1,71 +1,75 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-import school.redrover.page.ManagePage;
-import school.redrover.page.ToolsPage;
 
 public class ToolsTest extends BaseTest {
 
-    @Ignore
     @Test
     public void testOpenToolsPage() {
-        new HomePage(getDriver()).goManagePage()
-                .goToTools();
+        String headerText = new HomePage(getDriver())
+                .clickManageButton()
+                .clickToolsButton()
+                .getHeaderText();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Tools");
+        Assert.assertEquals(headerText, "Tools");
     }
 
-    @Ignore
     @Test
     public void testSimpleMavenConfiguration() {
-        ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
-                .goToTools();
+        boolean isPathDisplayed = new HomePage(getDriver())
+                .clickManageButton()
+                .clickToolsButton()
+                .selectMavenOption("Settings file in filesystem")
+                .clickSaveButton()
+                .clickToolsButton()
+                .isPathFieldAppears();
 
-        ManagePage managePage = toolsPage
-                .selectSimpleMavenOption("Settings file in filesystem")
-                .clickSaveButton();
-
-        Assert.assertTrue(managePage
-                .goToTools()
-                .isSimplePathFieldDisplayed());
+        Assert.assertTrue(isPathDisplayed);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testSimpleMavenConfiguration")
     public void testGlobalMavenConfiguration() {
-        ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
-                .goToTools();
-
-        ManagePage managePage = toolsPage
+        boolean isGlobalPathDisplayed = new HomePage(getDriver())
+                .clickManageButton()
+                .clickToolsButton()
                 .selectGlobalMavenOption("Global settings file on filesystem")
-                .clickSaveButton();
+                .clickSaveButton()
+                .clickToolsButton()
+                .isGlobalPathFieldAppears();
 
-        Assert.assertTrue(managePage
-                .goToTools()
-                .isGlobalPathFieldDisplayed());
+        Assert.assertTrue(isGlobalPathDisplayed);
     }
 
-    @Ignore
     @Test
     public void testAddJDK() {
-        ToolsPage toolsPage = new HomePage(getDriver()).goManagePage()
-                .goToTools();
-
-        toolsPage
+        boolean isEditButtonAppears = new HomePage(getDriver())
+                .clickManageButton()
+                .clickToolsButton()
                 .clickAddJDKButton()
                 .setJDKName("TestName")
                 .setJavaPath("/test/path/toJDK")
-                .clickSaveButton();
+                .clickSaveButton()
+                .clickManageButton()
+                .clickToolsButton()
+                .isEditDisplayed();
 
-        Assert.assertTrue(new ManagePage(getDriver())
-                .goToTools()
-                .isEditDisplayed());
-
+        Assert.assertTrue(isEditButtonAppears);
     }
 
+    @Test(dependsOnMethods = "testAddJDK")
+    public void testdeleteJDK() {
+        boolean isEditButtonAppears = new HomePage(getDriver())
+                .clickManageButton()
+                .clickToolsButton()
+                .clickJDKInstallationsButton()
+                .deleteAllJDKs()
+                .clickSaveButton()
+                .clickToolsButton()
+                .isEditDisplayed();
+
+        Assert.assertFalse(isEditButtonAppears);
+    }
 }
