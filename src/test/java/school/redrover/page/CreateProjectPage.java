@@ -26,10 +26,10 @@ public class CreateProjectPage extends BasePage {
         WebElement jobElement = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(jobType.getDisplayName())));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", jobElement);
         jobElement.click();
-        
+
          return this;
         }
-    
+
     public CreateProjectPage enterCopyItemName(String sourceName) {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                         By.id("from")))
@@ -103,6 +103,15 @@ public class CreateProjectPage extends BasePage {
 
     public CreateProjectPage clickOutside() {getDriver().findElement(By.id("main-panel")).click();
         return this;
+    }
+
+    public PipelineConfigPage createPipeline(){
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("workflow-editor-1")));
+
+        return new PipelineConfigPage(getDriver());
     }
 }
 
