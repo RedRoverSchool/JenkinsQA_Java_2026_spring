@@ -10,9 +10,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
-import school.redrover.page.MultibranchStatusPage;
 import school.redrover.page.projects.MultibranchProjectPage;
-
 import java.util.List;
 
 
@@ -20,7 +18,6 @@ public class MultibranchPipelineTest extends BaseTest {
 	private final static String PROJECT_NAME = "MultibranchPipelineProject";
 	private final static String PROJECT_NAME_1 = "MultibranchPipelineProject1";
 	private final static String PROJECT_NAME_DELETE = "Project_To_Delete";
-	private final static By PROJECT_NAME_FIELD = By.xpath("//input[@name='newName']");
 
 	@Test
 	public void testCreate() {
