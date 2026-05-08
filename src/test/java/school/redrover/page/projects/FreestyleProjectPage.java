@@ -2,7 +2,6 @@ package school.redrover.page.projects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BaseProjectPage;
 import school.redrover.page.projectsConfig.FreestyleProjectConfigPage;
 

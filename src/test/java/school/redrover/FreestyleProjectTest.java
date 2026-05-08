@@ -9,11 +9,8 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.projects.FreestyleProjectPage;
-import school.redrover.page.projectsConfig.FreestyleProjectConfigPage;
-
 import java.util.Arrays;
 import java.util.List;
 
