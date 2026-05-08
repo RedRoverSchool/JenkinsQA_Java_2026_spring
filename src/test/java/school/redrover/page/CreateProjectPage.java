@@ -111,13 +111,13 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
-    public PipelineConfigPage createPipeline(){
+    public PipelineProjectConfigPage createPipeline(){
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
         getWait10().until(ExpectedConditions.elementToBeClickable(By.id("workflow-editor-1")));
 
-        return new PipelineConfigPage(getDriver());
+        return new PipelineProjectConfigPage(getDriver());
     }
 }
 

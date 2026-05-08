@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BaseConfigPage;
 import school.redrover.page.projects.FreestyleProjectPage;
 
+import java.util.List;
+
 public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectConfigPage> {
 
     public FreestyleProjectConfigPage(WebDriver driver) {
@@ -46,6 +48,27 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     }
 
     public FreestyleProjectPage clickSave() {
+    public FreestyleProjectConfigPage clickAddBuildStep(){
+        WebElement addBuildStepButton = getWait10().until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@suffix='builder']")));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", addBuildStepButton);
+        getWait5().until(ExpectedConditions.elementToBeClickable(addBuildStepButton));
+        addBuildStepButton.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(@class, 'jenkins-dropdown')]")));
+        return this;
+
+    }
+
+    public List <String> listOfBuildSteps(){
+        return getDriver()
+                .findElements(By.xpath("//div[@class='jenkins-dropdown jenkins-dropdown--compact']//button"))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+    }
+
+    public FreestyleProjectConfigPage clickSave() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
                         By.name("Submit")))
                 .click();

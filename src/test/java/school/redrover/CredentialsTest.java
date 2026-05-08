@@ -13,9 +13,9 @@ public class CredentialsTest extends BaseTest {
     public void testAddCredentialsDialogOpen() {
 
         String dialogTitle = new HomePage(getDriver())
-                .clickManageJenkins()
-                .clickCredentialsButton()
-                .openAddCredentialsDialog()
+                .clickManageButton()
+                .clickCredentials()
+                .clickAddCredentialsButton()
                 .getDialogTitle();
 
         Assert.assertEquals(dialogTitle, "Add Credentials");
@@ -31,9 +31,9 @@ public class CredentialsTest extends BaseTest {
         String desc = "Test Description " + timestamp;
 
         boolean isCreated = new HomePage(getDriver())
-                .clickManageJenkins()
-                .clickCredentialsButton()
-                .openAddCredentialsDialog()
+                .clickManageButton()
+                .clickCredentials()
+                .clickAddCredentialsButton()
                 .createUsernameWithPassword(user, pass, id, desc)
                 .isCredentialVisible(id);
 
@@ -44,9 +44,9 @@ public class CredentialsTest extends BaseTest {
     public void testDeleteCredentials() {
 
         boolean isDeleted = new HomePage(getDriver())
-                .clickManageJenkins()
-                .clickCredentialsButton()
-                .deleteCredentialAction(id)
+                .clickManageButton()
+                .clickCredentials()
+                .clickDeleteCredential(id)
                 .isCredentialDeleted(id);
 
         Assert.assertTrue(isDeleted,
