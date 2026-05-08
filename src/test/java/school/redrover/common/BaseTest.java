@@ -1,7 +1,5 @@
 package school.redrover.common;
 
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
@@ -10,9 +8,7 @@ import school.redrover.common.filter.FilterForTests;
 import school.redrover.common.order.OrderForTests;
 import school.redrover.common.order.OrderUtils;
 
-import java.io.File;
 import java.lang.reflect.Method;
-import java.nio.file.Files;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -96,6 +92,13 @@ public abstract class BaseTest {
         }
     }
 
+    private void resetDriverStates() {
+        driver = null;
+        wait2 = null;
+        wait5 = null;
+        wait10 = null;
+    }
+
     @AfterMethod
     protected void afterMethod(Method method, ITestResult testResult) {
         if (!testResult.isSuccess() && ProjectUtils.isRunCI()) {
@@ -103,6 +106,10 @@ public abstract class BaseTest {
         }
         if (methodsOrder.isGroupFinished(method) && (ProjectUtils.isRunCI() || testResult.isSuccess() || ProjectUtils.closeIfError())) {
             stopDriver();
+        } else if (!testResult.isSuccess() && !ProjectUtils.isRunCI()) {
+
+            resetDriverStates();
+
         }
 
         ProjectUtils.log("Execution time is %.3f sec", (testResult.getEndMillis() - testResult.getStartMillis()) / 1000.0);
