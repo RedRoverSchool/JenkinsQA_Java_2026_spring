@@ -47,7 +47,6 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         return this;
     }
 
-    public FreestyleProjectPage clickSave() {
     public FreestyleProjectConfigPage clickAddBuildStep(){
         WebElement addBuildStepButton = getWait10().until(
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@suffix='builder']")));
@@ -68,7 +67,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
                 .toList();
     }
 
-    public FreestyleProjectConfigPage clickSave() {
+    public FreestyleProjectPage clickSave() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
                         By.name("Submit")))
                 .click();
