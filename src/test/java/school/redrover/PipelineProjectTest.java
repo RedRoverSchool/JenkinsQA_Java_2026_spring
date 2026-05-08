@@ -64,7 +64,7 @@ public class PipelineProjectTest extends BaseTest {
                 .clickSaveButton()
                 .getDisabledWarningText();
 
-        Assert.assertTrue(warningText.contains("This project is currently disabled"));
+        Assert.assertTrue(warningText.contains("This11111111111111 project is currently disabled"));
     }
 
     @Test(dependsOnMethods = "testDisable")
@@ -118,7 +118,7 @@ public class PipelineProjectTest extends BaseTest {
                 .clickApply()
                 .getSaveText();
 
-        Assert.assertEquals(saveText, "S1aved");
+        Assert.assertEquals(saveText, "Saved");
     }
 
     @Test(dependsOnMethods = "testRename")
