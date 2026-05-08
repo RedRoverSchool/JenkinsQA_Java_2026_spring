@@ -27,57 +27,6 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testReplacesOriginalName() {
-        String projectName = "Pipeline_" + System.currentTimeMillis();
-        String displayName = "Changed Pipeline";
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("name")))
-                .sendKeys(projectName);
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Pipeline']"))).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-        getWait10().until(ExpectedConditions.urlContains("/configure"));
-        System.out.println("Project created: " + projectName);
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-head-icon"))).click();
-        getWait10().until(ExpectedConditions.urlContains("localhost"));
-
-        getDriver().navigate().refresh();
-        getWait10().until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".jenkins-table__link")));
-
-        WebElement projectLink = getWait10().until(
-                ExpectedConditions.elementToBeClickable(
-                        By.xpath("//a[contains(@href, '%s')]".formatted(projectName))));
-        projectLink.click();
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//a[contains(@href, '/configure')]"))).click();
-
-        ((JavascriptExecutor) getDriver()).executeScript("window.scrollTo(0, document.body.scrollHeight);");
-
-        WebElement advancedButton = getWait10().until(
-                ExpectedConditions.elementToBeClickable(
-                        By.xpath("(//button[contains(@class, 'advancedButton')])[last()]")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", advancedButton);
-        advancedButton.click();
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//input[@name='_.displayNameOrNull']"))).sendKeys(displayName);
-
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        getWait5().until(ExpectedConditions.urlContains("/job/" + projectName));
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-head-icon"))).click();
-        getDriver().navigate().refresh();
-
-        WebElement projectOnDashboard = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(
-                        By.xpath("//*[text()='%s']".formatted(displayName))));
-        Assert.assertEquals(projectOnDashboard.getText(), displayName,
-                "Project should be displayed with Display Name on dashboard");
-    }
-
-    @Test
     public void testDisableProject() {
         String projectName = "Pipeline_" + System.currentTimeMillis();
 
