@@ -1,10 +1,14 @@
 package school.redrover.page.projectsConfig;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BaseConfigPage;
 import school.redrover.page.projects.FreestyleProjectPage;
+
+import java.util.List;
 
 public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectConfigPage> {
 
@@ -41,6 +45,26 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
                         By.name("_.projectUrlStr"))).
                 sendKeys(repoURL);
         return this;
+    }
+
+    public FreestyleProjectConfigPage clickAddBuildStep(){
+        WebElement addBuildStepButton = getWait10().until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@suffix='builder']")));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", addBuildStepButton);
+        getWait5().until(ExpectedConditions.elementToBeClickable(addBuildStepButton));
+        addBuildStepButton.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(@class, 'jenkins-dropdown')]")));
+        return this;
+
+    }
+
+    public List <String> listOfBuildSteps(){
+        return getDriver()
+                .findElements(By.xpath("//div[@class='jenkins-dropdown jenkins-dropdown--compact']//button"))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
     }
 
     public FreestyleProjectConfigPage clickSave() {

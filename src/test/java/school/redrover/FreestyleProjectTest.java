@@ -10,7 +10,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-
+import school.redrover.page.projects.FreestyleProjectPage;
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,27 +64,11 @@ public class FreestyleProjectTest extends BaseTest {
                 "Run with timeout",
                 "Set build status to \"pending\" on GitHub commit");
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='%s']".formatted(PROJECT_NAME)))).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), PROJECT_NAME));
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@href='/job/FreestyleProject/configure']"))).click();
-
-        WebElement addBuildStepButton = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@suffix='builder']")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", addBuildStepButton);
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(addBuildStepButton));
-        addBuildStepButton.click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[contains(@class, 'jenkins-dropdown')]")));
-
-        List<WebElement> dropdownItems = getWait10().until(
-                ExpectedConditions.presenceOfAllElementsLocatedBy(
-                        By.xpath("//div[@class='jenkins-dropdown jenkins-dropdown--compact']//button")));
-        List<String> actualTexts = dropdownItems.stream()
-                .map(WebElement::getText)
-                .toList();
+        List<String> actualTexts= new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .clickAddBuildStep()
+                .listOfBuildSteps();
 
         Assert.assertEquals(actualTexts, expectedTexts,
                 "Dropdown options should match expected list");
