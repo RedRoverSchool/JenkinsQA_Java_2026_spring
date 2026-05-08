@@ -30,7 +30,7 @@ public class ManagePage extends BasePage {
         return new UserManagementPage(getDriver());
     }
 
-    public CredentialsPage clickCredentialsButton() {
+    public CredentialsPage clickCredentials() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='credentials']"))).click();
         return new CredentialsPage(getDriver());
     }

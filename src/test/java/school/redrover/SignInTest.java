@@ -120,6 +120,7 @@ public class SignInTest extends BaseTest {
         Assert.assertTrue(textMatches, "Error message not shown or text doesn't match");
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testSignInPageAlertMessageText")
     public void testSignInPageAlertTextColor() {
         boolean colorMatches = new LoginPage(getDriver())

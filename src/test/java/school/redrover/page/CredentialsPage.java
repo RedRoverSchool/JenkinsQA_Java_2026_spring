@@ -9,7 +9,7 @@ import school.redrover.page.common.BasePage;
 public class CredentialsPage extends BasePage {
     public CredentialsPage(WebDriver driver) {super(driver);}
 
-    public CredentialsPage openAddCredentialsDialog() {
+    public CredentialsPage clickAddCredentialsButton() {
                 getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.cssSelector("button[data-type='credentials-add-store-item']"))).click();
                 return this;
@@ -39,7 +39,7 @@ public class CredentialsPage extends BasePage {
                 By.xpath("//*[contains(text(), '" + id + "')]"))).isDisplayed();
     }
 
-    public CredentialsPage deleteCredentialAction(String id) {
+    public CredentialsPage clickDeleteCredential(String id) {
 
         By moreActionsByRowId = By.xpath("//div[contains(@class, 'credentials-card')][.//a[contains(@href, '" + id + "')]]//button[@tooltip='More actions']");
 
