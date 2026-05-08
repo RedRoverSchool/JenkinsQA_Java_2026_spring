@@ -53,6 +53,8 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", addBuildStepButton);
         getWait5().until(ExpectedConditions.elementToBeClickable(addBuildStepButton));
         addBuildStepButton.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(@class, 'jenkins-dropdown')]")));
         return this;
 
     }
