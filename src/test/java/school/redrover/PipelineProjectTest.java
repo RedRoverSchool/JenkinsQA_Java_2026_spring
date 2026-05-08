@@ -1,13 +1,12 @@
 package school.redrover;
 
-import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.CreateProjectPage;
 import school.redrover.page.HomePage;
-import school.redrover.page.PipelineProjectPage;
+import school.redrover.page.projects.PipelineProjectPage;
 import java.util.List;
 
 public class PipelineProjectTest extends BaseTest {
@@ -47,7 +46,7 @@ public class PipelineProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateWithDuplicateName")
     public void testAddDescription() {
         String descriptionText = new HomePage(getDriver())
-                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
+                .clickOnProject(PROJECT_NAME, new PipelineProjectPage(getDriver()))
                 .clickAddDescription()
                 .enterDescription(DESCRIPTION_TEXT)
                 .clickSaveDescription()
@@ -58,11 +57,8 @@ public class PipelineProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testAddDescription")
     public void testDisable() {
-        PipelineProjectPage pipelineProjectPage = new PipelineProjectPage(getDriver());
-        //PageFactory.initElements(getDriver(), pipelineProjectPage);
-
         String warningText = new HomePage(getDriver())
-                .clickOnProject(pipelineProjectPage, PROJECT_NAME)
+                .clickOnProject(PROJECT_NAME, new PipelineProjectPage(getDriver()))
                 .clickConfigureSidebarButton()
                 .toggleProjectState()
                 .clickSaveButton()
@@ -74,7 +70,7 @@ public class PipelineProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testDisable")
     public void testEnable() {
         boolean isBuildNowButtonDisplayed = new HomePage(getDriver())
-                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
+                .clickOnProject(PROJECT_NAME, new PipelineProjectPage(getDriver()))
                 .clickConfigureSidebarButton()
                 .toggleProjectState()
                 .clickSaveButton()
@@ -86,7 +82,7 @@ public class PipelineProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testEnable")
     public void testRename() {
         List<String> jobList = new HomePage(getDriver())
-                .clickOnProject(new PipelineProjectPage(getDriver()), PROJECT_NAME)
+                .clickOnProject(PROJECT_NAME, new PipelineProjectPage(getDriver()))
                 .clickRenameSidebarButton()
                 .updateProjectName(RENAME_PIPELINE)
                 .clickRenameButton()
@@ -128,7 +124,7 @@ public class PipelineProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testRename")
     public void testDeleteViaSidebar() {
         List<String> jobList = new HomePage(getDriver())
-                .clickOnProject(new PipelineProjectPage(getDriver()), RENAME_PIPELINE)
+                .clickOnProject(RENAME_PIPELINE, new PipelineProjectPage(getDriver()))
                 .deletePipelineAndConfirm()
                 .getProjectList();
 

@@ -5,6 +5,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import school.redrover.page.common.BasePage;
+
+import java.util.List;
 
 public class ToolsPage extends BasePage {
 
@@ -12,7 +15,7 @@ public class ToolsPage extends BasePage {
         super(driver);
     }
 
-    public ToolsPage selectSimpleMavenOption(String option) {
+    public ToolsPage selectMavenOption(String option) {
         WebElement dropMenu = getDriver().findElement(
                 By.xpath("(//select[contains(@class,'jenkins-select__input')])[1]"));
 
@@ -21,7 +24,7 @@ public class ToolsPage extends BasePage {
         return this;
     }
 
-    public boolean isSimplePathFieldDisplayed() {
+    public boolean isPathFieldAppears() {
         return getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(
                         By.xpath("(//input[@name='_.path'])[1]"))).isDisplayed();
@@ -45,7 +48,7 @@ public class ToolsPage extends BasePage {
         return this;
     }
 
-    public boolean isGlobalPathFieldDisplayed() {
+    public boolean isGlobalPathFieldAppears() {
         return getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(
                         By.xpath("(//input[@name='_.path'])[2]"))).isDisplayed();
@@ -66,21 +69,53 @@ public class ToolsPage extends BasePage {
     }
 
     public ToolsPage setJDKName(String name) {
-        getDriver().findElement(By.name("_.name")).sendKeys(name);
+        WebElement nameField = getDriver().findElement(By.name("_.name"));
+
+        if(!nameField.getAttribute("value").isEmpty()) {
+            nameField.clear();
+        }
+
+        nameField.sendKeys(name);
 
         return this;
     }
 
     public ToolsPage setJavaPath(String path) {
-        getDriver().findElement(By.name("_.home")).sendKeys(path);
+        WebElement pathField = getDriver().findElement(By.name("_.home"));
+
+        if(!pathField.getAttribute("value").isEmpty()) {
+            pathField.clear();
+        }
+
+        pathField.sendKeys(path);
 
         return this;
     }
 
     public boolean isEditDisplayed() {
-        return getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//span[@tooltip='One or more fields in this block have been edited.']"))
-        ).isDisplayed();
+        return !getDriver().findElements(
+                By.xpath("//span[@tooltip='One or more fields in this block have been edited.']")
+        ).isEmpty();
+    }
+
+    public ToolsPage deleteAllJDKs() {
+        By deleteButton = By.xpath("//span[normalize-space()='Delete']");
+
+        while (!getDriver().findElements(deleteButton).isEmpty()) {
+            WebElement button = getDriver().findElements(deleteButton).get(0);
+            button.click();
+
+            getWait5().until(
+                    ExpectedConditions.stalenessOf(button)
+            );
+        }
+        return this;
+    }
+
+    public List<String> getJDKData() {
+        return List.of(
+                getDriver().findElement(By.name("_.name")).getAttribute("value"),
+                getDriver().findElement(By.name("_.home")).getAttribute("value")
+        );
     }
 }

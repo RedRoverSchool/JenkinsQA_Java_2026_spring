@@ -1,4 +1,4 @@
-package school.redrover.page;
+package school.redrover.page.common;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -24,6 +24,5 @@ public abstract class BaseConfigPage<T extends BaseConfigPage<T>> extends BasePa
     public T enterDescription(String description) {
         getDriver().findElement(By.xpath("//textarea[contains(@name, 'description')]")).sendKeys(description);
         return (T) this;
-
     }
 }

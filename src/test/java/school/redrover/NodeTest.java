@@ -20,8 +20,8 @@ public class NodeTest extends BaseTest {
     public void testCreateNewNode(){
 
         List<String> nodesList = new HomePage(getDriver())
-                .goManagePage()
-                .goToNodes()
+                .clickManageButton()
+                .clickNodesButton()
                 .createNewNode(NEW_NODE_NAME)
                 .getNodesList();
 
@@ -34,8 +34,8 @@ public class NodeTest extends BaseTest {
         List<String> expectAttributes = new ArrayList<>(List.of(DESCRIPTION, LABELS));
 
         List<String> actualAttributes = new HomePage(getDriver())
-                .goManagePage()
-                .goToNodes()
+                .clickManageButton()
+                .clickNodesButton()
                 .goToNodeManagementPage(NEW_NODE_NAME)
                 .goToNodeConfigPage(NEW_NODE_NAME)
                 .changeDescription(DESCRIPTION)
@@ -51,8 +51,8 @@ public class NodeTest extends BaseTest {
     @Test (dependsOnMethods = "testNodeConfiguration")
     public void testMarkNodeOffline(){
         boolean isNodeOffline = new HomePage(getDriver())
-                .goManagePage()
-                .goToNodes()
+                .clickManageButton()
+                .clickNodesButton()
                 .goToNodeManagementPage(NEW_NODE_NAME)
                 .markNodeOffline()
                 .isNodeOffline();
@@ -63,8 +63,8 @@ public class NodeTest extends BaseTest {
     @Test (dependsOnMethods = "testMarkNodeOffline")
     public void testBringTheNodeBackOnline(){
         boolean isNodeOnline = new HomePage(getDriver())
-                .goManagePage()
-                .goToNodes()
+                .clickManageButton()
+                .clickNodesButton()
                 .goToNodeManagementPage(NEW_NODE_NAME)
                 .bringNodeBackOnline()
                 .isNodeOnline();
@@ -76,8 +76,8 @@ public class NodeTest extends BaseTest {
     public void testDeleteNode(){
 
         List<String> actualNodeList = new HomePage(getDriver())
-                .goManagePage()
-                .goToNodes()
+                .clickManageButton()
+                .clickNodesButton()
                 .goToNodeManagementPage(NEW_NODE_NAME)
                 .deleteNode()
                 .getNodesList();

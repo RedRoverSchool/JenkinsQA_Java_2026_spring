@@ -6,6 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.TestUtils;
+import school.redrover.page.common.BasePage;
+import school.redrover.page.projectsConfig.FreestyleProjectConfigPage;
+import school.redrover.page.projectsConfig.PipelineProjectConfigPage;
 
 public class CreateProjectPage extends BasePage {
 
@@ -100,6 +103,21 @@ public class CreateProjectPage extends BasePage {
 
     public CreateProjectPage clickOutside() {getDriver().findElement(By.id("main-panel")).click();
         return this;
+    }
+
+    public CreateProjectPage selectMultibranchPipline() {
+        getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']")).click();
+
+        return this;
+    }
+
+    public PipelineConfigPage createPipeline(){
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("workflow-editor-1")));
+
+        return new PipelineConfigPage(getDriver());
     }
 }
 
