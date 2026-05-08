@@ -1,7 +1,9 @@
 package school.redrover.page.projectsConfig;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BaseConfigPage;
 import school.redrover.page.projects.FreestyleProjectPage;
@@ -43,11 +45,25 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         return this;
     }
 
-    public FreestyleProjectConfigPage clickSave() {
+    public FreestyleProjectPage clickSave() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
                         By.name("Submit")))
                 .click();
+
+        return new FreestyleProjectPage(getDriver());
+    }
+    public FreestyleProjectConfigPage  enableDeleteWorkspaceBeforeBuildStarts() {
+        WebElement checkboxLabel = getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//label[contains(.,'Delete workspace before build starts')]")));
+
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block:'center'});",
+                checkboxLabel);
+
+        checkboxLabel.click();
         return this;
     }
-
+    public boolean isDeleteWorkspaceBeforeBuildStartsSelected() {
+        return getWait10().until(ExpectedConditions.presenceOfElementLocated(By.name("hudson-plugins-ws_cleanup-PreBuildCleanup")))
+                .isSelected();
+    }
 }
