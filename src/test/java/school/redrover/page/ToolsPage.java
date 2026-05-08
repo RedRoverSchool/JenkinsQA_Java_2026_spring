@@ -7,6 +7,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.page.common.BasePage;
 
+import java.util.List;
+
 public class ToolsPage extends BasePage {
 
     public ToolsPage(WebDriver driver) {
@@ -67,13 +69,25 @@ public class ToolsPage extends BasePage {
     }
 
     public ToolsPage setJDKName(String name) {
-        getDriver().findElement(By.name("_.name")).sendKeys(name);
+        WebElement nameField = getDriver().findElement(By.name("_.name"));
+
+        if(!nameField.getAttribute("value").isEmpty()) {
+            nameField.clear();
+        }
+
+        nameField.sendKeys(name);
 
         return this;
     }
 
     public ToolsPage setJavaPath(String path) {
-        getDriver().findElement(By.name("_.home")).sendKeys(path);
+        WebElement pathField = getDriver().findElement(By.name("_.home"));
+
+        if(!pathField.getAttribute("value").isEmpty()) {
+            pathField.clear();
+        }
+
+        pathField.sendKeys(path);
 
         return this;
     }
@@ -96,5 +110,12 @@ public class ToolsPage extends BasePage {
             );
         }
         return this;
+    }
+
+    public List<String> getJDKData() {
+        return List.of(
+                getDriver().findElement(By.name("_.name")).getAttribute("value"),
+                getDriver().findElement(By.name("_.home")).getAttribute("value")
+        );
     }
 }
