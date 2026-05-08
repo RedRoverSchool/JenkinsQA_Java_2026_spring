@@ -16,6 +16,7 @@ public class HomePage extends BasePage {
 
     private static final By SEARCH_BUTTON = By.xpath("//button[@id='root-action-SearchAction']");
     private static final By SEARCH_INPUT_FIELD = By.xpath("//input[@id='command-bar']");
+    private final By USER_BUTTON = By.id("root-action-UserAction");
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -111,10 +112,8 @@ public class HomePage extends BasePage {
         return getDriver().findElement(By.id("description-content")).getText();
     }
 
-    private final By userButton = By.id("root-action-UserAction");
-
     public boolean isUserButtonDisplayed() {
-        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(userButton)).isDisplayed();
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(USER_BUTTON)).isDisplayed();
     }
 
     public HomePage clickScheduleBuild(String jobName) {
