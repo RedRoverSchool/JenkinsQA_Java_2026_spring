@@ -103,7 +103,7 @@ public abstract class BaseTest {
         }
         if (methodsOrder.isGroupFinished(method) && (ProjectUtils.isRunCI() || testResult.isSuccess() || ProjectUtils.closeIfError())) {
             stopDriver();
-        } else if (!testResult.isSuccess() && !ProjectUtils.isRunCI()) {
+        } else if (!testResult.isSuccess()) {
             resetDriverStates();
         }
 
