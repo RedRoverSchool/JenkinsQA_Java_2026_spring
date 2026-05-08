@@ -15,6 +15,7 @@ public class ManagePage extends BasePage {
         super(driver);
     }
 
+    private static final By EMPTY_DROPDOWN = By.className("jenkins-search__results__no-results-label");
     private final List<WebElement> manageItems = getDriver().findElements(By.xpath("//div[@class='jenkins-section__item']/a/dl/dt"));
 
     public ToolsPage clickToolsButton() {
@@ -53,8 +54,12 @@ public class ManagePage extends BasePage {
         return this;
     }
 
-    public String getActualOutPut() {
+    public String getActualOutput() {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("//a[contains(@class, 'jenkins-dropdown__item')]"))).getText();
+    }
+
+    public boolean isNoResultsMessageDisplayed(){
+        return getWait5().until(ExpectedConditions.textToBePresentInElementLocated(EMPTY_DROPDOWN, "No results"));
     }
 }
