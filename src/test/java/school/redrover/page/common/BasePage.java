@@ -2,12 +2,14 @@ package school.redrover.page.common;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
 import school.redrover.page.ManagePage;
 
 public class BasePage extends BaseModel {
+
+    private static final By MANAGE_JENKINS_LINK = By.cssSelector("a[href='/manage']");
+    private static final By HEADER = By.xpath("//h1");
 
     public BasePage(WebDriver driver) {
         super(driver);
@@ -22,8 +24,8 @@ public class BasePage extends BaseModel {
     }
 
     public ManagePage clickManageButton() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("root-action-ManageJenkinsAction"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+        getWait5().until(ExpectedConditions.elementToBeClickable(MANAGE_JENKINS_LINK)).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(HEADER, "Manage Jenkins"));
 
         return new ManagePage(getDriver());
     }

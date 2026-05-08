@@ -15,18 +15,12 @@ public class ManagePageTest extends BaseTest {
 
     private static final By MANAGE_JENKINS_LINK = By.cssSelector("a[href='/manage']");
     private static final By CONFIGURE_SYSTEM_LINK = By.xpath("//a[contains(@href, 'configure')]");
-    private static final By SEARCH_BAR = By.id("settings-search-bar");
-    private static final By HEADER = By.xpath("//h1");
 
     private final List<String> expectedItems = List.of("System", "Tools", "Plugins", "Nodes", "Clouds",
             "Appearance", "Security", "Credentials", "Credential Providers", "Users", "System Information",
             "System Log", "Load Statistics", "About Jenkins", "Manage Old Data", "Reload Configuration from Disk",
             "Jenkins CLI", "Script Console", "Prepare for Shutdown"
     );
-
-    private String getHeader() {
-        return getDriver().findElement(HEADER).getText();
-    }
 
     @Test
     public void testsPageItems() {
@@ -50,7 +44,7 @@ public class ManagePageTest extends BaseTest {
     public void testSearchCaseInsensitive(String input, String expOutput) {
         String actualOutput = new HomePage(getDriver())
                 .clickManageButton()
-                .searchBarInput(input)
+                .typeSearchQuery(input)
                 .getActualOutput();
 
         Assert.assertEquals(actualOutput, expOutput);
@@ -69,7 +63,7 @@ public class ManagePageTest extends BaseTest {
     public void testSearchInvalid(String invalidInput) {
         boolean isNoResultsDisplayed = new HomePage(getDriver())
                 .clickManageButton()
-                .searchBarInput(invalidInput)
+                .typeSearchQuery(invalidInput)
                 .isNoResultsMessageDisplayed();
 
         Assert.assertTrue(isNoResultsDisplayed, String.format("Expected 'No results' message to be displayed for input: '%s', but it wasn't found.", invalidInput));
@@ -82,32 +76,15 @@ public class ManagePageTest extends BaseTest {
         };
     }
 
-    public void pressEnterUntilPageChanges() {
-        getWait10().until(d -> {
-            try {
-                WebElement searchBar = d.findElement(SEARCH_BAR);
-                searchBar.sendKeys(Keys.ENTER);
-
-                return ExpectedConditions.not(
-                        ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), "Manage Jenkins")).apply(d);
-            } catch (StaleElementReferenceException e) {
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
-        });
-    }
-
     @Test(dataProvider = "systemConfiguration")
     public void testNavigateToSystemConfigurationPagesByEnter(String section) {
-        getWait10().until(ExpectedConditions.elementToBeClickable(MANAGE_JENKINS_LINK)).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(HEADER, "Manage Jenkins"));
+        String headerText = new HomePage(getDriver())
+                .clickManageButton()
+                .typeSearchQuery(section)
+                .submitSearchByEnter()
+                .getHeaderText();
 
-        WebElement search = getWait10().until(ExpectedConditions.elementToBeClickable((SEARCH_BAR)));
-        search.sendKeys(section);
-        pressEnterUntilPageChanges();
-
-        Assert.assertEquals(getHeader(), section);
+        Assert.assertEquals(headerText, section);
     }
 
     @Test
@@ -151,14 +128,14 @@ public class ManagePageTest extends BaseTest {
     }
 
     @Test
-    public void testChangeDarkTheme(){
+    public void testChangeDarkTheme() {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/manage']"))).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='appearance']"))).click();
 
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[@for='radio-block-1']"))).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='jenkins-button apply-button']"))).click();
 
-        Assert.assertEquals(((JavascriptExecutor) getDriver()).executeScript("return document.documentElement.getAttribute('data-theme')"),"dark");
+        Assert.assertEquals(((JavascriptExecutor) getDriver()).executeScript("return document.documentElement.getAttribute('data-theme')"), "dark");
 
         //Restoring Light theme for subsequent tests
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[@for='radio-block-0']"))).click();
