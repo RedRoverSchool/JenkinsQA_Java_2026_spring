@@ -5,6 +5,8 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 
+import java.util.List;
+
 public class ToolsTest extends BaseTest {
 
     @Test
@@ -60,7 +62,24 @@ public class ToolsTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testAddJDK")
-    public void testdeleteJDK() {
+    public void testEditExistingJDK() {
+        List<String> attributesJDK = new HomePage(getDriver())
+                .clickManageButton()
+                .clickToolsButton()
+                .clickJDKInstallationsButton()
+                .setJDKName("UpdateTestName")
+                .setJavaPath("/test/updatePath/toJDK")
+                .clickSaveButton()
+                .clickToolsButton()
+                .clickJDKInstallationsButton()
+                .getJDKData();
+
+        Assert.assertEquals(attributesJDK.get(0), "UpdateTestName");
+        Assert.assertEquals(attributesJDK.get(1), "/test/updatePath/toJDK");
+    }
+
+    @Test(dependsOnMethods = "testEditExistingJDK")
+    public void testDeleteJDK() {
         boolean isEditButtonAppears = new HomePage(getDriver())
                 .clickManageButton()
                 .clickToolsButton()
