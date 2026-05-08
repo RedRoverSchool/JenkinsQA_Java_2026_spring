@@ -118,7 +118,7 @@ public class PipelineProjectTest extends BaseTest {
                 .clickApply()
                 .getSaveText();
 
-        Assert.assertEquals(saveText, "Saved");
+        Assert.assertEquals(saveText, "S1aved");
     }
 
     @Test(dependsOnMethods = "testRename")

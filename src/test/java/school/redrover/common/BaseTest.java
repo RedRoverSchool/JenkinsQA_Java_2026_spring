@@ -49,14 +49,18 @@ public abstract class BaseTest {
         closeDriver();
     }
 
+    private void resetDriverStates() {
+        driver = null;
+        wait2 = null;
+        wait5 = null;
+        wait10 = null;
+    }
+
     private void closeDriver() {
         if (driver != null) {
             driver.quit();
 
-            driver = null;
-            wait2 = null;
-            wait5 = null;
-            wait10 = null;
+            resetDriverStates();
 
             ProjectUtils.log("Browser closed");
         }
@@ -92,13 +96,6 @@ public abstract class BaseTest {
         }
     }
 
-    private void resetDriverStates() {
-        driver = null;
-        wait2 = null;
-        wait5 = null;
-        wait10 = null;
-    }
-
     @AfterMethod
     protected void afterMethod(Method method, ITestResult testResult) {
         if (!testResult.isSuccess() && ProjectUtils.isRunCI()) {
@@ -107,9 +104,7 @@ public abstract class BaseTest {
         if (methodsOrder.isGroupFinished(method) && (ProjectUtils.isRunCI() || testResult.isSuccess() || ProjectUtils.closeIfError())) {
             stopDriver();
         } else if (!testResult.isSuccess() && !ProjectUtils.isRunCI()) {
-
             resetDriverStates();
-
         }
 
         ProjectUtils.log("Execution time is %.3f sec", (testResult.getEndMillis() - testResult.getStartMillis()) / 1000.0);
