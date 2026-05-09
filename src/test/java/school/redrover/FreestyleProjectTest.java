@@ -52,7 +52,19 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(projectList.size(), 1);
         Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);
     }
+    @Test(dependsOnMethods = "testCreate")
+    public void testEnableDeleteWorkspaceBeforeBuildStarts() {
 
+        boolean isSelected = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .enableDeleteWorkspaceBeforeBuildStarts()
+                .clickSave()
+                .clickConfigure()
+                .isDeleteWorkspaceBeforeBuildStartsSelected();
+
+        Assert.assertTrue(isSelected);
+    }
     @Test (dependsOnMethods = "testCreate")
     public void testAddBuildStepDropdownContainsAllOptions(){
         List<String> expectedTexts = Arrays.asList(
