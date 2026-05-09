@@ -1,4 +1,4 @@
-package school.redrover.page;
+package school.redrover.page.view.viewConfig;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
-public class ViewGlobalConfigPage extends ViewConfigPage{
+public class ViewGlobalConfigPage extends ViewConfigPage {
 
     @FindBy(name = "proxiedViewName")
     private WebElement selectGlobalView;
