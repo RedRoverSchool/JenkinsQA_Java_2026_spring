@@ -1,8 +1,8 @@
 package school.redrover.page;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.page.common.BasePage;
@@ -15,61 +15,83 @@ public class ToolsPage extends BasePage {
         super(driver);
     }
 
-    public ToolsPage selectMavenOption(String option) {
-        WebElement dropMenu = getDriver().findElement(
-                By.xpath("(//select[contains(@class,'jenkins-select__input')])[1]"));
+    @FindBy(xpath = "(//select[contains(@class,'jenkins-select__input')])[1]")
+    private WebElement mavenOption;
 
-        new Select(dropMenu).selectByVisibleText(option);
+    @FindBy(xpath = "(//input[@name='_.path'])[1]")
+    private WebElement javaHomeField;
+
+    @FindBy(name = "Submit")
+    private WebElement saveButton;
+
+    @FindBy(xpath = "(//select[contains(@class,'jenkins-select__input')])[2]")
+    private WebElement globalMavenOption;
+
+    @FindBy(xpath = "(//input[@name='_.path'])[2]")
+    private WebElement globalPathField;
+
+    @FindBy(xpath = "//button[contains(text(),'JDK installations')]")
+    private WebElement JDKInstallationsButton;
+
+    @FindBy(xpath = "//button[contains(text(), 'Add JDK')]")
+    private WebElement addJDKButton;
+
+    @FindBy(name = "_.name")
+    private WebElement nameField;
+
+    @FindBy(name = "_.home")
+    private WebElement pathField;
+
+    @FindBy(xpath = "//span[@tooltip='One or more fields in this block have been edited.']")
+    private List<WebElement> editButtons;
+
+    @FindBy(xpath = "//span[normalize-space()='Delete']")
+    private List<WebElement> deleteButtons;
+
+    @FindBy(id = "settings-search-bar")
+    private WebElement searchBar;
+
+    public ToolsPage selectMavenOption(String option) {
+        new Select(mavenOption).selectByVisibleText(option);
 
         return this;
     }
 
     public boolean isPathFieldAppears() {
-        return getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("(//input[@name='_.path'])[1]"))).isDisplayed();
+        return getWait5().until(ExpectedConditions.visibilityOf(javaHomeField)).isDisplayed();
     }
 
     public ManagePage clickSaveButton() {
-        getDriver().findElement(By.name("Submit")).click();
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(
-                        By.id("settings-search-bar")));
+        saveButton.click();
+
+        getWait10().until(ExpectedConditions.visibilityOf(searchBar));
 
         return new ManagePage(getDriver());
     }
 
     public ToolsPage selectGlobalMavenOption(String option) {
-        WebElement dropMenu = getDriver().findElement(
-                By.xpath("(//select[contains(@class,'jenkins-select__input')])[2]"));
-
-        new Select(dropMenu).selectByVisibleText(option);
+        new Select(globalMavenOption).selectByVisibleText(option);
 
         return this;
     }
 
     public boolean isGlobalPathFieldAppears() {
-        return getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("(//input[@name='_.path'])[2]"))).isDisplayed();
+        return getWait5().until(ExpectedConditions.visibilityOf(globalPathField)).isDisplayed();
     }
 
     public ToolsPage clickJDKInstallationsButton() {
-        getDriver().findElement(By.xpath("//button[contains(text(),'JDK installations')]")).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Add JDK')]")));
+        JDKInstallationsButton.click();
 
         return this;
     }
 
     public ToolsPage clickAddJDKButton() {
-        getDriver().findElement(By.xpath("//button[contains(text(), 'Add JDK')]")).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'JDK')]")));
+        addJDKButton.click();
 
         return this;
     }
 
     public ToolsPage setJDKName(String name) {
-        WebElement nameField = getDriver().findElement(By.name("_.name"));
 
         if(!nameField.getAttribute("value").isEmpty()) {
             nameField.clear();
@@ -81,7 +103,6 @@ public class ToolsPage extends BasePage {
     }
 
     public ToolsPage setJavaPath(String path) {
-        WebElement pathField = getDriver().findElement(By.name("_.home"));
 
         if(!pathField.getAttribute("value").isEmpty()) {
             pathField.clear();
@@ -93,29 +114,23 @@ public class ToolsPage extends BasePage {
     }
 
     public boolean isEditDisplayed() {
-        return !getDriver().findElements(
-                By.xpath("//span[@tooltip='One or more fields in this block have been edited.']")
-        ).isEmpty();
+        return !editButtons.isEmpty();
     }
 
     public ToolsPage deleteAllJDKs() {
-        By deleteButton = By.xpath("//span[normalize-space()='Delete']");
-
-        while (!getDriver().findElements(deleteButton).isEmpty()) {
-            WebElement button = getDriver().findElements(deleteButton).get(0);
-            button.click();
-
-            getWait5().until(
-                    ExpectedConditions.stalenessOf(button)
-            );
+        while (!deleteButtons.isEmpty()) {
+            WebElement currentButton = deleteButtons.get(0);
+            currentButton.click();
+            getWait5().until(ExpectedConditions.stalenessOf(currentButton));
         }
+
         return this;
     }
 
     public List<String> getJDKData() {
         return List.of(
-                getDriver().findElement(By.name("_.name")).getAttribute("value"),
-                getDriver().findElement(By.name("_.home")).getAttribute("value")
+                nameField.getAttribute("value"),
+                pathField.getAttribute("value")
         );
     }
 }
