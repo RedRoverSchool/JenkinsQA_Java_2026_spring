@@ -1,8 +1,9 @@
-package school.redrover.page;
+package school.redrover.page.view;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.page.HomePage;
 import school.redrover.page.common.BasePage;
 
 public class GlobalViewPage extends BasePage {
