@@ -11,7 +11,6 @@ import school.redrover.page.view.GlobalViewPage;
 
 public class GlobalViewTest extends BaseTest {
 
-
     @Test
     public void testAddViewDescription() {
         String actualDescriptionText = new HomePage(getDriver())
