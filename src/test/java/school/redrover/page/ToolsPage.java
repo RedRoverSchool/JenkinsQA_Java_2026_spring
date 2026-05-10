@@ -1,5 +1,7 @@
 package school.redrover.page;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -50,6 +52,21 @@ public class ToolsPage extends BasePage {
 
     @FindBy(id = "settings-search-bar")
     private WebElement searchBar;
+
+    @FindBy(xpath = "//button[contains(text(), 'Add Git')]")
+    private WebElement addGitButton;
+
+    @FindBy(xpath = "//div[@descriptorid='hudson.plugins.git.GitTool']")
+    private WebElement gitInstallationSection;
+
+    @FindBy(xpath = "(//button[contains(@class,'jenkins-dropdown__item')])[1]")
+    private WebElement firstDropdownItem;
+
+    @FindBy(xpath = "//input[@checkurl = '/manage/descriptorByName/hudson.plugins.git.GitTool/checkName']")
+    private WebElement gitNameField;
+
+    @FindBy(xpath = "//input[@checkurl = '/manage/descriptorByName/hudson.plugins.git.GitTool/checkHome']")
+    private WebElement gitPathField;
 
     public ToolsPage selectMavenOption(String option) {
         new Select(mavenOption).selectByVisibleText(option);
@@ -132,5 +149,57 @@ public class ToolsPage extends BasePage {
                 nameField.getAttribute("value"),
                 pathField.getAttribute("value")
         );
+    }
+
+    public ToolsPage clickAddGitButton() {
+        addGitButton.click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//*[contains(normalize-space(.), 'Git')]")));
+
+        return this;
+    }
+
+    public ToolsPage selectDropDownItem() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(firstDropdownItem));
+
+        firstDropdownItem.click();
+
+        return this;
+    }
+
+    public boolean isGitInstallationsAppears() {
+        getWait10().until(ExpectedConditions.visibilityOf(gitInstallationSection));
+
+        return gitInstallationSection.isDisplayed();
+    }
+
+    public ToolsPage setGitName(String name) {
+        getWait5().until(ExpectedConditions.visibilityOf(gitNameField));
+
+        if(!gitNameField.getAttribute("value").isEmpty()) {
+            gitNameField.clear();
+        }
+
+        gitNameField.sendKeys(name);
+
+        return this;
+    }
+
+    public ToolsPage setGitPath(String path) {
+        if(!gitPathField.getAttribute("value").isEmpty()) {
+            gitPathField.clear();
+        }
+
+        gitPathField.sendKeys(path);
+
+        return this;
+    }
+
+    public List<String> getGitData() {
+        return List.of(
+                gitNameField.getAttribute("value"),
+                gitPathField.getAttribute("value")
+                );
     }
 }

@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.ToolsPage;
 
 import java.util.List;
 
@@ -91,4 +92,24 @@ public class ToolsTest extends BaseTest {
 
         Assert.assertFalse(isEditButtonAppears);
     }
-}
+
+    @Test
+    public void testAddGitInstallation() {
+        boolean isGitInstallationAppears = new HomePage(getDriver())
+                .clickManageButton()
+                .clickToolsButton()
+                .clickAddGitButton()
+                .selectDropDownItem()
+                .setGitName("TestGitName")
+                .setGitPath("/test/path")
+                .clickSaveButton()
+                .clickToolsButton()
+                .isGitInstallationsAppears();
+        List<String> attributesGit =  new ToolsPage(getDriver())
+                .getGitData();
+
+        Assert.assertTrue(isGitInstallationAppears);
+        Assert.assertEquals(attributesGit.get(0), "TestGitName");
+        Assert.assertEquals(attributesGit.get(1), "/test/path");
+        }
+    }
