@@ -43,7 +43,7 @@ public class GlobalViewTest extends BaseTest {
                 .cancelButton()
                 .getViewDescriptionText();
 
-        Assert.assertEquals(actualDescriptionText, "UPDATED_DESC_MESSAGE");
+        Assert.assertEquals(actualDescriptionText, "Updated desc message");
     }
 
     @Ignore
