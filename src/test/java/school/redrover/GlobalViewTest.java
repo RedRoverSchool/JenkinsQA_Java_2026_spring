@@ -7,45 +7,44 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.view.GlobalViewPage;
 
 public class GlobalViewTest extends BaseTest {
 
-    @Ignore
+
     @Test
     public void testAddViewDescription() {
         String actualDescriptionText = new HomePage(getDriver())
                 .clickDescription()
-                .enterDescription("Test")
-                        .clickSave()
-                                .getViewDescriptionText();
+                .inputDescription("Test")
+                .clickSave()
+                .getViewDescriptionText();
 
         Assert.assertEquals(actualDescriptionText, "Test");
     }
 
-
-    @Ignore
     @Test(dependsOnMethods = "testAddViewDescription")
     public void testUpdateViewDescription() {
-        getWait5().until(ExpectedConditions.elementToBeClickable((By.linkText("Edit description")))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']"))).clear();
-        //getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']"))).sendKeys(UPDATED_DESC_MESSAGE);
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@formnovalidate='formNoValidate']"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
+        String updatedDescriptionText = new HomePage(getDriver())
+                .clickDescription()
+                .clearDescription()
+                .inputDescription("Updated desc message")
+                .clickSave()
+                .getViewDescriptionText();
 
-        Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(), "UPDATED_DESC_MESSAGE");
+        Assert.assertEquals(updatedDescriptionText, "Updated desc message");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testUpdateViewDescription")
     public void testCancelUpdateViewDescription() {
-        getWait5().until(ExpectedConditions.elementToBeClickable((By.linkText("Edit description")))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']"))).clear();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']"))).sendKeys("DESC_MESSAGE");
-        getDriver().findElement(By.xpath("//button[text()='Cancel']")).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
+        String actualDescriptionText = new HomePage(getDriver())
+                .clickDescription()
+                .clearDescription()
+                .inputDescription("Desc message")
+                .cancelButton()
+                .getViewDescriptionText();
 
-        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("description-content"))).getText(), "UPDATED_DESC_MESSAGE");
+        Assert.assertEquals(actualDescriptionText, "UPDATED_DESC_MESSAGE");
     }
 
     @Ignore

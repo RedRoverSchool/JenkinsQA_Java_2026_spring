@@ -2,43 +2,61 @@ package school.redrover.page.view;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
 import school.redrover.page.common.BasePage;
 
 public class GlobalViewPage extends BasePage {
 
-    private static final String TEXT_DESCRIPTION_BUTTON = "Add description";
-    private static final String DESC_MESSAGE = "Some description text here";
-    private static final String UPDATED_DESC_MESSAGE = "Updated description";
-    private static final By DESCRIPTION_INPUT = By.name("description");
-    private static final By PREIVEW_CONTAINER = By.className("textarea-preview-container");
-    private static final By SAVE_BUTTON = By.xpath("//button[@name='Submit']");
-    private static final By DESCRIPTION_MESSAGE = By.id("description-content");
-    private static final By JOB_NAME = By.xpath("//h1[@class='job-index-headline page-headline']");
+    @FindBy
+    private static final By jobName= By.xpath("//h1[@class='job-index-headline page-headline']");
+
+    @FindBy
+    private static final By descriptionInput = By.name("description");
+
+    @FindBy
+    private static final By cancelButton = By.xpath("//button[text()='Cancel']");
+
+    @FindBy
+    private static final By saveButton = By.xpath("//button[@name='Submit']");
+
+    @FindBy
+    private static final By descriptionMessage = By.id("description-content");
 
     public GlobalViewPage(WebDriver driver) {
         super(driver);
     }
 
-    public String getPreviewText() {
-        return getDriver().findElement(PREIVEW_CONTAINER).getText();
-    }
-
     public String getJobTitle() {
-        return getWait5().until(ExpectedConditions.presenceOfElementLocated(JOB_NAME)).getText();
+        return getWait5().until(ExpectedConditions.presenceOfElementLocated(jobName)).getText();
     }
 
-    public GlobalViewPage enterDescription(String textInput) {
-        getDriver().findElement(DESCRIPTION_INPUT).sendKeys(textInput);
+    public GlobalViewPage inputDescription(String textInput) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(descriptionInput));
+        getDriver().findElement(descriptionInput).sendKeys(textInput);
+
+        return this;
+    }
+
+    public GlobalViewPage clearDescription() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(descriptionInput)).clear();
 
         return this;
     }
 
     public HomePage clickSave() {
-        getDriver().findElement(SAVE_BUTTON).click();
+        getDriver().findElement(saveButton).click();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(DESCRIPTION_MESSAGE));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(descriptionMessage));
+
+        return new HomePage(getDriver());
+    }
+
+    public HomePage cancelButton() {
+        getDriver().findElement(cancelButton).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(descriptionMessage));
 
         return new HomePage(getDriver());
     }
