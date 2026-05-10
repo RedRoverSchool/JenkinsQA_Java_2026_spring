@@ -30,6 +30,7 @@ public class GlobalViewPage extends BasePage {
     }
 
     public GlobalViewPage enterDescription(String textInput) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(DESCRIPTION_INPUT));
         getDriver().findElement(DESCRIPTION_INPUT).sendKeys(textInput);
 
         return this;
