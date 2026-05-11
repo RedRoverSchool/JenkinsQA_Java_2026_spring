@@ -62,6 +62,10 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[contains(text(),'About Jenkins')]")
     private WebElement aboutJenkins;
 
+    @FindBy(xpath = "//a[@href = '/view/all/builds']")
+    private  WebElement buttonBuildHistory;
+
+
     private static final String PROJECT_NAME = "//a[contains(@href, '%s')]/span";
     private static final String SEARCH_RESULT = "//*[@id='search-results']/a[@href='/job/%s/']";
 
@@ -171,7 +175,7 @@ public class HomePage extends BasePage {
     }
 
     public BuildHistoryPage clickBuildHistory() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = '/view/all/builds']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(buttonBuildHistory)).click();
 
         return new BuildHistoryPage(getDriver());
     }
