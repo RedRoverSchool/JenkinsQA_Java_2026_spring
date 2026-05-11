@@ -14,7 +14,7 @@ public class ConsoleTest extends BaseTest {
     private static final String NAME_PROJECT = "TEST";
 
     @Test
-    public void test() {
+    public void readingInformationConsoleTest() {
         String consoleText = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(NAME_PROJECT)
