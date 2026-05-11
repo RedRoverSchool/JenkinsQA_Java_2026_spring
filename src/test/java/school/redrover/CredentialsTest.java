@@ -52,4 +52,20 @@ public class CredentialsTest extends BaseTest {
         Assert.assertTrue(isDeleted,
                 "Username with ID " + id + " is still found!");
     }
+
+    @Test
+    public void addSecretTextCredentials() {
+        boolean isCredentialsCreated = new HomePage(getDriver())
+                .clickManageButton()
+                .clickCredentials()
+                .clickAddCredentialsButton()
+                .clickSecretTextButton()
+                .clickNextButton()
+                .typeSecretText("my-secret")
+                .typeID("test-id")
+                .clickCreateButton()
+                .isCredentialVisible("test-id");
+
+        Assert.assertTrue(isCredentialsCreated);
+    }
 }
