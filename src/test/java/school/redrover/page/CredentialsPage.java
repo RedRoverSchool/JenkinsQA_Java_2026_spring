@@ -29,8 +29,9 @@ public class CredentialsPage extends BasePage {
     private WebElement IDField;
 
     public CredentialsPage clickAddCredentialsButton() {
-                getWait5().until(ExpectedConditions.elementToBeClickable(
+        getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.cssSelector("button[data-type='credentials-add-store-item']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text() = 'Close']")));
                 return this;
     }
 
@@ -50,6 +51,7 @@ public class CredentialsPage extends BasePage {
         getDriver().findElement(By.name("_.id")).sendKeys(id);
         getDriver().findElement(By.name("_.description")).sendKeys(desc);
         getDriver().findElement(By.id("cr-dialog-submit")).click();
+
         return this;
     }
 
@@ -68,6 +70,7 @@ public class CredentialsPage extends BasePage {
                 getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//*[contains(text(), 'Delete credential')]"))).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-id='ok']"))).click();
+
         return this;
     }
 
