@@ -46,41 +46,34 @@ public class GlobalViewTest extends BaseTest {
         Assert.assertEquals(actualDescriptionText, "Updated desc message");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCancelUpdateViewDescription")
     public void testDeleteViewDescription() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']"))).clear();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
+        String addDescriptionText = new HomePage(getDriver())
+                .clickDescription()
+                .clearDescription()
+                .clickSave()
+                .getAddDescriptionText();
 
-        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).getText(),
-                "TEXT_DESCRIPTION_BUTTON");
+        Assert.assertEquals(addDescriptionText, "Add description");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testDeleteViewDescription")
     public void testSaveWithoutViewDescription() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#description-link.jenkins-button"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#description-link.jenkins-button")));
+        String actualDescriptionText = new HomePage(getDriver())
+                .clickDescription()
+                .clickSave()
+                .getViewDescriptionText();
 
-        Assert.assertTrue(
-                getWait5().until(ExpectedConditions.presenceOfElementLocated(By.id("description-content"))).getText().isEmpty(),
-                "Description has non-empty content!");
+        Assert.assertTrue(actualDescriptionText.isEmpty());
     }
 
-    @Ignore
     @Test
-    public void hidePreviewOptionIsAvailableTest() throws InterruptedException {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description")));
+    public void testClickPreviewOption() throws InterruptedException {
+        String previewText = new HomePage(getDriver())
+                .clickDescription()
+                .inputDescription("Test Input")
+                .clickPreviewButton();
 
-        getDriver().findElement(By.name("description")).sendKeys("textInput");
-        getDriver().findElement(By.className("textarea-show-preview")).click();
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("textarea-hide-preview")));
-
-        Assert.assertTrue(getDriver().findElement(By.className("textarea-hide-preview")).isDisplayed());
-        Assert.assertEquals(getDriver().findElement(By.className("textarea-preview")).getText(), "textInput");
+        Assert.assertEquals(previewText, "Test Input");
     }
 }

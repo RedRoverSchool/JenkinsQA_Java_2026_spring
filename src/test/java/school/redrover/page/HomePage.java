@@ -155,6 +155,10 @@ public class HomePage extends BasePage {
         return textDescription.getText();
     }
 
+    public String getAddDescriptionText() {
+        return elementDescription.getText();
+    }
+
     public CreateGlobalViewPage createGlobalView(){
         getWait5().until(ExpectedConditions.visibilityOf(newView)).click();
         return new CreateGlobalViewPage(getDriver());

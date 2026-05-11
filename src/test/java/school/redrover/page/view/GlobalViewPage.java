@@ -2,6 +2,7 @@ package school.redrover.page.view;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
@@ -23,6 +24,9 @@ public class GlobalViewPage extends BasePage {
 
     @FindBy
     private static final By descriptionMessage = By.id("description-content");
+
+    @FindBy
+    private static final By addDescriptionButton = By.id("description-link");
 
     public GlobalViewPage(WebDriver driver) {
         super(driver);
@@ -48,7 +52,7 @@ public class GlobalViewPage extends BasePage {
     public HomePage clickSave() {
         getDriver().findElement(saveButton).click();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(descriptionMessage));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(addDescriptionButton));
 
         return new HomePage(getDriver());
     }
@@ -59,5 +63,15 @@ public class GlobalViewPage extends BasePage {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(descriptionMessage));
 
         return new HomePage(getDriver());
+    }
+
+    public String clickPreviewButton() {
+        getDriver().findElement(By.className("textarea-show-preview")).click();
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("textarea-preview"))).getText();
+    }
+
+    public GlobalViewPage clickHideButton() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("textarea-hide-preview")));
+        return this;
     }
 }
