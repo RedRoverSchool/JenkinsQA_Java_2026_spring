@@ -50,7 +50,7 @@ public class GlobalViewPage extends BasePage {
     }
 
     public HomePage clickSave() {
-        getDriver().findElement(saveButton).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(saveButton)).click();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(addDescriptionButton));
 
