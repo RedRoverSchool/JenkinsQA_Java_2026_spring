@@ -87,6 +87,13 @@ public class CreateProjectPage extends BasePage {
         return jobConfig;
     }
 
+    public ErrorNamePage clickOKWithError(){
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"main-panel\"]/h1")));
+
+        return new ErrorNamePage(getDriver());
+    }
+
     public String getErrorEmptyText() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-required")));
         return getDriver().findElement(By.id("itemname-required")).getText();
