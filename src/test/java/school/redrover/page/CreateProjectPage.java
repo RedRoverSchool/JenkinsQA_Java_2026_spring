@@ -106,8 +106,9 @@ public class CreateProjectPage extends BasePage {
     }
 
     public CreateProjectPage selectMultibranchPipline() {
-        getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']")).click();
-
+        WebElement MPjobElement = getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", MPjobElement);
+        MPjobElement.click();
         return this;
     }
 
