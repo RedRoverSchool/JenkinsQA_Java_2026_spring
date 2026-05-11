@@ -35,6 +35,7 @@ public class CredentialsTest extends BaseTest {
                 .clickCredentials()
                 .clickAddCredentialsButton()
                 .createUsernameWithPassword(user, pass, id, desc)
+                .clickCreateButton()
                 .isCredentialVisible(id);
 
         Assert.assertTrue(isCreated,"Username with ID " + id + " is not found!");
