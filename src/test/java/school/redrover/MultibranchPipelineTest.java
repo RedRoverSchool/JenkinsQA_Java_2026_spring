@@ -5,6 +5,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -99,5 +100,24 @@ public class MultibranchPipelineTest extends BaseTest {
 				.getProjectList();
 
 		Assert.assertEquals(projectList.size(), 0);
+	}
+	@DataProvider(name = "invalid characters")
+	public Object[][] getData() {
+		return new Object[][]{{"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"},{"!"}
+		};
+	}
+	@Test(dataProvider = "invalid characters")
+	public void testInvalidCharactersInName(String invalidCharacter) {
+		String invalidProjectName = "test" + invalidCharacter;
+
+		String errorMessage = new HomePage(getDriver())
+				.clickItemNewJob()
+				.setProjectName(invalidProjectName)
+				.scrollToTypeOfProject(TestUtils.JobType.MULTIBRANCH_PIPELINE)
+				.selectItemType(TestUtils.JobType.MULTIBRANCH_PIPELINE)
+				.clickOKWithError()
+				.getErrorMessage();
+
+		Assert.assertEquals(errorMessage, "‘" + invalidCharacter + "’ is an unsafe character");
 	}
 }
