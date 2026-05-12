@@ -82,11 +82,13 @@ public class CredentialsPage extends BasePage {
         return this;
     }
 
-    public boolean isCredentialVisible(String id) {
-        By credentialLocator = By.xpath("//*[contains(text(), '" + id + "')]");
+    private By getCredentialLocator(String id) {
+        return By.xpath(String.format("//*[contains(text(), '%s')]", id));
+    }
 
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                credentialLocator))
+    public boolean isCredentialVisible(String id) {
+        return getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(getCredentialLocator(id)))
                 .isDisplayed();
     }
 
@@ -104,7 +106,8 @@ public class CredentialsPage extends BasePage {
     }
 
     public boolean isCredentialDeleted(String id) {
-        return  getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//td[contains(text(), '" + id + "')]")));
+        return  getWait10()
+                .until(ExpectedConditions.invisibilityOfElementLocated(getCredentialLocator(id)));
     }
 
     public CredentialsPage clickSecretTextButton() {
