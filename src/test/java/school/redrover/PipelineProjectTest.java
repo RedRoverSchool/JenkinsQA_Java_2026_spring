@@ -55,7 +55,7 @@ public class PipelineProjectTest extends BaseTest {
         Assert.assertEquals(descriptionText, DESCRIPTION_TEXT);
     }
 
-    @Test(dependsOnMethods = "testAddDescription")
+    @Test(dependsOnMethods = "testCreateWithDuplicateName")
     public void testDisable() {
         String warningText = new HomePage(getDriver())
                 .clickOnProject(PROJECT_NAME, new PipelineProjectPage(getDriver()))
