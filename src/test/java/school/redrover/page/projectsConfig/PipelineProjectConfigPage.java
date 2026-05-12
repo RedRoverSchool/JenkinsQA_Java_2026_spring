@@ -1,42 +1,58 @@
 package school.redrover.page.projectsConfig;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BaseConfigPage;
 import school.redrover.page.projects.PipelineProjectPage;
 
 public class PipelineProjectConfigPage extends BaseConfigPage<PipelineProjectConfigPage> {
 
+    @FindBy(id = "toggle-switch-enable-disable-project")
+    private WebElement toggleSwitch;
+
+    @FindBy(xpath = "//button[@name='Submit']")
+    private WebElement saveButton;
+
+    @FindBy(xpath = "//textarea[@name='description']")
+    private WebElement descriptionInput;
+
+    @FindBy(name = "Apply")
+    private WebElement applyButton;
+
+    @FindBy(id = "notification-bar")
+    private WebElement notification;
+
     public PipelineProjectConfigPage(WebDriver driver) {
         super(driver);
     }
 
     public PipelineProjectConfigPage toggleProjectState() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("toggle-switch-enable-disable-project"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(toggleSwitch)).click();
 
         return this;
     }
 
     public PipelineProjectPage clickSaveButton() {
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        saveButton.click();
 
         return new PipelineProjectPage(getDriver());
     }
 
     public PipelineProjectConfigPage enterDescription(String description) {
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
+        descriptionInput.sendKeys(description);
 
         return this;
     }
 
-    public PipelineProjectConfigPage clickApply() {
-        getDriver().findElement(By.name("Apply")).click();
+    public PipelineProjectConfigPage clickApplyButton() {
+        applyButton.click();
 
         return this;
     }
 
     public String getSaveText() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(notification)).getText();
     }
 }

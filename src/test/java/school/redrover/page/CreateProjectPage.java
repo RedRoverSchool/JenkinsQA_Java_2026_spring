@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.TestUtils;
 import school.redrover.page.common.BasePage;
@@ -12,12 +13,27 @@ import school.redrover.page.projectsConfig.PipelineProjectConfigPage;
 
 public class CreateProjectPage extends BasePage {
 
+    @FindBy(id = "name")
+    private WebElement inputName;
+
+    @FindBy(id = "itemname-invalid")
+    private WebElement errorInvalidName;
+
+    @FindBy(id = "itemname-required")
+    private WebElement errorNameRequired;
+
+    @FindBy(id = "ok-button")
+    private WebElement okButton;
+
+    @FindBy(xpath = "//span[text()='Pipeline']")
+    private WebElement pipelineOption;
+
     public CreateProjectPage(WebDriver driver) {
         super(driver);
     }
 
     public CreateProjectPage setProjectName(String name) {
-        getDriver().findElement(By.id("name")).sendKeys(name);
+        inputName.sendKeys(name);
 
         return this;
     }
@@ -26,10 +42,10 @@ public class CreateProjectPage extends BasePage {
         WebElement jobElement = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(jobType.getDisplayName())));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", jobElement);
         jobElement.click();
-        
-         return this;
-        }
-    
+
+        return this;
+    }
+
     public CreateProjectPage enterCopyItemName(String sourceName) {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                         By.id("from")))
@@ -45,14 +61,14 @@ public class CreateProjectPage extends BasePage {
     }
 
     public CreateProjectPage selectPipelineProject() {
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+        pipelineOption.click();
 
         return this;
     }
 
     public PipelineProjectConfigPage selectPipelineProjectAndClickOk() {
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        pipelineOption.click();
+        okButton.click();
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
 
@@ -87,7 +103,7 @@ public class CreateProjectPage extends BasePage {
         return jobConfig;
     }
 
-    public ErrorNamePage clickOKWithError(){
+    public ErrorNamePage clickOKWithError() {
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"main-panel\"]/h1")));
 
@@ -95,20 +111,19 @@ public class CreateProjectPage extends BasePage {
     }
 
     public String getErrorEmptyText() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-required")));
-        return getDriver().findElement(By.id("itemname-required")).getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(errorNameRequired)).getText();
     }
 
     public String getErrorInvalidText() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid")));
-        return getDriver().findElement(By.id("itemname-invalid")).getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(errorInvalidName)).getText();
     }
 
     public boolean isOkButtonEnabled() {
-        return getDriver().findElement(By.id("ok-button")).isEnabled();
+        return okButton.isEnabled();
     }
 
-    public CreateProjectPage clickOutside() {getDriver().findElement(By.id("main-panel")).click();
+    public CreateProjectPage clickOutside() {
+        getDriver().findElement(By.id("main-panel")).click();
         return this;
     }
 
@@ -118,7 +133,7 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
-    public PipelineProjectConfigPage createPipeline(){
+    public PipelineProjectConfigPage createPipeline() {
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
