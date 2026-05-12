@@ -1,9 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -11,15 +8,19 @@ import school.redrover.page.view.GlobalViewPage;
 
 public class GlobalViewTest extends BaseTest {
 
+    private final static String DESCRIPTION_INPUT = "Test";
+    private final static String UPDATED_DESC_MESSAGE = "Updated desc message";
+    private final static String ADD_DESCRIPTION_BUTTON_TEXT = "Add description";
+
     @Test
     public void testAddViewDescription() {
         String actualDescriptionText = new HomePage(getDriver())
                 .clickDescription()
-                .inputDescription("Test")
+                .inputDescription(DESCRIPTION_INPUT)
                 .clickSave()
                 .getViewDescriptionText();
 
-        Assert.assertEquals(actualDescriptionText, "Test");
+        Assert.assertEquals(actualDescriptionText, DESCRIPTION_INPUT);
     }
 
     @Test(dependsOnMethods = "testAddViewDescription")
@@ -27,11 +28,11 @@ public class GlobalViewTest extends BaseTest {
         String updatedDescriptionText = new HomePage(getDriver())
                 .clickDescription()
                 .clearDescription()
-                .inputDescription("Updated desc message")
+                .inputDescription(UPDATED_DESC_MESSAGE)
                 .clickSave()
                 .getViewDescriptionText();
 
-        Assert.assertEquals(updatedDescriptionText, "Updated desc message");
+        Assert.assertEquals(updatedDescriptionText, UPDATED_DESC_MESSAGE);
     }
 
     @Test(dependsOnMethods = "testUpdateViewDescription")
@@ -39,11 +40,11 @@ public class GlobalViewTest extends BaseTest {
         String actualDescriptionText = new HomePage(getDriver())
                 .clickDescription()
                 .clearDescription()
-                .inputDescription("Desc message")
+                .inputDescription(DESCRIPTION_INPUT)
                 .cancelButton()
                 .getViewDescriptionText();
 
-        Assert.assertEquals(actualDescriptionText, "Updated desc message");
+        Assert.assertEquals(actualDescriptionText, UPDATED_DESC_MESSAGE);
     }
 
     @Test(dependsOnMethods = "testCancelUpdateViewDescription")
@@ -54,7 +55,7 @@ public class GlobalViewTest extends BaseTest {
                 .clickSave()
                 .getAddDescriptionText();
 
-        Assert.assertEquals(addDescriptionText, "Add description");
+        Assert.assertEquals(addDescriptionText, ADD_DESCRIPTION_BUTTON_TEXT);
     }
 
     @Test(dependsOnMethods = "testDeleteViewDescription")
@@ -71,9 +72,22 @@ public class GlobalViewTest extends BaseTest {
     public void testClickPreviewOption() throws InterruptedException {
         String previewText = new HomePage(getDriver())
                 .clickDescription()
-                .inputDescription("Test Input")
-                .clickPreviewButton();
+                .inputDescription(DESCRIPTION_INPUT)
+                .clickPreviewButton()
+                .getPreviewText();
 
-        Assert.assertEquals(previewText, "Test Input");
+        Assert.assertEquals(previewText, DESCRIPTION_INPUT);
     }
+
+    @Test
+    public void testClickHidePreviewOption() throws InterruptedException {
+        GlobalViewPage globalViewPage = new HomePage(getDriver())
+                .clickDescription()
+                .inputDescription(DESCRIPTION_INPUT)
+                .clickPreviewButton()
+                .clickHideButton();
+
+        Assert.assertFalse(globalViewPage.isPreviewDisplayed());
+    }
+
 }

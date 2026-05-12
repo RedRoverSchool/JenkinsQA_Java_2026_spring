@@ -8,70 +8,90 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
 import school.redrover.page.common.BasePage;
 
+import static java.lang.Thread.sleep;
+
 public class GlobalViewPage extends BasePage {
 
-    @FindBy
-    private static final By jobName= By.xpath("//h1[@class='job-index-headline page-headline']");
+    @FindBy(xpath = "//h1[@class='job-index-headline page-headline']")
+    private WebElement jobName;
 
-    @FindBy
-    private static final By descriptionInput = By.name("description");
+    @FindBy(name = "description")
+    private WebElement descriptionInput;
 
-    @FindBy
-    private static final By cancelButton = By.xpath("//button[text()='Cancel']");
+    @FindBy(xpath = "//button[text()='Cancel']")
+    private WebElement cancelButton;
 
-    @FindBy
-    private static final By saveButton = By.xpath("//button[@name='Submit']");
+    @FindBy(xpath = "//button[@name='Submit']")
+    private WebElement saveButton;
 
-    @FindBy
-    private static final By descriptionMessage = By.id("description-content");
+    @FindBy(id = "description-content")
+    private WebElement descriptionMessage;
 
-    @FindBy
-    private static final By addDescriptionButton = By.id("description-link");
+    @FindBy(id = "description-link")
+    private WebElement addDescriptionButton;
+
+    @FindBy(className = "textarea-show-preview")
+    private WebElement previewButton;
+
+    @FindBy(className = "textarea-preview")
+    private WebElement previewText;
+
+    @FindBy(className = "textarea-hide-preview")
+    private WebElement hidePreview;
 
     public GlobalViewPage(WebDriver driver) {
         super(driver);
     }
 
     public String getJobTitle() {
-        return getWait5().until(ExpectedConditions.presenceOfElementLocated(jobName)).getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(jobName)).getText();
     }
 
     public GlobalViewPage inputDescription(String textInput) {
-        getWait5().until(ExpectedConditions.elementToBeClickable(descriptionInput));
-        getDriver().findElement(descriptionInput).sendKeys(textInput);
+        getWait5().until(ExpectedConditions.visibilityOf(descriptionInput));
+        descriptionInput.sendKeys(textInput);
 
         return this;
     }
 
     public GlobalViewPage clearDescription() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(descriptionInput)).clear();
+        getWait5().until(ExpectedConditions.elementToBeClickable(descriptionInput)).clear();
 
         return this;
     }
 
     public HomePage clickSave() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(saveButton)).click();
+        getWait5().until(ExpectedConditions.visibilityOf(saveButton)).click();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(addDescriptionButton));
+        getWait5().until(ExpectedConditions.visibilityOf(addDescriptionButton));
 
         return new HomePage(getDriver());
     }
 
     public HomePage cancelButton() {
-        getDriver().findElement(cancelButton).click();
+        cancelButton.click();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(descriptionMessage));
+        getWait5().until(ExpectedConditions.visibilityOf(descriptionMessage));
 
         return new HomePage(getDriver());
     }
 
-    public String clickPreviewButton() {
-        getDriver().findElement(By.className("textarea-show-preview")).click();
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("textarea-preview"))).getText();
+    public GlobalViewPage clickPreviewButton() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(previewButton)).click();
+
+        return this;
+    }
+
+    public String getPreviewText() {
+        return getWait5().until(ExpectedConditions.visibilityOf(previewText)).getText();
     }
 
     public GlobalViewPage clickHideButton() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("textarea-hide-preview")));
+        getWait5().until(ExpectedConditions.visibilityOf(hidePreview)).click();
         return this;
+    }
+
+    public boolean isPreviewDisplayed() {
+        return previewText.isDisplayed();
     }
 }
