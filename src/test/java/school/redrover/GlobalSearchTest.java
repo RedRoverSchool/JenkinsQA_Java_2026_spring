@@ -1,4 +1,5 @@
 package school.redrover;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -6,7 +7,9 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
 import java.util.Random;
+
 import school.redrover.page.GlobalSearchPage;
 import school.redrover.page.HomePage;
 
@@ -21,14 +24,12 @@ public class GlobalSearchTest extends BaseTest {
                 .setProjectName(folderName)
                 .selectFolder()
                 .clickOkButton()
-                .clickSave();
-
-        new GlobalSearchPage(getDriver())
-                .goHomePageSafely();
+                .clickSave()
+                .goHomePage();
     }
 
-    public static String randomString(int length){
-        if(length <= 0){
+    public static String randomString(int length) {
+        if (length <= 0) {
             return "";
         }
 
@@ -47,20 +48,21 @@ public class GlobalSearchTest extends BaseTest {
     }
 
     @Test
-    public void testClearingTheSearchField(){
-        GlobalSearchPage page = new GlobalSearchPage(getDriver())
+    public void testClearingTheSearchField() {
+        String input = new GlobalSearchPage(getDriver())
                 .findSearchButton()
                 .clickSearchInputField()
                 .typeSearchQuery(TEXT_TO_SEARCH)
-                .clearSearchField();
+                .clearSearchField()
+                .getSearchInputValue();
 
-        Assert.assertEquals(page.getSearchInputValue(), "");
+        Assert.assertEquals(input, "");
     }
 
 
     @Ignore
     @Test
-    public void testReguest(){
+    public void testReguest() {
         createFolder("FirstFolder");
         createFolder("SecondFolder");
 
@@ -77,13 +79,13 @@ public class GlobalSearchTest extends BaseTest {
     }
 
     @Test
-    public void testLongQuery(){
+    public void testLongQuery() {
         getWait5().until(ExpectedConditions.elementToBeClickable(SEARCH_BUTTON)).click();
         WebElement searchInput = getWait5().until(ExpectedConditions.elementToBeClickable(SEARCH_INPUT_FIELD));
         searchInput.sendKeys(randomString(1000));
 
         WebElement result = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//*[contains(text(), 'No results for')]")));
+                By.xpath("//*[contains(text(), 'No results for')]")));
         Assert.assertTrue(result.isDisplayed(), "Search result message should be visible");
     }
 }

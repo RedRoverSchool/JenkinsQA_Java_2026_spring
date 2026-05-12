@@ -1,18 +1,21 @@
 package school.redrover.page.projectsConfig;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import school.redrover.page.common.BaseConfigPage;
 
 public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFolderConfigPage> {
+
+    @FindBy(xpath = "//input[@name='_.displayNameOrNull']")
+    private WebElement descriptionInput;
+
     public OrganizationFolderConfigPage(WebDriver driver) {
         super(driver);
     }
 
     public OrganizationFolderConfigPage enterDisplayName(String displayName) {
-        getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys(displayName);
+        descriptionInput.sendKeys(displayName);
         return this;
     }
-
-
 }
