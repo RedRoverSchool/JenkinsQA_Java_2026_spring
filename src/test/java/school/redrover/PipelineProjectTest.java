@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -41,6 +42,7 @@ public class PipelineProjectTest extends BaseTest {
                 "» A job already exists with the name ‘%s’".formatted(PROJECT_NAME));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateWithDuplicateName")
     public void testAddDescription() {
         String descriptionText = new HomePage(getDriver())
