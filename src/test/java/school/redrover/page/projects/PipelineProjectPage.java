@@ -1,6 +1,5 @@
 package school.redrover.page.projects;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -18,6 +17,33 @@ public class PipelineProjectPage extends BaseProjectPage {
 
     @FindBy(xpath = "//textarea[@name='description']")
     private WebElement descriptionElement;
+
+    @FindBy(xpath = "//button[@value='Save']")
+    private WebElement saveButton;
+
+    @FindBy(id = "description-content")
+    private WebElement description;
+
+    @FindBy(xpath = "//a[contains(@href, 'configure')]")
+    private WebElement configureSidebar;
+
+    @FindBy(xpath = "//div[@class='warning']")
+    private WebElement warning;
+
+    @FindBy(xpath = "(//span[normalize-space()='Build Now'])[1]")
+    private WebElement buildNowButtonSidebar;
+
+    @FindBy(xpath = "//a[contains(@href, 'confirm-rename')]")
+    private WebElement renameButtonSidebar;
+
+    @FindBy(xpath = "//a[@data-title='Delete Pipeline']")
+    private WebElement deleteButtonSidebar;
+
+    @FindBy(xpath = "//button[@data-id='ok']")
+    private WebElement confirmButton;
+
+    @FindBy(xpath = "//a[@href='/view/all/newJob']")
+    private WebElement addNewItemButton;
 
     public PipelineProjectPage(WebDriver driver) {
         super(driver);
@@ -37,38 +63,35 @@ public class PipelineProjectPage extends BaseProjectPage {
     }
 
     public PipelineProjectPage clickSaveDescription() {
-        getDriver().findElement(By.xpath("//button[@value='Save']")).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
+        saveButton.click();
 
         return this;
     }
 
     public String getDescriptionText() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(description)).getText();
     }
 
     public PipelineProjectRenamePage clickRenameSidebarButton() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//a[contains(@href, 'confirm-rename')]"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(renameButtonSidebar)).click();
 
         return new PipelineProjectRenamePage(getDriver());
     }
 
     public PipelineProjectConfigPage clickConfigureSidebarButton() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href, 'configure')]"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(configureSidebar)).click();
 
         return new PipelineProjectConfigPage(getDriver());
 
     }
 
     public String getDisabledWarningText() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='warning']"))).getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(warning)).getText();
     }
 
     public boolean isBuildNowDisplayed() {
         try {
-            getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath("(//span[normalize-space()='Build Now'])[1]")));
+            getWait5().until(ExpectedConditions.visibilityOf(buildNowButtonSidebar));
             return true;
         } catch (TimeoutException e) {
             return false;
@@ -76,9 +99,9 @@ public class PipelineProjectPage extends BaseProjectPage {
     }
 
     public HomePage deletePipelineAndConfirm() {
-        getDriver().findElement(By.xpath("//a[@data-title='Delete Pipeline']")).click();
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']")));
+        deleteButtonSidebar.click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(confirmButton)).click();
+        getWait5().until(ExpectedConditions.visibilityOf(addNewItemButton));
 
         return new HomePage(getDriver());
     }

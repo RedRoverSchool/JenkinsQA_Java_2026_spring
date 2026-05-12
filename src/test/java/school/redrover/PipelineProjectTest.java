@@ -24,10 +24,8 @@ public class PipelineProjectTest extends BaseTest {
                 .goHomePage()
                 .getProjectList();
 
-        Assert.assertListContainsObject(
-                jobList,
-                PROJECT_NAME,
-                "Pipeline is not created");
+        Assert.assertEquals(jobList.size(), 1);
+        Assert.assertEquals(jobList.getFirst(), PROJECT_NAME);
     }
 
     @Test(dependsOnMethods = "testCreate")
@@ -115,7 +113,7 @@ public class PipelineProjectTest extends BaseTest {
                 .setProjectName(PROJECT_NAME)
                 .selectPipelineProjectAndClickOk()
                 .enterDescription(DESCRIPTION_TEXT)
-                .clickApply()
+                .clickApplyButton()
                 .getSaveText();
 
         Assert.assertEquals(saveText, "Saved");
