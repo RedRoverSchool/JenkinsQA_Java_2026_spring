@@ -140,4 +140,30 @@ public class CredentialsPage extends BasePage {
 
         return this;
     }
+
+    public CredentialsPage clickAddCredentialsOrganizationFolder() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='Add Credentials']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(addCredentialsButton)).click();
+
+        return this;
+    }
+
+    public CredentialsPage inputSecretText() {
+        List<String> text = List.of(
+                "MySuperSecretAPIKey123",
+                "my-api-key",
+                "Test API Key"
+        );
+        getDriver().findElement(By.xpath("//input[@name='_.secret']")).sendKeys(text.get(0));
+        getDriver().findElement(By.xpath("//input[@name='_.id']")).sendKeys(text.get(1));
+        getDriver().findElement(By.xpath("//input[@name='_.description']")).sendKeys(text.get(2));
+
+        return this;
+    }
+
+    public String getCredentials(String projectName) {
+
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//div[@class='credentials-card__title']//a[normalize-space()='%s']".formatted(projectName)))).getText();
+    }
 }

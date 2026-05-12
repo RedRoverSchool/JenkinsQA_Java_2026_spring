@@ -1,5 +1,8 @@
 package school.redrover;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -10,6 +13,8 @@ import school.redrover.page.projects.OrganizationFolderPage;
 import school.redrover.page.projectsConfig.OrganizationFolderConfigPage;
 
 import java.util.List;
+
+import static java.sql.DriverManager.getDriver;
 
 
 public class OrganizationFolderTest extends BaseTest {
@@ -59,4 +64,22 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(jobnewlist.size(), 1);
         Assert.assertEquals(jobnewlist.getFirst(), DISPLAY_NAME);
     }
+
+    @Test(dependsOnMethods = "testAddDisplayName")
+    public void testConfigureCredentials() {
+
+        String credential = new HomePage(getDriver())
+                .openProjectDropdownMenu(ORG_FOLDER_NAME)
+                .clickCredentialsInDropdown()
+                .clickAddCredentialsOrganizationFolder()
+                .clickSecretTextButton()
+                .clickNextButton()
+                .inputSecretText()
+                .clickCreateButton()
+                .getCredentials(DISPLAY_NAME);
+
+        Assert.assertEquals(credential, DISPLAY_NAME);
+    }
 }
+
+
