@@ -59,4 +59,19 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(jobnewlist.size(), 1);
         Assert.assertEquals(jobnewlist.getFirst(), DISPLAY_NAME);
     }
+
+    @Test(dependsOnMethods = "testAddDisplayName")
+    public void testConfigureCredentials() {
+        String credential = new HomePage(getDriver())
+                .openProjectDropdownMenu(ORG_FOLDER_NAME)
+                .clickCredentialsInDropdown()
+                .clickAddCredentialsOrganizationFolder()
+                .clickSecretTextButton()
+                .clickNextButton()
+                .inputSecretText()
+                .clickCreateButton()
+                .getCredentials(DISPLAY_NAME);
+
+        Assert.assertEquals(credential, DISPLAY_NAME);
+    }
 }

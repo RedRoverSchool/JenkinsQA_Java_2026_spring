@@ -198,4 +198,10 @@ public class HomePage extends BasePage {
     public boolean isAboutJenkinsPresent() {
         return !getDriver().findElements(By.xpath("//a[contains(text(),'About Jenkins')]")).isEmpty();
     }
+
+    public CredentialsPage clickCredentialsInDropdown() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[normalize-space()='Credentials']"))).click();
+
+        return new CredentialsPage(getDriver());
+    }
 }
