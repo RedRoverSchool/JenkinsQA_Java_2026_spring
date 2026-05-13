@@ -61,7 +61,7 @@ public class GlobalViewPage extends BasePage {
     }
 
     public HomePage clickSave() {
-        getWait5().until(ExpectedConditions.visibilityOf(saveButton)).click();
+        saveButton.click();
 
         getWait5().until(ExpectedConditions.visibilityOf(addDescriptionButton));
 
