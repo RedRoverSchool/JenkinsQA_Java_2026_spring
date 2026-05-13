@@ -110,20 +110,16 @@ public class ManagePageTest extends BaseTest {
     public void testPrepareForShutdownWithCustomReason() {
         String shutdownReason = "Server maintenance scheduled";
 
-        ManagePage managePage = new HomePage(getDriver())
-                .clickManageJenkins();
-
-        PrepareShutdownPage prepareShutdownPage = managePage.clickPrepareShutdown();
-
-        prepareShutdownPage
+        PrepareShutdownPage prepareShutdownPage = new HomePage(getDriver())
+                .clickManageButton()
+                .clickPrepareShutdown()
                 .enterShutdownReason(shutdownReason)
-                .confirmShutdown();
+                .updateShutdownReason();
 
         Assert.assertTrue(prepareShutdownPage.isRedBannerDisplayed(),
                 "Red banner should be displayed when shutdown mode is active");
 
-        String bannerText = prepareShutdownPage.getRedBannerText();
-        Assert.assertTrue(bannerText.contains(shutdownReason),
-                "Red banner should contain shutdown reason. Actual: " + bannerText);
+        Assert.assertTrue(prepareShutdownPage.getRedBannerText().contains(shutdownReason),
+                "Red banner should contain shutdown reason");
     }
 }

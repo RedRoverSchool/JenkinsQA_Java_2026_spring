@@ -15,7 +15,7 @@ public class ManagePage extends BasePage {
     private static final By HEADER = By.xpath("//h1");
     private final List<WebElement> manageItems = getDriver().findElements(By.xpath("//div[@class='jenkins-section__item']/a/dl/dt"));
 
-    @FindBy(xpath = "//dt[contains(text(), 'Prepare for Shutdown')]")
+    @FindBy(xpath = "//    dt[contains(text(), 'Prepare for Shutdown') or contains(text(), 'Update shutdown preparation')]")
     private WebElement prepareShutdownButton;
 
     public ManagePage(WebDriver driver) {
@@ -85,7 +85,7 @@ public class ManagePage extends BasePage {
     }
 
     public PrepareShutdownPage clickPrepareShutdown() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(prepareShutdownButton)).click();
+        prepareShutdownButton.click();
         return new PrepareShutdownPage(getDriver());
     }
 }

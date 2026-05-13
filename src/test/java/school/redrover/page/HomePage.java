@@ -202,8 +202,8 @@ public class HomePage extends BasePage {
         return !getDriver().findElements(By.xpath("//a[contains(text(),'About Jenkins')]")).isEmpty();
     }
 
-    public ManagePage clickManageJenkins() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(manageJenkinsButton)).click();
+    public ManagePage clickManageButton() {
+        manageJenkinsButton.click();
         return new ManagePage(getDriver());
     }
 }
