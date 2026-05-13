@@ -4,16 +4,72 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BaseConfigPage;
 import school.redrover.page.projects.FreestyleProjectPage;
 
 import java.util.List;
+import java.util.Objects;
 
 public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectConfigPage> {
 
+    @FindBy(name = "description")
+    private WebElement description;
+
+    @FindBy(xpath ="//label[contains(text(),'GitHub project')]")
+    private WebElement checkBoxGithubProject;
+
+    @FindBy(name = "_.projectUrlStr")
+    private WebElement inputFieldGitHubProjectURL;
+
+    @FindBy(name = "Submit")
+    private WebElement submitButton;
+
+    @FindBy(css = "h1.job-index-headline")
+    private WebElement projectTitle;
+
+    @FindBy(css = "input[name='githubProject'][type='checkbox']")
+    private WebElement gitHubCheckBox;
+
+    @FindBy(name = "_.projectUrlStr")
+    private WebElement gitProjectUrl;
+
+    @FindBy(xpath = "//ol[@id='breadcrumbs']//a[contains(@href, '/job/')]")
+    private WebElement projectNameBreadcrumb;
+
     public FreestyleProjectConfigPage(WebDriver driver) {
         super(driver);
+    }
+
+    public String getProjectNameBreadcrumbText() {
+        return getWait10().until(ExpectedConditions.visibilityOf(projectNameBreadcrumb))
+                .getText();
+    }
+
+    public boolean isOpenedForProject(String projectName) {
+        return Objects.requireNonNull(getDriver().getCurrentUrl())
+                .contains("/job/" + projectName + "/configure");
+    }
+
+    public String getDescriptionText() {
+        return getWait10().until(ExpectedConditions.visibilityOf(description))
+                .getAttribute("value");
+    }
+
+    public boolean isGitHubProjectSelected() {
+        return getWait10().until(ExpectedConditions.visibilityOf(gitHubCheckBox))
+                .isSelected();
+    }
+
+    public String getGitProjectUrl() {
+        return getWait10().until(ExpectedConditions.visibilityOf(gitProjectUrl))
+                .getAttribute("value");
+    }
+
+    public String getProjectTitle() {
+        return getWait10().until(ExpectedConditions.visibilityOf(projectTitle))
+                .getText();
     }
 
     public FreestyleProjectPage clickSubmitButton() {
@@ -25,25 +81,26 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         return new FreestyleProjectPage(getDriver());
     }
 
-    public FreestyleProjectConfigPage fillDescription(String descriptiontext) {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.name("description")))
-                .sendKeys(descriptiontext);
+    public FreestyleProjectConfigPage fillDescription(String descriptionText) {
 
+        getWait10().until(ExpectedConditions.visibilityOf(description))
+                .sendKeys(descriptionText);
         return this;
     }
 
     public FreestyleProjectConfigPage clickCheckBoxGitHub() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                        By.xpath("//label[contains(text(),'GitHub project')]")))
+
+        getWait10().until(
+                ExpectedConditions.elementToBeClickable(checkBoxGithubProject))
                 .click();
+
         return this;
     }
 
     public FreestyleProjectConfigPage fillGitURL(String repoURL) {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.name("_.projectUrlStr"))).
-                sendKeys(repoURL);
+
+        getWait10().until(ExpectedConditions.visibilityOf(inputFieldGitHubProjectURL))
+                .sendKeys(repoURL);
         return this;
     }
 
@@ -68,12 +125,15 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     }
 
     public FreestyleProjectPage clickSave() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                        By.name("Submit")))
+
+        getWait10().until(
+                ExpectedConditions.elementToBeClickable(submitButton))
                 .click();
 
         return new FreestyleProjectPage(getDriver());
     }
+
+
     public FreestyleProjectConfigPage  enableDeleteWorkspaceBeforeBuildStarts() {
         WebElement checkboxLabel = getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//label[contains(.,'Delete workspace before build starts')]")));

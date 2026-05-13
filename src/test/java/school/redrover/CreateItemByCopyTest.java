@@ -1,15 +1,12 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-
-import java.util.Objects;
+import school.redrover.page.projects.FreestyleProjectPage;
+import school.redrover.page.projectsConfig.FreestyleProjectConfigPage;
 
 public class CreateItemByCopyTest extends BaseTest {
     private static final String SOURCE_ITEM_NAME = "source_item";
@@ -19,77 +16,65 @@ public class CreateItemByCopyTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateSourceItem")
     public void testCreateItemFromExistingWithEmptyListItems(){
-        new HomePage(getDriver())
+        String actualText = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(NEW_ITEM_NAME)
-                .enterCopyItemName("Empty");
-        Assert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.cssSelector(".jenkins-dropdown__placeholder")
-                )).getText(),
-                "No items"
-        );
+                .enterCopyItemName("Empty")
+                .getPlaceholderNoItemsText();
+
+        Assert.assertEquals(actualText, "No items");
     }
 
     @Test
     public void testCreateSourceItem(){
-        new HomePage(getDriver())
+        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(SOURCE_ITEM_NAME)
                 .selectFreeStyleProject()
                 .clickOkButton()
-
                 .fillDescription(DESCRIPTION_TEXT)
                 .clickCheckBoxGitHub()
                 .fillGitURL(REPOSITORY_URL)
                 .clickSave();
 
         Assert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.cssSelector("h1.job-index-headline")
-                )).getText(),
+                freestyleProjectPage.getProjectTitle(),
                 SOURCE_ITEM_NAME
         );
     }
 
     @Test(dependsOnMethods = "testCreateSourceItem")
     public void testCreateItemFromExisting() {
-        new HomePage(getDriver())
+        FreestyleProjectConfigPage freestyleProjectConfigPage = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(NEW_ITEM_NAME)
                 .enterCopyItemName(SOURCE_ITEM_NAME)
                 .clickOkButton();
 
-        WebElement gitCheckBoxButton = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector("input[name='githubProject'][type='checkbox']")));
-
         SoftAssert softAssert = new SoftAssert();
 
         softAssert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.linkText(NEW_ITEM_NAME))).getText(),
+                freestyleProjectConfigPage.getProjectNameBreadcrumbText(),
                 NEW_ITEM_NAME
         );
 
         softAssert.assertTrue(
-                Objects.requireNonNull(getDriver().getCurrentUrl()).contains("/job/" + NEW_ITEM_NAME + "/configure"),
+                freestyleProjectConfigPage.isOpenedForProject(NEW_ITEM_NAME),
                 "Не удалось перейти на страницу конфигурации нового проекта"
         );
 
         softAssert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.name("description"))).getAttribute("value"),
+                freestyleProjectConfigPage.getDescriptionText(),
                 DESCRIPTION_TEXT
         );
 
         softAssert.assertTrue(
-                gitCheckBoxButton.isSelected(),
+                freestyleProjectConfigPage.isGitHubProjectSelected(),
                 "Git project is not selected"
         );
 
         softAssert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.name("_.projectUrlStr"))).getAttribute("value"),
+                freestyleProjectConfigPage.getGitProjectUrl(),
                 REPOSITORY_URL
         );
 

@@ -13,6 +13,9 @@ import school.redrover.page.projectsConfig.PipelineProjectConfigPage;
 
 public class CreateProjectPage extends BasePage {
 
+    @FindBy(css = ".jenkins-dropdown__placeholder")
+    private WebElement placeholderNoItems;
+
     @FindBy(id = "name")
     private WebElement inputName;
 
@@ -25,17 +28,28 @@ public class CreateProjectPage extends BasePage {
     @FindBy(id = "ok-button")
     private WebElement okButton;
 
+    @FindBy(id = "from")
+    private WebElement from;
+
     @FindBy(xpath = "//span[text()='Pipeline']")
     private WebElement pipelineOption;
 
     @FindBy(xpath = "//*[@id='main-panel']/h1")
     private WebElement errorTitle;
 
+    @FindBy(xpath = "//li[@class='hudson_model_FreeStyleProject']")
+    private WebElement typeFreeStyle;
+
+    @FindBy(name = "Submit")
+    private WebElement submitButton;
+
+
     public CreateProjectPage(WebDriver driver) {
         super(driver);
     }
 
     public CreateProjectPage setProjectName(String name) {
+
         inputName.sendKeys(name);
 
         return this;
@@ -49,16 +63,21 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
+    public String getPlaceholderNoItemsText() {
+        return getWait10().until(ExpectedConditions.visibilityOf(placeholderNoItems))
+                .getText();
+    }
+
     public CreateProjectPage enterCopyItemName(String sourceName) {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.id("from")))
+
+        getWait10().until(ExpectedConditions.visibilityOf(from))
                 .sendKeys(sourceName);
 
         return this;
     }
 
     public CreateProjectPage selectFreeStyleProject() {
-        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
+        typeFreeStyle.click();
 
         return this;
     }
@@ -91,9 +110,8 @@ public class CreateProjectPage extends BasePage {
     }
 
     public FreestyleProjectConfigPage clickOkButton() {
-        getDriver().findElement(By.id("ok-button")).click();
-        // waiting for the configuration page
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
+        okButton.click();
+        getWait10().until(ExpectedConditions.visibilityOf(submitButton));
 
         return new FreestyleProjectConfigPage(getDriver());
     }
@@ -101,7 +119,7 @@ public class CreateProjectPage extends BasePage {
     public <JobConfigPage extends BasePage> JobConfigPage clickOK(JobConfigPage jobConfig) {
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         // waiting for the configuration page
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
+        getWait10().until(ExpectedConditions.visibilityOf(submitButton));
 
         return jobConfig;
     }
