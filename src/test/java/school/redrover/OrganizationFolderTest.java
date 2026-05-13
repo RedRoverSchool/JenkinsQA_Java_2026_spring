@@ -81,5 +81,3 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(credential, DISPLAY_NAME);
     }
 }
-
-

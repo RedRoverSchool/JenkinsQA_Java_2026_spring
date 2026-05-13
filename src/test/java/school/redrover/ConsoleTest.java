@@ -14,7 +14,6 @@ public class ConsoleTest extends BaseTest {
 
     private static final String NAME_PROJECT = "TEST";
 
-    @Ignore
     @Test
     public void readingInformationConsoleTest() {
         String consoleText = new HomePage(getDriver())

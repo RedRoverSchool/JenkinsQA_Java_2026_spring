@@ -162,8 +162,9 @@ public class CredentialsPage extends BasePage {
     }
 
     public String getCredentials(String projectName) {
+        WebElement credential = getWait10().until(ExpectedConditions.elementToBeClickable(
+                (By.xpath("//div[@class='credentials-card__title']//a[normalize-space()='%s']".formatted(projectName)))));
 
-        return getWait10().until(ExpectedConditions.visibilityOfElementLocated
-                (By.xpath("//div[@class='credentials-card__title']//a[normalize-space()='%s']".formatted(projectName)))).getText();
+        return credential.getText();
     }
 }

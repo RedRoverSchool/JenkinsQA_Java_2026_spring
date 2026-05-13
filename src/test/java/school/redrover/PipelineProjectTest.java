@@ -42,7 +42,6 @@ public class PipelineProjectTest extends BaseTest {
                 "» A job already exists with the name ‘%s’".formatted(PROJECT_NAME));
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateWithDuplicateName")
     public void testAddDescription() {
         String descriptionText = new HomePage(getDriver())
