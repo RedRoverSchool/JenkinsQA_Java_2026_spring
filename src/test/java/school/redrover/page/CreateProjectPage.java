@@ -28,6 +28,9 @@ public class CreateProjectPage extends BasePage {
     @FindBy(xpath = "//span[text()='Pipeline']")
     private WebElement pipelineOption;
 
+    @FindBy(xpath = "//*[@id='main-panel']/h1")
+    private WebElement errorTitle;
+
     public CreateProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -104,8 +107,8 @@ public class CreateProjectPage extends BasePage {
     }
 
     public ErrorNamePage clickOKWithError() {
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"main-panel\"]/h1")));
+        okButton.click();
+        getWait10().until(ExpectedConditions.visibilityOf(errorTitle));
 
         return new ErrorNamePage(getDriver());
     }
