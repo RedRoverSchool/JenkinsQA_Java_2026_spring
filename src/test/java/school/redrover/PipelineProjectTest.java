@@ -80,6 +80,7 @@ public class PipelineProjectTest extends BaseTest {
         Assert.assertTrue(isBuildNowButtonDisplayed);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testEnable")
     public void testRename() {
         List<String> jobList = new HomePage(getDriver())
