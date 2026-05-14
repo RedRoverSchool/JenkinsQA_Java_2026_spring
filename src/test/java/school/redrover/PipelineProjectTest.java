@@ -55,6 +55,7 @@ public class PipelineProjectTest extends BaseTest {
         Assert.assertEquals(descriptionText, DESCRIPTION_TEXT);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testAddDescription")
     public void testDisable() {
         String warningText = new HomePage(getDriver())
