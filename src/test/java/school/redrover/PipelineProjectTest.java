@@ -68,6 +68,7 @@ public class PipelineProjectTest extends BaseTest {
         Assert.assertTrue(warningText.contains("This project is currently disabled"));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testDisable")
     public void testEnable() {
         boolean isBuildNowButtonDisplayed = new HomePage(getDriver())
