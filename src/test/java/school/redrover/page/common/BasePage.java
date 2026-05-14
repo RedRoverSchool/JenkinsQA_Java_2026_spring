@@ -2,8 +2,11 @@ package school.redrover.page.common;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
+import school.redrover.page.LoginPage;
 import school.redrover.page.ManagePage;
 
 public class BasePage extends BaseModel {
@@ -28,6 +31,15 @@ public class BasePage extends BaseModel {
         getWait5().until(ExpectedConditions.textToBePresentInElementLocated(HEADER, "Manage Jenkins"));
 
         return new ManagePage(getDriver());
+    }
+
+    public LoginPage openUserActionMenuAndLogout() {
+        WebElement hoverOverAccountIcon = getDriver().findElement(By.id("root-action-UserAction"));
+        new Actions(getDriver()).moveToElement(hoverOverAccountIcon).perform();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']")));
+        getDriver().findElement(By.xpath("//a[@href='/logout']")).click();
+
+        return new LoginPage(getDriver());
     }
 
     public String getHeaderText() {

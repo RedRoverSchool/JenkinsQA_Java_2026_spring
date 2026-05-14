@@ -11,20 +11,10 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.JenkinsUtils;
+import school.redrover.page.HomePage;
 
 public class SignOutTest extends BaseTest {
 
-    @Ignore
-    @Test
-    public void signOutTest() {
-        WebElement hoverOverAccountIcon = getDriver().findElement(By.id("root-action-UserAction"));
-        new Actions(getDriver()).moveToElement(hoverOverAccountIcon).perform();
-        getDriver().findElement(By.xpath("//a[@href='/logout']")).click();
-
-        String signInTitle = getDriver().findElement(By.tagName("h1")).getText();
-
-        Assert.assertEquals(signInTitle, "Sign in to Jenkins");
-    }
     private boolean isAlertPresent(WebDriver driver) {
         try {
             driver.switchTo().alert();
@@ -32,6 +22,15 @@ public class SignOutTest extends BaseTest {
         } catch (NoAlertPresentException e) {
             return false;
         }
+    }
+
+    @Test
+    public void signOutTest() {
+        String headerText = new HomePage(getDriver())
+                .openUserActionMenuAndLogout()
+                .getHeaderText();
+
+        Assert.assertEquals(headerText, "Sign in to Jenkins");
     }
 
     @Ignore
