@@ -94,4 +94,8 @@ public class GlobalViewPage extends BasePage {
     public boolean isPreviewDisplayed() {
         return previewText.isDisplayed();
     }
+
+    public boolean isHidePreviewButtonDisplayed() {
+        return getWait5().until(ExpectedConditions.visibilityOf(hidePreview)).isDisplayed();
+    }
 }

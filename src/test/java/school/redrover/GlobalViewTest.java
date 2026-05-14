@@ -70,13 +70,13 @@ public class GlobalViewTest extends BaseTest {
 
     @Test
     public void testClickPreviewOption() throws InterruptedException {
-        String previewText = new HomePage(getDriver())
+        GlobalViewPage globalViewPage = new HomePage(getDriver())
                 .clickDescription()
                 .inputDescription(DESCRIPTION_INPUT)
-                .clickPreviewButton()
-                .getPreviewText();
+                .clickPreviewButton();
 
-        Assert.assertEquals(previewText, DESCRIPTION_INPUT);
+        Assert.assertTrue(globalViewPage.isHidePreviewButtonDisplayed());
+        Assert.assertEquals(globalViewPage.getPreviewText(), DESCRIPTION_INPUT);
     }
 
     @Test
@@ -89,5 +89,4 @@ public class GlobalViewTest extends BaseTest {
 
         Assert.assertFalse(globalViewPage.isPreviewDisplayed());
     }
-
 }
