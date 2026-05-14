@@ -14,17 +14,6 @@ public class CreateItemByCopyTest extends BaseTest {
     private static final String DESCRIPTION_TEXT = "Copied description text";
     private static final String REPOSITORY_URL = "https://github.com/RedRoverSchool/JenkinsQA_Java_2026_spring.git/";
 
-    @Test(dependsOnMethods = "testCreateSourceItem")
-    public void testCreateItemFromExistingWithEmptyListItems(){
-        String actualText = new HomePage(getDriver())
-                .clickItemNewJob()
-                .setProjectName(NEW_ITEM_NAME)
-                .enterCopyItemName("Empty")
-                .getPlaceholderNoItemsText();
-
-        Assert.assertEquals(actualText, "No items");
-    }
-
     @Test
     public void testCreateSourceItem(){
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
@@ -41,6 +30,17 @@ public class CreateItemByCopyTest extends BaseTest {
                 freestyleProjectPage.getProjectTitle(),
                 SOURCE_ITEM_NAME
         );
+    }
+
+    @Test(dependsOnMethods = "testCreateSourceItem")
+    public void testCreateItemFromExistingWithEmptyListItems(){
+        String actualText = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(NEW_ITEM_NAME)
+                .enterCopyItemName("Empty")
+                .getPlaceholderNoItemsText();
+
+        Assert.assertEquals(actualText, "No items");
     }
 
     @Test(dependsOnMethods = "testCreateSourceItem")
