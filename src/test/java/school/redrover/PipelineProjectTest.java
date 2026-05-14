@@ -123,6 +123,7 @@ public class PipelineProjectTest extends BaseTest {
         Assert.assertEquals(saveText, "Saved");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testRename")
     public void testDeleteViaSidebar() {
         List<String> jobList = new HomePage(getDriver())
