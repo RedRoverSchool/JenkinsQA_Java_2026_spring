@@ -18,8 +18,7 @@ public class GlobalViewTest extends BaseTest {
 
     @Test
     public void testLongName() {
-        String error =
-                new HomePage(getDriver())
+        String error = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(PIPELINE_NAME)
                 .selectPipelineProjectAndClickOk()

@@ -68,6 +68,18 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href = '/view/all/builds']")
     private  WebElement buttonBuildHistory;
 
+    @FindBy(xpath = "//a[@href='/manage']")
+    private  WebElement settings;
+
+
+    @FindBy(css = ".CodeMirror-lines")
+    private  WebElement fieldForCode;
+
+    @FindBy(xpath = "//a[@href='script']")
+    private  WebElement console;
+
+    @FindBy(xpath = "//button[contains(text(),'Run')]")
+    private  WebElement buttonRun;
 
     private static final String PROJECT_NAME = "//a[contains(@href, '%s')]/span";
     private static final String SEARCH_RESULT = "//*[@id='search-results']/a[@href='/job/%s/']";
@@ -217,17 +229,16 @@ public class HomePage extends BasePage {
     }
 
     public void runInConsole(String text){
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/manage']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='script']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(settings)).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(console)).click();
 
-        WebElement codeLines = getDriver().findElement(By.cssSelector(".CodeMirror-lines"));
         Actions actions = new Actions(getDriver());
-        actions.moveToElement(codeLines)
+        actions.moveToElement(fieldForCode)
                 .click()
                 .sendKeys("Jenkins.instance.deleteView(Jenkins.instance.getView(\"" + text + "\"))")
                 .build()
                 .perform();
-        // Кнопка запуска на странице Script Console
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(text(),'Run')]"))).click();
+
+        getWait10().until(ExpectedConditions.elementToBeClickable(buttonRun)).click();
     }
 }
