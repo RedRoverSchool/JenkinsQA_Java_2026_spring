@@ -113,10 +113,15 @@ public class ManagePageTest extends BaseTest {
                 .enterShutdownReason(shutdownReason)
                 .confirmShutdown();
 
-        Assert.assertTrue(prepareShutdownPage.isRedBannerDisplayed(),
-                "Red banner should be displayed when shutdown mode is active");
+        Assert.assertTrue(
+                prepareShutdownPage.isRedBannerDisplayed(),
+                "Red banner should be displayed after shutdown is enabled"
+        );
 
-        Assert.assertTrue(prepareShutdownPage.getRedBannerText().contains(shutdownReason),
-                "Red banner should contain shutdown reason");
+        String bannerText = prepareShutdownPage.getRedBannerText();
+        Assert.assertTrue(
+                bannerText.contains(shutdownReason),
+                "Red banner should contain shutdown reason. Actual: " + bannerText
+        );
     }
 }

@@ -11,14 +11,12 @@ import java.util.List;
 
 public class PrepareShutdownPage extends BasePage {
 
-    public PrepareShutdownPage(WebDriver driver) {
-        super(driver);
-    }
+    public PrepareShutdownPage(WebDriver driver) {super(driver);}
 
     @FindBy(xpath = "//input[@name='parameter.shutdownReason']")
     private WebElement shutdownReasonField;
 
-    @FindBy(xpath = "//button[@value='Prepare for Shutdown']")
+    @FindBy(xpath = "//button[@value='Update reason']")
     private WebElement confirmShutdownButton;
 
     @FindBy(id = "shutdown-msg")
@@ -34,28 +32,12 @@ public class PrepareShutdownPage extends BasePage {
         return this;
     }
 
-    public boolean isRedBannerDisplayed() {
-        try {
-            return getWait5().until(ExpectedConditions.visibilityOf(redBanner)).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
     public String getRedBannerText() {
         return getWait10().until(ExpectedConditions.visibilityOf(redBanner)).getText();
     }
 
-    public boolean isShutdownModeEnabled() {
-        List<WebElement> items = getDriver().findElements(
-                By.xpath("//div[@class='jenkins-section__item']/a/dl/dt")
-        );
-
-        return items.stream()
-                .anyMatch(e -> "Update shutdown preparation".equals(e.getText()));
-    }
-
-    public void cancelShutdown() {
-        getDriver().findElement(By.xpath("//a[contains(text(), 'Cancel Shutdown')]")).click();
+    public boolean isRedBannerDisplayed() {
+        List<WebElement> banners = getDriver().findElements(By.id("shutdown-msg"));
+        return !banners.isEmpty() && banners.get(0).isDisplayed();
     }
 }

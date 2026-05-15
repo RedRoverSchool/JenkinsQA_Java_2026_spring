@@ -85,12 +85,9 @@ public class ManagePage extends BasePage {
     }
 
     public PrepareShutdownPage clickPrepareShutdown() {
-        WebElement button = getWait10().until(ExpectedConditions.visibilityOf(prepareShutdownButton));
         ((JavascriptExecutor) getDriver()).executeScript(
-                "arguments[0].scrollIntoView({block: 'center'});",
-                button
-        );
-        getWait10().until(ExpectedConditions.elementToBeClickable(button)).click();
+                "arguments[0].scrollIntoView({block: 'center'});",prepareShutdownButton);
+        getWait10().until(ExpectedConditions.elementToBeClickable(prepareShutdownButton)).click();
         return new PrepareShutdownPage(getDriver());
     }
 }
