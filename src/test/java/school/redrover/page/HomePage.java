@@ -20,6 +20,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='/view/all/newJob']")
     private WebElement buttonNewJob;
 
+    @FindBy(xpath = "//div[@class='tabBar']//div[@class='tab']/a")
+    private List<WebElement> views;
+
     @FindBy(css = ".jenkins-table__link > span:first-child")
     private List<WebElement> projects;
 
@@ -81,6 +84,11 @@ public class HomePage extends BasePage {
 
     public List<String> getProjectList() {
         return projects.stream()
+                .map(WebElement::getText).toList();
+    }
+
+    public List<String> getViewList() {
+        return views.stream()
                 .map(WebElement::getText).toList();
     }
 
@@ -168,6 +176,11 @@ public class HomePage extends BasePage {
         return new CreateGlobalViewPage(getDriver());
     }
 
+    public GlobalViewPage getViewByName(String viewName){
+        getDriver().findElement(By.xpath("//a[normalize-space()='" + viewName + "']")).click();
+        return new GlobalViewPage(getDriver());
+    }
+
     public boolean isUserButtonDisplayed() {
         return getWait10().until(ExpectedConditions.visibilityOf(userButton)).isDisplayed();
     }
@@ -201,5 +214,20 @@ public class HomePage extends BasePage {
 
     public boolean isAboutJenkinsPresent() {
         return !getDriver().findElements(By.xpath("//a[contains(text(),'About Jenkins')]")).isEmpty();
+    }
+
+    public void runInConsole(String text){
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/manage']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='script']"))).click();
+
+        WebElement codeLines = getDriver().findElement(By.cssSelector(".CodeMirror-lines"));
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(codeLines)
+                .click()
+                .sendKeys("Jenkins.instance.deleteView(Jenkins.instance.getView(\"" + text + "\"))")
+                .build()
+                .perform();
+        // Кнопка запуска на странице Script Console
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(text(),'Run')]"))).click();
     }
 }

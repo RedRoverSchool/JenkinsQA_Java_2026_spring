@@ -8,8 +8,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
 import school.redrover.page.common.BasePage;
 
-import static java.lang.Thread.sleep;
-
 public class GlobalViewPage extends BasePage {
 
     @FindBy(xpath = "//h1[@class='job-index-headline page-headline']")
@@ -39,6 +37,12 @@ public class GlobalViewPage extends BasePage {
     @FindBy(className = "textarea-hide-preview")
     private WebElement hidePreview;
 
+    @FindBy(xpath = "//h2")
+    private WebElement errorMessage;
+
+    @FindBy(xpath = "//a[@data-title='Delete View']")
+    private WebElement linkDelete;
+
     public GlobalViewPage(WebDriver driver) {
         super(driver);
     }
@@ -62,7 +66,6 @@ public class GlobalViewPage extends BasePage {
 
     public HomePage clickSave() {
         getWait10().until(ExpectedConditions.visibilityOf(saveButton)).click();
-
         getWait5().until(ExpectedConditions.elementToBeClickable(addDescriptionButton));
 
         return new HomePage(getDriver());
@@ -97,5 +100,19 @@ public class GlobalViewPage extends BasePage {
 
     public boolean isHidePreviewButtonDisplayed() {
         return getWait5().until(ExpectedConditions.visibilityOf(hidePreview)).isDisplayed();
+    }
+
+    public String getError() {
+        return getWait10().until(ExpectedConditions.visibilityOf(errorMessage)).getText();
+    }
+
+    public GlobalViewPage clickDelete(){
+        linkDelete.click();
+        return this;
+    }
+
+    public String getCurrentViewName(){
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='tab active']/a"))).getText();
     }
 }
