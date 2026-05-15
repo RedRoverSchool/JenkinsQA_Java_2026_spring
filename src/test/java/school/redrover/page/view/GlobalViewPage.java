@@ -63,7 +63,7 @@ public class GlobalViewPage extends BasePage {
     public HomePage clickSave() {
         getWait10().until(ExpectedConditions.visibilityOf(saveButton)).click();
 
-        getWait5().until(ExpectedConditions.visibilityOf(addDescriptionButton));
+        getWait5().until(ExpectedConditions.elementToBeClickable(addDescriptionButton));
 
         return new HomePage(getDriver());
     }
