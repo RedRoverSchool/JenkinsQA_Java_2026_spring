@@ -1,6 +1,7 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,7 +17,7 @@ public class PrepareShutdownPage extends BasePage {
     @FindBy(xpath = "//input[@name='parameter.shutdownReason']")
     private WebElement shutdownReasonField;
 
-    @FindBy(xpath = "//button[@value='Update reason']")
+    @FindBy(xpath = "//button[contains(text(), 'Update reason')]")
     private WebElement confirmShutdownButton;
 
     @FindBy(id = "shutdown-msg")
@@ -28,7 +29,11 @@ public class PrepareShutdownPage extends BasePage {
     }
 
     public PrepareShutdownPage confirmShutdown() {
-        confirmShutdownButton.click();
+        WebElement button = getWait10().until(ExpectedConditions.elementToBeClickable(confirmShutdownButton));
+
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].scrollIntoView(true); arguments[0].click();", button);
+
         return this;
     }
 
