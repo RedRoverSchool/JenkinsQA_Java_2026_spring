@@ -1,10 +1,10 @@
-package school.redrover.page.projects;
+package school.redrover.page.project;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BaseProjectPage;
-import school.redrover.page.projectsConfig.FreestyleProjectConfigPage;
+import school.redrover.page.project.config.FreestyleProjectConfigPage;
 
 public class FreestyleProjectPage extends BaseProjectPage {
 

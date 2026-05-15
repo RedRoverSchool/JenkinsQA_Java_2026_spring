@@ -1,4 +1,4 @@
-package school.redrover.page.projects;
+package school.redrover.page.project;
 
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
 import school.redrover.page.common.BaseProjectPage;
-import school.redrover.page.projectsConfig.PipelineProjectConfigPage;
+import school.redrover.page.project.config.PipelineProjectConfigPage;
 import school.redrover.page.PipelineProjectRenamePage;
 
 public class PipelineProjectPage extends BaseProjectPage {

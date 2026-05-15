@@ -10,7 +10,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-import school.redrover.page.projects.FreestyleProjectPage;
+import school.redrover.page.project.FreestyleProjectPage;
 import java.util.Arrays;
 import java.util.List;
 

@@ -6,8 +6,8 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.*;
-import school.redrover.page.projects.OrganizationFolderPage;
-import school.redrover.page.projectsConfig.OrganizationFolderConfigPage;
+import school.redrover.page.project.OrganizationFolderPage;
+import school.redrover.page.project.config.OrganizationFolderConfigPage;
 
 import java.util.List;
 

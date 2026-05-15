@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.page.common.BasePage;
-import school.redrover.page.projects.FolderProjectPage;
+import school.redrover.page.project.FolderProjectPage;
 
 public class CreateGlobalViewPage extends BasePage {
 
