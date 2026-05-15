@@ -151,12 +151,16 @@ public class HomePage extends BasePage {
     }
 
     public GlobalViewPage clickDescription() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(elementDescription)).click();
+        getWait10().until(ExpectedConditions.visibilityOf(elementDescription)).click();
         return new GlobalViewPage(getDriver());
     }
 
     public String getViewDescriptionText() {
         return textDescription.getText();
+    }
+
+    public String getAddDescriptionText() {
+        return elementDescription.getText();
     }
 
     public CreateGlobalViewPage createGlobalView(){
