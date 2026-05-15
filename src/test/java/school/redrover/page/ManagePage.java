@@ -1,6 +1,7 @@
 package school.redrover.page;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
 
@@ -13,6 +14,9 @@ public class ManagePage extends BasePage {
     private static final By EMPTY_DROPDOWN = By.className("jenkins-search__results__no-results-label");
     private static final By HEADER = By.xpath("//h1");
     private final List<WebElement> manageItems = getDriver().findElements(By.xpath("//div[@class='jenkins-section__item']/a/dl/dt"));
+
+    @FindBy(xpath = "//dt[contains(text(), 'Prepare for Shutdown') or contains(text(), 'Update shutdown preparation')]")
+    private WebElement prepareShutdownButton;
 
     public ManagePage(WebDriver driver) {
         super(driver);
@@ -78,5 +82,15 @@ public class ManagePage extends BasePage {
             }
         });
         return new BasePage(getDriver());
+    }
+
+    public PrepareShutdownPage clickPrepareShutdown() {
+        WebElement button = getWait10().until(ExpectedConditions.visibilityOf(prepareShutdownButton));
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].scrollIntoView({block: 'center'});",
+                button
+        );
+        getWait10().until(ExpectedConditions.elementToBeClickable(button)).click();
+        return new PrepareShutdownPage(getDriver());
     }
 }

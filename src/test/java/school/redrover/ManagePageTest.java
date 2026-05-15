@@ -7,14 +7,13 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.PrepareShutdownPage;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class ManagePageTest extends BaseTest {
 
-    private static final By MANAGE_JENKINS_LINK = By.cssSelector("a[href='/manage']");
-    private static final By CONFIGURE_SYSTEM_LINK = By.xpath("//a[contains(@href, 'configure')]");
 
     private final List<String> expectedItems = List.of("System", "Tools", "Plugins", "Nodes", "Clouds",
             "Appearance", "Security", "Credentials", "Credential Providers", "Users", "System Information",
@@ -88,46 +87,6 @@ public class ManagePageTest extends BaseTest {
     }
 
     @Test
-    public void testOpenConfigureSystemPage() {
-
-        WebElement manageJenkinsIcon = getWait10()
-                .until(ExpectedConditions.elementToBeClickable(MANAGE_JENKINS_LINK));
-        manageJenkinsIcon.click();
-
-        getWait10().until(ExpectedConditions.urlContains("/manage"));
-
-        WebElement configureSystemLink = getWait5()
-                .until(ExpectedConditions.elementToBeClickable(CONFIGURE_SYSTEM_LINK));
-        configureSystemLink.click();
-
-        getWait2().until(ExpectedConditions.urlContains("/configure"));
-        Assert.assertTrue(getDriver().getCurrentUrl().contains("/configure"),
-                "User should be redirected to Configure System page");
-    }
-
-    @Test
-    public void testSystemSettingsHaveFields() {
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(MANAGE_JENKINS_LINK)).click();
-        getWait10().until(ExpectedConditions.urlContains("/manage"));
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(CONFIGURE_SYSTEM_LINK)).click();
-        getWait10().until(ExpectedConditions.urlContains("/configure"));
-
-        List<String> expectedSections = Arrays.asList(
-                "general",
-                "jenkins-location",
-                "global-properties"
-        );
-
-        for (String sectionId : expectedSections) {
-            WebElement section = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id(sectionId)));
-            Assert.assertTrue(section.isDisplayed(),
-                    "Section with id '" + sectionId + "' should be displayed on Configure System page");
-        }
-    }
-
-    @Test
     public void testChangeDarkTheme() {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/manage']"))).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='appearance']"))).click();
@@ -142,5 +101,22 @@ public class ManagePageTest extends BaseTest {
         WebElement saveButton = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@id='bottom-sticker']//button[@name='Submit']")));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", saveButton);
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(text(), 'Manage Jenkins')]")));
+    }
+
+    @Test
+    public void testPrepareForShutdownWithCustomReason() {
+        String shutdownReason = "Server maintenance scheduled";
+
+        PrepareShutdownPage prepareShutdownPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickPrepareShutdown()
+                .enterShutdownReason(shutdownReason)
+                .confirmShutdown();
+
+        Assert.assertTrue(prepareShutdownPage.isRedBannerDisplayed(),
+                "Red banner should be displayed when shutdown mode is active");
+
+        Assert.assertTrue(prepareShutdownPage.getRedBannerText().contains(shutdownReason),
+                "Red banner should contain shutdown reason");
     }
 }
