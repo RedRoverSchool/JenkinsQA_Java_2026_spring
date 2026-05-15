@@ -8,8 +8,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.TestUtils;
 import school.redrover.page.common.BasePage;
-import school.redrover.page.projectsConfig.FreestyleProjectConfigPage;
-import school.redrover.page.projectsConfig.PipelineProjectConfigPage;
+import school.redrover.page.project.config.FreestyleProjectConfigPage;
+import school.redrover.page.project.config.PipelineProjectConfigPage;
 
 public class CreateProjectPage extends BasePage {
 
@@ -146,6 +146,3 @@ public class CreateProjectPage extends BasePage {
         return new PipelineProjectConfigPage(getDriver());
     }
 }
-
-
-

@@ -1,13 +1,11 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
-import school.redrover.page.projects.FolderProjectPage;
+import school.redrover.page.project.FolderProjectPage;
 
 public class ViewWithinFolderTest extends BaseTest {
 

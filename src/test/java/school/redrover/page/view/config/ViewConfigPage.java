@@ -1,4 +1,4 @@
-package school.redrover.page.view.viewConfig;
+package school.redrover.page.view.config;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

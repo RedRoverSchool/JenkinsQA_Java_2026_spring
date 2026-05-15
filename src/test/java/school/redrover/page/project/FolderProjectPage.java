@@ -1,4 +1,4 @@
-package school.redrover.page.projects;
+package school.redrover.page.project;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.CreateProjectPage;
 import school.redrover.page.common.BaseProjectPage;
-import school.redrover.page.projectsConfig.FolderConfigPage;
+import school.redrover.page.project.config.FolderConfigPage;
 import school.redrover.page.view.CreateFolderViewPage;
 import school.redrover.page.view.FolderViewPage;
 

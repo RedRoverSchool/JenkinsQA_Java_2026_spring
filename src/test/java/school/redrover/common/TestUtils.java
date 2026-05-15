@@ -3,8 +3,8 @@ package school.redrover.common;
 import org.openqa.selenium.WebDriver;
 import school.redrover.page.*;
 import school.redrover.page.common.BaseConfigPage;
-import school.redrover.page.projects.FolderProjectPage;
-import school.redrover.page.projectsConfig.*;
+import school.redrover.page.project.FolderProjectPage;
+import school.redrover.page.project.config.*;
 
 public class TestUtils {
 

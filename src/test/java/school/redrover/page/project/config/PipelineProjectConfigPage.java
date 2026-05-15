@@ -1,11 +1,11 @@
-package school.redrover.page.projectsConfig;
+package school.redrover.page.project.config;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BaseConfigPage;
-import school.redrover.page.projects.PipelineProjectPage;
+import school.redrover.page.project.PipelineProjectPage;
 
 public class PipelineProjectConfigPage extends BaseConfigPage<PipelineProjectConfigPage> {
 
