@@ -163,7 +163,7 @@ public class HomePage extends BasePage {
         return elementDescription.getText();
     }
 
-    public CreateGlobalViewPage createGlobalView(){
+    public CreateGlobalViewPage clickForNewView(){
         getWait5().until(ExpectedConditions.visibilityOf(newView)).click();
         return new CreateGlobalViewPage(getDriver());
     }
