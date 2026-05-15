@@ -1,7 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -36,5 +34,17 @@ public class ViewWithinFolderTest extends BaseTest {
                 .getTextPreview();
 
         Assert.assertEquals(actualPreviewText, VIEW_DESCRIPTION);
+    }
+
+    @Test(dependsOnMethods = "testPreviewAddDescription")
+    public void testSaveViewDescription(){
+       String actualDescriptionText = new HomePage(getDriver())
+               .clickOnProject(FOLDER_NAME,new FolderProjectPage(getDriver()))
+               .getViewByName(VIEW_NAME)
+               .addDescription(VIEW_DESCRIPTION)
+               .clickSubmitButton()
+               .getDescriptionText();
+
+        Assert.assertEquals(actualDescriptionText,VIEW_DESCRIPTION);
     }
 }
