@@ -1,6 +1,5 @@
 package school.redrover.page.view;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -21,7 +20,11 @@ public class FolderViewPage extends BasePage {
     @FindBy(css = "#description-edit-form .textarea-preview")
     private WebElement areaPreview;
 
-    private static final By DESCRIPTION_CONTENT = By.id("description-content");
+    @FindBy(id = "description-content")
+    private WebElement content;
+
+    @FindBy(name = "Submit")
+    private WebElement buttonSave;
 
     public FolderViewPage(WebDriver driver) {
         super(driver);
@@ -39,10 +42,10 @@ public class FolderViewPage extends BasePage {
     }
 
     public FolderViewPage clickSubmitButton(){
-        getDriver().findElement(By.name("Submit")).click();
+        buttonSave.click();
         return this;
     }
     public String getDescriptionText(){
-        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(DESCRIPTION_CONTENT)).getText();
+        return getWait10().until(ExpectedConditions.visibilityOf(content)).getText();
     }
 }
