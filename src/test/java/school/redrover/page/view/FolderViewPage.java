@@ -1,6 +1,5 @@
 package school.redrover.page.view;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -27,7 +26,7 @@ public class FolderViewPage extends BasePage {
 
     public FolderViewPage addDescription(String expectedDescription){
         buttonDescription.click();
-        fieldDescription.sendKeys(expectedDescription);
+        getWait5().until(ExpectedConditions.visibilityOf(fieldDescription)).sendKeys(expectedDescription);
         return this;
     }
 
