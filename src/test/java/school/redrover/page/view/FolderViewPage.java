@@ -46,6 +46,6 @@ public class FolderViewPage extends BasePage {
         return this;
     }
     public String getDescriptionText(){
-        return getWait10().until(ExpectedConditions.visibilityOf(content)).getText();
+        return getWait10().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(content))).getText();
     }
 }
