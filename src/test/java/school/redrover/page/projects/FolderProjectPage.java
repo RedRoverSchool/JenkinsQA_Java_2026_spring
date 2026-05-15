@@ -8,6 +8,7 @@ import school.redrover.page.CreateProjectPage;
 import school.redrover.page.common.BaseProjectPage;
 import school.redrover.page.projectsConfig.FolderConfigPage;
 import school.redrover.page.view.CreateFolderViewPage;
+import school.redrover.page.view.FolderViewPage;
 
 import java.util.regex.Pattern;
 
@@ -87,4 +88,8 @@ public class FolderProjectPage extends BaseProjectPage {
                 By.xpath("//div[@class='tab active']/a"))).getText();
     }
 
+    public FolderViewPage getViewByName(String viewName){
+        getDriver().findElement(By.xpath("//a[normalize-space()='" + viewName + "']")).click();
+        return new FolderViewPage(getDriver());
+    }
 }
