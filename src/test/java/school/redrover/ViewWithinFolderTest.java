@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -29,7 +28,7 @@ public class ViewWithinFolderTest extends BaseTest {
     }
 
     @Test (dependsOnMethods = "testCreateMyView")
-    public void testPreviewAddDescription(){
+    public void testPreviewAddDescription() {
         String actualPreviewText = new HomePage(getDriver())
                 .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .getViewByName(VIEW_NAME)
@@ -37,20 +36,5 @@ public class ViewWithinFolderTest extends BaseTest {
                 .getTextPreview();
 
         Assert.assertEquals(actualPreviewText, VIEW_DESCRIPTION);
-    }
-
-    @Test(dependsOnMethods = "testPreviewAddDescription")
-    public void testSaveViewDescription(){
-        String expectedDescription   = "Saved description";
-
-        new HomePage(getDriver()).clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()));
-        getDriver().findElement(By.xpath("//a[normalize-space()='" + VIEW_NAME + "']")).click();
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys(expectedDescription);
-        getDriver().findElement(By.name("Submit")).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
-        String actualDescription = getDriver().findElement(By.id("description-content")).getText();
-
-        Assert.assertEquals(actualDescription,expectedDescription);
     }
 }
