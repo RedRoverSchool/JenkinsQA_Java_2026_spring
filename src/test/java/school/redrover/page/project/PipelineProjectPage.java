@@ -69,7 +69,7 @@ public class PipelineProjectPage extends BaseProjectPage {
     }
 
     public String getDescriptionText() {
-        return getWait5().until(ExpectedConditions.visibilityOf(description)).getText();
+        return getWait5().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(description))).getText();
     }
 
     public PipelineProjectRenamePage clickRenameSidebarButton() {
@@ -86,7 +86,7 @@ public class PipelineProjectPage extends BaseProjectPage {
     }
 
     public String getDisabledWarningText() {
-        return getWait5().until(ExpectedConditions.visibilityOf(warning)).getText();
+        return getWait10().until(ExpectedConditions.visibilityOf(warning)).getText();
     }
 
     public boolean isBuildNowDisplayed() {
