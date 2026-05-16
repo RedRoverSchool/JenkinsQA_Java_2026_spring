@@ -71,7 +71,6 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='/manage']")
     private  WebElement settings;
 
-
     @FindBy(css = ".CodeMirror-lines")
     private  WebElement fieldForCode;
 
@@ -80,6 +79,10 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//button[contains(text(),'Run')]")
     private  WebElement buttonRun;
+
+    // а если через JS
+    @FindBy(className= "CodeMirror")
+    private  WebElement codeMirrorContainer;
 
     private static final String PROJECT_NAME = "//a[contains(@href, '%s')]/span";
     private static final String SEARCH_RESULT = "//*[@id='search-results']/a[@href='/job/%s/']";
@@ -240,5 +243,12 @@ public class HomePage extends BasePage {
                 .perform();
 
         getWait10().until(ExpectedConditions.elementToBeClickable(buttonRun)).click();
+    }
+
+    public void runInConsoleViaJS(String longName){
+        getWait5().until(ExpectedConditions.elementToBeClickable(settings)).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(console)).click();
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].CodeMirror.setValue(arguments[1]);", codeMirrorContainer, "Jenkins.instance.deleteView(Jenkins.instance.getView(\"" + longName + "\"))");
     }
 }

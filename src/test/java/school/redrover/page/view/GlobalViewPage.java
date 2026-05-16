@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
 import school.redrover.page.common.BasePage;
+import java.util.List;
 
 public class GlobalViewPage extends BasePage {
 
@@ -42,6 +43,9 @@ public class GlobalViewPage extends BasePage {
 
     @FindBy(xpath = "//a[@data-title='Delete View']")
     private WebElement linkDelete;
+
+    @FindBy(xpath = "//div[@class='tabBar']//div[@class='tab']/a")
+    private List<WebElement> views;
 
     public GlobalViewPage(WebDriver driver) {
         super(driver);
@@ -114,5 +118,10 @@ public class GlobalViewPage extends BasePage {
     public String getCurrentViewName(){
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='tab active']/a"))).getText();
+    }
+
+    public List<String> getViewList() {
+        return views.stream()
+                .map(WebElement::getText).toList();
     }
 }
