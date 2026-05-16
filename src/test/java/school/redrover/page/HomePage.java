@@ -80,7 +80,6 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//button[contains(text(),'Run')]")
     private  WebElement buttonRun;
 
-    // а если через JS
     @FindBy(className= "CodeMirror")
     private  WebElement codeMirrorContainer;
 
@@ -229,20 +228,6 @@ public class HomePage extends BasePage {
 
     public boolean isAboutJenkinsPresent() {
         return !getDriver().findElements(By.xpath("//a[contains(text(),'About Jenkins')]")).isEmpty();
-    }
-
-    public void runInConsole(String text){
-        getWait5().until(ExpectedConditions.elementToBeClickable(settings)).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(console)).click();
-
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(fieldForCode)
-                .click()
-                .sendKeys("Jenkins.instance.deleteView(Jenkins.instance.getView(\"" + text + "\"))")
-                .build()
-                .perform();
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(buttonRun)).click();
     }
 
     public void runInConsoleViaJS(String longName){
