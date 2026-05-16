@@ -38,7 +38,6 @@ public class GlobalViewTest extends BaseTest {
         Assert.assertEquals(nameView, longName);
 
         // Удаляем следы через консоль, т.к. свыше 255 символов названия
-        new HomePage(getDriver()).runInConsole(longName);
         new HomePage(getDriver()).runInConsoleViaJS(longName);
     }
 
