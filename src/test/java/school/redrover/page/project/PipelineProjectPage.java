@@ -1,5 +1,6 @@
 package school.redrover.page.project;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -21,9 +22,6 @@ public class PipelineProjectPage extends BaseProjectPage {
     @FindBy(xpath = "//button[@value='Save']")
     private WebElement saveButton;
 
-    @FindBy(id = "description-content")
-    private WebElement description;
-
     @FindBy(xpath = "//a[contains(@href, 'configure')]")
     private WebElement configureSidebar;
 
@@ -44,6 +42,8 @@ public class PipelineProjectPage extends BaseProjectPage {
 
     @FindBy(xpath = "//a[@href='/view/all/newJob']")
     private WebElement addNewItemButton;
+
+    private static final By DESCRIPTION = By.id("description-content");
 
     public PipelineProjectPage(WebDriver driver) {
         super(driver);
@@ -69,7 +69,9 @@ public class PipelineProjectPage extends BaseProjectPage {
     }
 
     public String getDescriptionText() {
-        return getWait5().until(ExpectedConditions.visibilityOf(description)).getText();
+        return getWait5().until(
+                ExpectedConditions.refreshed(ExpectedConditions.visibilityOfElementLocated(DESCRIPTION)))
+                .getText();
     }
 
     public PipelineProjectRenamePage clickRenameSidebarButton() {
