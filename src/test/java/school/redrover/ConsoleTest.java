@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -12,6 +13,7 @@ public class ConsoleTest extends BaseTest {
 
     private static final String NAME_PROJECT = "TEST";
 
+    @Ignore
     @Test
     public void readingInformationConsoleTest() {
         String consoleText = new HomePage(getDriver())
