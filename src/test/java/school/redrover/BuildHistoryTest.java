@@ -8,10 +8,8 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.project.config.FreestyleProjectConfigPage;
 import school.redrover.page.HomePage;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static school.redrover.common.TestUtils.JobType.FREESTYLE;
 
 public class BuildHistoryTest extends BaseTest {
@@ -32,7 +30,7 @@ public class BuildHistoryTest extends BaseTest {
     }
 
     @Test
-    public void deleteWarningMessage(){
+    public void testDeleteWarningMessage(){
         final String jobName = "TestProject";
 
         String warningMessage = new HomePage(getDriver())
