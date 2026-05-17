@@ -59,7 +59,6 @@ public class GlobalSearchTest extends BaseTest {
         Assert.assertEquals(input, "");
     }
 
-
     @Ignore
     @Test
     public void testReguest() {

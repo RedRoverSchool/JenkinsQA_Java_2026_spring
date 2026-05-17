@@ -15,7 +15,6 @@ public class ConsolePage extends BasePage {
     @FindBy(xpath = "//pre[@id='out']")
     private WebElement textConsole;
 
-
     public String getTextConsole() {
         getWait10().until(ExpectedConditions.textToBePresentInElement(textConsole, "Finished:"));
         return textConsole.getText();

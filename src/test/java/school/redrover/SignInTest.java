@@ -12,7 +12,6 @@ import school.redrover.common.JenkinsUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.LoginPage;
 
-
 public class SignInTest extends BaseTest {
 
     private void createUser(String userLogin, String userFullName, String password,
@@ -38,7 +37,6 @@ public class SignInTest extends BaseTest {
     @Ignore
     @Test
     public void testLoginValidData () {
-
         createUser(USER_LOGIN,
                 USER_FULL_NAME,
                 USER_PASSWORD,
@@ -145,6 +143,5 @@ public class SignInTest extends BaseTest {
 
         Assert.assertTrue(loginPage.isSignInButtonDisplayed(), "Sign in button is not displayed");
         Assert.assertTrue(loginPage.isSignInButtonEnabled(), "Sign in button is not enabled");
-
     }
 }

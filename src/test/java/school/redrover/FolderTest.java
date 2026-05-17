@@ -49,7 +49,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testRename")
-    public void createWithSameName() {
+    public void testCreateWithSameName() {
         new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(FOLDER_NEW_NAME)
@@ -88,7 +88,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testRename")
-    public void createNestedFolderTest() {
+    public void testCreateNestedFolderTest() {
         new HomePage(getDriver())
                 .clickOnProject(FOLDER_NEW_NAME, new FolderProjectPage(getDriver()))
                 .clickNewItem()

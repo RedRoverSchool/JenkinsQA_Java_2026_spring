@@ -7,7 +7,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -89,7 +88,6 @@ public class ManagePageTest extends BaseTest {
 
     @Test
     public void testOpenConfigureSystemPage() {
-
         WebElement manageJenkinsIcon = getWait10()
                 .until(ExpectedConditions.elementToBeClickable(MANAGE_JENKINS_LINK));
         manageJenkinsIcon.click();
@@ -107,7 +105,6 @@ public class ManagePageTest extends BaseTest {
 
     @Test
     public void testSystemSettingsHaveFields() {
-
         getWait10().until(ExpectedConditions.elementToBeClickable(MANAGE_JENKINS_LINK)).click();
         getWait10().until(ExpectedConditions.urlContains("/manage"));
 

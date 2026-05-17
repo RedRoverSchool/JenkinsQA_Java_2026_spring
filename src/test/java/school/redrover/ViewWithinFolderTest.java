@@ -35,4 +35,16 @@ public class ViewWithinFolderTest extends BaseTest {
 
         Assert.assertEquals(actualPreviewText, VIEW_DESCRIPTION);
     }
+
+    @Test(dependsOnMethods = "testPreviewAddDescription")
+    public void testSaveViewDescription(){
+       String actualDescriptionText = new HomePage(getDriver())
+               .clickOnProject(FOLDER_NAME,new FolderProjectPage(getDriver()))
+               .getViewByName(VIEW_NAME)
+               .addDescription(VIEW_DESCRIPTION)
+               .clickSubmitButton()
+               .getDescriptionText();
+
+        Assert.assertEquals(actualDescriptionText,VIEW_DESCRIPTION);
+    }
 }

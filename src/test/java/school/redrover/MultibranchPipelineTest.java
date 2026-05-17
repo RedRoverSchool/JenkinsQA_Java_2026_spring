@@ -13,8 +13,8 @@ import school.redrover.page.HomePage;
 import school.redrover.page.project.MultibranchProjectPage;
 import java.util.List;
 
-
 public class MultibranchPipelineTest extends BaseTest {
+
 	private final static String PROJECT_NAME = "MultibranchPipelineProject";
 	private final static String PROJECT_NAME_1 = "MultibranchPipelineProject1";
 	private final static String PROJECT_NAME_DELETE = "Project_To_Delete";
@@ -51,7 +51,7 @@ public class MultibranchPipelineTest extends BaseTest {
 	}
 
 	@Test(dependsOnMethods = "testCreate")
-	public void testRename(){
+	public void testRename() {
 		getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME)))).click();
 		getDriver().findElement(By.xpath("//a[contains(@href,'job') and ./span[text()='Rename']]")).click();
 		getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
@@ -64,7 +64,7 @@ public class MultibranchPipelineTest extends BaseTest {
 	}
 
 	@Test (dependsOnMethods = "testRename")
-	public void testRenameViaContextMenu(){
+	public void testRenameViaContextMenu() {
 		List<String> projectList = new HomePage(getDriver())
 				.openProjectDropdownMenu(PROJECT_NAME_1)
 				.clickRenameInDropdown()
@@ -100,11 +100,13 @@ public class MultibranchPipelineTest extends BaseTest {
 
 		Assert.assertEquals(projectList.size(), 0);
 	}
+
 	@DataProvider(name = "invalid characters")
 	public Object[][] getData() {
 		return new Object[][]{{"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"},{"!"}
 		};
 	}
+
 	@Test(dataProvider = "invalid characters")
 	public void testInvalidCharactersInName(String invalidCharacter) {
 		String invalidProjectName = "test" + invalidCharacter;
