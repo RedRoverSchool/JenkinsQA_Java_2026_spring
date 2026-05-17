@@ -55,6 +55,16 @@ public class CredentialsTest extends BaseTest {
     }
 
     @Test
+    public void testAddSshUsernameWithKey(){
+        new HomePage(getDriver())
+                .clickManageButton()
+                .clickCredentials()
+                .clickAddCredentialsButton()
+                .clickSSHCredentialsButton()
+                .setSSHCredentials("prod-deploy-key","SSH key for prod server","deploy",true,false,"MyStr0ngP@ss");
+    }
+
+    @Test
     public void addSecretTextCredentials() {
         boolean isCredentialsCreated = new HomePage(getDriver())
                 .clickManageButton()

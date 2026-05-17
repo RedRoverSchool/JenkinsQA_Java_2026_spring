@@ -30,6 +30,9 @@ public class CredentialsPage extends BasePage {
     @FindBy(id = "cr-dialog-next")
     private List<WebElement> nextButtons;
 
+    @FindBy(xpath = "//div[@class='jenkins-choice-list__item__label'][contains(text(),'SSH')]" )
+    private WebElement SSHUsernameWithKey;
+
     @FindBy(xpath = "//div[@class='jenkins-choice-list__item__label'][text()='Secret text']")
     private WebElement secretTextButton;
 
@@ -53,6 +56,9 @@ public class CredentialsPage extends BasePage {
 
     @FindBy(name = "_.description")
     private WebElement descriptionField;
+
+    @FindBy(css= "label.attach-previous")
+    private WebElement treatUsernameAsSecretCheckbox;
 
     @FindBy(xpath = ("//*[contains(text(), 'Delete credential')]"))
     private WebElement deleteCredentialOption;
@@ -98,8 +104,7 @@ public class CredentialsPage extends BasePage {
 
         WebElement moreActions = getWait10().until(ExpectedConditions.elementToBeClickable(moreActionsByRowId));
                 moreActions.click();
-
-                getWait5().until(ExpectedConditions.elementToBeClickable(deleteCredentialOption)).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(deleteCredentialOption)).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(confirmOkButton)).click();
 
         return this;
@@ -112,6 +117,27 @@ public class CredentialsPage extends BasePage {
 
     public CredentialsPage clickSecretTextButton() {
         secretTextButton.click();
+
+        return this;
+    }
+
+    public CredentialsPage clickSSHCredentialsButton(){
+        getWait5().until(ExpectedConditions.elementToBeClickable(SSHUsernameWithKey)).click();
+        nextButtons.getFirst().click();
+        return this;
+    }
+
+    public CredentialsPage setSSHCredentials(String id, String desc, String user, Boolean usernameAsSecret, Boolean enterDirectly,String pass ){
+        //getWait5().until(ExpectedConditions.elementToBeClickable(IDField)).sendKeys();
+        //
+        getWait5().until(ExpectedConditions.visibilityOf(usernameTextField)).sendKeys(user);
+        IDField.sendKeys(id);
+        descriptionField.sendKeys(desc);
+        if (usernameAsSecret ==true){
+            treatUsernameAsSecretCheckbox.click();
+        }
+        //passwordTextField.sendKeys(pass);
+        //
 
         return this;
     }
