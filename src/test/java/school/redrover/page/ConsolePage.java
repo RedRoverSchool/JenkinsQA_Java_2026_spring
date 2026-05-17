@@ -14,9 +14,7 @@ public class ConsolePage extends BasePage {
     @FindBy(xpath = "//pre[@id='out']")
     private WebElement textConsole;
 
-
     public String getTextConsole() {
-
         return textConsole.getText();
     }
 
