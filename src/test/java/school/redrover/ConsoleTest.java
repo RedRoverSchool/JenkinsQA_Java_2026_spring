@@ -4,8 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
-import school.redrover.page.HomePage;
-import school.redrover.page.project.MultiConfigurationProjectPage;
+import static school.redrover.common.TestUtils.JobType.MULTICONFIGURATION;
 
 public class ConsoleTest extends BaseTest {
 
@@ -13,12 +12,7 @@ public class ConsoleTest extends BaseTest {
 
     @Test
     public void testReadingInformationConsoleTest() {
-        String consoleText = new HomePage(getDriver())
-                .clickItemNewJob()
-                .setProjectName(NAME_PROJECT)
-                .selectItemType(TestUtils.JobType.MULTICONFIGURATION)
-                .clickOK(new MultiConfigurationProjectPage(getDriver()))
-                .goHomePage()
+        String consoleText = TestUtils.createJob(getDriver(), NAME_PROJECT, MULTICONFIGURATION)
                 .clickScheduleBuild(NAME_PROJECT)
                 .clickBuildHistory()
                 .clickConsole()
