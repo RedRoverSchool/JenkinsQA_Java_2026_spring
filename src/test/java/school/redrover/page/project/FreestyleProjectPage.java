@@ -11,6 +11,7 @@ public class FreestyleProjectPage extends BaseProjectPage {
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
     }
+
     public FreestyleProjectConfigPage clickConfigure() {
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//a[contains(@href, '/configure')]"))).click();
