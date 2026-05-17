@@ -32,7 +32,7 @@ public class BuildHistoryTest extends BaseTest {
     }
 
     @Test
-    public void deleteWarningMessage(){
+    public void testDeleteWarningMessage(){
         String warningMessage = TestUtils.createJob(getDriver(), PROJECT_NAME, FREESTYLE)
                 .clickScheduleBuild(PROJECT_NAME)
                 .clickBuildHistory()
