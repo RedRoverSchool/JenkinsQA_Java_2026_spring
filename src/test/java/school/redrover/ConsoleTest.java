@@ -7,13 +7,12 @@ import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.MultiConfigurationProjectPage;
 
-
 public class ConsoleTest extends BaseTest {
 
     private static final String NAME_PROJECT = "TEST";
 
     @Test
-    public void readingInformationConsoleTest() {
+    public void testReadingInformationConsoleTest() {
         String consoleText = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(NAME_PROJECT)

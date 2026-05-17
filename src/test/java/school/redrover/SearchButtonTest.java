@@ -7,7 +7,6 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-
 import java.util.List;
 import java.util.Random;
 
@@ -33,7 +32,6 @@ public class SearchButtonTest extends BaseTest {
 
     @Test
     public void testSearchExistingJob() {
-
         String titleJob = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(FOLDER_NAME)
@@ -49,16 +47,12 @@ public class SearchButtonTest extends BaseTest {
 
     @Test
     public void testEmptyQuery() {
-
-        new HomePage(getDriver())
-                .search("", true);
-
+        new HomePage(getDriver()).search("", true);
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/doc/book/using/searchbox/");
     }
 
     @Test(dependsOnMethods = "testSearchExistingJob")
     public void testCaseInsensitivity() {
-
         String titleJob = new HomePage(getDriver())
                 .search(FOLDER_NAME.toLowerCase())
                 .chooseSearchingResult(FOLDER_NAME)
