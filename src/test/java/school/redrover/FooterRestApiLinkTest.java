@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
+import school.redrover.page.RestApiPage;
 
 public class FooterRestApiLinkTest extends BaseTest {
 
@@ -43,67 +45,47 @@ public class FooterRestApiLinkTest extends BaseTest {
         Assert.assertNotEquals(beforeBackground, afterBackground);
     }
 
-    @Test (dependsOnMethods = "testRestApiLinkOpensInSameTab")
-    public void testRestApiLinkIsHiddenOnApiPage() {
-
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-
-        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-
-        getWait10().until(
-                ExpectedConditions.elementToBeClickable(By.xpath("//footer//a[contains(text(),'REST API')]"))).click();
-
-        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-
-        boolean isRestApiLinkPresentInFooter = !getDriver().findElements(
-                By.xpath("//footer//a[contains(text(),'REST API')]")).isEmpty();
-
-        Assert.assertFalse(isRestApiLinkPresentInFooter,
-                "Ссылка 'REST API' не должна отображаться в футере на странице REST API (сама на себя)");
-    }
-
     @Test
     public void testRestApiLinkOpensInSameTab() {
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-
-        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-
-        WebElement restApiLink = getWait10().until(
-                ExpectedConditions.elementToBeClickable(By.xpath("//footer//a[contains(text(),'REST API')]")));
-
         String originalWindow = getDriver().getWindowHandle();
-        restApiLink.click();
+
+        new HomePage(getDriver())
+                .scrollToBottom()
+                .clickRestApiLink();
 
         Assert.assertEquals(getDriver().getWindowHandle(), originalWindow,
-                "Фокус переключился на другое окно");
+                "Focus switched to another window");
+    }
 
+    @Test(dependsOnMethods = "testRestApiLinkOpensInSameTab")
+    public void testRestApiLinkIsHiddenOnApiPage() {
+        RestApiPage restApiPage = new HomePage(getDriver())
+                .scrollToBottom()
+                .clickRestApiLink();
+
+        // On the REST API page itself, the link should NOT be present in footer
+        Assert.assertFalse(restApiPage.isRestApiLinkDisplayedInFooter(),
+                "REST API link should not be displayed in footer on the REST API page (self-link)");
     }
 
     @Test
     public void testRestApiLinkHoverEffect() {
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        String cursor = new HomePage(getDriver())
+                .scrollToBottom()
+                .getRestApiLinkCursor();
 
-        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+        Assert.assertEquals(cursor, "pointer", "Link should have 'pointer' cursor on hover");
+    }
 
-        WebElement restApiLink = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//footer//a[contains(text(),'REST API')]")));
-
-        String cursor = restApiLink.getCssValue("cursor");
-        Assert.assertEquals(cursor, "pointer", "У ссылки должен быть курсор pointer при наведении");}
-
-    @Test (dependsOnMethods = "testRestApiLinkOpensInSameTab")
+    @Test(dependsOnMethods = "testRestApiLinkOpensInSameTab")
     public void testReturnWithBackButton() {
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-
-        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-
-        getWait10().until(
-                ExpectedConditions.elementToBeClickable(By.xpath("//footer//a[contains(text(),'REST API')]"))).click();
+        new HomePage(getDriver())
+                .scrollToBottom()
+                .clickRestApiLink();
 
         getDriver().navigate().back();
 
-        boolean isDashboardVisible = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@href,'/view/')]"))).isDisplayed();
-        Assert.assertTrue(isDashboardVisible, "Элементы Dashboard не отображаются. Возможно, пользователь разлогинен.");
+        boolean dashboardVisible = new HomePage(getDriver()).isDashboardVisible();
+        Assert.assertTrue(dashboardVisible, "Dashboard elements are not visible. User might be logged out.");
     }
 }

@@ -118,17 +118,16 @@ public class SignInTest extends BaseTest {
         Assert.assertTrue(textMatches, "Error message not shown or text doesn't match");
     }
 
-    @Ignore
-    @Test (dependsOnMethods = "testSignInPageAlertMessageText")
+    @Test(dependsOnMethods = "testSignInPageAlertMessageText")
     public void testSignInPageAlertTextColor() {
         boolean colorMatches = new LoginPage(getDriver())
                 .logout()
                 .enterUsername("user")
                 .enterPassword("qwerty")
                 .clickSignIn()
-                .verifyErrorMessageColor("oklch(0.6 0.2671 30)");
+                .verifyErrorMessageColor("oklch(0.6 0.2671 30)"); // уточните реальный цвет
 
-        Assert.assertTrue(colorMatches, "Error message text color is not red: expected color fragment not found");
+        Assert.assertTrue(colorMatches, "Error message text color is not as expected");
     }
 
     @Test
