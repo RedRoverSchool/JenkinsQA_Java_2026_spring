@@ -84,6 +84,10 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
+    public String getErrorText(){
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+    }
+
     public CreateProjectPage selectFolder() {
         getDriver().findElement(By.xpath("//li[contains(@class,'com_cloudbees_hudson_plugins_folder_Folder')]")).click();
 
