@@ -6,6 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import school.redrover.page.common.BasePage;
 
 public class RestApiPage extends BasePage {
+
     @FindBy(xpath = "//footer//a[contains(text(),'REST API')]")
     private WebElement restApiLinkInFooter;
 

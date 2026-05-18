@@ -68,7 +68,6 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='/view/all/builds']")
     private WebElement buttonBuildHistory;
 
-    // NEW field for REST API link
     @FindBy(xpath = "//footer//a[contains(text(),'REST API')]")
     private WebElement restApiLink;
 
@@ -79,7 +78,6 @@ public class HomePage extends BasePage {
         super(driver);
     }
 
-    // ---------- Existing methods ----------
     public CreateProjectPage clickItemNewJob() {
         getWait5().until(ExpectedConditions.elementToBeClickable(buttonNewJob)).click();
         return new CreateProjectPage(getDriver());
@@ -207,7 +205,7 @@ public class HomePage extends BasePage {
         return !getDriver().findElements(By.xpath("//a[contains(text(),'About Jenkins')]")).isEmpty();
     }
 
-    // ---------- NEW methods for REST API tests ----------
+
     public RestApiPage clickRestApiLink() {
         getWait10().until(ExpectedConditions.elementToBeClickable(restApiLink)).click();
         return new RestApiPage(getDriver());
