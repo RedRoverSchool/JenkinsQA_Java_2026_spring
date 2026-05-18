@@ -4,7 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.page.common.BasePage;
-import school.redrover.page.project.FolderProjectPage;
 
 public class CreateGlobalViewPage extends BasePage {
 
@@ -39,8 +38,8 @@ public class CreateGlobalViewPage extends BasePage {
         return this;
     }
 
-    public FolderProjectPage clickCreateButton() {
+    public GlobalViewPage clickCreateButton() {
         buttonCreate.click();
-        return new FolderProjectPage(getDriver());
+        return new GlobalViewPage(getDriver());
     }
 }

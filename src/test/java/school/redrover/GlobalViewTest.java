@@ -3,14 +3,20 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.view.GlobalViewPage;
+
+import static java.lang.Thread.sleep;
 
 public class GlobalViewTest extends BaseTest {
 
     private final static String DESCRIPTION_INPUT = "Test";
     private final static String UPDATED_DESC_MESSAGE = "Updated desc message";
     private final static String ADD_DESCRIPTION_BUTTON_TEXT = "Add description";
+    private final static String PIPELINE_NAME = "New pipeline";
+    private final static String VIEW_NAME = "New View";
+    private final static String UPDATED_VIEW_NAME = "Updated My view";
 
     @Test
     public void testAddViewDescription() {
@@ -88,5 +94,20 @@ public class GlobalViewTest extends BaseTest {
                 .clickHideButton();
 
         Assert.assertFalse(globalViewPage.isPreviewDisplayed());
+    }
+
+    @Test
+    public void testUpdateViewName() throws InterruptedException {
+        String nameView = TestUtils.createJob(getDriver(), PIPELINE_NAME, TestUtils.JobType.PIPELINE)
+                .clickForNewView()
+                .inputName(VIEW_NAME)
+                .chooseMyView()
+                .clickCreateButton()
+                .clickEditView()
+                .inputName(UPDATED_VIEW_NAME)
+                .clickSave()
+                .getCurrentViewName();
+
+        Assert.assertEquals(nameView, UPDATED_VIEW_NAME);
     }
 }
