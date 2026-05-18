@@ -1,10 +1,6 @@
 package school.redrover.page;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -14,6 +10,7 @@ import school.redrover.page.view.CreateGlobalViewPage;
 import school.redrover.page.view.GlobalViewPage;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class HomePage extends BasePage {
 
@@ -68,9 +65,11 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='https://www.jenkins.io/']")
     private WebElement website;
 
-    @FindBy(xpath = "//a[@href = '/view/all/builds']")
-    private  WebElement buttonBuildHistory;
+    @FindBy(xpath = "//a[@href='/view/all/builds']")
+    private WebElement buttonBuildHistory;
 
+    @FindBy(xpath = "//footer//a[contains(text(),'REST API')]")
+    private WebElement restApiLink;
 
     private static final String PROJECT_NAME = "//a[contains(@href, '%s')]/span";
     private static final String SEARCH_RESULT = "//*[@id='search-results']/a[@href='/job/%s/']";
@@ -81,7 +80,6 @@ public class HomePage extends BasePage {
 
     public CreateProjectPage clickItemNewJob() {
         getWait5().until(ExpectedConditions.elementToBeClickable(buttonNewJob)).click();
-
         return new CreateProjectPage(getDriver());
     }
 
@@ -96,31 +94,26 @@ public class HomePage extends BasePage {
                 .moveToElement(projectNameEl, 2, 2)
                 .click()
                 .perform();
-
         getWait5().until(ExpectedConditions.visibilityOf(statusLink));
-
         return projectPage;
     }
 
     public HomePage search(String name, boolean pressEnter) {
         getWait5().until(ExpectedConditions.elementToBeClickable(searchButton)).click();
         searchInputField.sendKeys(name);
-
         if (pressEnter) {
             searchInputField.sendKeys(Keys.ENTER);
         }
-
         return new HomePage(getDriver());
     }
 
     public HomePage search(String name) {
-        return search(name, false);  // По умолчанию не нажимаем Enter
+        return search(name, false);
     }
 
     public GlobalViewPage chooseSearchingResult(String name) {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath(String.format(SEARCH_RESULT, name)))).click();
-
         return new GlobalViewPage(getDriver());
     }
 
@@ -133,26 +126,22 @@ public class HomePage extends BasePage {
         WebElement row = getDriver().findElement(By.id("job_" + projectName));
         new Actions(getDriver()).moveToElement(row).perform();
         row.findElement(By.className("jenkins-menu-dropdown-chevron")).click();
-
         return this;
     }
 
     public HomePage clickDeleteInDropdown() {
         getWait5().until(ExpectedConditions.elementToBeClickable(buttonDelete)).click();
-
         return this;
     }
 
     public RenameProjectPage clickRenameInDropdown() {
         getWait5().until(ExpectedConditions.elementToBeClickable(elementRename)).click();
-
         return new RenameProjectPage(getDriver());
     }
 
     public HomePage confirmDelete(String projectName) {
         getWait5().until(ExpectedConditions.elementToBeClickable(buttonConfirmDelete)).click();
         getWait5().until(ExpectedConditions.invisibilityOfElementLocated(By.id("job_" + projectName)));
-
         return this;
     }
 
@@ -169,7 +158,7 @@ public class HomePage extends BasePage {
         return elementDescription.getText();
     }
 
-    public CreateGlobalViewPage createGlobalView(){
+    public CreateGlobalViewPage createGlobalView() {
         getWait5().until(ExpectedConditions.visibilityOf(newView)).click();
         return new CreateGlobalViewPage(getDriver());
     }
@@ -179,14 +168,13 @@ public class HomePage extends BasePage {
     }
 
     public HomePage clickScheduleBuild(String jobName) {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("(//a[@href='job/%s/build?delay=0sec'])[1]".formatted(jobName)))).click();
-
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("(//a[@href='job/%s/build?delay=0sec'])[1]".formatted(jobName)))).click();
         return this;
     }
 
     public BuildHistoryPage clickBuildHistory() {
         getWait5().until(ExpectedConditions.elementToBeClickable(buttonBuildHistory)).click();
-
         return new BuildHistoryPage(getDriver());
     }
 
@@ -215,5 +203,33 @@ public class HomePage extends BasePage {
 
     public boolean isAboutJenkinsPresent() {
         return !getDriver().findElements(By.xpath("//a[contains(text(),'About Jenkins')]")).isEmpty();
+    }
+
+
+    public RestApiPage clickRestApiLink() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(restApiLink)).click();
+        return new RestApiPage(getDriver());
+    }
+
+    public boolean isRestApiLinkDisplayed() {
+        try {
+            return restApiLink.isDisplayed();
+        } catch (NoSuchElementException | StaleElementReferenceException e) {
+            return false;
+        }
+    }
+
+    public String getRestApiLinkCursor() {
+        return getWait10().until(ExpectedConditions.visibilityOf(restApiLink)).getCssValue("cursor");
+    }
+
+    public boolean isDashboardVisible() {
+        try {
+            return getWait10().until(
+                    ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@href,'/view/')]"))
+            ).isDisplayed();
+        } catch (TimeoutException e) {
+            return false;
+        }
     }
 }
