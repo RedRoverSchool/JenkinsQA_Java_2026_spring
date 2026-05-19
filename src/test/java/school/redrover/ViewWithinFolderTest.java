@@ -21,7 +21,7 @@ public class ViewWithinFolderTest extends BaseTest {
                 .inputName(VIEW_NAME)
                 .chooseMyView()
                 .clickCreateButton()
-                .getCurrentViewName();
+                .getCreatedViewName();
 
         Assert.assertEquals(nameView, VIEW_NAME);
     }
