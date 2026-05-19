@@ -7,8 +7,6 @@ import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.view.GlobalViewPage;
 
-import static java.lang.Thread.sleep;
-
 public class GlobalViewTest extends BaseTest {
 
     private final static String DESCRIPTION_INPUT = "Test";
@@ -75,18 +73,20 @@ public class GlobalViewTest extends BaseTest {
     }
 
     @Test
-    public void testClickPreviewOption() throws InterruptedException {
+    public void testClickPreviewOption() {
         GlobalViewPage globalViewPage = new HomePage(getDriver())
                 .clickDescription()
                 .inputDescription(DESCRIPTION_INPUT)
                 .clickPreviewButton();
 
-        Assert.assertTrue(globalViewPage.isHidePreviewButtonDisplayed());
+        boolean isHidePreviewButtonDisplayed = globalViewPage.isHidePreviewButtonDisplayed();
+
+        Assert.assertTrue(isHidePreviewButtonDisplayed);
         Assert.assertEquals(globalViewPage.getPreviewText(), DESCRIPTION_INPUT);
     }
 
     @Test
-    public void testClickHidePreviewOption() throws InterruptedException {
+    public void testClickHidePreviewOption() {
         GlobalViewPage globalViewPage = new HomePage(getDriver())
                 .clickDescription()
                 .inputDescription(DESCRIPTION_INPUT)
@@ -97,7 +97,7 @@ public class GlobalViewTest extends BaseTest {
     }
 
     @Test
-    public void testUpdateViewName() throws InterruptedException {
+    public void testUpdateViewName() {
         String nameView = TestUtils.createJob(getDriver(), PIPELINE_NAME, TestUtils.JobType.PIPELINE)
                 .clickForNewView()
                 .inputName(VIEW_NAME)
