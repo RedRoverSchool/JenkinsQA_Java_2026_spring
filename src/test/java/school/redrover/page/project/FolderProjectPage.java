@@ -118,7 +118,7 @@ public class FolderProjectPage extends BaseProjectPage {
         return new CreateFolderViewPage(getDriver());
     }
 
-    public String getCurrentViewName() {
+    public String getCreatedViewName() {
         return viewName.getText();
     }
 
