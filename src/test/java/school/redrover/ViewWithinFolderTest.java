@@ -21,7 +21,8 @@ public class ViewWithinFolderTest extends BaseTest {
                 .inputName(VIEW_NAME)
                 .chooseMyView()
                 .clickCreateButton()
-                .getCurrentViewName();
+                .getCreatedViewName();
+
         Assert.assertEquals(nameView, VIEW_NAME);
     }
 
@@ -29,7 +30,7 @@ public class ViewWithinFolderTest extends BaseTest {
     public void testPreviewAddDescription() {
         String actualPreviewText = new HomePage(getDriver())
                 .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
-                .getViewByName(VIEW_NAME)
+                .clickOnView()
                 .addDescription(VIEW_DESCRIPTION)
                 .getTextPreview();
 
@@ -40,7 +41,7 @@ public class ViewWithinFolderTest extends BaseTest {
     public void testSaveViewDescription(){
        String actualDescriptionText = new HomePage(getDriver())
                .clickOnProject(FOLDER_NAME,new FolderProjectPage(getDriver()))
-               .getViewByName(VIEW_NAME)
+               .clickOnView()
                .addDescription(VIEW_DESCRIPTION)
                .clickSubmitButton()
                .getDescriptionText();
