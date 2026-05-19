@@ -1,6 +1,7 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -51,6 +52,9 @@ public class CredentialsPage extends BasePage {
     @FindBy(name = "_.password")
     private WebElement passwordTextField;
 
+    @FindBy(name = "_.passphrase")
+    private WebElement passphraseTextField;
+
     @FindBy(name = "_.id")
     private WebElement IDField;
 
@@ -59,6 +63,12 @@ public class CredentialsPage extends BasePage {
 
     @FindBy(css= "label.attach-previous")
     private WebElement treatUsernameAsSecretCheckbox;
+
+    @FindBy(css= "label.jenkins-radio__label")
+    private WebElement enterDirectlyCheckbox;
+
+    @FindBy(css = "button.secret-update-btn")
+    private WebElement addButton;
 
     @FindBy(xpath = ("//*[contains(text(), 'Delete credential')]"))
     private WebElement deleteCredentialOption;
@@ -128,16 +138,17 @@ public class CredentialsPage extends BasePage {
     }
 
     public CredentialsPage setSSHCredentials(String id, String desc, String user, Boolean usernameAsSecret, Boolean enterDirectly,String pass ){
-        //getWait5().until(ExpectedConditions.elementToBeClickable(IDField)).sendKeys();
-        //
         getWait5().until(ExpectedConditions.visibilityOf(usernameTextField)).sendKeys(user);
         IDField.sendKeys(id);
         descriptionField.sendKeys(desc);
         if (usernameAsSecret ==true){
-            treatUsernameAsSecretCheckbox.click();
+            treatUsernameAsSecretCheckbox.click();}
+        passphraseTextField.sendKeys(pass);
+        if (enterDirectly ==true){
+            enterDirectlyCheckbox.click();
+            addButton.click();
         }
-        //passwordTextField.sendKeys(pass);
-        //
+
 
         return this;
     }
