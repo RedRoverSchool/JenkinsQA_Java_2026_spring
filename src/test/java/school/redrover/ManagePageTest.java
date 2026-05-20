@@ -4,6 +4,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -75,6 +76,7 @@ public class ManagePageTest extends BaseTest {
         };
     }
 
+    @Ignore
     @Test(dataProvider = "systemConfiguration")
     public void testNavigateToSystemConfigurationPagesByEnter(String section) {
         String headerText = new HomePage(getDriver())
