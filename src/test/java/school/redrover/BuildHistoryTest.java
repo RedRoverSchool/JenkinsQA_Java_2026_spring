@@ -6,15 +6,15 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.project.config.FreestyleProjectConfigPage;
+import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static school.redrover.common.TestUtils.JobType.FREESTYLE;
 
 public class BuildHistoryTest extends BaseTest {
+
+    private final static String PROJECT_NAME = "NewProject";
 
     @Test
     public void testEmptyBuild(){
@@ -32,22 +32,14 @@ public class BuildHistoryTest extends BaseTest {
     }
 
     @Test
-    public void deleteWarningMessage(){
-        final String jobName = "TestProject";
-
-        String warningMessage = new HomePage(getDriver())
-                .clickItemNewJob()
-                .setProjectName(jobName)
-                .selectItemType(FREESTYLE)
-                .clickOK(new FreestyleProjectConfigPage(getDriver()))
-                .goHomePage()
-                .clickScheduleBuild(jobName)
+    public void testDeleteWarningMessage(){
+        String warningMessage = TestUtils.createJob(getDriver(), PROJECT_NAME, FREESTYLE)
+                .clickScheduleBuild(PROJECT_NAME)
                 .clickBuildHistory()
-                .clickDropDownMenu(jobName)
+                .clickDropDownMenu(PROJECT_NAME)
                 .clickDeleteBuild()
                 .getWarningMessage();
 
         Assert.assertTrue(warningMessage.contains("Delete the build"));
     }
-
 }
