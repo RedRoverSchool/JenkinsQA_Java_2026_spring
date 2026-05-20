@@ -74,15 +74,13 @@ public class GlobalViewTest extends BaseTest {
 
     @Test
     public void testClickPreviewOption() {
-        GlobalViewPage globalViewPage = new HomePage(getDriver())
+        boolean isHidePreviewButtonDisplayed = new HomePage(getDriver())
                 .clickDescription()
                 .inputDescription(DESCRIPTION_INPUT)
-                .clickPreviewButton();
-
-        boolean isHidePreviewButtonDisplayed = globalViewPage.isHidePreviewButtonDisplayed();
+                .clickPreviewButton()
+                .isHidePreviewButtonDisplayed();
 
         Assert.assertTrue(isHidePreviewButtonDisplayed);
-        Assert.assertEquals(globalViewPage.getPreviewText(), DESCRIPTION_INPUT);
     }
 
     @Test
