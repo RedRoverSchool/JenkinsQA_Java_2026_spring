@@ -46,7 +46,6 @@ public class BasePage extends BaseModel {
     }
 
     public String getHeaderText() {
-        return getDriver().findElement(By.xpath("//h1")).getText();
+        return getDriver().findElement(By.cssSelector("div>#main-panel>div>div>h1")).getText();
     }
-
-    }
+}
