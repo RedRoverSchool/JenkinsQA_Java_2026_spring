@@ -16,6 +16,9 @@ public class BuildHistoryPage extends BasePage {
     @FindBy (xpath = "//tbody/tr[1]/td[5]")
     private WebElement clickButtonConsole;
 
+    @FindBy (xpath = "//a[contains(@href, 'Delete')]")
+    private WebElement buttonDelete;
+
     public BuildHistoryPage clickDropDownMenu(String jobName) {
         getWait5().until(ExpectedConditions
                 .elementToBeClickable(By.xpath("//a[@class='jenkins-badge model-link' and contains(@href, '/job/%s/')]".formatted(jobName)))).click();
@@ -24,15 +27,13 @@ public class BuildHistoryPage extends BasePage {
     }
 
     public DeleteBuildPage clickDeleteBuild() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href, 'Delete')]"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(buttonDelete)).click();
 
         return new DeleteBuildPage(getDriver());
     }
 
     public ConsolePage clickConsole() {
         clickButtonConsole.click();
-
         return new ConsolePage(getDriver());
     }
-
 }

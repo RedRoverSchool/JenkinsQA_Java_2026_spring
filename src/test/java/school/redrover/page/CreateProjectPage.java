@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.TestUtils;
 import school.redrover.page.common.BasePage;
 import school.redrover.page.project.config.FreestyleProjectConfigPage;
+import school.redrover.page.project.config.OrganizationFolderConfigPage;
 import school.redrover.page.project.config.PipelineProjectConfigPage;
 
 public class CreateProjectPage extends BasePage {
@@ -63,6 +64,16 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
+    public FreestyleProjectConfigPage selectFreeStyleProjectAndClickOk() {
+        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
+
+        getDriver().findElement(By.id("ok-button")).click();
+        // waiting for the configuration page
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
+
+        return new FreestyleProjectConfigPage(getDriver());
+    }
+
     public CreateProjectPage selectPipelineProject() {
         pipelineOption.click();
 
@@ -82,6 +93,10 @@ public class CreateProjectPage extends BasePage {
         getDriver().findElement(By.xpath("//span[text()='%s']".formatted(jobType.getDisplayName()))).click();
 
         return this;
+    }
+
+    public String getErrorText(){
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
     }
 
     public CreateProjectPage selectFolder() {

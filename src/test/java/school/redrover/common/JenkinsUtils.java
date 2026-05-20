@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.json.Json;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.CookieManager;
 import java.net.URI;
@@ -12,6 +13,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -242,14 +244,15 @@ public final class JenkinsUtils {
         JenkinsUtils.resetTheme();
     }
 
-    public static void login(BaseTest baseTest, String userName, String password) {
-        baseTest.getWait10().until(ExpectedConditions.presenceOfElementLocated(By.name("j_username"))).sendKeys(userName);
-        baseTest.getWait10().until(ExpectedConditions.presenceOfElementLocated(By.name("j_password"))).sendKeys(password);
-        baseTest.getDriver().findElement(By.name("Submit")).click();
+    public static void login(WebDriver driver, String userName, String password) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("j_username"))).sendKeys(userName);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("j_password"))).sendKeys(password);
+        driver.findElement(By.name("Submit")).click();
     }
 
-    public static void login(BaseTest baseTest) {
-        login(baseTest, ProjectUtils.getUserName(), ProjectUtils.getPassword());
+    public static void login(WebDriver driver) {
+        login(driver, ProjectUtils.getUserName(), ProjectUtils.getPassword());
     }
 
     public static void logout(WebDriver driver) {

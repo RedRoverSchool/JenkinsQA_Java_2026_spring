@@ -3,6 +3,7 @@ package school.redrover.page.project;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.CreateProjectPage;
 import school.redrover.page.common.BaseProjectPage;
@@ -14,82 +15,116 @@ import java.util.regex.Pattern;
 
 public class FolderProjectPage extends BaseProjectPage {
 
+    @FindBy(xpath = "//a[contains(@href, 'rename')]")
+    private WebElement renameButtonSideMenu;
+
+    @FindBy(linkText = "Configure")
+    private WebElement configureButtonSideMenu;
+
+    @FindBy(xpath = "//a[contains(@href, 'newJob')]")
+    private WebElement newItemButton;
+
+    @FindBy(xpath = "//a[contains(@href, 'newView')]")
+    private WebElement newViewButton;
+
+    @FindBy(xpath = "//button[@value='Rename']")
+    private WebElement renameButton;
+
+    @FindBy(id = "description-link")
+    private WebElement addDescriptionButton;
+
+    @FindBy(xpath = "//textarea[@name='description']")
+    private WebElement descriptionInput;
+
+    @FindBy(xpath = "//button[@value='Save']")
+    private WebElement saveDescriptionButton;
+
+    @FindBy(id = "description-content")
+    private WebElement descriptionText;
+
+    @FindBy(xpath = "//div[@class='tabBar']//a[contains(@href, 'view')]")
+    private WebElement viewName;
+
+
     public FolderProjectPage(WebDriver driver) {
         super(driver);
     }
 
-    public FolderProjectPage clickRename(String projectName) {
+    public FolderProjectPage clickRenameSideMenu() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("svg[tooltip='Folder']")));
-        getDriver().findElement(By.xpath("//a[@href='/job/%s/confirm-rename']".formatted(projectName))).click();
+        renameButtonSideMenu.click();
 
         return this;
     }
 
     public FolderProjectPage enterNewName(String newName) {
-        WebElement newNameEl = getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='newName']")));
-        newNameEl.clear();
-        newNameEl.sendKeys(newName);
+        WebElement newNameElement = getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='newName']")));
+        newNameElement.clear();
+        newNameElement.sendKeys(newName);
 
         return this;
     }
 
     public FolderProjectPage clickRenameButton() {
-        getDriver().findElement(By.xpath("//button[@value='Rename']")).click();
+        renameButton.click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("svg[tooltip='Folder']")));
 
         return this;
     }
 
     public FolderProjectPage clickAddDescription() {
-        getDriver().findElement(By.id("description-link")).click();
+        addDescriptionButton.click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']")));
 
         return this;
     }
 
     public FolderProjectPage enterDescription(String description) {
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
+        descriptionInput.sendKeys(description);
 
         return this;
     }
 
     public FolderProjectPage clickSaveDescription() {
-        getDriver().findElement(By.xpath("//button[@value='Save']")).click();
+        saveDescriptionButton.click();
         getWait2().until(ExpectedConditions.textMatches(By.id("description-content"), Pattern.compile("\\S")));
 
         return this;
     }
 
+    public String getDescriptionText() {
+        return descriptionText.getText();
+    }
+
     public FolderConfigPage clickConfigure() {
-        getDriver().findElement(By.linkText("Configure")).click();
+        configureButtonSideMenu.click();
         getWait2().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), "Configuration"));
 
         return new FolderConfigPage(getDriver());
     }
 
     public CreateProjectPage clickNewItem() {
-        getDriver().findElement(By.xpath("//a[contains(@href, 'newJob')]")).click();
+        newItemButton.click();
         getWait2().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), "New Item"));
 
         return new CreateProjectPage(getDriver());
     }
 
     public CreateFolderViewPage clickNewView() {
-        getDriver().findElement(By.xpath("//a[contains(@href, 'newView')]")).click();
+        newViewButton.click();
         getWait2().until(ExpectedConditions.textToBePresentInElementLocated(
-                By.xpath("//div[contains(@class, 'jenkins-form-label')]"),
-                "View name"
-        ));
+                By.xpath("//div[contains(@class, 'jenkins-form-label')]"), "View name"));
+
         return new CreateFolderViewPage(getDriver());
     }
 
-    public String getCurrentViewName(){
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[@class='tab active']/a"))).getText();
+    public String getCreatedViewName() {
+        return viewName.getText();
     }
 
-    public FolderViewPage getViewByName(String viewName){
-        getDriver().findElement(By.xpath("//a[normalize-space()='" + viewName + "']")).click();
+    public FolderViewPage clickOnView () {
+        viewName.click();
         return new FolderViewPage(getDriver());
+
     }
 }

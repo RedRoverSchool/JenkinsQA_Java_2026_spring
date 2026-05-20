@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
 import school.redrover.page.LoginPage;
@@ -16,7 +17,9 @@ public class BasePage extends BaseModel {
 
     public BasePage(WebDriver driver) {
         super(driver);
+        PageFactory.initElements(driver, this);
     }
+
 
     public HomePage goHomePage() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-head-icon"))).click();
@@ -43,6 +46,6 @@ public class BasePage extends BaseModel {
     }
 
     public String getHeaderText() {
-        return getDriver().findElement(By.xpath("//h1")).getText();
+        return getDriver().findElement(By.cssSelector("div>#main-panel>div>div>h1")).getText();
     }
 }

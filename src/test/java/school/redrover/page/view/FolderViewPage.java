@@ -20,6 +20,12 @@ public class FolderViewPage extends BasePage {
     @FindBy(css = "#description-edit-form .textarea-preview")
     private WebElement areaPreview;
 
+    @FindBy(id = "description-content")
+    private WebElement content;
+
+    @FindBy(name = "Submit")
+    private WebElement buttonSave;
+
     public FolderViewPage(WebDriver driver) {
         super(driver);
     }
@@ -33,5 +39,13 @@ public class FolderViewPage extends BasePage {
     public String getTextPreview(){
         linkPreview.click();
         return getWait10().until(ExpectedConditions.visibilityOf(areaPreview)).getText();
+    }
+
+    public FolderViewPage clickSubmitButton(){
+        buttonSave.click();
+        return this;
+    }
+    public String getDescriptionText(){
+        return getWait10().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(content))).getText();
     }
 }

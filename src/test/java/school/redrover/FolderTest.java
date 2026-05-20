@@ -1,11 +1,10 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.project.NestedFolderPage;
 import school.redrover.page.project.config.FolderConfigPage;
 import school.redrover.page.project.FolderProjectPage;
 import school.redrover.page.HomePage;
@@ -38,7 +37,7 @@ public class FolderTest extends BaseTest {
     public void testRename() {
         List<String> jobnewlist = new HomePage(getDriver())
                 .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
-                .clickRename(FOLDER_NAME)
+                .clickRenameSideMenu()
                 .enterNewName(FOLDER_NEW_NAME)
                 .clickRenameButton()
                 .goHomePage()
@@ -49,25 +48,26 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testRename")
-    public void createWithSameName() {
-        new HomePage(getDriver())
+    public void testCreateWithSameName() {
+       String errorText = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(FOLDER_NEW_NAME)
-                .selectItemType(TestUtils.JobType.FOLDER);
+                .selectItemType(TestUtils.JobType.FOLDER)
+                .getErrorText();
 
-        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText(),
-                "» A job already exists with the name " + "‘" + FOLDER_NEW_NAME + "’");
+        Assert.assertEquals(errorText, "» A job already exists with the name " + "‘" + FOLDER_NEW_NAME + "’");
     }
 
     @Test(dependsOnMethods = "testRename")
     public void testAddDescription() {
-        new HomePage(getDriver())
+        String descriptionText = new HomePage(getDriver())
                 .clickOnProject(FOLDER_NEW_NAME, new FolderProjectPage(getDriver()))
                 .clickAddDescription()
                 .enterDescription(DESCRIPTION_TEXT)
-                .clickSaveDescription();
+                .clickSaveDescription()
+                .getDescriptionText();
 
-        Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(), DESCRIPTION_TEXT);
+        Assert.assertEquals(descriptionText, DESCRIPTION_TEXT);
     }
 
     @Test(dependsOnMethods = "testAddDescription")
@@ -84,19 +84,21 @@ public class FolderTest extends BaseTest {
                 .clickConfigure()
                 .clickHealthMetrics()
                 .getTextOfMetric();
+
         Assert.assertEquals(actualText, HEALTH_METRICS_CHILD_NAME);
     }
 
     @Test(dependsOnMethods = "testRename")
-    public void createNestedFolderTest() {
-        new HomePage(getDriver())
+    public void testCreateNestedFolderTest() {
+        String headerText = new HomePage(getDriver())
                 .clickOnProject(FOLDER_NEW_NAME, new FolderProjectPage(getDriver()))
                 .clickNewItem()
                 .setProjectName(NESTED_FOLDER)
                 .selectItemType(TestUtils.JobType.PIPELINE)
                 .clickOK(new FolderConfigPage(getDriver()))
-                .clickSave(new FolderProjectPage(getDriver()));
+                .clickSave(new NestedFolderPage(getDriver()))
+                .getHeaderText();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']/span")).getText(), NESTED_FOLDER);
+        Assert.assertEquals(headerText, NESTED_FOLDER);
     }
 }

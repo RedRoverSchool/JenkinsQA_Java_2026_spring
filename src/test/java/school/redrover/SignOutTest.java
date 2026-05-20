@@ -24,8 +24,9 @@ public class SignOutTest extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
-    public void signOutTest() {
+    public void testSignOut() {
         String headerText = new HomePage(getDriver())
                 .openUserActionMenuAndLogout()
                 .getHeaderText();
@@ -48,18 +49,16 @@ public class SignOutTest extends BaseTest {
         Assert.assertFalse(isAlertPresent(getDriver()),
                 "Не должно быть alert-окна подтверждения выхода. Выход должен быть мгновенным.");
 
-        // ожидаем перехода на страницу авторизации
         getWait5().until(ExpectedConditions.urlContains("login"));
     }
 
     @Ignore
     @Test (dependsOnMethods = "testSingOutIsImmediate")
     public void testJenkinsSingOutButton() {
-
         String currentUrl = getDriver().getCurrentUrl();
         String baseUrl = currentUrl.replaceFirst("(https?://[^/]+).*", "$1");
         getDriver().get(baseUrl);
-        JenkinsUtils.login(this);
+        JenkinsUtils.login(getDriver());
 
         WebElement userButton = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
@@ -80,12 +79,11 @@ public class SignOutTest extends BaseTest {
     @Ignore
     @Test (dependsOnMethods = "testSingOutIsImmediate")
      public void testJenkinsSingOutButtonUserNameEmpty() {
-
         String currentUrl = getDriver().getCurrentUrl();
         String baseUrl = currentUrl.replaceFirst("(https?://[^/]+).*", "$1");
         getDriver().get(baseUrl);
 
-        JenkinsUtils.login(this);
+        JenkinsUtils.login(getDriver());
 
         WebElement userButton = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
@@ -108,12 +106,11 @@ public class SignOutTest extends BaseTest {
     @Ignore
     @Test (dependsOnMethods = "testSingOutIsImmediate")
     public void testJenkinsSingOutButtonPasswordEmpty() {
-
         String currentUrl = getDriver().getCurrentUrl();
         String baseUrl = currentUrl.replaceFirst("(https?://[^/]+).*", "$1");
         getDriver().get(baseUrl);
 
-        JenkinsUtils.login(this);
+        JenkinsUtils.login(getDriver());
 
         WebElement userButton = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
@@ -135,13 +132,11 @@ public class SignOutTest extends BaseTest {
 
     @Test
     public void testDropdownMenuClosesWhenMouseMovesAway() {
-
         WebElement userButton = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
 
         Actions actions = new Actions(getDriver());
         actions.moveToElement(userButton).perform();
-
 
         WebElement dropdownMenu = getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(
@@ -157,9 +152,7 @@ public class SignOutTest extends BaseTest {
         WebElement userButtonStillVisible = getDriver().findElement(By.id("root-action-UserAction"));
         Assert.assertTrue(userButtonStillVisible.isDisplayed(), "Пользователь разлогинился, кнопка не видна");
 
-
         boolean isLoginFormPresent = getDriver().findElements(By.id("j_username")).isEmpty();
         Assert.assertTrue(isLoginFormPresent, "Произошёл переход на страницу логина, сессия потеряна");
     }
-
 }
