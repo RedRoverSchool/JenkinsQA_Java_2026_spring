@@ -9,8 +9,6 @@ import school.redrover.page.HomePage;
 import school.redrover.page.common.BasePage;
 import school.redrover.page.view.config.ViewMyConfigPage;
 
-import static java.lang.Thread.sleep;
-
 public class GlobalViewPage extends BasePage {
 
     @FindBy(xpath = "//h1[@class='job-index-headline page-headline']")
