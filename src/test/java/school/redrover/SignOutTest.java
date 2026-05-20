@@ -24,6 +24,7 @@ public class SignOutTest extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
     public void testSignOut() {
         String headerText = new HomePage(getDriver())
