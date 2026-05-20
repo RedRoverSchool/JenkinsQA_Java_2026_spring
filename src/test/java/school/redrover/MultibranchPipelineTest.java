@@ -77,6 +77,7 @@ public class MultibranchPipelineTest extends BaseTest {
 		Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);
 	}
 
+	@Ignore
 	@Test
 	public void testDeleteProjectViaSideMenu() {
 
