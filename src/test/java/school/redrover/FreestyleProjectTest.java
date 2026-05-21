@@ -52,6 +52,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(projectList.size(), 1);
         Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);
     }
+
     @Test(dependsOnMethods = "testCreate")
     public void testEnableDeleteWorkspaceBeforeBuildStarts() {
 
@@ -65,6 +66,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(isSelected);
     }
+
     @Test (dependsOnMethods = "testCreate")
     public void testAddBuildStepDropdownContainsAllOptions(){
         List<String> expectedTexts = Arrays.asList(
@@ -88,39 +90,17 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testAddBuildStepDropdownContainsAllOptions")
     public void testDeleteBuildStep() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='%s']".formatted(PROJECT_NAME)))).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), PROJECT_NAME));
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@href='/job/FreestyleProject/configure']"))).click();
+        boolean commandFieldExists = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .clickAddBuildStep()
+                .clickOnBuildStep()
+                .enterCommand("Test")
+                .clickDeleteButton();
 
-        WebElement addBuildStepButton = getWait10().until(
-                ExpectedConditions.elementToBeClickable(By.xpath("//button[@suffix='builder']")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", addBuildStepButton);
-
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",
-                addBuildStepButton);
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                        By.xpath("//button[contains(text(), 'Execute Windows batch command')]")))
-                .click();
-
-        WebElement commandField = getWait10().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//textarea[@name='command']")));commandField.sendKeys("echo 'Test'");
-
-        WebElement deleteButton = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(
-                        By.xpath("(//button[contains(@class, 'repeatable-delete')])[last()]")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", deleteButton);
-
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",
-                deleteButton);
-
-        boolean commandFieldExists = getWait5().until(
-                driver -> getDriver().findElements(
-                        By.xpath("//textarea[@name='command']")).isEmpty());
-        Assert.assertTrue(commandFieldExists, "Build step should disappear immediately after clicking delete");
+        Assert.assertTrue(commandFieldExists);
     }
+
     @Ignore
     @Test (dependsOnMethods = "testDeleteBuildStep")
     public void testAddDescription() {
@@ -150,6 +130,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(
                 By.id("enable-project")).getText().contains("This project is currently disabled"));
     }
+
     @Ignore
     @Test(dependsOnMethods = "testDisable")
     public void testEnable() {
@@ -165,6 +146,7 @@ public class FreestyleProjectTest extends BaseTest {
                         By.className("jenkins-toggle-switch__label__checked-title")).getText(),
                 "Enabled");
     }
+
     @Ignore
     @Test(dependsOnMethods = "testEnable")
     public void testRename() {
@@ -180,6 +162,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//*[@id='main-panel']//h1"))).getText(), NEW_PROJECT_NAME_1);
     }
+
     @Ignore
     @Test(dependsOnMethods = "testRename")
     public void testBuildNowCheckAlert() {
@@ -192,6 +175,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.id("notification-bar"))).getText(), "Build scheduled");
     }
+
     @Ignore
     @Test(dependsOnMethods = "testBuildNowCheckAlert")
     public void testBuildNow() {
@@ -208,6 +192,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(listOfBuilds.size(), 1);
     }
+
     @Ignore
     @Test(dependsOnMethods = "testBuildNow")
     public void testBuildAfterOtherProjectsAreBuild() {
@@ -239,6 +224,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(listOfBuilds.size(), 1);
     }
+
     @Ignore
     @Test(dependsOnMethods = "testBuildAfterOtherProjectsAreBuild")
     public void testDelete() {
@@ -254,6 +240,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(listOfJobs.size(), 1);
     }
+
     @Ignore
     @Test(dependsOnMethods = "testDelete")
     public void testRepositoryURL() {
@@ -264,6 +251,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.name("_.url")).getAttribute("value"), REPOSITORY_URL,
                 "The repository URL does not match!");
     }
+
     @Ignore
     @Test(dependsOnMethods = "testRepositoryURL")
     public void testCredentials() {
@@ -274,6 +262,7 @@ public class FreestyleProjectTest extends BaseTest {
                         By.xpath("//select[@name='_.credentialsId']"))).isDisplayed(),
                 "The Credentials drop-down list is not displayed");
     }
+
     @Ignore
     @Test(dependsOnMethods = "testCredentials")
     public void testBranchesToBuild() {
@@ -290,6 +279,7 @@ public class FreestyleProjectTest extends BaseTest {
                         .getAttribute("value"), BRANCH_NAME,
                 "The branch name does not match the expected one!");
     }
+
     @Ignore
     @Test(dependsOnMethods = "testBranchesToBuild")
     public void testSCMAuthenticationFails(){

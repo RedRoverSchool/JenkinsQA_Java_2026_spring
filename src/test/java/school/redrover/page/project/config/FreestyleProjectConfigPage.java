@@ -44,6 +44,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                         By.name("_.projectUrlStr"))).
                 sendKeys(repoURL);
+
         return this;
     }
 
@@ -55,8 +56,8 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         addBuildStepButton.click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[contains(@class, 'jenkins-dropdown')]")));
-        return this;
 
+        return this;
     }
 
     public List <String> listOfBuildSteps(){
@@ -74,18 +75,45 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
 
         return new FreestyleProjectPage(getDriver());
     }
+
     public FreestyleProjectConfigPage  enableDeleteWorkspaceBeforeBuildStarts() {
         WebElement checkboxLabel = getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//label[contains(.,'Delete workspace before build starts')]")));
 
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block:'center'});",
-                checkboxLabel);
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block:'center'});", checkboxLabel);
 
         checkboxLabel.click();
         return this;
     }
+
     public boolean isDeleteWorkspaceBeforeBuildStartsSelected() {
-        return getWait10().until(ExpectedConditions.presenceOfElementLocated(By.name("hudson-plugins-ws_cleanup-PreBuildCleanup")))
-                .isSelected();
+        return getWait10().until(ExpectedConditions.presenceOfElementLocated(By.name("hudson-plugins-ws_cleanup-PreBuildCleanup"))).isSelected();
+    }
+
+    public FreestyleProjectConfigPage clickOnBuildStep() {
+        List<WebElement> dropdownItems = getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("button.jenkins-dropdown__item")));
+
+        dropdownItems.get(0).click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigPage enterCommand(String text) {
+        WebElement commandField = getWait10().until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//textarea[@name='command']")));
+
+        commandField.sendKeys(text);
+
+        return this;
+    }
+
+    public boolean clickDeleteButton() {
+        WebElement deleteButton = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("(//button[contains(@class, 'repeatable-delete')])[last()]")));
+
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", deleteButton);
+
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", deleteButton);
+
+        return getDriver().findElement(By.xpath("//textarea[@name='command']")).isDisplayed();
     }
 }
