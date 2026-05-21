@@ -20,9 +20,6 @@ public class HomePage extends BasePage {
     @FindBy(css = ".jenkins-table__link > span:first-child")
     private List<WebElement> projects;
 
-    @FindBy(xpath = "//a[contains(@class, 'task-link')]//span[text()='Status']")
-    private WebElement statusLink;
-
     @FindBy(css = "#search-results")
     private List<WebElement> searchList;
 
@@ -71,7 +68,6 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//footer//a[contains(text(),'REST API')]")
     private WebElement restApiLink;
 
-    private static final String PROJECT_NAME = "//a[contains(@href, '%s')]/span";
     private static final String SEARCH_RESULT = "//*[@id='search-results']/a[@href='/job/%s/']";
 
     public HomePage(WebDriver driver) {
@@ -89,12 +85,11 @@ public class HomePage extends BasePage {
     }
 
     public <ProjectPage extends BaseProjectPage> ProjectPage clickOnProject(String projectName, ProjectPage projectPage) {
-        WebElement projectNameEl = getDriver().findElement(By.xpath(PROJECT_NAME.formatted(projectName)));
-        new Actions(getDriver())
-                .moveToElement(projectNameEl, 2, 2)
-                .click()
-                .perform();
-        getWait5().until(ExpectedConditions.visibilityOf(statusLink));
+        getDriver().findElement(By.xpath("//td/a/span[text() = '%s']/..".formatted(projectName)))
+                .click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@class, 'task-link')]//span[text()='Status']")));
+
         return projectPage;
     }
 
@@ -158,7 +153,7 @@ public class HomePage extends BasePage {
         return elementDescription.getText();
     }
 
-    public CreateGlobalViewPage createGlobalView() {
+    public CreateGlobalViewPage clickForNewView(){
         getWait5().until(ExpectedConditions.visibilityOf(newView)).click();
         return new CreateGlobalViewPage(getDriver());
     }

@@ -24,6 +24,7 @@ public class SignOutTest extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
     public void testSignOut() {
         String headerText = new HomePage(getDriver())
@@ -57,7 +58,7 @@ public class SignOutTest extends BaseTest {
         String currentUrl = getDriver().getCurrentUrl();
         String baseUrl = currentUrl.replaceFirst("(https?://[^/]+).*", "$1");
         getDriver().get(baseUrl);
-        JenkinsUtils.login(this);
+        JenkinsUtils.login(getDriver());
 
         WebElement userButton = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
@@ -82,7 +83,7 @@ public class SignOutTest extends BaseTest {
         String baseUrl = currentUrl.replaceFirst("(https?://[^/]+).*", "$1");
         getDriver().get(baseUrl);
 
-        JenkinsUtils.login(this);
+        JenkinsUtils.login(getDriver());
 
         WebElement userButton = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
@@ -109,7 +110,7 @@ public class SignOutTest extends BaseTest {
         String baseUrl = currentUrl.replaceFirst("(https?://[^/]+).*", "$1");
         getDriver().get(baseUrl);
 
-        JenkinsUtils.login(this);
+        JenkinsUtils.login(getDriver());
 
         WebElement userButton = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));

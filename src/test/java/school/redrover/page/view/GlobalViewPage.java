@@ -7,8 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
 import school.redrover.page.common.BasePage;
-
-import static java.lang.Thread.sleep;
+import school.redrover.page.view.config.ViewMyConfigPage;
 
 public class GlobalViewPage extends BasePage {
 
@@ -38,6 +37,9 @@ public class GlobalViewPage extends BasePage {
 
     @FindBy(className = "textarea-hide-preview")
     private WebElement hidePreview;
+
+    @FindBy(xpath = "//div[@class='tab active']/a")
+    private WebElement currentViewName;
 
     public GlobalViewPage(WebDriver driver) {
         super(driver);
@@ -97,5 +99,14 @@ public class GlobalViewPage extends BasePage {
 
     public boolean isHidePreviewButtonDisplayed() {
         return getWait5().until(ExpectedConditions.visibilityOf(hidePreview)).isDisplayed();
+    }
+
+    public ViewMyConfigPage clickEditView() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("Edit View"))).click();
+        return new ViewMyConfigPage(getDriver());
+    }
+
+    public String getCurrentViewName(){
+        return getWait5().until(ExpectedConditions.visibilityOf(currentViewName)).getText();
     }
 }

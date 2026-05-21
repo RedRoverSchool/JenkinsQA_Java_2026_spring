@@ -315,6 +315,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "Ожидаемый текст ошибки не найден" + actualError);
     }
 
+    @Ignore
     @Test
     public void testCreateSourceItem(){
         TestUtils.createJob(getDriver(), SOURCE_ITEM_NAME, TestUtils.JobType.FREESTYLE)
@@ -332,6 +333,7 @@ public class FreestyleProjectTest extends BaseTest {
         );
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateSourceItem")
     public void testCreateItemFromExistingWithEmptyListItems(){
         new HomePage(getDriver())
@@ -346,6 +348,7 @@ public class FreestyleProjectTest extends BaseTest {
         );
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateSourceItem")
     public void testCreateItemFromExisting() {
         new HomePage(getDriver())

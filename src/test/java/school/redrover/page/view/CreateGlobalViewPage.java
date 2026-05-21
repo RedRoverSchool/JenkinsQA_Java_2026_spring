@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
-import school.redrover.page.project.FolderProjectPage;
 
 public class CreateGlobalViewPage extends BasePage {
 
@@ -41,11 +40,8 @@ public class CreateGlobalViewPage extends BasePage {
         return this;
     }
 
-    public FolderProjectPage clickCreateButton() {
+    public GlobalViewPage clickCreateButton() {
         buttonCreate.click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[@class='tabBar']//a[contains(@href, 'view')]")));
-
-        return new FolderProjectPage(getDriver());
+        return new GlobalViewPage(getDriver());
     }
 }
