@@ -26,7 +26,6 @@ public class FooterVersionJenkinsTest extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//h1")).getText(),
                 "Participate and Contribute");
-
     }
 
     @Test
