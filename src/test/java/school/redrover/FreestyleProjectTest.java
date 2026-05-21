@@ -28,19 +28,19 @@ public class FreestyleProjectTest extends BaseTest {
     private static final String DESCRIPTION_TEXT = "Copied description text";
     private static final String NEW_ITEM_NAME = "new_item_copy";
 
-    private void goToConfigurePage(){
+    private void goToConfigurePage() {
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//a[contains(@href, 'job/')]//span[text()='%s']".formatted(NEW_PROJECT_NAME_1)))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//a[contains(@href, '/configure')]"))).click();
     }
 
-    private void gitButton(){
+    private void gitButton() {
         WebElement gitOption = getDriver().findElement(By.xpath("//label[text()='Git']"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", gitOption);
     }
 
-    private void enterRepositoryURL(){
+    private void enterRepositoryURL() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("_.url"))).
                 sendKeys(REPOSITORY_URL);
     }
