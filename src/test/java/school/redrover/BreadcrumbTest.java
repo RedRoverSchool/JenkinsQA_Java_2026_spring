@@ -8,6 +8,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
+import school.redrover.page.project.FolderProjectPage;
+import school.redrover.page.project.NestedFolderPage;
 
 import java.util.List;
 
@@ -21,20 +24,23 @@ public class BreadcrumbTest extends BaseTest {
         TestUtils.createJob(getDriver(), FOLDER_PARENT, TestUtils.JobType.FOLDER);
         TestUtils.createNestedJob(getDriver(), FOLDER_PARENT, FOLDER_CHILD, TestUtils.JobType.FOLDER);
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_PARENT)))).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_CHILD)))).click();
+        String header = new HomePage(getDriver())
+                        .clickOnProject(FOLDER_PARENT, new FolderProjectPage(getDriver()))
+                        .clickOnChildProject(FOLDER_CHILD, new NestedFolderPage(getDriver()))
+                        .clickOnParentItemFromBreadcrumb(FOLDER_PARENT)
+                        .getHeaderText();
 
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.className("job-index-headline"), FOLDER_CHILD));
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']/a[@href='/job/%s/']".formatted(FOLDER_PARENT)))).click();
-
-        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("job-index-headline"))).getText(), FOLDER_PARENT);
+        Assert.assertEquals(header, FOLDER_PARENT);
     }
 
     @Test(dependsOnMethods = "testNavigateToParentFolder")
     public void testNavigateToParentConfigPage() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_PARENT)))).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_CHILD)))).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.className("job-index-headline"), FOLDER_CHILD));
+        new HomePage(getDriver())
+                .clickOnProject(FOLDER_PARENT, new FolderProjectPage(getDriver()))
+                .clickOnChildProject(FOLDER_CHILD, new NestedFolderPage(getDriver()))
+                .clickChevronFromBreadcrumb(FOLDER_PARENT)
+                .clickConfigureFromBreadcrumb(FOLDER_PARENT);
+
 
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href, '/job/%s/')]/following-sibling::div[@class='dropdown-indicator']".formatted(FOLDER_PARENT)))).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='jenkins-dropdown__item ' and contains(@href, '/job/%s/configure')]".formatted(FOLDER_PARENT)))).click();
