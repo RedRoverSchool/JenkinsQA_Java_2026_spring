@@ -135,12 +135,8 @@ public class FolderProjectPage extends BaseProjectPage {
     }
 
     public <ProjectPage extends BasePage> ProjectPage clickOnChildProject(String projectName, ProjectPage projectPage) {
-        WebElement projectNameEl = getDriver().findElement(By.xpath(PROJECT_NAME.formatted(projectName)));
-        new Actions(getDriver())
-                .moveToElement(projectNameEl, 2, 2)
-                .click()
-                .perform();
-        getWait5().until(ExpectedConditions.visibilityOf(moveSideMenu));
+        getDriver().findElement(By.xpath("//td/a/span[text() = '%s']/..".formatted(projectName))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@href, 'move')]")));
 
         return projectPage;
     }

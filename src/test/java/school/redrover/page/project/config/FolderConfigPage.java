@@ -37,4 +37,8 @@ public class FolderConfigPage extends BaseConfigPage<FolderConfigPage> {
         return
                 getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='_.childName']"))).getAttribute("value");
     }
+
+    public String getHeaderText() {
+        return getDriver().findElement(By.xpath("//div[@id='side-panel']//h1")).getText();
+    }
 }
