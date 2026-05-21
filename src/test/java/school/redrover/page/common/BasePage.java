@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.page.BreadcrumbComponent;
+import school.redrover.page.components.BreadcrumbComponent;
 import school.redrover.page.HomePage;
 import school.redrover.page.LoginPage;
 import school.redrover.page.ManagePage;
