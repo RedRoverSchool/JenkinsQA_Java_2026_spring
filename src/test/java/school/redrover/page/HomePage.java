@@ -8,9 +8,7 @@ import school.redrover.page.common.BasePage;
 import school.redrover.page.common.BaseProjectPage;
 import school.redrover.page.view.CreateGlobalViewPage;
 import school.redrover.page.view.GlobalViewPage;
-
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class HomePage extends BasePage {
 
@@ -24,7 +22,7 @@ public class HomePage extends BasePage {
     private List<WebElement> searchList;
 
     @FindBy(xpath = "//button[@id='root-action-SearchAction']")
-    private WebElement searchButton;
+    private WebElement buttonSearch;
 
     @FindBy(xpath = "//input[@id='command-bar']")
     private WebElement searchInputField;
@@ -34,9 +32,6 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, 'rename')]")
     private WebElement elementRename;
-
-    @FindBy(id = "root-action-UserAction")
-    private WebElement userButton;
 
     @FindBy(id = "description-link")
     private WebElement elementDescription;
@@ -50,17 +45,20 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//button[@data-id='ok']")
     private WebElement buttonConfirmDelete;
 
-    @FindBy(xpath = "//button[contains(@class, 'jenkins_ver')]")
-    private WebElement versionJenkins;
+    @FindBy(xpath = "//div[@class='jenkins-dropdown']")
+    private WebElement jenkinsVersionMenu;
+
+    @FindBy(css = "button.jenkins_ver")
+    private WebElement buttonVersionMenu;
 
     @FindBy(xpath = "//a[@href='/manage/about']")
-    private WebElement aboutJenkins;
+    private WebElement linkAboutJenkins;
 
     @FindBy(xpath = "//a[@href='https://www.jenkins.io/participate/']")
-    private WebElement getInvolved;
+    private WebElement linkGetInvolved;
 
     @FindBy(xpath = "//a[@href='https://www.jenkins.io/']")
-    private WebElement website;
+    private WebElement linkWebsite;
 
     @FindBy(xpath = "//a[@href='/view/all/builds']")
     private WebElement buttonBuildHistory;
@@ -94,7 +92,7 @@ public class HomePage extends BasePage {
     }
 
     public HomePage search(String name, boolean pressEnter) {
-        getWait5().until(ExpectedConditions.elementToBeClickable(searchButton)).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(buttonSearch)).click();
         searchInputField.sendKeys(name);
         if (pressEnter) {
             searchInputField.sendKeys(Keys.ENTER);
@@ -158,10 +156,6 @@ public class HomePage extends BasePage {
         return new CreateGlobalViewPage(getDriver());
     }
 
-    public boolean isUserButtonDisplayed() {
-        return getWait10().until(ExpectedConditions.visibilityOf(userButton)).isDisplayed();
-    }
-
     public HomePage clickScheduleBuild(String jobName) {
         getDriver().findElement(By.xpath("//td[@class='jenkins-table__cell--tight']//a[contains(@class, 'jenkins-button') and @tooltip='Schedule a Build for %s']".formatted(jobName))).click();
         return this;
@@ -179,40 +173,27 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public HomePage clickJenkinsVersionLink() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(versionJenkins)).click();
+    public HomePage clickJenkinsVersion() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(buttonVersionMenu)).click();
         return this;
     }
 
-    public HomePage clickAboutJenkins() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(aboutJenkins)).click();
-        return this;
+    public boolean isJenkinsVersionMenu() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(buttonVersionMenu)).click();
+        return jenkinsVersionMenu.isDisplayed();
     }
 
     public void clickGetInvolved() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(getInvolved)).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(linkGetInvolved)).click();
     }
 
-    public void clickWebSite() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(website)).click();
+    public void clickWebsite() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(linkWebsite)).click();
     }
-
-    public boolean isAboutJenkinsPresent() {
-        return !getDriver().findElements(By.xpath("//a[contains(text(),'About Jenkins')]")).isEmpty();
-    }
-
 
     public RestApiPage clickRestApiLink() {
         getWait10().until(ExpectedConditions.elementToBeClickable(restApiLink)).click();
         return new RestApiPage(getDriver());
-    }
-
-    public boolean isRestApiLinkDisplayed() {
-        try {
-            return restApiLink.isDisplayed();
-        } catch (NoSuchElementException | StaleElementReferenceException e) {
-            return false;
-        }
     }
 
     public String getRestApiLinkCursor() {
