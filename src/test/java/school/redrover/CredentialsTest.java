@@ -55,7 +55,7 @@ public class CredentialsTest extends BaseTest {
     }
 
     @Test
-    public void addSecretTextCredentials() {
+    public void testAddSecretTextCredentials() {
         boolean isCredentialsCreated = new HomePage(getDriver())
                 .clickManageButton()
                 .clickCredentials()

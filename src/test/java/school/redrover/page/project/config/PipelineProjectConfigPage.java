@@ -1,5 +1,6 @@
 package school.redrover.page.project.config;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -36,6 +37,8 @@ public class PipelineProjectConfigPage extends BaseConfigPage<PipelineProjectCon
 
     public PipelineProjectPage clickSaveButton() {
         saveButton.click();
+
+        getWait10().until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("div>#main-panel>div>div>h1")));
 
         return new PipelineProjectPage(getDriver());
     }

@@ -4,7 +4,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +16,7 @@ public class NodeTest extends BaseTest {
     private static final String USAGE = "EXCLUSIVE";
 
     @Test
-    public void testCreateNewNode(){
-
+    public void testCreateNewNode() {
         List<String> nodesList = new HomePage(getDriver())
                 .clickManageButton()
                 .clickNodesButton()
@@ -29,8 +27,7 @@ public class NodeTest extends BaseTest {
     }
 
     @Test (dependsOnMethods = "testCreateNewNode")
-    public void testNodeConfiguration(){
-
+    public void testNodeConfiguration() {
         List<String> expectAttributes = new ArrayList<>(List.of(DESCRIPTION, LABELS));
 
         List<String> actualAttributes = new HomePage(getDriver())
@@ -49,7 +46,7 @@ public class NodeTest extends BaseTest {
     }
 
     @Test (dependsOnMethods = "testNodeConfiguration")
-    public void testMarkNodeOffline(){
+    public void testMarkNodeOffline() {
         boolean isNodeOffline = new HomePage(getDriver())
                 .clickManageButton()
                 .clickNodesButton()
@@ -61,7 +58,7 @@ public class NodeTest extends BaseTest {
     }
 
     @Test (dependsOnMethods = "testMarkNodeOffline")
-    public void testBringTheNodeBackOnline(){
+    public void testBringTheNodeBackOnline() {
         boolean isNodeOnline = new HomePage(getDriver())
                 .clickManageButton()
                 .clickNodesButton()
@@ -73,8 +70,7 @@ public class NodeTest extends BaseTest {
     }
 
     @Test (dependsOnMethods = "testBringTheNodeBackOnline")
-    public void testDeleteNode(){
-
+    public void testDeleteNode() {
         List<String> actualNodeList = new HomePage(getDriver())
                 .clickManageButton()
                 .clickNodesButton()

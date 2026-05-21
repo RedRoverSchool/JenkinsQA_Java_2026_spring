@@ -4,22 +4,15 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
-import school.redrover.page.HomePage;
-import school.redrover.page.project.MultiConfigurationProjectPage;
-
+import static school.redrover.common.TestUtils.JobType.MULTICONFIGURATION;
 
 public class ConsoleTest extends BaseTest {
 
     private static final String NAME_PROJECT = "TEST";
 
     @Test
-    public void readingInformationConsoleTest() {
-        String consoleText = new HomePage(getDriver())
-                .clickItemNewJob()
-                .setProjectName(NAME_PROJECT)
-                .selectItemType(TestUtils.JobType.MULTICONFIGURATION)
-                .clickOK(new MultiConfigurationProjectPage(getDriver()))
-                .goHomePage()
+    public void testReadingInformationConsoleTest() {
+        String consoleText = TestUtils.createJob(getDriver(), NAME_PROJECT, MULTICONFIGURATION)
                 .clickScheduleBuild(NAME_PROJECT)
                 .clickBuildHistory()
                 .clickConsole()

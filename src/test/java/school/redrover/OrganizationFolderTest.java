@@ -8,11 +8,10 @@ import school.redrover.common.TestUtils;
 import school.redrover.page.*;
 import school.redrover.page.project.OrganizationFolderPage;
 import school.redrover.page.project.config.OrganizationFolderConfigPage;
-
 import java.util.List;
 
-
 public class OrganizationFolderTest extends BaseTest {
+
     public static final String ORG_FOLDER_NAME = "OrganizationFolder";
     public static final String DESCRIPTION_TEXT = "Description: New project";
     public static final String DISPLAY_NAME = "OrgFolderDisplayName";

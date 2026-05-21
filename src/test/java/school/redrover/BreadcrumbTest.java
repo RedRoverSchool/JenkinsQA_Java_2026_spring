@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -17,19 +16,10 @@ public class BreadcrumbTest extends BaseTest {
     public static final String FOLDER_PARENT = "FolderParent";
     public static final String FOLDER_CHILD = "FolderChild";
 
-    private void goToMainPage() {
-        WebElement logo = getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a.app-jenkins-logo")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", logo);
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@href='/view/all/newJob']"))).isDisplayed();
-    }
-
     @Test
     public void testNavigateToParentFolder() {
         TestUtils.createJob(getDriver(), FOLDER_PARENT, TestUtils.JobType.FOLDER);
-        goToMainPage();
         TestUtils.createNestedJob(getDriver(), FOLDER_PARENT, FOLDER_CHILD, TestUtils.JobType.FOLDER);
-        goToMainPage();
 
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_PARENT)))).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_CHILD)))).click();

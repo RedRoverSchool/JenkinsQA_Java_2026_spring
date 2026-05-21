@@ -12,7 +12,6 @@ import school.redrover.common.JenkinsUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.LoginPage;
 
-
 public class SignInTest extends BaseTest {
 
     private void createUser(String userLogin, String userFullName, String password,
@@ -38,7 +37,6 @@ public class SignInTest extends BaseTest {
     @Ignore
     @Test
     public void testLoginValidData () {
-
         createUser(USER_LOGIN,
                 USER_FULL_NAME,
                 USER_PASSWORD,
@@ -120,17 +118,16 @@ public class SignInTest extends BaseTest {
         Assert.assertTrue(textMatches, "Error message not shown or text doesn't match");
     }
 
-    @Ignore
-    @Test (dependsOnMethods = "testSignInPageAlertMessageText")
+    @Test(dependsOnMethods = "testSignInPageAlertMessageText")
     public void testSignInPageAlertTextColor() {
         boolean colorMatches = new LoginPage(getDriver())
                 .logout()
                 .enterUsername("user")
                 .enterPassword("qwerty")
                 .clickSignIn()
-                .verifyErrorMessageColor("oklch(0.6 0.2671 30)");
+                .verifyErrorMessageColor("oklch(0.6 0.2671 30)"); // уточните реальный цвет
 
-        Assert.assertTrue(colorMatches, "Error message text color is not red: expected color fragment not found");
+        Assert.assertTrue(colorMatches, "Error message text color is not as expected");
     }
 
     @Test
@@ -145,6 +142,5 @@ public class SignInTest extends BaseTest {
 
         Assert.assertTrue(loginPage.isSignInButtonDisplayed(), "Sign in button is not displayed");
         Assert.assertTrue(loginPage.isSignInButtonEnabled(), "Sign in button is not enabled");
-
     }
 }
