@@ -61,7 +61,8 @@ public class CredentialsTest extends BaseTest {
                 .clickCredentials()
                 .clickAddCredentialsButton()
                 .clickSSHCredentialsButton()
-                .setSSHCredentials("prod-deploy-key","SSH key for prod server","deploy",true,true,"MyStr0ngP@ss");
+                .setSSHCredentials("prod-deploy-key","SSH key for prod server","deploy",true,true," RSA/Ed25519 key","MyStr0ngP@ss");
+
     }
 
     @Test

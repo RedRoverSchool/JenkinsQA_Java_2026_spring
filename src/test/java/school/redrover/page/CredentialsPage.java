@@ -137,7 +137,7 @@ public class CredentialsPage extends BasePage {
         return this;
     }
 
-    public CredentialsPage setSSHCredentials(String id, String desc, String user, Boolean usernameAsSecret, Boolean enterDirectly,String pass ){
+    public CredentialsPage setSSHCredentials(String id, String desc, String user, Boolean usernameAsSecret, Boolean enterDirectly,String key,String pass ){
         getWait5().until(ExpectedConditions.visibilityOf(usernameTextField)).sendKeys(user);
         IDField.sendKeys(id);
         descriptionField.sendKeys(desc);
@@ -147,9 +147,8 @@ public class CredentialsPage extends BasePage {
         if (enterDirectly ==true){
             enterDirectlyCheckbox.click();
             addButton.click();
+            getDriver().findElement(By.xpath("//textarea[contains(@id,\"secretText\")]")).sendKeys(key);
         }
-
-
         return this;
     }
 
