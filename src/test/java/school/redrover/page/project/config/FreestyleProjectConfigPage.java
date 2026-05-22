@@ -37,6 +37,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         getWait10().until(ExpectedConditions.elementToBeClickable(
                         By.xpath("//label[contains(text(),'GitHub project')]")))
                 .click();
+
         return this;
     }
 
@@ -48,12 +49,16 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         return this;
     }
 
-    public FreestyleProjectConfigPage clickAddBuildStep(){
+    public FreestyleProjectConfigPage clickAddBuildStep() {
         WebElement addBuildStepButton = getWait10().until(
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@suffix='builder']")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", addBuildStepButton);
+
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].scrollIntoView(true);", addBuildStepButton);
+
         getWait5().until(ExpectedConditions.elementToBeClickable(addBuildStepButton));
         addBuildStepButton.click();
+
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[contains(@class, 'jenkins-dropdown')]")));
 
@@ -91,7 +96,9 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     }
 
     public FreestyleProjectConfigPage clickOnBuildStep() {
-        List<WebElement> dropdownItems = getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("button.jenkins-dropdown__item")));
+        List<WebElement> dropdownItems = getWait5().until(
+                ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                        By.cssSelector("button.jenkins-dropdown__item")));
 
         dropdownItems.get(0).click();
 
@@ -99,8 +106,9 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     }
 
     public FreestyleProjectConfigPage enterCommand(String text) {
-        WebElement commandField = getWait10().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//textarea[@name='command']")));
+        WebElement commandField = getWait10().until(
+                ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//textarea[@name='command']")));
 
         commandField.sendKeys(text);
 
@@ -108,8 +116,9 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     }
 
     public boolean clickDeleteButton() {
-        WebElement deleteButton = getWait10().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("(//button[contains(@class, 'repeatable-delete')])[last()]")));
+        WebElement deleteButton = getWait10().until(
+                ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("(//button[contains(@class, 'repeatable-delete')])[last()]")));
 
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", deleteButton);
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", deleteButton);

@@ -27,6 +27,7 @@ public class FreestyleProjectTest extends BaseTest {
     private static final String SOURCE_ITEM_NAME = "source_item";
     private static final String DESCRIPTION_TEXT = "Copied description text";
     private static final String NEW_ITEM_NAME = "new_item_copy";
+    private static final String BUILD_STEP_NAME = "Test";
 
     private void goToConfigurePage(){
         getWait5().until(ExpectedConditions.elementToBeClickable(
@@ -101,7 +102,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickConfigure()
                 .clickAddBuildStep()
                 .clickOnBuildStep()
-                .enterCommand("Test")
+                .enterCommand(BUILD_STEP_NAME)
                 .clickDeleteButton();
 
         Assert.assertTrue(commandFieldExists);
