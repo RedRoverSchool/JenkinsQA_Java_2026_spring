@@ -108,10 +108,10 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     }
 
     public boolean clickDeleteButton() {
-        WebElement deleteButton = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("(//button[contains(@class, 'repeatable-delete')])[last()]")));
+        WebElement deleteButton = getWait10().until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("(//button[contains(@class, 'repeatable-delete')])[last()]")));
 
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", deleteButton);
-
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", deleteButton);
 
         return getDriver().findElement(By.xpath("//textarea[@name='command']")).isDisplayed();
