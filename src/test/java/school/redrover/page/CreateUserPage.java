@@ -3,6 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import school.redrover.page.common.BaseConfigPage;
+import school.redrover.page.manage.UserManagementPage;
 
 public class CreateUserPage extends BaseConfigPage {
 
