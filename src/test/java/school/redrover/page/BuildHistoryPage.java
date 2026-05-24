@@ -7,33 +7,47 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
 
+import java.util.List;
+
 public class BuildHistoryPage extends BasePage {
 
     public BuildHistoryPage(WebDriver driver) {
         super(driver);
     }
 
-    @FindBy (xpath = "//tbody/tr[1]/td[5]")
+    @FindBy(xpath = "//tbody/tr[1]/td[5]")
     private WebElement clickButtonConsole;
 
-    @FindBy (xpath = "//a[contains(@href, 'Delete')]")
-    private WebElement buttonDelete;
+    @FindBy(xpath = "//a[@class='jenkins-table__link model-link']")
+    private List<WebElement> buildTable;
 
     public BuildHistoryPage clickDropDownMenu(String jobName) {
-        getWait5().until(ExpectedConditions
-                .elementToBeClickable(By.xpath("//a[@class='jenkins-badge model-link' and contains(@href, '/job/%s/')]".formatted(jobName)))).click();
+        getDriver().findElement(By.xpath("//a[contains(., '%s')]//button[@class='jenkins-menu-dropdown-chevron']".formatted(jobName))).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']//button[contains(@href, 'Delete')]")));
 
         return this;
     }
 
-    public DeleteBuildPage clickDeleteBuild() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(buttonDelete)).click();
+    public HomePage clickDeleteProjectWithConfirmation() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='jenkins-dropdown']//button[contains(@href, 'Delete')]"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//dialog[@class='jenkins-dialog']//button[@data-id='ok']"))).click();
 
-        return new DeleteBuildPage(getDriver());
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link")));
+
+        return new HomePage(getDriver());
     }
 
     public ConsolePage clickConsole() {
         clickButtonConsole.click();
         return new ConsolePage(getDriver());
+    }
+
+    public List<String> getBuildHistoryList() {
+        List<String> elements = buildTable.stream()
+                .map(WebElement::getText)
+                .map(String::trim)
+                .filter(text -> !text.isEmpty())
+                .toList();
+        return elements;
     }
 }

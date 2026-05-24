@@ -20,6 +20,7 @@ public class FreestyleProjectPage extends BaseProjectPage {
     public FreestyleProjectConfigPage clickConfigure() {
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//a[contains(@href, '/configure')]"))).click();
+
         return new FreestyleProjectConfigPage(getDriver());
     }
 

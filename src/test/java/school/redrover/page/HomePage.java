@@ -163,13 +163,14 @@ public class HomePage extends BasePage {
     }
 
     public HomePage clickScheduleBuild(String jobName) {
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("(//a[@href='job/%s/build?delay=0sec'])[1]".formatted(jobName)))).click();
+        getDriver().findElement(By.xpath("//td[@class='jenkins-table__cell--tight']//a[contains(@class, 'jenkins-button') and @tooltip='Schedule a Build for %s']".formatted(jobName))).click();
         return this;
     }
 
     public BuildHistoryPage clickBuildHistory() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(buttonBuildHistory)).click();
+        buttonBuildHistory.click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), "Build History of Jenkins"));
+
         return new BuildHistoryPage(getDriver());
     }
 
