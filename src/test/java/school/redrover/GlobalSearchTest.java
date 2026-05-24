@@ -24,7 +24,7 @@ public class GlobalSearchTest extends BaseTest {
                 .setProjectName(folderName)
                 .selectFolder()
                 .clickOkButton()
-                .clickSave()
+                .clickSaveButton()
                 .goHomePage();
     }
 

@@ -25,7 +25,7 @@ public class FreestyleProjectTest extends BaseTest {
     private static final String REPOSITORY_URL = "https://github.com/";
     private static final String BRANCH_NAME = "*/main";
     private static final String SOURCE_ITEM_NAME = "source_item";
-    private static final String DESCRIPTION_TEXT = "Copied description text";
+    private static final String DESCRIPTION_TEXT = "My test description";
     private static final String NEW_ITEM_NAME = "new_item_copy";
     private static final String BUILD_STEP_NAME = "Test";
 
@@ -67,7 +67,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .enableDeleteWorkspaceBeforeBuildStarts()
-                .clickSave()
+                .clickSaveButton()
                 .clickConfigure()
                 .isDeleteWorkspaceBeforeBuildStartsSelected();
 
@@ -108,19 +108,16 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(commandFieldExists);
     }
 
-    @Ignore
     @Test (dependsOnMethods = "testDeleteBuildStep")
     public void testAddDescription() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='%s']".formatted(PROJECT_NAME)))).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), PROJECT_NAME));
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@href='/job/FreestyleProject/configure']"))).click();
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("Description");
-        getDriver().findElement(By.name("Submit")).click();
+        String actualDescriptionText = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .enterDescription(DESCRIPTION_TEXT)
+                .clickSaveButton()
+                .getDescription();
 
-        Assert.assertEquals(getDriver().findElement(
-                By.xpath("//div[@id='description-content']")).getText(),"Description");
+        Assert.assertEquals(actualDescriptionText,DESCRIPTION_TEXT);
     }
 
     @Ignore
@@ -315,7 +312,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .fillDescription(DESCRIPTION_TEXT)
                 .clickCheckBoxGitHub()
                 .fillGitURL(REPOSITORY_URL)
-                .clickSave();
+                .clickSaveButton();
 
         Assert.assertEquals(
                 getWait10().until(ExpectedConditions.visibilityOfElementLocated(
