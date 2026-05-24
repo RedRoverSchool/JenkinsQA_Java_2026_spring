@@ -12,6 +12,7 @@ public class ViewWithinFolderTest extends BaseTest {
     private static final String FOLDER_NAME = "NewFolder";
     private static final String VIEW_NAME = "MyViewWithinFolder";
     private static final String VIEW_DESCRIPTION = "Saved description";
+    private static final String NEW_VIEW_DESCRIPTION = "New description text";
 
     @Test
     public void testCreateMyView(){
@@ -47,5 +48,17 @@ public class ViewWithinFolderTest extends BaseTest {
                .getDescriptionText();
 
         Assert.assertEquals(actualDescriptionText,VIEW_DESCRIPTION);
+    }
+
+    @Test(dependsOnMethods = "testSaveViewDescription")
+        public void testCanselDescription(){
+        String actualDescriptionTest = new HomePage(getDriver())
+                .clickOnProject(FOLDER_NAME,new FolderProjectPage(getDriver()))
+                .clickOnView()
+                .editDescription(NEW_VIEW_DESCRIPTION)
+                .clickCancelButton()
+                .getDescriptionText();
+
+        Assert.assertEquals(actualDescriptionTest,VIEW_DESCRIPTION);
     }
 }
