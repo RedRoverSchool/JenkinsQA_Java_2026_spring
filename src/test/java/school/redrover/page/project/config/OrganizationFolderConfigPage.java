@@ -14,6 +14,11 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
         super(driver);
     }
 
+    @Override
+    protected OrganizationFolderConfigPage self() {
+        return this;
+    }
+
     public OrganizationFolderConfigPage enterDisplayName(String displayName) {
         descriptionInput.sendKeys(displayName);
         return this;
