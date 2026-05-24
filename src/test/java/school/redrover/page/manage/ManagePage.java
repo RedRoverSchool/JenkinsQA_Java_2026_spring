@@ -1,6 +1,7 @@
-package school.redrover.page;
+package school.redrover.page.manage;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
 
@@ -9,6 +10,13 @@ import java.util.List;
 
 public class ManagePage extends BasePage {
 
+    @FindBy(xpath = "//a[@href='configure']")
+    private WebElement systemButton;
+
+    @FindBy(xpath = "//a[@href='appearance']")
+    private WebElement appearanceButton;
+
+
     private static final By SEARCH_BAR = By.id("settings-search-bar");
     private static final By EMPTY_DROPDOWN = By.className("jenkins-search__results__no-results-label");
     private static final By HEADER = By.xpath("//h1");
@@ -16,6 +24,20 @@ public class ManagePage extends BasePage {
 
     public ManagePage(WebDriver driver) {
         super(driver);
+    }
+
+    public SystemPage clickSystem() {
+        systemButton.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@name='Submit']")));
+
+        return new SystemPage(getDriver());
+    }
+
+    public AppearancePage clickAppearance() {
+        appearanceButton.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@name='Submit']")));
+
+        return new AppearancePage(getDriver());
     }
 
     public ToolsPage clickToolsButton() {
