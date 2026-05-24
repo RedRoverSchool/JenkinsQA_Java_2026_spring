@@ -3,9 +3,9 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.FolderProjectPage;
+import school.redrover.page.project.config.FolderConfigPage;
 
 public class ViewWithinFolderTest extends BaseTest {
 
@@ -16,15 +16,19 @@ public class ViewWithinFolderTest extends BaseTest {
 
     @Test
     public void testCreateMyView(){
-        String nameView = TestUtils.createJob(getDriver(), FOLDER_NAME, TestUtils.JobType.FOLDER)
-                .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
+       String actualViewName = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(FOLDER_NAME)
+                .selectFolder()
+                .clickOkButton(new FolderConfigPage(getDriver()))
+                .clickSave(new FolderProjectPage(getDriver()))
                 .clickNewView()
                 .inputName(VIEW_NAME)
                 .chooseMyView()
                 .clickCreateButton()
                 .getCurrentViewName();
 
-        Assert.assertEquals(nameView, VIEW_NAME);
+        Assert.assertEquals(actualViewName, VIEW_NAME);
     }
 
     @Test (dependsOnMethods = "testCreateMyView")
