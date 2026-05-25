@@ -160,11 +160,4 @@ public class CreateProjectPage extends BasePage {
 
         return new PipelineProjectConfigPage(getDriver());
     }
-
-    public <ConfigPage extends BasePage> ConfigPage clickOkButton(ConfigPage configPage) {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
-
-        return configPage;
-    }
 }

@@ -20,7 +20,7 @@ public class ViewWithinFolderTest extends BaseTest {
                 .clickItemNewJob()
                 .setProjectName(FOLDER_NAME)
                 .selectFolder()
-                .clickOkButton(new FolderConfigPage(getDriver()))
+                .clickOK(new FolderConfigPage(getDriver()))
                 .clickSave(new FolderProjectPage(getDriver()))
                 .clickNewView()
                 .inputName(VIEW_NAME)
