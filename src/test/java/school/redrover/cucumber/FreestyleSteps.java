@@ -66,7 +66,7 @@ public class FreestyleSteps {
     @And("Save config and go to Freestyle job")
     public void saveConfigAndGoToFreestyleJob() {
         freestyleProjectPage = freestyleProjectConfigurationPage
-                .clickSave();
+                .clickSaveButton();
     }
 
     @Then("Freestyle job name is {string}")

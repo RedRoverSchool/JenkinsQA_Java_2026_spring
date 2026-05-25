@@ -25,6 +25,6 @@ public class FreestyleProjectPage extends BaseProjectPage {
     }
 
     public String getDescription() {
-        return descriptionText.getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(descriptionText)).getText();
     }
 }
