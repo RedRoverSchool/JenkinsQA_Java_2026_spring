@@ -16,20 +16,6 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         super(driver);
     }
 
-    @Override
-    protected FreestyleProjectConfigPage self() {
-        return this;
-    }
-
-    public FreestyleProjectPage clickSubmitButton() {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
-
-        // todo: изменить ожидание FreestyleProjectPage, чтобы не работало с url
-        getWait10().until(ExpectedConditions.not(ExpectedConditions.urlContains("configure")));
-
-        return new FreestyleProjectPage(getDriver());
-    }
-
     public FreestyleProjectConfigPage fillDescription(String descriptiontext) {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                         By.name("description")))
@@ -78,7 +64,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
                 .toList();
     }
 
-    public FreestyleProjectPage clickSave() {
+    public FreestyleProjectPage clickSaveButton() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
                         By.name("Submit")))
                 .click();
@@ -129,5 +115,14 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", deleteButton);
 
         return getDriver().findElement(By.xpath("//textarea[@name='command']")).isDisplayed();
+    }
+
+    public FreestyleProjectConfigPage enterDescription(String descriptionText) {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//textarea[@name='description']"))).click();
+        getDriver().findElement(
+                By.xpath("//textarea[@name='description']")).sendKeys(descriptionText);
+        return this;
+
     }
 }
