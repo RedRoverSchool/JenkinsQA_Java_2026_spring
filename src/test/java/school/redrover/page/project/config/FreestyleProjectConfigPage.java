@@ -125,4 +125,9 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         return this;
 
     }
+
+    public FreestyleProjectConfigPage disableProjectToggle() {
+        getDriver().findElement(By.xpath("//label[@class='jenkins-toggle-switch__label ']")).click();
+        return this;
+    }
 }

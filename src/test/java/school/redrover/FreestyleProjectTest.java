@@ -120,19 +120,16 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(actualDescriptionText,DESCRIPTION_TEXT);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testAddDescription")
-    public void testDisable() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='%s']".formatted(PROJECT_NAME)))).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), PROJECT_NAME));
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@href='/job/FreestyleProject/configure']"))).click();
-        getDriver().findElement(By.xpath("//label[@class='jenkins-toggle-switch__label ']")).click();
-        getDriver().findElement(By.name("Submit")).click();
+    public void testDisableProject() {
+        Boolean projectDisabledMessage =  new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .disableProjectToggle()
+                .clickSaveButton()
+                .getProjectIsDisabledMessage();
 
-        Assert.assertTrue(getDriver().findElement(
-                By.id("enable-project")).getText().contains("This project is currently disabled"));
+        Assert.assertTrue(projectDisabledMessage);
     }
 
     @Ignore
