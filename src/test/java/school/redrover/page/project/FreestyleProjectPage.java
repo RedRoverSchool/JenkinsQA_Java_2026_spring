@@ -27,4 +27,10 @@ public class FreestyleProjectPage extends BaseProjectPage {
     public String getDescription() {
         return getWait5().until(ExpectedConditions.visibilityOf(descriptionText)).getText();
     }
+
+    public Boolean getProjectIsDisabledMessage() {
+        String projectIsDisabledMessage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("enable-project"))).getText();
+
+        return projectIsDisabledMessage.contains("This project is currently disabled");
+    }
 }
