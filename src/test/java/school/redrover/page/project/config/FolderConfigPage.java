@@ -10,6 +10,11 @@ public class FolderConfigPage extends BaseConfigPage<FolderConfigPage> {
         super(driver);
     }
 
+    @Override
+    protected FolderConfigPage self() {
+        return this;
+    }
+
     public FolderConfigPage clickHealthMetrics() {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.cssSelector("button.advanced-button"))).click();
 

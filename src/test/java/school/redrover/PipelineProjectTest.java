@@ -133,7 +133,7 @@ public class PipelineProjectTest extends BaseTest {
                 .setProjectName(PROJECT_NAME)
                 .selectPipelineProjectAndClickOk()
                 .enterDescription(DESCRIPTION_TEXT)
-                .clickApplyButton()
+                .clickApply()
                 .getSaveText();
 
         Assert.assertEquals(saveText, "Saved");
