@@ -45,21 +45,6 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//button[@data-id='ok']")
     private WebElement buttonConfirmDelete;
 
-    @FindBy(xpath = "//div[@class='jenkins-dropdown']")
-    private WebElement jenkinsVersionMenu;
-
-    @FindBy(css = "button.jenkins_ver")
-    private WebElement buttonVersionMenu;
-
-    @FindBy(xpath = "//a[@href='/manage/about']")
-    private WebElement linkAboutJenkins;
-
-    @FindBy(xpath = "//a[@href='https://www.jenkins.io/participate/']")
-    private WebElement linkGetInvolved;
-
-    @FindBy(xpath = "//a[@href='https://www.jenkins.io/']")
-    private WebElement linkWebsite;
-
     @FindBy(xpath = "//a[@href='/view/all/builds']")
     private WebElement buttonBuildHistory;
 
@@ -171,24 +156,6 @@ public class HomePage extends BasePage {
     public HomePage scrollToBottom() {
         ((JavascriptExecutor) getDriver()).executeScript("window.scrollTo(0, document.body.scrollHeight);");
         return this;
-    }
-
-    public HomePage clickJenkinsVersion() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(buttonVersionMenu)).click();
-        return this;
-    }
-
-    public boolean isJenkinsVersionMenu() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(buttonVersionMenu)).click();
-        return jenkinsVersionMenu.isDisplayed();
-    }
-
-    public void clickGetInvolved() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(linkGetInvolved)).click();
-    }
-
-    public void clickWebsite() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(linkWebsite)).click();
     }
 
     public RestApiPage clickRestApiLink() {
