@@ -29,8 +29,14 @@ public class FreestyleProjectPage extends BaseProjectPage {
     }
 
     public Boolean getProjectIsDisabledMessage() {
-        String projectIsDisabledMessage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("enable-project"))).getText();
+        String projectIsDisabledMessage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("enable-project"))).getText();
 
         return projectIsDisabledMessage.contains("This project is currently disabled");
+    }
+
+    public FreestyleProjectPage enableProject() {
+        getDriver().findElement(By.xpath("//button[@value='Enable']")).click();
+        return this;
     }
 }
