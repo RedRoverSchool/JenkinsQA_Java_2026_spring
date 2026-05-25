@@ -16,6 +16,11 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         super(driver);
     }
 
+    @Override
+    protected FreestyleProjectConfigPage self() {
+        return this;
+    }
+    
     public FreestyleProjectConfigPage fillDescription(String descriptiontext) {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                         By.name("description")))
