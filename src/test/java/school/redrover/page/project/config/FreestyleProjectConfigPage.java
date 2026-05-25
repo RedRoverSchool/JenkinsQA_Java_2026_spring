@@ -137,9 +137,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     }
 
     public Boolean getProjectState(String expectedState) {
-        String actualState = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.className("jenkins-toggle-switch__label"))).getText();
-
-        return actualState.equals(expectedState);
+        return getWait10().until(ExpectedConditions.textToBe(
+                By.className("jenkins-toggle-switch__label"),expectedState));
     }
 }

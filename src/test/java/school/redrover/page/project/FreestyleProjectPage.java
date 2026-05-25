@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.page.RenameProjectPage;
 import school.redrover.page.common.BaseProjectPage;
 import school.redrover.page.project.config.FreestyleProjectConfigPage;
 
@@ -18,7 +19,7 @@ public class FreestyleProjectPage extends BaseProjectPage {
     }
 
     public FreestyleProjectConfigPage clickConfigure() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(
+        getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//a[contains(@href, '/configure')]"))).click();
 
         return new FreestyleProjectConfigPage(getDriver());
@@ -36,7 +37,16 @@ public class FreestyleProjectPage extends BaseProjectPage {
     }
 
     public FreestyleProjectPage enableProject() {
-        getDriver().findElement(By.xpath("//button[@value='Enable']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//button[contains(., 'Enable')]"))).click();
+
         return this;
+    }
+
+    public RenameProjectPage renameProject() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//span[text()='Rename']/.."))).click();
+
+        return new RenameProjectPage(getDriver());
     }
 }

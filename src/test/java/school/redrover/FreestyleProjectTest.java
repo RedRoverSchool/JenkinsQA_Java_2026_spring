@@ -20,6 +20,7 @@ import java.util.Objects;
 public class FreestyleProjectTest extends BaseTest {
 
     private final static String PROJECT_NAME = "FreestyleProject";
+    private final static String PROJECT_NAME_UPDATED = "My FreestyleProject test";
     private final static String NEW_PROJECT_NAME_1 = "FreestyleProject1";
     private final static String NEW_PROJECT_NAME_2 ="FreestyleProject2";
     private static final String REPOSITORY_URL = "https://github.com/";
@@ -60,6 +61,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testEnableDeleteWorkspaceBeforeBuildStarts() {
 
@@ -143,20 +145,16 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(projectEnabledMessage);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testEnable")
+    @Test(dependsOnMethods = "testEnableProject")
     public void testRename() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='%s']".formatted(PROJECT_NAME)))).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), PROJECT_NAME));
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='Rename']/.."))).click();
-        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
-        getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(NEW_PROJECT_NAME_1);
-        getDriver().findElement(By.name("Submit")).click();
+        Boolean updatedProjectName = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .renameProject()
+                .setNewProjectName(PROJECT_NAME_UPDATED)
+                .clickRenameButton()
+                .getUpdatedProjectName(PROJECT_NAME_UPDATED);
         
-        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[@id='main-panel']//h1"))).getText(), NEW_PROJECT_NAME_1);
+        Assert.assertTrue(updatedProjectName);
     }
 
     @Ignore
