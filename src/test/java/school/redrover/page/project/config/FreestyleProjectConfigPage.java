@@ -135,4 +135,11 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         getDriver().findElement(By.xpath("//label[@class='jenkins-toggle-switch__label ']")).click();
         return this;
     }
+
+    public Boolean getProjectState(String expectedState) {
+        String actualState = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.className("jenkins-toggle-switch__label"))).getText();
+
+        return actualState.equals(expectedState);
+    }
 }

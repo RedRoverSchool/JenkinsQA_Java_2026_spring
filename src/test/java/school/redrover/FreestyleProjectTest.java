@@ -122,7 +122,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testAddDescription")
     public void testDisableProject() {
-        Boolean projectDisabledMessage =  new HomePage(getDriver())
+        Boolean projectDisabledMessage = new HomePage(getDriver())
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .disableProjectToggle()
@@ -132,20 +132,15 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(projectDisabledMessage);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testDisable")
-    public void testEnable() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='%s']".formatted(PROJECT_NAME)))).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), PROJECT_NAME));
-        getDriver().findElement(By.xpath("//button[@value='Enable']")).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), PROJECT_NAME));
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@href='/job/FreestyleProject/configure']"))).click();
+    @Test(dependsOnMethods = "testDisableProject")
+    public void testEnableProject() {
+        Boolean projectEnabledMessage = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .enableProject()
+                .clickConfigure()
+                .getProjectState("Enabled");
 
-        Assert.assertEquals(getDriver().findElement(
-                        By.className("jenkins-toggle-switch__label__checked-title")).getText(),
-                "Enabled");
+        Assert.assertTrue(projectEnabledMessage);
     }
 
     @Ignore
