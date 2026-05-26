@@ -33,6 +33,9 @@ public class CreateProjectPage extends BasePage {
     @FindBy(xpath = "//span[text()='Folder']")
     private WebElement folderOption;
 
+    @FindBy(xpath = "//li[@class='hudson_matrix_MatrixProject']")
+    private WebElement optionMultiConfiguration;
+
     @FindBy(xpath = "//*[@id='main-panel']/h1")
     private WebElement errorTitle;
 
@@ -119,6 +122,11 @@ public class CreateProjectPage extends BasePage {
 
     public String getErrorText(){
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+    }
+
+    public CreateProjectPage selectMultiConfiguration() {
+        optionMultiConfiguration.click();
+        return this;
     }
 
     public CreateProjectPage selectFolder() {
