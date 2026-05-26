@@ -9,7 +9,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.TestUtils;
 import school.redrover.page.common.BasePage;
 import school.redrover.page.project.config.FreestyleProjectConfigPage;
-import school.redrover.page.project.config.OrganizationFolderConfigPage;
 import school.redrover.page.project.config.PipelineProjectConfigPage;
 
 public class CreateProjectPage extends BasePage {
@@ -28,6 +27,9 @@ public class CreateProjectPage extends BasePage {
 
     @FindBy(xpath = "//span[text()='Pipeline']")
     private WebElement pipelineOption;
+
+    @FindBy(xpath = "//li[@class='hudson_matrix_MatrixProject']")
+    private WebElement optionMultiConfiguration;
 
     @FindBy(xpath = "//*[@id='main-panel']/h1")
     private WebElement errorTitle;
@@ -97,6 +99,11 @@ public class CreateProjectPage extends BasePage {
 
     public String getErrorText(){
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+    }
+
+    public CreateProjectPage selectMultiConfiguration() {
+        optionMultiConfiguration.click();
+        return this;
     }
 
     public CreateProjectPage selectFolder() {

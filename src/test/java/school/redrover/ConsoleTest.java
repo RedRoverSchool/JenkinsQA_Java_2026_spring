@@ -3,8 +3,8 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
-import static school.redrover.common.TestUtils.JobType.MULTICONFIGURATION;
+import school.redrover.page.HomePage;
+import school.redrover.page.project.config.MulticonfigurationConfigPage;
 
 public class ConsoleTest extends BaseTest {
 
@@ -12,7 +12,12 @@ public class ConsoleTest extends BaseTest {
 
     @Test
     public void testReadingInformationConsoleTest() {
-        String consoleText = TestUtils.createJob(getDriver(), NAME_PROJECT, MULTICONFIGURATION)
+        String consoleText = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(NAME_PROJECT)
+                .selectMultiConfiguration()
+                .clickOK(new MulticonfigurationConfigPage(getDriver()))
+                .goHomePage()
                 .clickScheduleBuild(NAME_PROJECT)
                 .clickBuildHistory()
                 .clickConsole()
