@@ -16,8 +16,10 @@ import java.nio.file.Files;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import io.qameta.allure.testng.AllureTestNg;
+import org.testng.annotations.Listeners;
 
-@Listeners({FilterForTests.class, OrderForTests.class})
+@Listeners({FilterForTests.class, OrderForTests.class, AllureTestNg.class})
 public abstract class BaseTest {
 
     private WebDriver driver;
