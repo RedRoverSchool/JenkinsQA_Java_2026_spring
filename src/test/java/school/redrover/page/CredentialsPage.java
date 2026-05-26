@@ -22,6 +22,9 @@ public class CredentialsPage extends BasePage {
     @FindBy(xpath ="//span[text() = 'Close']")
     private WebElement closeButton;
 
+    @FindBy(css = "div.credentials-card__title a")
+    private List<WebElement> credentialLinks;
+
     //@FindBy(css = ".jenkins-dialog__title")
     //private WebElement dialogTitle;
 
@@ -58,6 +61,11 @@ public class CredentialsPage extends BasePage {
         return getWait5()
                 .until(ExpectedConditions.visibilityOfElementLocated(getCredentialLocator(id)))
                 .isDisplayed();
+    }
+
+    public List<String> getCredentialList() {
+        return credentialLinks.stream()
+                .map(WebElement::getText).toList();
     }
 
     public CredentialsPage clickDeleteCredential(String id) {

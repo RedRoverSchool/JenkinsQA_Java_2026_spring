@@ -5,6 +5,8 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 
+import java.util.List;
+
 public class CredentialsTest extends BaseTest {
 
     private String id;
@@ -56,14 +58,21 @@ public class CredentialsTest extends BaseTest {
 
     @Test
     public void testAddSshUsernameWithKey(){
-        new HomePage(getDriver())
+        List<String> credentialList= new HomePage(getDriver())
                 .clickManageButton()
                 .clickCredentials()
                 .clickAddCredentialsButton()
                 .clickSSHCredentialsButton()
                 .setSSHCredentials("prod-deploy-key","SSH key for prod server","deploy",true,true," RSA/Ed25519 key","MyStr0ngP@ss")
                 .clickCreateButton()
-                .isCredentialVisible("prod-deploy-key");
+                .getCredentialList();
+
+        System.out.println(credentialList);
+
+        //Assert.assertEquals(credentialList.size(), 1); нужно реализовать удаление креденшена для этой строчки
+        Assert.assertEquals(credentialList.getFirst(), "prod-deploy-key");
+
+
     }
 
     @Test(dependsOnMethods = "testAddSshUsernameWithKey")
