@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.BuildNowPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.FreestyleProjectPage;
 import java.util.Arrays;
@@ -29,6 +30,7 @@ public class FreestyleProjectTest extends BaseTest {
     private static final String DESCRIPTION_TEXT = "My test description";
     private static final String NEW_ITEM_NAME = "new_item_copy";
     private static final String BUILD_STEP_NAME = "Test";
+    private static final String POPUP_MESSAGE = "Build scheduled";
 
     private void goToConfigurePage(){
         getWait5().until(ExpectedConditions.elementToBeClickable(
@@ -157,17 +159,14 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(updatedProjectName);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testRename")
-    public void testBuildNowCheckAlert() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='%s']".formatted(NEW_PROJECT_NAME_1)))).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), NEW_PROJECT_NAME_1));
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='Build Now']/.."))).click();
+    public void testBuildNowDisplaysPopupMessage() {
+         Boolean popupMessage = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME_UPDATED, new BuildNowPage(getDriver()))
+                .clickBuildNowSideMenuButton()
+                 .isPopUpMessageDisplayed(POPUP_MESSAGE);
 
-        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("notification-bar"))).getText(), "Build scheduled");
+        Assert.assertTrue(popupMessage);
     }
 
     @Ignore
