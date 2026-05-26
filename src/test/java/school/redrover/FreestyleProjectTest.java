@@ -149,7 +149,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testRename() {
         Boolean updatedProjectName = new HomePage(getDriver())
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .renameProject()
+                .clickRenameProjectSideMenuButton()
                 .setNewProjectName(PROJECT_NAME_UPDATED)
                 .clickRenameButton()
                 .getUpdatedProjectName(PROJECT_NAME_UPDATED);

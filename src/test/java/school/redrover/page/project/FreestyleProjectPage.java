@@ -43,7 +43,7 @@ public class FreestyleProjectPage extends BaseProjectPage {
         return this;
     }
 
-    public RenameProjectPage renameProject() {
+    public RenameProjectPage clickRenameProjectSideMenuButton() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//span[text()='Rename']/.."))).click();
 
