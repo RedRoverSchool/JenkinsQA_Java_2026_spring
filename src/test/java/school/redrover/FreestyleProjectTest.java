@@ -21,7 +21,7 @@ import java.util.Objects;
 public class FreestyleProjectTest extends BaseTest {
 
     private final static String PROJECT_NAME = "FreestyleProject";
-    private final static String PROJECT_NAME_UPDATED = "My FreestyleProject test";
+    private final static String PROJECT_NAME_UPDATED = "My FreestyleProject Test";
     private final static String NEW_PROJECT_NAME_1 = "FreestyleProject1";
     private final static String NEW_PROJECT_NAME_2 ="FreestyleProject2";
     private static final String REPOSITORY_URL = "https://github.com/";
