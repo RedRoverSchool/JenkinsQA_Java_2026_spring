@@ -169,21 +169,13 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(popupMessage);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testBuildNowCheckAlert")
-    public void testBuildNow() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='%s']".formatted(NEW_PROJECT_NAME_1)))).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), NEW_PROJECT_NAME_1));
-        getWait10().until(ExpectedConditions.presenceOfElementLocated(
-                By.className("app-builds-container__item")));
+    @Test(dependsOnMethods = "testBuildNowDisplaysPopupMessage")
+    public void testBuildNowCreatesBuild() {
+        int build_count = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME_UPDATED, new BuildNowPage(getDriver()))
+                .getBuilds().size();
 
-        List<String> listOfBuilds = getDriver().findElements(By.className("app-builds-container__item"))
-                .stream()
-                .map(WebElement::getText)
-                .toList();
-
-        Assert.assertEquals(listOfBuilds.size(), 1);
+        Assert.assertEquals(build_count, 1);
     }
 
     @Ignore
