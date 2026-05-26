@@ -11,11 +11,11 @@ public class FooterVersionJenkinsTest extends BaseTest {
 
     @Test
     public void testOpenJenkinsVersionMenu() {
-        boolean isMenu = new HomePage(getDriver())
+        boolean isMenuDisplayed = new HomePage(getDriver())
                 .getVersion()
                 .clickJenkinsVersion()
                 .isJenkinsVersionMenu();
-        Assert.assertTrue(isMenu);
+        Assert.assertTrue(isMenuDisplayed);
     }
 
     @Test
