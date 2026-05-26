@@ -48,5 +48,4 @@ public class VersionComponent extends BaseModel {
         getWait5().until(ExpectedConditions.elementToBeClickable(linkWebsite)).click();
         return new JenkinsWebsite(getDriver());
     }
-
 }
