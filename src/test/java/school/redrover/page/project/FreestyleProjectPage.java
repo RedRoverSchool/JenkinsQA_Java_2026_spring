@@ -19,8 +19,25 @@ public class FreestyleProjectPage extends BaseProjectPage {
     }
 
     public FreestyleProjectConfigPage clickConfigure() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//a[contains(@href, '/configure')]"))).click();
+
+        By configuration =  By.xpath("//a[contains(@href, '/configure')]");
+
+        getWait10().until(webDriver -> {
+            try {
+                WebElement element = getDriver().findElement(configuration);
+
+                if(element.isDisplayed() && element.isEnabled()) {
+                    element.click();
+
+                    return true;
+                }
+
+                return false;
+
+            } catch (Exception e) {
+                return false;
+            }
+        });
 
         return new FreestyleProjectConfigPage(getDriver());
     }
