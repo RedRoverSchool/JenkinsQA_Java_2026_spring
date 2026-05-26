@@ -9,17 +9,13 @@ import org.testng.annotations.*;
 import school.redrover.common.filter.FilterForTests;
 import school.redrover.common.order.OrderForTests;
 import school.redrover.common.order.OrderUtils;
-
 import java.io.File;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import io.qameta.allure.testng.AllureTestNg;
-import org.testng.annotations.Listeners;
 
-@Listeners({FilterForTests.class, OrderForTests.class, AllureTestNg.class})
 public abstract class BaseTest {
 
     private WebDriver driver;
