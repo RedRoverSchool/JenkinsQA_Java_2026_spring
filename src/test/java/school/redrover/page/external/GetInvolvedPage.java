@@ -17,5 +17,4 @@ public class GetInvolvedPage extends BaseModel {
     public String getTitleText() {
         return titleText.getText();
     }
-
 }
