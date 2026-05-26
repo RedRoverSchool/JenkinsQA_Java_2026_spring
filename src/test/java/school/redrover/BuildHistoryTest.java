@@ -4,7 +4,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-
 import java.util.List;
 
 public class BuildHistoryTest extends BaseTest {
@@ -34,10 +33,19 @@ public class BuildHistoryTest extends BaseTest {
 
         Assert.assertEquals(buildHistoryList.size(), 1);
         Assert.assertEquals(buildHistoryList.getFirst(), PROJECT_NAME);
-
     }
 
     @Test(dependsOnMethods = "testScheduledBuildAppearsInBuildHistory")
+    public void testSuccessMessageInConsole() {
+        String consoleText = new HomePage(getDriver())
+                .clickBuildHistory()
+                .clickConsole()
+                .getTextConsole();
+
+        Assert.assertTrue(consoleText.contains("Finished: SUCCESS"));
+    }
+
+    @Test(dependsOnMethods = "testSuccessMessageInConsole")
     public void testDeleteBuild() {
         List<String> buildHistoryList = new HomePage(getDriver())
                 .clickScheduleBuild(PROJECT_NAME)
