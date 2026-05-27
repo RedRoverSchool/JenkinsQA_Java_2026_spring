@@ -55,7 +55,7 @@ public class ViewWithinFolderTest extends BaseTest {
     }
   
   @Test(dependsOnMethods = "testSaveViewDescription")
-        public void testCanсelDescription(){
+        public void testCancelDescription(){
         String actualDescriptionTest = new HomePage(getDriver())
                 .clickOnProject(FOLDER_NAME,new FolderProjectPage(getDriver()))
                 .clickOnView()

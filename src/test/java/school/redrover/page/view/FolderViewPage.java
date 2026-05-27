@@ -63,8 +63,9 @@ public class FolderViewPage extends BasePage {
     public ViewMyConfigPage clickEditView() {
         getWait5().until(ExpectedConditions.elementToBeClickable(editViewButton)).click();
         return new ViewMyConfigPage(getDriver());
+    }
       
-    public  FolderViewPage editDescription(String newDescriptionText) {
+    public FolderViewPage editDescription(String newDescriptionText) {
         editDescription.click();
 
         WebElement descriptionField = getWait5().until(ExpectedConditions.visibilityOf(fieldDescription));
