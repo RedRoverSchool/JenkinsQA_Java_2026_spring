@@ -1,7 +1,6 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -24,9 +23,6 @@ public class CredentialsPage extends BasePage {
 
     @FindBy(css = "div.credentials-card__title a")
     private List<WebElement> credentialLinks;
-
-    @FindBy(xpath = "//button[text()='Next']")
-    private WebElement nextButton;
 
     @FindBy(xpath = ("//*[contains(text(), 'Delete credential')]"))
     private WebElement deleteCredentialOption;
