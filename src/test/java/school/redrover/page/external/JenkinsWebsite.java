@@ -12,7 +12,7 @@ public class JenkinsWebsite extends BaseModel {
     }
 
     @FindBy(css = "h1>span")
-    public WebElement titleText;
+    private WebElement titleText;
 
     public String getTitleText() {
         return titleText.getText();
