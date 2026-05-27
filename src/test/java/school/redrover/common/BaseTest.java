@@ -1,7 +1,5 @@
 package school.redrover.common;
 
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
@@ -10,9 +8,7 @@ import school.redrover.common.filter.FilterForTests;
 import school.redrover.common.order.OrderForTests;
 import school.redrover.common.order.OrderUtils;
 
-import java.io.File;
 import java.lang.reflect.Method;
-import java.nio.file.Files;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.stream.Collectors;

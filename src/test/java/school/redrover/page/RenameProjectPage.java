@@ -28,5 +28,11 @@ public class RenameProjectPage extends BasePage {
         return this;
     }
 
+    public Boolean getUpdatedProjectName(String projectName) {
+        String getProjectName = getDriver().findElement(
+                By.xpath("//*[@id='main-panel']//h1")).getText();
+
+        return getProjectName.equals(projectName);
+    }
 
 }

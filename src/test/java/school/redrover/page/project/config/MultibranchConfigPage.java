@@ -8,4 +8,9 @@ public class MultibranchConfigPage extends BaseConfigPage<MultibranchConfigPage>
         super(driver);
     }
 
+    @Override
+    protected MultibranchConfigPage self() {
+        return this;
+    }
+
 }

@@ -16,17 +16,16 @@ public class PipelineProjectConfigPage extends BaseConfigPage<PipelineProjectCon
     @FindBy(xpath = "//button[@name='Submit']")
     private WebElement saveButton;
 
-    @FindBy(xpath = "//textarea[@name='description']")
-    private WebElement descriptionInput;
-
-    @FindBy(name = "Apply")
-    private WebElement applyButton;
-
     @FindBy(id = "notification-bar")
     private WebElement notification;
 
     public PipelineProjectConfigPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    protected PipelineProjectConfigPage self() {
+        return this;
     }
 
     public PipelineProjectConfigPage toggleProjectState() {
@@ -41,18 +40,6 @@ public class PipelineProjectConfigPage extends BaseConfigPage<PipelineProjectCon
         getWait10().until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("div>#main-panel>div>div>h1")));
 
         return new PipelineProjectPage(getDriver());
-    }
-
-    public PipelineProjectConfigPage enterDescription(String description) {
-        descriptionInput.sendKeys(description);
-
-        return this;
-    }
-
-    public PipelineProjectConfigPage clickApplyButton() {
-        applyButton.click();
-
-        return this;
     }
 
     public String getSaveText() {

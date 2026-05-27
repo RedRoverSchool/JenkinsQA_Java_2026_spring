@@ -3,9 +3,11 @@ package school.redrover.page.project;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.CreateProjectPage;
+import school.redrover.page.common.BasePage;
 import school.redrover.page.common.BaseProjectPage;
 import school.redrover.page.project.config.FolderConfigPage;
 import school.redrover.page.view.CreateFolderViewPage;
@@ -45,6 +47,10 @@ public class FolderProjectPage extends BaseProjectPage {
     @FindBy(xpath = "//div[@class='tabBar']//a[contains(@href, 'view')]")
     private WebElement viewName;
 
+    @FindBy(xpath = "//a[contains(@href, 'move')]")
+    private WebElement moveSideMenu;
+
+    private static final String PROJECT_NAME = "//a[contains(@href, '%s')]/span";
 
     public FolderProjectPage(WebDriver driver) {
         super(driver);
@@ -126,5 +132,12 @@ public class FolderProjectPage extends BaseProjectPage {
         viewName.click();
         return new FolderViewPage(getDriver());
 
+    }
+
+    public <ProjectPage extends BasePage> ProjectPage clickOnChildProject(String projectName, ProjectPage projectPage) {
+        getDriver().findElement(By.xpath("//td/a/span[text() = '%s']/..".formatted(projectName))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@href, 'move')]")));
+
+        return projectPage;
     }
 }

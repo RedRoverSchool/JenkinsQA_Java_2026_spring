@@ -7,4 +7,9 @@ public class MulticonfigurationConfigPage extends BaseConfigPage<Multiconfigurat
     public MulticonfigurationConfigPage(WebDriver driver) {
         super(driver);
     }
+
+    @Override
+    protected MulticonfigurationConfigPage self() {
+        return this;
+    }
 }

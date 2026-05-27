@@ -29,6 +29,12 @@ public class FolderViewPage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, '/configure') and .//span[normalize-space()='Edit View']]")
     private WebElement editViewButton;
+  
+    @FindBy(id = "description-link")
+    private WebElement editDescription;
+
+    @FindBy(css = "#description-edit-form .description-cancel-button")
+    private WebElement buttonCancel;
 
     public FolderViewPage(WebDriver driver) {
         super(driver);
@@ -49,6 +55,7 @@ public class FolderViewPage extends BasePage {
         buttonSave.click();
         return this;
     }
+
     public String getDescriptionText(){
         return getWait10().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(content))).getText();
     }
@@ -56,5 +63,19 @@ public class FolderViewPage extends BasePage {
     public ViewMyConfigPage clickEditView() {
         getWait5().until(ExpectedConditions.elementToBeClickable(editViewButton)).click();
         return new ViewMyConfigPage(getDriver());
+      
+    public  FolderViewPage editDescription(String newDescriptionText) {
+        editDescription.click();
+
+        WebElement descriptionField = getWait5().until(ExpectedConditions.visibilityOf(fieldDescription));
+
+        descriptionField.clear();
+        descriptionField.sendKeys(newDescriptionText);
+        return this;
+    }
+
+    public FolderViewPage clickCancelButton(){
+        buttonCancel.click();
+        return this;
     }
 }
