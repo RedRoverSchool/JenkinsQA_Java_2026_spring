@@ -16,9 +16,6 @@ public class FreestyleProjectPage extends BaseProjectPage {
     @FindBy(id = "description-content")
     private WebElement descriptionText;
 
-    @FindBy(className = "app-builds-container__item")
-    private WebElement buildItems;
-
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -73,9 +70,9 @@ public class FreestyleProjectPage extends BaseProjectPage {
     }
 
     public List<String> getBuilds() {
-        getWait10().until(ExpectedConditions.presenceOfElementLocated((By)buildItems));
+        getWait10().until(ExpectedConditions.presenceOfElementLocated(By.className("app-builds-container__item")));
 
-        return getDriver().findElements((By)buildItems)
+        return getDriver().findElements(By.className("app-builds-container__item"))
                 .stream()
                 .map(WebElement::getText)
                 .toList();
