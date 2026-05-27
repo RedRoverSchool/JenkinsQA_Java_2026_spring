@@ -19,18 +19,17 @@ public class FreestyleProjectPage extends BaseProjectPage {
     @FindBy(className = "app-builds-container__item")
     private WebElement buildItems;
 
-    @FindBy(xpath = "//a[contains(@href, '/configure')]")
-    private WebElement configuration;
-
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
     }
 
     public FreestyleProjectConfigPage clickConfigure() {
 
+        By configuration = By.xpath("//a[contains(@href, '/configure')]");
+
         getWait10().until(webDriver -> {
             try {
-                WebElement element = getDriver().findElement((By)configuration);
+                WebElement element = getDriver().findElement(configuration);
 
                 if(element.isDisplayed() && element.isEnabled()) {
                     element.click();
