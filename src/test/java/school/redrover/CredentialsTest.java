@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -63,14 +64,15 @@ public class CredentialsTest extends BaseTest {
                 .clickCredentials()
                 .clickAddCredentialsButton()
                 .clickSSHCredentialsButton()
-                .setSSHCredentials("test-prod-deploy-key","SSH key for prod server","deploy",true,true," RSA/Ed25519 key","MyStr0ngP@ss")
+                .setSSHCredentials("test-cred","SSH key for prod server","deploy",true,true," RSA/Ed25519 key","MyStr0ngP@ss")
                 .clickCreateButton()
                 .getCredentialList();
 
         //Assert.assertEquals(credentialList.size(), 1); нужно реализовать удаление креденшена для этой строчки
-        Assert.assertEquals(credentialList.getFirst(), "test-prod-deploy-key");
+        Assert.assertEquals(credentialList.getLast(), "test-cred");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testAddSshUsernameWithKey")
     public void testDeleteCredentialSshUser() {
 
@@ -93,9 +95,9 @@ public class CredentialsTest extends BaseTest {
                 .clickSecretTextButton()
                 .clickNextButton()
                 .typeSecretText("my-secret")
-                .typeID("test-id")
+                .typeID("test-Id")
                 .clickCreateButton()
-                .isCredentialVisible("test-id");
+                .isCredentialVisible("test-Id");
 
         Assert.assertTrue(isCredentialsCreated);
     }

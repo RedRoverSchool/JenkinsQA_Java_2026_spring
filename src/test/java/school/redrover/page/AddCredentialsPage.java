@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
+import school.redrover.page.manage.CredentialsPage;
 
 import java.util.List;
 
