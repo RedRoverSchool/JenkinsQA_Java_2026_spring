@@ -172,7 +172,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testBuildNowDisplaysPopupMessage")
     public void testBuildNowCreatesBuild() {
         int build_count = new HomePage(getDriver())
-                .clickOnProject(PROJECT_NAME_UPDATED, new BuildNowPage(getDriver()))
+                .clickOnProject(PROJECT_NAME_UPDATED, new FreestyleProjectPage(getDriver()))
                 .getBuilds().size();
 
         Assert.assertEquals(build_count, 1);

@@ -9,10 +9,18 @@ import school.redrover.page.RenameProjectPage;
 import school.redrover.page.common.BaseProjectPage;
 import school.redrover.page.project.config.FreestyleProjectConfigPage;
 
+import java.util.List;
+
 public class FreestyleProjectPage extends BaseProjectPage {
 
     @FindBy(id = "description-content")
     private WebElement descriptionText;
+
+    @FindBy(className = "app-builds-container__item")
+    private WebElement buildItems;
+
+    @FindBy(xpath = "//a[contains(@href, '/configure')]")
+    private WebElement configuration;
 
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
@@ -20,11 +28,9 @@ public class FreestyleProjectPage extends BaseProjectPage {
 
     public FreestyleProjectConfigPage clickConfigure() {
 
-        By configuration =  By.xpath("//a[contains(@href, '/configure')]");
-
         getWait10().until(webDriver -> {
             try {
-                WebElement element = getDriver().findElement(configuration);
+                WebElement element = getDriver().findElement((By)configuration);
 
                 if(element.isDisplayed() && element.isEnabled()) {
                     element.click();
@@ -65,5 +71,14 @@ public class FreestyleProjectPage extends BaseProjectPage {
                 By.xpath("//span[text()='Rename']/.."))).click();
 
         return new RenameProjectPage(getDriver());
+    }
+
+    public List<String> getBuilds() {
+        getWait10().until(ExpectedConditions.presenceOfElementLocated((By)buildItems));
+
+        return getDriver().findElements((By)buildItems)
+                .stream()
+                .map(WebElement::getText)
+                .toList();
     }
 }
