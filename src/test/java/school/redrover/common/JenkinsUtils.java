@@ -195,6 +195,7 @@ public final class JenkinsUtils {
         deleteByLink("manage/credentials/store/system/domain/_/credential/%s/doDelete",
                 getSubstringsFromPage(credentialsPage, "href=\"credential/", "\">").stream()
                         .filter(id -> id.startsWith("test-"))
+                        .filter(id -> !id.contains("/"))
                         .collect(Collectors.toSet()),
                 getCrumbAsString());
     }
