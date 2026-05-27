@@ -25,7 +25,7 @@ public class CredentialsTest extends BaseTest {
     public void testCreateUsernamePasswordCredential() {
 
         long timestamp = System.currentTimeMillis();
-        id = "id" + timestamp;
+        id = "test-id" + timestamp;
         String user = "user-" + timestamp;
         String pass = "pass-" + timestamp;
         String desc = "Test Description " + timestamp;
