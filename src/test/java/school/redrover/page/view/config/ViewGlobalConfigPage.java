@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
-public class ViewGlobalConfigPage extends ViewConfigPage {
+public class ViewGlobalConfigPage extends ViewMyConfigPage {
 
     @FindBy(name = "proxiedViewName")
     private WebElement selectGlobalView;

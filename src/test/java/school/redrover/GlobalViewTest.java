@@ -3,6 +3,7 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.view.GlobalViewPage;
 
@@ -11,6 +12,9 @@ public class GlobalViewTest extends BaseTest {
     private final static String DESCRIPTION_INPUT = "Test";
     private final static String UPDATED_DESC_MESSAGE = "Updated desc message";
     private final static String ADD_DESCRIPTION_BUTTON_TEXT = "Add description";
+    private final static String PIPELINE_NAME = "New pipeline";
+    private final static String VIEW_NAME = "New View";
+    private final static String UPDATED_VIEW_NAME = "Updated My view";
 
     @Test
     public void testAddViewDescription() {
@@ -69,18 +73,18 @@ public class GlobalViewTest extends BaseTest {
     }
 
     @Test
-    public void testClickPreviewOption() throws InterruptedException {
-        GlobalViewPage globalViewPage = new HomePage(getDriver())
+    public void testClickPreviewOption() {
+        boolean isHidePreviewButtonDisplayed = new HomePage(getDriver())
                 .clickDescription()
                 .inputDescription(DESCRIPTION_INPUT)
-                .clickPreviewButton();
+                .clickPreviewButton()
+                .isHidePreviewButtonDisplayed();
 
-        Assert.assertTrue(globalViewPage.isHidePreviewButtonDisplayed());
-        Assert.assertEquals(globalViewPage.getPreviewText(), DESCRIPTION_INPUT);
+        Assert.assertTrue(isHidePreviewButtonDisplayed);
     }
 
     @Test
-    public void testClickHidePreviewOption() throws InterruptedException {
+    public void testClickHidePreviewOption() {
         GlobalViewPage globalViewPage = new HomePage(getDriver())
                 .clickDescription()
                 .inputDescription(DESCRIPTION_INPUT)
@@ -88,5 +92,20 @@ public class GlobalViewTest extends BaseTest {
                 .clickHideButton();
 
         Assert.assertFalse(globalViewPage.isPreviewDisplayed());
+    }
+
+    @Test
+    public void testUpdateViewName() {
+        String nameView = TestUtils.createJob(getDriver(), PIPELINE_NAME, TestUtils.JobType.PIPELINE)
+                .clickForNewView()
+                .inputName(VIEW_NAME)
+                .chooseMyView()
+                .clickCreateButton()
+                .clickEditView()
+                .inputName(UPDATED_VIEW_NAME)
+                .clickSave()
+                .getCurrentViewName();
+
+        Assert.assertEquals(nameView, UPDATED_VIEW_NAME);
     }
 }

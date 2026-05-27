@@ -8,19 +8,29 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
+import school.redrover.page.BuildNowPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.FreestyleProjectPage;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class FreestyleProjectTest extends BaseTest {
 
     private final static String PROJECT_NAME = "FreestyleProject";
+    private final static String PROJECT_NAME_UPDATED = "My FreestyleProject Test";
     private final static String NEW_PROJECT_NAME_1 = "FreestyleProject1";
     private final static String NEW_PROJECT_NAME_2 ="FreestyleProject2";
-    private static final String REPOSITORY_URL = "https://github.com";
+    private static final String REPOSITORY_URL = "https://github.com/";
     private static final String BRANCH_NAME = "*/main";
+    private static final String SOURCE_ITEM_NAME = "source_item";
+    private static final String DESCRIPTION_TEXT = "My test description";
+    private static final String NEW_ITEM_NAME = "new_item_copy";
+    private static final String BUILD_STEP_NAME = "Test";
+    private static final String POPUP_MESSAGE = "Build scheduled";
 
     private void goToConfigurePage(){
         getWait5().until(ExpectedConditions.elementToBeClickable(
@@ -52,6 +62,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(projectList.size(), 1);
         Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);
     }
+
     @Test(dependsOnMethods = "testCreate")
     public void testEnableDeleteWorkspaceBeforeBuildStarts() {
 
@@ -59,12 +70,13 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .enableDeleteWorkspaceBeforeBuildStarts()
-                .clickSave()
+                .clickSaveButton()
                 .clickConfigure()
                 .isDeleteWorkspaceBeforeBuildStartsSelected();
 
         Assert.assertTrue(isSelected);
     }
+
     @Test (dependsOnMethods = "testCreate")
     public void testAddBuildStepDropdownContainsAllOptions(){
         List<String> expectedTexts = Arrays.asList(
@@ -88,126 +100,83 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testAddBuildStepDropdownContainsAllOptions")
     public void testDeleteBuildStep() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='%s']".formatted(PROJECT_NAME)))).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), PROJECT_NAME));
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@href='/job/FreestyleProject/configure']"))).click();
+        boolean commandFieldExists = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .clickAddBuildStep()
+                .clickOnBuildStep()
+                .enterCommand(BUILD_STEP_NAME)
+                .clickDeleteButton();
 
-        WebElement addBuildStepButton = getWait10().until(
-                ExpectedConditions.elementToBeClickable(By.xpath("//button[@suffix='builder']")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", addBuildStepButton);
-
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",
-                addBuildStepButton);
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                        By.xpath("//button[contains(text(), 'Execute Windows batch command')]")))
-                .click();
-
-        WebElement commandField = getWait10().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//textarea[@name='command']")));commandField.sendKeys("echo 'Test'");
-
-        WebElement deleteButton = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(
-                        By.xpath("(//button[contains(@class, 'repeatable-delete')])[last()]")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", deleteButton);
-
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",
-                deleteButton);
-
-        boolean commandFieldExists = getWait5().until(
-                driver -> getDriver().findElements(
-                        By.xpath("//textarea[@name='command']")).isEmpty());
-        Assert.assertTrue(commandFieldExists, "Build step should disappear immediately after clicking delete");
+        Assert.assertTrue(commandFieldExists);
     }
-    @Ignore
+
     @Test (dependsOnMethods = "testDeleteBuildStep")
     public void testAddDescription() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='%s']".formatted(PROJECT_NAME)))).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), PROJECT_NAME));
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@href='/job/FreestyleProject/configure']"))).click();
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("Description");
-        getDriver().findElement(By.name("Submit")).click();
+        String actualDescriptionText = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .enterDescription(DESCRIPTION_TEXT)
+                .clickSaveButton()
+                .getDescription();
 
-        Assert.assertEquals(getDriver().findElement(
-                By.xpath("//div[@id='description-content']")).getText(),"Description");
+        Assert.assertEquals(actualDescriptionText,DESCRIPTION_TEXT);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testAddDescription")
-    public void testDisable() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='%s']".formatted(PROJECT_NAME)))).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), PROJECT_NAME));
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@href='/job/FreestyleProject/configure']"))).click();
-        getDriver().findElement(By.xpath("//label[@class='jenkins-toggle-switch__label ']")).click();
-        getDriver().findElement(By.name("Submit")).click();
+    public void testDisableProject() {
+        Boolean projectDisabledMessage = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .disableProjectToggle()
+                .clickSaveButton()
+                .getProjectIsDisabledMessage();
 
-        Assert.assertTrue(getDriver().findElement(
-                By.id("enable-project")).getText().contains("This project is currently disabled"));
+        Assert.assertTrue(projectDisabledMessage);
     }
-    @Ignore
-    @Test(dependsOnMethods = "testDisable")
-    public void testEnable() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='%s']".formatted(PROJECT_NAME)))).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), PROJECT_NAME));
-        getDriver().findElement(By.xpath("//button[@value='Enable']")).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), PROJECT_NAME));
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@href='/job/FreestyleProject/configure']"))).click();
 
-        Assert.assertEquals(getDriver().findElement(
-                        By.className("jenkins-toggle-switch__label__checked-title")).getText(),
-                "Enabled");
+    @Test(dependsOnMethods = "testDisableProject")
+    public void testEnableProject() {
+        Boolean projectEnabledMessage = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .enableProject()
+                .clickConfigure()
+                .getProjectState("Enabled");
+
+        Assert.assertTrue(projectEnabledMessage);
     }
-    @Ignore
-    @Test(dependsOnMethods = "testEnable")
+
+    @Test(dependsOnMethods = "testEnableProject")
     public void testRename() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='%s']".formatted(PROJECT_NAME)))).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), PROJECT_NAME));
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='Rename']/.."))).click();
-        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
-        getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(NEW_PROJECT_NAME_1);
-        getDriver().findElement(By.name("Submit")).click();
+        Boolean updatedProjectName = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickRenameProjectSideMenuButton()
+                .setNewProjectName(PROJECT_NAME_UPDATED)
+                .clickRenameButton()
+                .getUpdatedProjectName(PROJECT_NAME_UPDATED);
         
-        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[@id='main-panel']//h1"))).getText(), NEW_PROJECT_NAME_1);
+        Assert.assertTrue(updatedProjectName);
     }
-    @Ignore
+
     @Test(dependsOnMethods = "testRename")
-    public void testBuildNowCheckAlert() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='%s']".formatted(NEW_PROJECT_NAME_1)))).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), NEW_PROJECT_NAME_1));
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='Build Now']/.."))).click();
+    public void testBuildNowDisplaysPopupMessage() {
+         Boolean popupMessage = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME_UPDATED, new BuildNowPage(getDriver()))
+                .clickBuildNowSideMenuButton()
+                 .isPopUpMessageDisplayed(POPUP_MESSAGE);
 
-        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("notification-bar"))).getText(), "Build scheduled");
+        Assert.assertTrue(popupMessage);
     }
-    @Ignore
-    @Test(dependsOnMethods = "testBuildNowCheckAlert")
-    public void testBuildNow() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='%s']".formatted(NEW_PROJECT_NAME_1)))).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), NEW_PROJECT_NAME_1));
-        getWait10().until(ExpectedConditions.presenceOfElementLocated(
-                By.className("app-builds-container__item")));
 
-        List<String> listOfBuilds = getDriver().findElements(By.className("app-builds-container__item"))
-                .stream()
-                .map(WebElement::getText)
-                .toList();
+    @Test(dependsOnMethods = "testBuildNowDisplaysPopupMessage")
+    public void testBuildNowCreatesBuild() {
+        int build_count = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME_UPDATED, new FreestyleProjectPage(getDriver()))
+                .getBuilds().size();
 
-        Assert.assertEquals(listOfBuilds.size(), 1);
+        Assert.assertEquals(build_count, 1);
     }
+
     @Ignore
     @Test(dependsOnMethods = "testBuildNow")
     public void testBuildAfterOtherProjectsAreBuild() {
@@ -239,6 +208,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(listOfBuilds.size(), 1);
     }
+
     @Ignore
     @Test(dependsOnMethods = "testBuildAfterOtherProjectsAreBuild")
     public void testDelete() {
@@ -254,6 +224,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(listOfJobs.size(), 1);
     }
+
     @Ignore
     @Test(dependsOnMethods = "testDelete")
     public void testRepositoryURL() {
@@ -264,6 +235,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.name("_.url")).getAttribute("value"), REPOSITORY_URL,
                 "The repository URL does not match!");
     }
+
     @Ignore
     @Test(dependsOnMethods = "testRepositoryURL")
     public void testCredentials() {
@@ -274,6 +246,7 @@ public class FreestyleProjectTest extends BaseTest {
                         By.xpath("//select[@name='_.credentialsId']"))).isDisplayed(),
                 "The Credentials drop-down list is not displayed");
     }
+
     @Ignore
     @Test(dependsOnMethods = "testCredentials")
     public void testBranchesToBuild() {
@@ -290,6 +263,7 @@ public class FreestyleProjectTest extends BaseTest {
                         .getAttribute("value"), BRANCH_NAME,
                 "The branch name does not match the expected one!");
     }
+
     @Ignore
     @Test(dependsOnMethods = "testBranchesToBuild")
     public void testSCMAuthenticationFails(){
@@ -307,5 +281,83 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(actualError.contains("Failed to connect to repository"),
                 "Ожидаемый текст ошибки не найден" + actualError);
+    }
+
+    @Ignore
+    @Test
+    public void testCreateSourceItem(){
+        TestUtils.createJob(getDriver(), SOURCE_ITEM_NAME, TestUtils.JobType.FREESTYLE)
+                .clickOnProject(SOURCE_ITEM_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .fillDescription(DESCRIPTION_TEXT)
+                .clickCheckBoxGitHub()
+                .fillGitURL(REPOSITORY_URL)
+                .clickSaveButton();
+
+        Assert.assertEquals(
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.cssSelector("h1.job-index-headline"))).getText(),
+                SOURCE_ITEM_NAME
+        );
+    }
+
+    @Ignore
+    @Test(dependsOnMethods = "testCreateSourceItem")
+    public void testCreateItemFromExistingWithEmptyListItems(){
+        new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(NEW_ITEM_NAME)
+                .enterCopyItemName("Empty");
+        Assert.assertEquals(
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.cssSelector(".jenkins-dropdown__placeholder")
+                )).getText(),
+                "No items"
+        );
+    }
+
+    @Ignore
+    @Test(dependsOnMethods = "testCreateSourceItem")
+    public void testCreateItemFromExisting() {
+        new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(NEW_ITEM_NAME)
+                .enterCopyItemName(SOURCE_ITEM_NAME)
+                .clickOkButton();
+
+        WebElement gitCheckBoxButton = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("input[name='githubProject'][type='checkbox']")));
+
+        SoftAssert softAssert = new SoftAssert();
+
+        softAssert.assertEquals(
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.linkText(NEW_ITEM_NAME))).getText(),
+                NEW_ITEM_NAME
+        );
+
+        softAssert.assertTrue(
+                Objects.requireNonNull(getDriver().getCurrentUrl()).contains("/job/" + NEW_ITEM_NAME + "/configure"),
+                "Не удалось перейти на страницу конфигурации нового проекта"
+        );
+
+        softAssert.assertEquals(
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.name("description"))).getAttribute("value"),
+                DESCRIPTION_TEXT
+        );
+
+        softAssert.assertTrue(
+                gitCheckBoxButton.isSelected(),
+                "Git project is not selected"
+        );
+
+        softAssert.assertEquals(
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.name("_.projectUrlStr"))).getAttribute("value"),
+                REPOSITORY_URL
+        );
+
+        softAssert.assertAll();
     }
 }

@@ -1,9 +1,10 @@
-package school.redrover.page;
+package school.redrover.page.manage;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.page.CreateUserPage;
 import school.redrover.page.common.BasePage;
 
 import java.util.List;

@@ -49,9 +49,9 @@ public class TestUtils {
                 .goHomePage();
     }
 
-    public static void createNestedJob(WebDriver driver, String projectName, String childName, JobType jobType) {
+    public static HomePage createNestedJob(WebDriver driver, String projectName, String childName, JobType jobType) {
         BaseConfigPage configPage = getConfigPage(jobType, driver);
-        new HomePage(driver)
+        return new HomePage(driver)
                 .clickOnProject(projectName, new FolderProjectPage(driver))
                 .clickNewItem()
                 .setProjectName(childName)

@@ -1,53 +1,52 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.project.config.FreestyleProjectConfigPage;
 import school.redrover.page.HomePage;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static school.redrover.common.TestUtils.JobType.FREESTYLE;
 
 public class BuildHistoryTest extends BaseTest {
 
-    @Test
-    public void testEmptyBuild(){
-        new HomePage(getDriver()).clickBuildHistory();
-        List<String> buildHistoryList = new ArrayList<>();
+    private final static String PROJECT_NAME = "NewFreestyleProject";
 
-        try {
-            for (WebElement webElement
-                    : getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//a[@class='jenkins-table__link model-link']")))) {
-                buildHistoryList.add(webElement.getText());
-            }
-        } catch (Exception e) {}
+    @Test
+    public void testEmptyBuildHistory() {
+        List<String> buildHistoryList = new HomePage(getDriver())
+                .clickBuildHistory()
+                .getBuildHistoryList();
 
         Assert.assertEquals(buildHistoryList.size(), 0);
     }
 
     @Test
-    public void deleteWarningMessage(){
-        final String jobName = "TestProject";
-
-        String warningMessage = new HomePage(getDriver())
+    public void testScheduledBuildAppearsInBuildHistory() {
+        List<String> buildHistoryList = new HomePage(getDriver())
                 .clickItemNewJob()
-                .setProjectName(jobName)
-                .selectItemType(FREESTYLE)
-                .clickOK(new FreestyleProjectConfigPage(getDriver()))
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
                 .goHomePage()
-                .clickScheduleBuild(jobName)
+                .clickScheduleBuild(PROJECT_NAME)
                 .clickBuildHistory()
-                .clickDropDownMenu(jobName)
-                .clickDeleteBuild()
-                .getWarningMessage();
+                .getBuildHistoryList();
 
-        Assert.assertTrue(warningMessage.contains("Delete the build"));
+        Assert.assertEquals(buildHistoryList.size(), 1);
+        Assert.assertEquals(buildHistoryList.getFirst(), PROJECT_NAME);
+
     }
 
+    @Test(dependsOnMethods = "testScheduledBuildAppearsInBuildHistory")
+    public void testDeleteBuild() {
+        List<String> buildHistoryList = new HomePage(getDriver())
+                .clickScheduleBuild(PROJECT_NAME)
+                .clickBuildHistory()
+                .clickDropDownMenu(PROJECT_NAME)
+                .clickDeleteProjectWithConfirmation()
+                .clickBuildHistory()
+                .getBuildHistoryList();
+
+        Assert.assertEquals(buildHistoryList.size(), 0);
+    }
 }

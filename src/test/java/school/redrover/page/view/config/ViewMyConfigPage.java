@@ -3,11 +3,13 @@ package school.redrover.page.view.config;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
+import school.redrover.page.view.GlobalViewPage;
 
-public class ViewConfigPage extends BasePage {
+public class ViewMyConfigPage extends BasePage {
 
-    @FindBy(id = "name")
+    @FindBy(name = "name")
     private WebElement elementName;
 
     @FindBy(name = "_.description")
@@ -25,28 +27,28 @@ public class ViewConfigPage extends BasePage {
     @FindBy(name = "Apply")
     private WebElement buttonApply;
 
-    public ViewConfigPage(WebDriver driver) {
+    public ViewMyConfigPage(WebDriver driver) {
         super(driver);
     }
 
-    public ViewConfigPage inputName(String newName){
-        elementName.clear();
+    public ViewMyConfigPage inputName(String newName){
+        getWait5().until(ExpectedConditions.elementToBeClickable(elementName)).clear();
         elementName.sendKeys(newName);
         return this;
     }
 
-    public ViewConfigPage inputDescription(String newDescription){
+    public ViewMyConfigPage inputDescription(String newDescription){
         elementDescription.clear();
         elementDescription.sendKeys(newDescription);
         return this;
     }
 
-    public ViewConfigPage clickSave(){
+    public GlobalViewPage clickSave(){
         buttonSave.click();
-        return this;
+        return new GlobalViewPage(getDriver());
     }
 
-    public ViewConfigPage clickApply(){
+    public ViewMyConfigPage clickApply(){
         buttonApply.click();
         return this;
     }

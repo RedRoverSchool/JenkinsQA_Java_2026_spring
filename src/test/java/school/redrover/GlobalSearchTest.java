@@ -24,7 +24,7 @@ public class GlobalSearchTest extends BaseTest {
                 .setProjectName(folderName)
                 .selectFolder()
                 .clickOkButton()
-                .clickSave()
+                .clickSaveButton()
                 .goHomePage();
     }
 
@@ -58,7 +58,6 @@ public class GlobalSearchTest extends BaseTest {
 
         Assert.assertEquals(input, "");
     }
-
 
     @Ignore
     @Test

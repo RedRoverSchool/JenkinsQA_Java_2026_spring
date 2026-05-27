@@ -10,6 +10,11 @@ public class FolderConfigPage extends BaseConfigPage<FolderConfigPage> {
         super(driver);
     }
 
+    @Override
+    protected FolderConfigPage self() {
+        return this;
+    }
+
     public FolderConfigPage clickHealthMetrics() {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.cssSelector("button.advanced-button"))).click();
 
@@ -36,5 +41,9 @@ public class FolderConfigPage extends BaseConfigPage<FolderConfigPage> {
     public String getTextOfMetric() {
         return
                 getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='_.childName']"))).getAttribute("value");
+    }
+
+    public String getHeaderText() {
+        return getDriver().findElement(By.xpath("//div[@id='side-panel']//h1")).getText();
     }
 }
