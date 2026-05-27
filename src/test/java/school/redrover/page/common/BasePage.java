@@ -28,7 +28,7 @@ public class BasePage extends BaseModel {
         return this.breadcrumb;
     }
 
-    public FooterVersionComponent getVersion() {
+    public FooterVersionComponent getFooterVersion() {
         return this.version;
     }
 

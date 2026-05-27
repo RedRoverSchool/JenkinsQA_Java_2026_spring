@@ -4,40 +4,38 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-import school.redrover.page.external.GetInvolvedPage;
-import school.redrover.page.external.JenkinsWebsite;
 
 public class FooterVersionJenkinsTest extends BaseTest {
 
     @Test
     public void testIsJenkinsVersionMenuDisplayed() {
         boolean isMenuDisplayed = new HomePage(getDriver())
-                .getVersion()
-                .clickJenkinsVersion()
-                .isJenkinsVersionMenu();
+                .getFooterVersion()
+                .clickButtonVersion()
+                .isVersionMenuDisplayed();
 
         Assert.assertTrue(isMenuDisplayed);
     }
 
     @Test
     public void testNavigateToGetInvolvedPage() {
-        GetInvolvedPage externalPage = new HomePage(getDriver())
-                .getVersion()
-                .clickJenkinsVersion()
-                .clickGetInvolved();
+        String titleText = new HomePage(getDriver())
+                .getFooterVersion()
+                .clickButtonVersion()
+                .clickGetInvolved()
+                .getTitleText();
 
-        Assert.assertEquals(
-                externalPage.getTitleText(), "Participate and Contribute");
+        Assert.assertEquals(titleText, "Participate and Contribute");
     }
 
     @Test
     public void testNavigateToWebsitePage(){
-        JenkinsWebsite jenkinsWebsite = new HomePage(getDriver())
-                .getVersion()
-                .clickJenkinsVersion()
-                .clickWebsite();
+        String titleText = new HomePage(getDriver())
+                .getFooterVersion()
+                .clickButtonVersion()
+                .clickWebsite()
+                .getTitleText();
 
-        Assert.assertEquals(
-                jenkinsWebsite.getTitleText(), "Jenkins");
+        Assert.assertEquals(titleText, "Jenkins");
     }
 }

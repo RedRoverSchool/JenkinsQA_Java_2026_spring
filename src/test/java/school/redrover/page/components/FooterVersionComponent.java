@@ -14,7 +14,7 @@ public class FooterVersionComponent extends BaseModel {
     private WebElement jenkinsVersionMenu;
 
     @FindBy(css = "button.jenkins_ver")
-    private WebElement buttonVersionMenu;
+    private WebElement buttonVersion;
 
     @FindBy(xpath = "//a[@href='/manage/about']")
     private WebElement linkAboutJenkins;
@@ -29,14 +29,17 @@ public class FooterVersionComponent extends BaseModel {
         super(driver);
     }
 
-    public FooterVersionComponent clickJenkinsVersion() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(buttonVersionMenu)).click();
+    public FooterVersionComponent clickButtonVersion() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(buttonVersion)).click();
         return this;
     }
 
-    public boolean isJenkinsVersionMenu() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(buttonVersionMenu)).click();
-        return jenkinsVersionMenu.isDisplayed();
+    public boolean isVersionMenuDisplayed() {
+        try {
+            return getWait5().until(ExpectedConditions.visibilityOf(jenkinsVersionMenu)).isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public GetInvolvedPage clickGetInvolved() {
