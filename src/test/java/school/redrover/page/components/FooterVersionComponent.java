@@ -8,7 +8,7 @@ import school.redrover.page.external.GetInvolvedPage;
 import school.redrover.page.common.BaseModel;
 import school.redrover.page.external.JenkinsWebsite;
 
-public class VersionComponent extends BaseModel {
+public class FooterVersionComponent extends BaseModel {
 
     @FindBy(xpath = "//div[@class='jenkins-dropdown']")
     private WebElement jenkinsVersionMenu;
@@ -25,11 +25,11 @@ public class VersionComponent extends BaseModel {
     @FindBy(xpath = "//a[@href='https://www.jenkins.io/']")
     private WebElement linkWebsite;
 
-    public VersionComponent(WebDriver driver) {
+    public FooterVersionComponent(WebDriver driver) {
         super(driver);
     }
 
-    public VersionComponent clickJenkinsVersion() {
+    public FooterVersionComponent clickJenkinsVersion() {
         getWait5().until(ExpectedConditions.elementToBeClickable(buttonVersionMenu)).click();
         return this;
     }

@@ -10,11 +10,12 @@ import school.redrover.page.external.JenkinsWebsite;
 public class FooterVersionJenkinsTest extends BaseTest {
 
     @Test
-    public void testOpenJenkinsVersionMenu() {
+    public void testIsJenkinsVersionMenuDisplayed() {
         boolean isMenuDisplayed = new HomePage(getDriver())
                 .getVersion()
                 .clickJenkinsVersion()
                 .isJenkinsVersionMenu();
+
         Assert.assertTrue(isMenuDisplayed);
     }
 
@@ -24,6 +25,7 @@ public class FooterVersionJenkinsTest extends BaseTest {
                 .getVersion()
                 .clickJenkinsVersion()
                 .clickGetInvolved();
+
         Assert.assertEquals(
                 externalPage.getTitleText(), "Participate and Contribute");
     }
@@ -34,6 +36,7 @@ public class FooterVersionJenkinsTest extends BaseTest {
                 .getVersion()
                 .clickJenkinsVersion()
                 .clickWebsite();
+
         Assert.assertEquals(
                 jenkinsWebsite.getTitleText(), "Jenkins");
     }

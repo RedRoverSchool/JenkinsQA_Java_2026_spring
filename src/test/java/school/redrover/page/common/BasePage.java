@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.components.BreadcrumbComponent;
 import school.redrover.page.HomePage;
 import school.redrover.page.LoginPage;
-import school.redrover.page.components.VersionComponent;
+import school.redrover.page.components.FooterVersionComponent;
 import school.redrover.page.manage.ManagePage;
 
 public class BasePage extends BaseModel {
@@ -16,19 +16,19 @@ public class BasePage extends BaseModel {
     private static final By HEADER = By.xpath("//h1");
 
     private BreadcrumbComponent breadcrumb;
-    private VersionComponent version;
+    private FooterVersionComponent version;
 
     public BasePage(WebDriver driver) {
         super(driver);
         this.breadcrumb = new BreadcrumbComponent(driver);
-        this.version = new VersionComponent(driver);
+        this.version = new FooterVersionComponent(driver);
     }
 
     public BreadcrumbComponent getBreadcrumbs() {
         return this.breadcrumb;
     }
 
-    public VersionComponent getVersion() {
+    public FooterVersionComponent getVersion() {
         return this.version;
     }
 
