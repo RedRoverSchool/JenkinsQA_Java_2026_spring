@@ -1,5 +1,6 @@
 package school.redrover.page.components;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -9,9 +10,6 @@ import school.redrover.page.common.BaseModel;
 import school.redrover.page.external.JenkinsWebsite;
 
 public class FooterVersionComponent extends BaseModel {
-
-    @FindBy(xpath = "//div[@class='jenkins-dropdown']")
-    private WebElement jenkinsVersionMenu;
 
     @FindBy(css = "button.jenkins_ver")
     private WebElement buttonVersion;
@@ -25,30 +23,32 @@ public class FooterVersionComponent extends BaseModel {
     @FindBy(xpath = "//a[@href='https://www.jenkins.io/']")
     private WebElement linkWebsite;
 
+    private static final By JENKINS_VERSION_MENU = By.xpath("//div[@class='jenkins-dropdown']");
+
     public FooterVersionComponent(WebDriver driver) {
         super(driver);
     }
 
     public FooterVersionComponent clickButtonVersion() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(buttonVersion)).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(buttonVersion)).click();
         return this;
     }
 
     public boolean isVersionMenuDisplayed() {
         try {
-            return getWait5().until(ExpectedConditions.visibilityOf(jenkinsVersionMenu)).isDisplayed();
+            return getWait2().until(ExpectedConditions.visibilityOfElementLocated(JENKINS_VERSION_MENU)).isDisplayed();
         } catch (Exception e) {
             return false;
         }
     }
 
     public GetInvolvedPage clickGetInvolved() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(linkGetInvolved)).click();
+        linkGetInvolved.click();
         return new GetInvolvedPage(getDriver());
     }
 
     public JenkinsWebsite clickWebsite() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(linkWebsite)).click();
+        linkWebsite.click();
         return new JenkinsWebsite(getDriver());
     }
 }
