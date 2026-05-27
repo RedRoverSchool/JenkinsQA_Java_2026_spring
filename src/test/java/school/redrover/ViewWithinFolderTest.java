@@ -48,4 +48,15 @@ public class ViewWithinFolderTest extends BaseTest {
 
         Assert.assertEquals(actualDescriptionText,VIEW_DESCRIPTION);
     }
+
+    @Test(dependsOnMethods = "testCreateMyView")
+    public void testOpenEditViewSettings(){
+        String actualViewName = new HomePage(getDriver())
+                .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickOnView()
+                .clickEditView()
+                .getViewName();
+
+        Assert.assertEquals(actualViewName, VIEW_NAME);
+    }
 }
