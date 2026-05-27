@@ -25,18 +25,6 @@ public class CredentialsPage extends BasePage {
     @FindBy(css = "div.credentials-card__title a")
     private List<WebElement> credentialLinks;
 
-    //@FindBy(css = ".jenkins-dialog__title")
-    //private WebElement dialogTitle;
-
-    //@FindBy(id = "cr-dialog-next")
-    //private List<WebElement> nextButtons;
-
-    //@FindBy(xpath = "//div[@class='jenkins-choice-list__item__label'][contains(text(),'SSH')]" )
-    //private WebElement SSHUsernameWithKey;
-
-    //@FindBy(xpath = "//div[@class='jenkins-choice-list__item__label'][text()='Secret text']")
-    //private WebElement secretTextButton;
-
     @FindBy(xpath = "//button[text()='Next']")
     private WebElement nextButton;
 
@@ -84,5 +72,4 @@ public class CredentialsPage extends BasePage {
         return  getWait10()
                 .until(ExpectedConditions.invisibilityOfElementLocated(getCredentialLocator(id)));
     }
-
 }

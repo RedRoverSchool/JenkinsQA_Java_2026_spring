@@ -63,16 +63,12 @@ public class CredentialsTest extends BaseTest {
                 .clickCredentials()
                 .clickAddCredentialsButton()
                 .clickSSHCredentialsButton()
-                .setSSHCredentials("prod-deploy-key","SSH key for prod server","deploy",true,true," RSA/Ed25519 key","MyStr0ngP@ss")
+                .setSSHCredentials("test-prod-deploy-key","SSH key for prod server","deploy",true,true," RSA/Ed25519 key","MyStr0ngP@ss")
                 .clickCreateButton()
                 .getCredentialList();
 
-        System.out.println(credentialList);
-
         //Assert.assertEquals(credentialList.size(), 1); нужно реализовать удаление креденшена для этой строчки
-        Assert.assertEquals(credentialList.getFirst(), "prod-deploy-key");
-
-
+        Assert.assertEquals(credentialList.getFirst(), "test-prod-deploy-key");
     }
 
     @Test(dependsOnMethods = "testAddSshUsernameWithKey")

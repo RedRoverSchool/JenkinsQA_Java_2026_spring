@@ -18,9 +18,6 @@ public class AddCredentialsPage extends BasePage {
     @FindBy(css = ".jenkins-choice-list__item__label")
     private List<WebElement> kindOptions;
 
-    @FindBy(id = "cr-dialog-next")
-    private List<WebElement> nextButtons;
-
     @FindBy(name = "_.username")
     private WebElement usernameTextField;
 
@@ -29,7 +26,6 @@ public class AddCredentialsPage extends BasePage {
 
     @FindBy(name = "_.passphrase")
     private WebElement passphraseTextField;
-
 
     @FindBy(name = "_.id")
     private WebElement IDField;
@@ -66,7 +62,6 @@ public class AddCredentialsPage extends BasePage {
 
     public AddCredentialsPage createUsernameWithPassword(String user, String pass, String id, String desc) {
         getWait5().until(ExpectedConditions.visibilityOfAllElements(kindOptions)).getFirst().click();
-        //nextButtons.getFirst().click();
         nextButton.click();
         getWait5().until(ExpectedConditions.visibilityOf(usernameTextField)).sendKeys(user);
         passwordTextField.sendKeys(pass);
@@ -87,7 +82,8 @@ public class AddCredentialsPage extends BasePage {
 
     public AddCredentialsPage clickSSHCredentialsButton(){
         getWait5().until(ExpectedConditions.elementToBeClickable(SSHUsernameWithKey)).click();
-        nextButtons.getFirst().click();
+        //nextButtons.getFirst().click();
+        nextButton.click();
         return this;
     }
 
@@ -108,16 +104,13 @@ public class AddCredentialsPage extends BasePage {
 
     public AddCredentialsPage typeID(String ID) {
         IDField.sendKeys(ID);
-
         return this;
     }
 
     public AddCredentialsPage typeSecretText(String secret) {
         secretTextField.sendKeys(secret);
-
         return this;
     }
-
 
     public AddCredentialsPage clickNextButton() {
         getWait10().until(ExpectedConditions.elementToBeClickable(nextButton)).click();
@@ -128,7 +121,6 @@ public class AddCredentialsPage extends BasePage {
 
     public CredentialsPage clickCreateButton() {
         createButton.click();
-
         return new CredentialsPage(getDriver());
     }
 
