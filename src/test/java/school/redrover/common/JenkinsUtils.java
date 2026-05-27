@@ -190,6 +190,15 @@ public final class JenkinsUtils {
                 getCrumbAsString());
     }
 
+    private static void deleteCredentials() {
+        String credentialsPage = getPage("manage/credentials/store/system/domain/_/");
+        deleteByLink("manage/credentials/store/system/domain/_/credential/%s/doDelete",
+                getSubstringsFromPage(credentialsPage, "href=\"credential/", "\">").stream()
+                        .filter(id -> id.startsWith("test-"))
+                        .collect(Collectors.toSet()),
+                getCrumbAsString());
+    }
+
     private static void deleteNodes() {
         String mainPage = getPage("computer/");
         Set<String> nodes = getSubstringsFromPage(mainPage, "href=\"../computer/", "/\" ");
@@ -236,6 +245,7 @@ public final class JenkinsUtils {
         JenkinsUtils.deleteViews();
         JenkinsUtils.deleteJobs();
         JenkinsUtils.deleteUsers();
+        JenkinsUtils.deleteCredentials();
         JenkinsUtils.deleteNodes();
         JenkinsUtils.deleteMainDescription();
         JenkinsUtils.deleteViewDescription();
