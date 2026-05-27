@@ -21,7 +21,7 @@ import java.util.Objects;
 public class FreestyleProjectTest extends BaseTest {
 
     private final static String PROJECT_NAME = "FreestyleProject";
-    private final static String PROJECT_NAME_UPDATED = "My FreestyleProject test";
+    private final static String PROJECT_NAME_UPDATED = "My FreestyleProject Test";
     private final static String NEW_PROJECT_NAME_1 = "FreestyleProject1";
     private final static String NEW_PROJECT_NAME_2 ="FreestyleProject2";
     private static final String REPOSITORY_URL = "https://github.com/";
@@ -63,7 +63,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testEnableDeleteWorkspaceBeforeBuildStarts() {
 
@@ -169,21 +168,13 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(popupMessage);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testBuildNowCheckAlert")
-    public void testBuildNow() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='%s']".formatted(NEW_PROJECT_NAME_1)))).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), NEW_PROJECT_NAME_1));
-        getWait10().until(ExpectedConditions.presenceOfElementLocated(
-                By.className("app-builds-container__item")));
+    @Test(dependsOnMethods = "testBuildNowDisplaysPopupMessage")
+    public void testBuildNowCreatesBuild() {
+        int build_count = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME_UPDATED, new FreestyleProjectPage(getDriver()))
+                .getBuilds().size();
 
-        List<String> listOfBuilds = getDriver().findElements(By.className("app-builds-container__item"))
-                .stream()
-                .map(WebElement::getText)
-                .toList();
-
-        Assert.assertEquals(listOfBuilds.size(), 1);
+        Assert.assertEquals(build_count, 1);
     }
 
     @Ignore
