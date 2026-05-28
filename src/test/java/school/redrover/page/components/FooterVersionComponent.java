@@ -23,20 +23,19 @@ public class FooterVersionComponent extends BaseModel {
     @FindBy(xpath = "//a[@href='https://www.jenkins.io/']")
     private WebElement linkWebsite;
 
-    private static final By JENKINS_VERSION_MENU = By.xpath("//div[@class='jenkins-dropdown']");
-
     public FooterVersionComponent(WebDriver driver) {
         super(driver);
     }
 
     public FooterVersionComponent clickButtonVersion() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(buttonVersion)).click();
+        buttonVersion.click();
         return this;
     }
 
     public boolean isVersionMenuDisplayed() {
         try {
-            return getWait2().until(ExpectedConditions.visibilityOfElementLocated(JENKINS_VERSION_MENU)).isDisplayed();
+            return getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//div[@class='jenkins-dropdown']"))).isDisplayed();
         } catch (Exception e) {
             return false;
         }
