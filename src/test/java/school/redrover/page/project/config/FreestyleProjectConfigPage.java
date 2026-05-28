@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BaseConfigPage;
 import school.redrover.page.project.FreestyleProjectPage;
@@ -11,6 +12,7 @@ import school.redrover.page.project.FreestyleProjectPage;
 import java.util.List;
 
 public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectConfigPage> {
+
 
     public FreestyleProjectConfigPage(WebDriver driver) {
         super(driver);
@@ -70,25 +72,25 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     }
 
     public FreestyleProjectPage clickSaveButton() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                        By.name("Submit")))
-                .click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
 
         return new FreestyleProjectPage(getDriver());
     }
 
-    public FreestyleProjectConfigPage  enableDeleteWorkspaceBeforeBuildStarts() {
+    public FreestyleProjectConfigPage  checkDeleteWorkspaceBeforeBuildStartsCheckbox() {
         WebElement checkboxLabel = getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//label[contains(.,'Delete workspace before build starts')]")));
 
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block:'center'});", checkboxLabel);
 
         checkboxLabel.click();
+
         return this;
     }
 
-    public boolean isDeleteWorkspaceBeforeBuildStartsSelected() {
-        return getWait10().until(ExpectedConditions.presenceOfElementLocated(By.name("hudson-plugins-ws_cleanup-PreBuildCleanup"))).isSelected();
+    public boolean isCheckBoxChecked(WebElement webElement) {
+        return getWait10().until(ExpectedConditions.presenceOfElementLocated(
+                By.name("hudson-plugins-ws_cleanup-PreBuildCleanup"))).isSelected();
     }
 
     public FreestyleProjectConfigPage clickOnBuildStep() {
@@ -139,5 +141,56 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     public Boolean getProjectState(String expectedState) {
         return getWait10().until(ExpectedConditions.textToBe(
                 By.className("jenkins-toggle-switch__label"),expectedState));
+    }
+
+    public FreestyleProjectConfigPage clickTriggersSideMenuButton() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("button[data-section-id = 'triggers']"))).click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigPage selectBuildAfterOtherProjectsAreBuiltCheckbox() {
+        By checkbox = By.name("jenkins-triggers-ReverseBuildTrigger");
+
+        WebElement element = getWait5().until(ExpectedConditions.presenceOfElementLocated(checkbox));
+
+        try {
+            getWait10().until(
+                    ExpectedConditions.elementToBeClickable(element)).click();
+        } catch (Exception e) {
+            ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", element);
+            }
+
+        return this;
+    }
+
+    public FreestyleProjectConfigPage enterMessageIntoProjectsToWatchField(String message) {
+        getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(message);
+
+        return this;
+    }
+
+    public FreestyleProjectConfigPage selectTriggerEvenIfTheBuildFailsRadioButton() {
+        getDriver().findElement(By.cssSelector("input[value = 'FAILURE']"));
+
+        return this;
+    }
+
+    public FreestyleProjectConfigPage selectGitRadioButton() {
+        WebElement gitOption = getDriver().findElement(By.xpath("//label[text()='Git']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", gitOption);
+
+        return this;
+    }
+
+    public FreestyleProjectConfigPage enterRepositoryURL(String url) {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("_.url"))).
+                sendKeys(url);
+        return this;
+    }
+
+    public String getRepositoryUrl() {
+        return getDriver().findElement(By.name("_.url")).getAttribute("value");
     }
 }
