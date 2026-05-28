@@ -75,11 +75,10 @@ public class BreadcrumbTest extends BaseTest {
                 .clickOnChildProject(FOLDER_CHILD, new NestedFolderPage(getDriver()))
                 .clickNewItem()
                 .setProjectName(FREESTYLE_NESTED)
-                .selectFreeStyleProjectAndClickOk()
+                .selectFreestyleProjectAndClickOk()
                 .getBreadcrumbs()
                 .getBreadcrumbItems();
 
         Assert.assertEquals(breadcrumbPath, expectedBreadcrumbPath);
     }
 }
-
