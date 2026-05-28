@@ -54,8 +54,7 @@ public class FreestyleProjectTest extends BaseTest {
         List<String> projectList = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(PROJECT_NAME)
-                .selectFreeStyleProject()
-                .clickOkButton()
+                .selectFreestyleProjectAndClickOk()
                 .goHomePage()
                 .getProjectList();
 

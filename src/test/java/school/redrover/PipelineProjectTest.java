@@ -120,7 +120,7 @@ public class PipelineProjectTest extends BaseTest {
         String errorMessage = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(invalidProjectName)
-                .selectPipelineProject()
+                .selectPipelineProjectAndWaitError()
                 .getErrorInvalidText();
 
         Assert.assertEquals(errorMessage, "» ‘" + invalidCharacter + "’ is an unsafe character");
