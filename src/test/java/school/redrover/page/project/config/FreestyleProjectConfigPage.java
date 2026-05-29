@@ -14,6 +14,7 @@ import java.util.List;
 public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectConfigPage> {
 
     By deleteWorkspaceBeforeBuildStartsCheckbox = By.name("hudson-plugins-ws_cleanup-PreBuildCleanup");
+    By executeWindowsBatchCommandMenuItem= By.xpath("//button[contains(., 'Execute Windows batch command')]");
 
     public FreestyleProjectConfigPage(WebDriver driver) {
         super(driver);
@@ -64,6 +65,21 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         return this;
     }
 
+    public FreestyleProjectConfigPage clickBuildStep(By locator) {
+        getDriver().findElement(locator).click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigPage clickExecuteWindowsBatchCommandMenuItem(){
+        return clickBuildStep(executeWindowsBatchCommandMenuItem);
+    }
+
+    public boolean isBuildStepAdded() {
+        return getDriver().findElement(
+                By.xpath("//div[contains(., 'Execute Windows batch command')]")).isDisplayed();
+    }
+
     public List <String> listOfBuildSteps(){
         return getDriver()
                 .findElements(By.xpath("//div[@class='jenkins-dropdown jenkins-dropdown--compact']//button"))
@@ -80,12 +96,14 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
 
     public FreestyleProjectConfigPage  setDeleteWorkspaceBeforeBuildStartsCheckbox(boolean value) {
         WebElement checkbox = getWait10().until(
-                ExpectedConditions.elementToBeClickable(
+                ExpectedConditions.presenceOfElementLocated(
                         By.xpath("//label[contains(.,'Delete workspace before build starts')]"))
         );
 
-        if (checkbox.isSelected() != value) {
-            ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block:'center'});", checkbox);
+        if (checkbox.isSelected() != value && checkbox.isEnabled()) {
+            ((JavascriptExecutor) getDriver())
+                    .executeScript("arguments[0].scrollIntoView({block:'center'});", checkbox);
+
             checkbox.click();
         }
 
@@ -94,7 +112,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
 
     public boolean isCheckBoxChecked(By locator) {
         return getWait10()
-                .until(ExpectedConditions.presenceOfElementLocated(locator))
+                .until(ExpectedConditions.visibilityOfElementLocated(locator))
                 .isSelected();
     }
 
@@ -144,7 +162,9 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     }
 
     public FreestyleProjectConfigPage disableProjectToggle() {
-        getDriver().findElement(By.xpath("//label[@class='jenkins-toggle-switch__label ']")).click();
+        getDriver().findElement(
+                By.xpath("//label[@class='jenkins-toggle-switch__label ']")).click();
+
         return this;
     }
 
