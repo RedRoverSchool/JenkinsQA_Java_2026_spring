@@ -208,8 +208,7 @@ public class FreestyleProjectTest extends BaseTest {
                  .clickOkButton()
                  .goHomePage()
                  .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                 .clickBuildNowSideMenuButton()
-                 .isPopUpMessageDisplayed(POPUP_MESSAGE);
+                 .isPopupMessageDisplayed(POPUP_MESSAGE);
 
         Assert.assertTrue(popupMessage);
     }
@@ -229,20 +228,20 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(build_count, 1);
     }
 
-//    @Test(dependsOnMethods = "testBuildNowDisplaysPopupMessage")
-//    public void testBuildAfterOtherProjectsAreBuild() {
-//        int build_count = new HomePage(getDriver())
-//                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-//                .clickConfigure()
-//                .selectBuildAfterOtherProjectsAreBuiltCheckbox()
-//                .enterMessageIntoProjectsToWatchField(PROJECT_NAME)
-//                .selectTriggerEvenIfTheBuildFailsRadioButton()
-//                .clickSaveButton()
-//                .clickBuildNowSideMenuButton()
-//                .getBuilds().size();
-//
-//        Assert.assertEquals(build_count, 2);
-//    }
+    @Test(dependsOnMethods = "testBuildNowDisplaysPopupMessage")
+    public void testBuildAfterOtherProjectsAreBuild() {
+        int build_count = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .selectBuildAfterOtherProjectsAreBuiltCheckbox()
+                .enterMessageIntoProjectsToWatchField(PROJECT_NAME)
+                .selectTriggerEvenIfTheBuildFailsRadioButton()
+                .clickSaveButton()
+                .clickBuildNowSideMenuButton()
+                .getBuilds().size();
+
+        Assert.assertEquals(build_count, 1);
+    }
 
 
     @Test

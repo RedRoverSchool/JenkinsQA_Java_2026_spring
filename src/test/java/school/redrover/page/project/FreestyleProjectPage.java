@@ -117,9 +117,12 @@ public class FreestyleProjectPage extends BaseProjectPage {
         return new HomePage(getDriver());
     }
 
-    public Boolean isPopUpMessageDisplayed(String popUpMessage) {
-        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("notification-bar"))).getText().equals(popUpMessage);
+    public Boolean isPopupMessageDisplayed(String popUpMessage) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//span[text()='Build Now']/.."))).click();
+
+        return getWait10().until(ExpectedConditions.textToBePresentInElementLocated(
+                By.id("notification-bar"), popUpMessage));
     }
 
 }
