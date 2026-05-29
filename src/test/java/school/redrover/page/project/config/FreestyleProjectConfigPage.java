@@ -13,6 +13,7 @@ import java.util.List;
 
 public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectConfigPage> {
 
+    By deleteWorkspaceBeforeBuildStartsCheckbox = By.name("hudson-plugins-ws_cleanup-PreBuildCleanup");
 
     public FreestyleProjectConfigPage(WebDriver driver) {
         super(driver);
@@ -77,21 +78,30 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         return new FreestyleProjectPage(getDriver());
     }
 
-    public FreestyleProjectConfigPage  checkDeleteWorkspaceBeforeBuildStartsCheckbox() {
-        WebElement checkboxLabel = getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//label[contains(.,'Delete workspace before build starts')]")));
+    public FreestyleProjectConfigPage  setDeleteWorkspaceBeforeBuildStartsCheckbox(boolean value) {
+        WebElement checkbox = getWait10().until(
+                ExpectedConditions.elementToBeClickable(
+                        By.xpath("//label[contains(.,'Delete workspace before build starts')]"))
+        );
 
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block:'center'});", checkboxLabel);
-
-        checkboxLabel.click();
+        if (checkbox.isSelected() != value) {
+            ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block:'center'});", checkbox);
+            checkbox.click();
+        }
 
         return this;
     }
 
-    public boolean isCheckBoxChecked(WebElement webElement) {
-        return getWait10().until(ExpectedConditions.presenceOfElementLocated(
-                By.name("hudson-plugins-ws_cleanup-PreBuildCleanup"))).isSelected();
+    public boolean isCheckBoxChecked(By locator) {
+        return getWait10()
+                .until(ExpectedConditions.presenceOfElementLocated(locator))
+                .isSelected();
     }
+
+    public boolean isDeleteWorkspaceBeforeBuildStartsCheckboxChecked() {
+        return isCheckBoxChecked(deleteWorkspaceBeforeBuildStartsCheckbox);
+    }
+
 
     public FreestyleProjectConfigPage clickOnBuildStep() {
         List<WebElement> dropdownItems = getWait5().until(

@@ -47,23 +47,31 @@ public class FreestyleProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateFreestyleProject")
     public void testCheckboxIsChecked() {
 
-        boolean isSelected = new HomePage(getDriver())
+        boolean isChecked = new HomePage(getDriver())
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
-                .checkDeleteWorkspaceBeforeBuildStartsCheckbox()
+                .setDeleteWorkspaceBeforeBuildStartsCheckbox(true)
                 .clickSaveButton()
                 .clickConfigure()
-                .isDeleteWorkspaceBeforeBuildStartsSelected();
+                .isDeleteWorkspaceBeforeBuildStartsCheckboxChecked();
 
-        Assert.assertTrue(isSelected);
+        Assert.assertTrue(isChecked);
     }
 
-    @Test(dependsOnMethods = "testCheckboxIsSelected")
+    @Test(dependsOnMethods = "testCreateFreestyleProject")
     public void testCheckboxIsUnchecked() {
+        boolean isChecked = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .setDeleteWorkspaceBeforeBuildStartsCheckbox(false)
+                .clickSaveButton()
+                .clickConfigure()
+                .isDeleteWorkspaceBeforeBuildStartsCheckboxChecked();
 
+        Assert.assertFalse(isChecked);
     }
 
-    @Test (dependsOnMethods = "testCreate")
+    @Test (dependsOnMethods = "testCreateFreestyleProject")
     public void testAddBuildStepDropdownContainsAllOptions(){
         List<String> expectedTexts = Arrays.asList(
                 "Execute Windows batch command",
