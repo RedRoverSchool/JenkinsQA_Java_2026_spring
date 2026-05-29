@@ -3,7 +3,6 @@ package school.redrover.page.project;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.CreateProjectPage;
@@ -15,7 +14,7 @@ import school.redrover.page.view.FolderViewPage;
 
 import java.util.regex.Pattern;
 
-public class FolderProjectPage extends BaseProjectPage {
+public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
 
     @FindBy(xpath = "//a[contains(@href, 'rename')]")
     private WebElement renameButtonSideMenu;

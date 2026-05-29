@@ -19,12 +19,14 @@ public class RenameProjectPage extends BasePage {
         WebElement nameField = getDriver().findElement(NEW_NAME_INPUT);
         nameField.clear();
         nameField.sendKeys(projectName);
+
         return this;
     }
 
     public RenameProjectPage clickRenameButton(){
         getDriver().findElement(SUBMIT_BUTTON).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
+
         return this;
     }
 
@@ -34,5 +36,4 @@ public class RenameProjectPage extends BasePage {
 
         return getProjectName.equals(projectName);
     }
-
 }

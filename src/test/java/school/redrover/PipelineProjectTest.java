@@ -8,6 +8,8 @@ import school.redrover.common.TestUtils;
 import school.redrover.page.CreateProjectPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.PipelineProjectPage;
+import school.redrover.page.project.config.PipelineProjectConfigPage;
+
 import java.util.List;
 
 public class PipelineProjectTest extends BaseTest {
@@ -58,7 +60,8 @@ public class PipelineProjectTest extends BaseTest {
     public void testDisable() {
         String warningText = new HomePage(getDriver())
                 .clickOnProject(PROJECT_NAME, new PipelineProjectPage(getDriver()))
-                .clickConfigureSidebarButton()
+                .getSideMenu()
+                .clickConfigure(new PipelineProjectConfigPage(getDriver()))
                 .toggleProjectState()
                 .clickSaveButton()
                 .getDisabledWarningText();
@@ -70,7 +73,8 @@ public class PipelineProjectTest extends BaseTest {
     public void testEnable() {
         boolean isBuildNowButtonDisplayed = new HomePage(getDriver())
                 .clickOnProject(PROJECT_NAME, new PipelineProjectPage(getDriver()))
-                .clickConfigureSidebarButton()
+                .getSideMenu()
+                .clickConfigure(new PipelineProjectConfigPage(getDriver()))
                 .toggleProjectState()
                 .clickSaveButton()
                 .isBuildNowDisplayed();
@@ -82,8 +86,9 @@ public class PipelineProjectTest extends BaseTest {
     public void testRename() {
         List<String> jobList = new HomePage(getDriver())
                 .clickOnProject(PROJECT_NAME, new PipelineProjectPage(getDriver()))
-                .clickRenameSidebarButton()
-                .updateProjectName(RENAME_PIPELINE)
+                .getSideMenu()
+                .clickRename()
+                .setNewProjectName(RENAME_PIPELINE)
                 .clickRenameButton()
                 .goHomePage()
                 .getProjectList();
@@ -143,7 +148,8 @@ public class PipelineProjectTest extends BaseTest {
     public void testDeleteViaSidebar() {
         List<String> jobList = new HomePage(getDriver())
                 .clickOnProject(RENAME_PIPELINE, new PipelineProjectPage(getDriver()))
-                .deletePipelineAndConfirm()
+                .getSideMenu()
+                .clickDelete()
                 .getProjectList();
 
         Assert.assertListNotContainsObject(jobList, RENAME_PIPELINE, "Pipeline is not deleted");

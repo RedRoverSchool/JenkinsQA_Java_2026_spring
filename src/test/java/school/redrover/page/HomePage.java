@@ -68,7 +68,7 @@ public class HomePage extends BasePage {
     }
 
     public <ProjectPage extends BaseProjectPage> ProjectPage clickOnProject(String projectName, ProjectPage projectPage) {
-        getDriver().findElement(By.xpath("//td/a/span[text() = '%s']/..".formatted(projectName)))
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a/span[text() = '%s']/..".formatted(projectName))))
                 .click();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@class, 'task-link')]//span[text()='Status']")));
