@@ -96,8 +96,8 @@ public class FreestyleProjectPage extends BaseProjectPage {
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//span[text()='Build Now']/.."))).click();
 
-//        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-//                By.className("app-builds-container__item"))).isDisplayed();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.className("app-builds-container__item"))).isDisplayed();
 
         return this;
     }
