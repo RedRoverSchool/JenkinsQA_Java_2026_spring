@@ -6,11 +6,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
-import school.redrover.page.common.BaseProjectPage;
+import school.redrover.page.common.BaseJobPage;
+import school.redrover.page.components.FreestylePipelineMulticonfigSideMenuComponent;
 import school.redrover.page.project.config.PipelineProjectConfigPage;
 import school.redrover.page.PipelineProjectRenamePage;
 
-public class PipelineProjectPage extends BaseProjectPage {
+public class PipelineProjectPage extends BaseJobPage<PipelineProjectPage> {
 
     @FindBy(id = "description-link")
     private WebElement descriptionLinkElement;
@@ -45,8 +46,16 @@ public class PipelineProjectPage extends BaseProjectPage {
     @FindBy(xpath = "//a[@href='/view/all/newJob']")
     private WebElement addNewItemButton;
 
+    private final FreestylePipelineMulticonfigSideMenuComponent<PipelineProjectPage> fullSideMenu;
+
     public PipelineProjectPage(WebDriver driver) {
         super(driver);
+        this.fullSideMenu = new FreestylePipelineMulticonfigSideMenuComponent<>(driver, this);
+    }
+
+    @Override
+    public FreestylePipelineMulticonfigSideMenuComponent<PipelineProjectPage> getSideMenu() {
+        return this.fullSideMenu;
     }
 
     public PipelineProjectPage clickAddDescription() {

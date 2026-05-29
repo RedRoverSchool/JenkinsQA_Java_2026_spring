@@ -11,9 +11,10 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
-import school.redrover.page.BuildNowPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.FreestyleProjectPage;
+import school.redrover.page.project.config.FreestyleProjectConfigPage;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +24,7 @@ public class FreestyleProjectTest extends BaseTest {
     private final static String PROJECT_NAME = "FreestyleProject";
     private final static String PROJECT_NAME_UPDATED = "My FreestyleProject Test";
     private final static String NEW_PROJECT_NAME_1 = "FreestyleProject1";
-    private final static String NEW_PROJECT_NAME_2 ="FreestyleProject2";
+    private final static String NEW_PROJECT_NAME_2 = "FreestyleProject2";
     private static final String REPOSITORY_URL = "https://github.com/";
     private static final String BRANCH_NAME = "*/main";
     private static final String SOURCE_ITEM_NAME = "source_item";
@@ -32,19 +33,19 @@ public class FreestyleProjectTest extends BaseTest {
     private static final String BUILD_STEP_NAME = "Test";
     private static final String POPUP_MESSAGE = "Build scheduled";
 
-    private void goToConfigurePage(){
+    private void goToConfigurePage() {
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//a[contains(@href, 'job/')]//span[text()='%s']".formatted(NEW_PROJECT_NAME_1)))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//a[contains(@href, '/configure')]"))).click();
     }
 
-    private void gitButton(){
+    private void gitButton() {
         WebElement gitOption = getDriver().findElement(By.xpath("//label[text()='Git']"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", gitOption);
     }
 
-    private void enterRepositoryURL(){
+    private void enterRepositoryURL() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("_.url"))).
                 sendKeys(REPOSITORY_URL);
     }
@@ -64,21 +65,34 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreate")
+    public void testChanges() {
+        String message = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .getSideMenu()
+                .clickChanges()
+                .getMessage();
+
+        Assert.assertTrue(message.contains("No builds"));
+    }
+
+    @Test(dependsOnMethods = "testChanges")
     public void testEnableDeleteWorkspaceBeforeBuildStarts() {
 
         boolean isSelected = new HomePage(getDriver())
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickConfigure()
+                .getSideMenu()
+                .clickConfigure(new FreestyleProjectConfigPage(getDriver()))
                 .enableDeleteWorkspaceBeforeBuildStarts()
-                .clickSaveButton()
-                .clickConfigure()
+                .clickSave(new FreestyleProjectPage(getDriver()))
+                .getSideMenu()
+                .clickConfigure(new FreestyleProjectConfigPage(getDriver()))
                 .isDeleteWorkspaceBeforeBuildStartsSelected();
 
         Assert.assertTrue(isSelected);
     }
 
-    @Test (dependsOnMethods = "testCreate")
-    public void testAddBuildStepDropdownContainsAllOptions(){
+    @Test(dependsOnMethods = "testEnableDeleteWorkspaceBeforeBuildStarts")
+    public void testAddBuildStepDropdownContainsAllOptions() {
         List<String> expectedTexts = Arrays.asList(
                 "Execute Windows batch command",
                 "Execute shell",
@@ -88,9 +102,10 @@ public class FreestyleProjectTest extends BaseTest {
                 "Run with timeout",
                 "Set build status to \"pending\" on GitHub commit");
 
-        List<String> actualTexts= new HomePage(getDriver())
+        List<String> actualTexts = new HomePage(getDriver())
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickConfigure()
+                .getSideMenu()
+                .clickConfigure(new FreestyleProjectConfigPage(getDriver()))
                 .clickAddBuildStep()
                 .listOfBuildSteps();
 
@@ -111,7 +126,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(commandFieldExists);
     }
 
-    @Test (dependsOnMethods = "testDeleteBuildStep")
+    @Test(dependsOnMethods = "testDeleteBuildStep")
     public void testAddDescription() {
         String actualDescriptionText = new HomePage(getDriver())
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -120,7 +135,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton()
                 .getDescription();
 
-        Assert.assertEquals(actualDescriptionText,DESCRIPTION_TEXT);
+        Assert.assertEquals(actualDescriptionText, DESCRIPTION_TEXT);
     }
 
     @Test(dependsOnMethods = "testAddDescription")
@@ -150,20 +165,22 @@ public class FreestyleProjectTest extends BaseTest {
     public void testRename() {
         Boolean updatedProjectName = new HomePage(getDriver())
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickRenameProjectSideMenuButton()
+                .getSideMenu()
+                .clickRename()
                 .setNewProjectName(PROJECT_NAME_UPDATED)
                 .clickRenameButton()
                 .getUpdatedProjectName(PROJECT_NAME_UPDATED);
-        
+
         Assert.assertTrue(updatedProjectName);
     }
 
     @Test(dependsOnMethods = "testRename")
     public void testBuildNowDisplaysPopupMessage() {
-         Boolean popupMessage = new HomePage(getDriver())
-                .clickOnProject(PROJECT_NAME_UPDATED, new BuildNowPage(getDriver()))
-                .clickBuildNowSideMenuButton()
-                 .isPopUpMessageDisplayed(POPUP_MESSAGE);
+        Boolean popupMessage = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME_UPDATED, new FreestyleProjectPage(getDriver()))
+                .getSideMenu()
+                .clickBuildNow()
+                .isPopUpMessageDisplayed(POPUP_MESSAGE);
 
         Assert.assertTrue(popupMessage);
     }
@@ -201,7 +218,7 @@ public class FreestyleProjectTest extends BaseTest {
         getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), NEW_PROJECT_NAME_2));
         getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
 
-        List <String> listOfBuilds = getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.className("app-builds-container__item")))
+        List<String> listOfBuilds = getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.className("app-builds-container__item")))
                 .stream()
                 .map(WebElement::getText)
                 .toList();
@@ -266,7 +283,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Ignore
     @Test(dependsOnMethods = "testBranchesToBuild")
-    public void testSCMAuthenticationFails(){
+    public void testSCMAuthenticationFails() {
         goToConfigurePage();
         gitButton();
         enterRepositoryURL();
@@ -285,7 +302,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Ignore
     @Test
-    public void testCreateSourceItem(){
+    public void testCreateSourceItem() {
         TestUtils.createJob(getDriver(), SOURCE_ITEM_NAME, TestUtils.JobType.FREESTYLE)
                 .clickOnProject(SOURCE_ITEM_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
@@ -303,7 +320,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Ignore
     @Test(dependsOnMethods = "testCreateSourceItem")
-    public void testCreateItemFromExistingWithEmptyListItems(){
+    public void testCreateItemFromExistingWithEmptyListItems() {
         new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(NEW_ITEM_NAME)
