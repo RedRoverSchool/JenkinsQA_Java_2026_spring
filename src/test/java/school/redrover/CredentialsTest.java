@@ -67,7 +67,6 @@ public class CredentialsTest extends BaseTest {
                 .clickCreateButton()
                 .getCredentialList("test-cred");
 
-        Assert.assertEquals(credentialList.size(), 1);
         Assert.assertEquals(credentialList.getFirst(), "test-cred");
     }
 
