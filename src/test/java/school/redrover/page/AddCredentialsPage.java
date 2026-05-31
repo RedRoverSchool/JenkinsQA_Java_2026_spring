@@ -83,7 +83,6 @@ public class AddCredentialsPage extends BasePage {
 
     public AddCredentialsPage clickSSHCredentialsButton(){
         getWait5().until(ExpectedConditions.elementToBeClickable(SSHUsernameWithKey)).click();
-        //nextButtons.getFirst().click();
         nextButton.click();
         return this;
     }
@@ -124,5 +123,4 @@ public class AddCredentialsPage extends BasePage {
         createButton.click();
         return new CredentialsPage(getDriver());
     }
-
 }

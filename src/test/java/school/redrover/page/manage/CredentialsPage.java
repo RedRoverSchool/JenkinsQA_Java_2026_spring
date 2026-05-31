@@ -22,7 +22,7 @@ public class CredentialsPage extends BasePage {
     @FindBy(xpath ="//span[text() = 'Close']")
     private WebElement closeButton;
 
-    @FindBy(css = "div.credentials-card__title a")
+    @FindBy(xpath = "//a[contains(@href, '/manage/credentials/store/system/domain/_/credential/')]")
     private List<WebElement> credentialLinks;
 
     @FindBy(xpath = ("//*[contains(text(), 'Delete credential')]"))
@@ -48,9 +48,13 @@ public class CredentialsPage extends BasePage {
                 .isDisplayed();
     }
 
-    public List<String> getCredentialList() {
+    public List<String> getCredentialList(String credentialId) {
+        getWait10()
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[contains(@href, '/manage/credentials/store/system/domain/_/credential/') and text()='" + credentialId + "']")));
+
         return credentialLinks.stream()
-                .map(WebElement::getText).toList();
+                   .map(WebElement::getText)
+                   .toList();
     }
 
     public CredentialsPage clickDeleteCredential(String id) {

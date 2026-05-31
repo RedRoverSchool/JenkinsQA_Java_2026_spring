@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -66,24 +65,10 @@ public class CredentialsTest extends BaseTest {
                 .clickSSHCredentialsButton()
                 .setSSHCredentials("test-cred","SSH key for prod server","deploy",true,true," RSA/Ed25519 key","MyStr0ngP@ss")
                 .clickCreateButton()
-                .getCredentialList();
+                .getCredentialList("test-cred");
 
-        //Assert.assertEquals(credentialList.size(), 1); нужно реализовать удаление креденшена для этой строчки
-        Assert.assertEquals(credentialList.getLast(), "test-cred");
-    }
-
-    @Ignore
-    @Test(dependsOnMethods = "testAddSshUsernameWithKey")
-    public void testDeleteCredentialSshUser() {
-
-        boolean isDeleted = new HomePage(getDriver())
-                .clickManageButton()
-                .clickCredentials()
-                .clickDeleteCredential("prod-deploy-key")
-                .isCredentialDeleted("prod-deploy-key");
-
-        Assert.assertTrue(isDeleted,
-                "Username with ID " + id + " is still found!");
+        Assert.assertEquals(credentialList.size(), 1);
+        Assert.assertEquals(credentialList.getFirst(), "test-cred");
     }
 
     @Test
