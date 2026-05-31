@@ -96,7 +96,7 @@ public class AddCredentialsPage extends BasePage {
         passphraseTextField.sendKeys(pass);
         if (enterDirectly ==true){
             enterDirectlyCheckbox.click();
-            addButton.click();
+            getWait5().until(ExpectedConditions.elementToBeClickable(addButton)).click();
             getDriver().findElement(By.xpath("//textarea[contains(@id,\"secretText\")]")).sendKeys(key);
         }
         return this;
