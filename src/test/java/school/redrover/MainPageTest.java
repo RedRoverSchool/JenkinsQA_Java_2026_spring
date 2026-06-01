@@ -30,7 +30,7 @@ public class MainPageTest extends BaseTest {
                 .goHomePage()
                 .clickItemNewJob()
                 .setProjectName(FREESTYLE_NAME)
-                .selectFreeStyleProjectAndClickOk()
+                .selectFreestyleProjectAndClickOk()
                 .goHomePage()
                 .getProjectList();
 
