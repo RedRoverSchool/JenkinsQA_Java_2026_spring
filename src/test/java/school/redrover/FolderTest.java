@@ -24,8 +24,7 @@ public class FolderTest extends BaseTest {
         List<String> joblist = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(FOLDER_NAME)
-                .selectItemType(TestUtils.JobType.FOLDER)
-                .clickOK(new FolderConfigPage(getDriver()))
+                .selectFolderProjectAndClickOk()
                 .goHomePage()
                 .getProjectList();
 

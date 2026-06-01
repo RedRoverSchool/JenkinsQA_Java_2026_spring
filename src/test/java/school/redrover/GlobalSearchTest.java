@@ -1,20 +1,12 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 import java.util.List;
-import java.util.Random;
-
-import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.FolderProjectPage;
-import school.redrover.page.project.config.FolderConfigPage;
 
 public class GlobalSearchTest extends BaseTest {
 
@@ -37,8 +29,7 @@ public class GlobalSearchTest extends BaseTest {
         List<String> currentPath = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(FOLDER_FIRST)
-                .selectItemType(TestUtils.JobType.FOLDER)
-                .clickOK(new FolderConfigPage(getDriver()))
+                .selectFolderProjectAndClickOk()
                 .goHomePage()
                 .clickSearchButton()
                 .typeSearchInputAndPressENTER(FOLDER_FIRST, new FolderProjectPage(getDriver()))

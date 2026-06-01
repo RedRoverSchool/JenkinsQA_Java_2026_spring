@@ -92,7 +92,7 @@ public class HomePage extends BasePage {
     public <T extends BasePage> T typeSearchInputAndPressENTER(String inputText, T returnPage) {
         searchInputField.sendKeys(inputText);
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@class, 'jenkins-command-palette__results__item') and contains( @href, 'FirstFolder')]"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@class, 'jenkins-command-palette__results__item') and contains( @href, '%s')]".formatted(inputText)))).click();
         getWait5().until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("#breadcrumbs .jenkins-breadcrumbs__list-item")));
 
         return returnPage;
