@@ -39,12 +39,6 @@ public class CreateProjectPage extends BasePage {
     @FindBy(xpath = "//li[@class='hudson_model_FreeStyleProject']")
     private WebElement optionFreestyleProject;
 
-    @FindBy(xpath = "//li[@class='hudson_matrix_MatrixProject']")
-    private WebElement optionMultiConfiguration;
-
-    @FindBy(xpath = "//li[@class='hudson_model_FreeStyleProject']")
-    private WebElement optionFreestyleProject;
-
     @FindBy(xpath = "//*[@id='main-panel']/h1")
     private WebElement errorTitle;
 
@@ -84,7 +78,6 @@ public class CreateProjectPage extends BasePage {
 
     public FreestyleProjectConfigPage selectFreestyleProjectAndClickOk() {
         optionFreestyleProject.click();
-
         okButton.click();
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(BUTTON_OK));
@@ -94,21 +87,15 @@ public class CreateProjectPage extends BasePage {
 
     public FolderConfigPage selectFolderProjectAndClickOk() {
         folderOption.click();
+        okButton.click();
 
-        getDriver().findElement(By.id("ok-button")).click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
 
         return new FolderConfigPage(getDriver());
     }
+
     public MultiConfigurationProjectPage selectMulticonfigAndClickOk() {
         getDriver().findElement(By.xpath("//span[text()='Multi-configuration project']")).click();
-    public FreestyleProjectConfigPage selectFreestyleProjectAndClickOk() {
-        optionFreestyleProject.click();
-
-        okButton.click();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(BUTTON_OK));
-
         return new MultiConfigurationProjectPage(getDriver());
     }
 
@@ -120,7 +107,6 @@ public class CreateProjectPage extends BasePage {
 
     public PipelineProjectConfigPage selectPipelineProjectAndClickOk() {
         pipelineOption.click();
-
         okButton.click();
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(BUTTON_OK));
