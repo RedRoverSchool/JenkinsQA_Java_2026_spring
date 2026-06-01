@@ -3,19 +3,19 @@ package school.redrover.page.project;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.CreateProjectPage;
 import school.redrover.page.common.BasePage;
 import school.redrover.page.common.BaseProjectPage;
+import school.redrover.page.components.BaseSideMenuComponent;
 import school.redrover.page.project.config.FolderConfigPage;
 import school.redrover.page.view.CreateFolderViewPage;
 import school.redrover.page.view.FolderViewPage;
 
 import java.util.regex.Pattern;
 
-public class FolderProjectPage extends BaseProjectPage {
+public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
 
     @FindBy(xpath = "//a[contains(@href, 'rename')]")
     private WebElement renameButtonSideMenu;
@@ -52,30 +52,16 @@ public class FolderProjectPage extends BaseProjectPage {
 
     private static final String PROJECT_NAME = "//a[contains(@href, '%s')]/span";
 
+    private final BaseSideMenuComponent<FolderProjectPage> baseSideMenu;
+
     public FolderProjectPage(WebDriver driver) {
         super(driver);
+        this.baseSideMenu = new BaseSideMenuComponent<>(getDriver(),this);
     }
 
-    public FolderProjectPage clickRenameSideMenu() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("svg[tooltip='Folder']")));
-        renameButtonSideMenu.click();
-
-        return this;
-    }
-
-    public FolderProjectPage enterNewName(String newName) {
-        WebElement newNameElement = getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='newName']")));
-        newNameElement.clear();
-        newNameElement.sendKeys(newName);
-
-        return this;
-    }
-
-    public FolderProjectPage clickRenameButton() {
-        renameButton.click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("svg[tooltip='Folder']")));
-
-        return this;
+    @Override
+    public BaseSideMenuComponent<FolderProjectPage> getSideMenu() {
+        return this.baseSideMenu;
     }
 
     public FolderProjectPage clickAddDescription() {
