@@ -54,7 +54,7 @@ public class MultiConfigurationTest extends BaseTest {
         Assert.assertTrue(message.contains("No builds"));
     }
 
-    @Test(dependsOnMethods = "testRename")
+    @Test(dependsOnMethods = "testChanges")
     public void testBuildNowDisplaysPopupMessage() {
         Boolean popupMessage = new HomePage(getDriver())
                 .clickOnProject(PROJECT_NAME_UPDATED, new MultiConfigurationProjectPage(getDriver()))

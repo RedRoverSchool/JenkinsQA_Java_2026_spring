@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
+import school.redrover.page.RenameProjectPage;
 import school.redrover.page.common.BaseConfigPage;
 import school.redrover.page.common.BasePage;
 
@@ -19,6 +20,9 @@ public class BaseSideMenuComponent<T extends BasePage> extends BasePage {
 
     @FindBy(xpath = "//div[@id='side-panel']//a[contains(@data-title, 'Delete')]")
     private WebElement deleteButton;
+
+    @FindBy(xpath = "//div[@id='side-panel']//a[contains(@href, '/confirm-rename')]")
+    private WebElement renameButton;
 
     protected final T parentPage;
 
@@ -38,6 +42,13 @@ public class BaseSideMenuComponent<T extends BasePage> extends BasePage {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link")));
 
         return new HomePage(getDriver());
+    }
+
+    public RenameProjectPage clickRename() {
+        renameButton.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@name='Submit' and @value='Rename']")));
+
+        return new RenameProjectPage(getDriver());
     }
 
     public <ConfigPage extends BaseConfigPage> ConfigPage clickConfigure(ConfigPage configPage) {

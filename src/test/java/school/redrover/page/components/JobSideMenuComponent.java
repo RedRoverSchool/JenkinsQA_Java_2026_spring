@@ -14,22 +14,14 @@ public class JobSideMenuComponent<T extends BasePage> extends BaseSideMenuCompon
     @FindBy(xpath = "//div[@id='side-panel']//a[contains(@href, '/move')]")
     private WebElement moveButton;
 
-    @FindBy(xpath = "//div[@id='side-panel']//a[contains(@href, '/confirm-rename')]")
-    private WebElement renameButton;
-
-    public JobSideMenuComponent(WebDriver driver, T parentPage) {
+     public JobSideMenuComponent(WebDriver driver, T parentPage) {
         super(driver, parentPage);
     }
 
     public MoveProjectPage clickMove() {
         moveButton.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
+
         return new MoveProjectPage(getDriver());
-    }
-
-    public RenameProjectPage clickRename() {
-        renameButton.click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@name='Submit' and @value='Rename']")));
-
-        return new RenameProjectPage(getDriver());
     }
 }
