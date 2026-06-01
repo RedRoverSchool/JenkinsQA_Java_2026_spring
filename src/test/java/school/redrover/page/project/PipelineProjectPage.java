@@ -8,8 +8,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
 import school.redrover.page.common.BaseJobPage;
 import school.redrover.page.components.FreestylePipelineMulticonfigSideMenuComponent;
-import school.redrover.page.project.config.PipelineProjectConfigPage;
-import school.redrover.page.PipelineProjectRenamePage;
 
 public class PipelineProjectPage extends BaseJobPage<PipelineProjectPage> {
 
@@ -81,19 +79,6 @@ public class PipelineProjectPage extends BaseJobPage<PipelineProjectPage> {
         return getWait5().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(description))).getText();
     }
 
-    public PipelineProjectRenamePage clickRenameSidebarButton() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(renameButtonSidebar)).click();
-
-        return new PipelineProjectRenamePage(getDriver());
-    }
-
-    public PipelineProjectConfigPage clickConfigureSidebarButton() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(configureSidebar)).click();
-
-        return new PipelineProjectConfigPage(getDriver());
-
-    }
-
     public String getDisabledWarningText() {
         return getWait10().until(ExpectedConditions.visibilityOf(warning)).getText();
     }
@@ -105,13 +90,5 @@ public class PipelineProjectPage extends BaseJobPage<PipelineProjectPage> {
         } catch (TimeoutException e) {
             return false;
         }
-    }
-
-    public HomePage deletePipelineAndConfirm() {
-        deleteButtonSidebar.click();
-        getWait2().until(ExpectedConditions.elementToBeClickable(confirmButton)).click();
-        getWait5().until(ExpectedConditions.visibilityOf(addNewItemButton));
-
-        return new HomePage(getDriver());
     }
 }

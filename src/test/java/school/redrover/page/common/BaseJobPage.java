@@ -6,7 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.components.JobSideMenuComponent;
 
 public abstract class BaseJobPage<SELF extends BaseJobPage<SELF>> extends BaseProjectPage<SELF> {
-//for all jobs: Freestyle, Pipeline, Multi-configuration, Multibranch pipeline
+//for all jobs except Folder: Freestyle, Pipeline, Multi-configuration, Multibranch pipeline, Organization Folder
 
     private final JobSideMenuComponent<SELF> sideMenu;
 

@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.CreateProjectPage;
 import school.redrover.page.common.BasePage;
 import school.redrover.page.common.BaseProjectPage;
+import school.redrover.page.components.BaseSideMenuComponent;
 import school.redrover.page.project.config.FolderConfigPage;
 import school.redrover.page.view.CreateFolderViewPage;
 import school.redrover.page.view.FolderViewPage;
@@ -51,30 +52,16 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
 
     private static final String PROJECT_NAME = "//a[contains(@href, '%s')]/span";
 
+    private final BaseSideMenuComponent<FolderProjectPage> baseSideMenu;
+
     public FolderProjectPage(WebDriver driver) {
         super(driver);
+        this.baseSideMenu = new BaseSideMenuComponent<>(getDriver(),this);
     }
 
-    public FolderProjectPage clickRenameSideMenu() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("svg[tooltip='Folder']")));
-        renameButtonSideMenu.click();
-
-        return this;
-    }
-
-    public FolderProjectPage enterNewName(String newName) {
-        WebElement newNameElement = getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='newName']")));
-        newNameElement.clear();
-        newNameElement.sendKeys(newName);
-
-        return this;
-    }
-
-    public FolderProjectPage clickRenameButton() {
-        renameButton.click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("svg[tooltip='Folder']")));
-
-        return this;
+    @Override
+    public BaseSideMenuComponent<FolderProjectPage> getSideMenu() {
+        return this.baseSideMenu;
     }
 
     public FolderProjectPage clickAddDescription() {

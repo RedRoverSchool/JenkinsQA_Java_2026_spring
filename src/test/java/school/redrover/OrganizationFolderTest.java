@@ -6,15 +6,20 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.*;
+import school.redrover.page.project.FolderProjectPage;
 import school.redrover.page.project.OrganizationFolderPage;
+import school.redrover.page.project.config.FolderConfigPage;
 import school.redrover.page.project.config.OrganizationFolderConfigPage;
+
 import java.util.List;
 
 public class OrganizationFolderTest extends BaseTest {
 
-    public static final String ORG_FOLDER_NAME = "OrganizationFolder";
+    public static final String ORG_FOLDER_NAME = "Org Folder";
+    public static final String ORG_FOLDER_NAME_UPDATED = "Org folder renamed";
+    public static final String ORG_FOLDER_DISPLAY_NAME = "OrgFolderDisplayName";
+    public static final String FOLDER_NAME = "Folder new";
     public static final String DESCRIPTION_TEXT = "Description: New project";
-    public static final String DISPLAY_NAME = "OrgFolderDisplayName";
 
     @Test
     public void testCreate() {
@@ -31,7 +36,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(joblist.getFirst(), ORG_FOLDER_NAME);
     }
 
-    @Ignore
+    @Ignore //bug in Jenkins (worked before)
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescription() {
         String actualDescriptionText = new HomePage(getDriver())
@@ -44,18 +49,63 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(actualDescriptionText, DESCRIPTION_TEXT);
     }
 
-
     @Test(dependsOnMethods = "testCreate")
+    public void testRename() {
+        Boolean isUpdatedNameCorrect = new HomePage(getDriver())
+                .clickOnProject(ORG_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
+                .getSideMenu()
+                .clickRename()
+                .setNewProjectName(ORG_FOLDER_NAME_UPDATED)
+                .clickRenameButton()
+                .getUpdatedProjectName(ORG_FOLDER_NAME_UPDATED);
+
+        Assert.assertTrue(isUpdatedNameCorrect);
+    }
+
+    @Test(dependsOnMethods = "testRename")
     public void testAddDisplayName() {
         List<String> jobnewlist = new HomePage(getDriver())
-                .clickOnProject(ORG_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
-                .clickConfigure()
-                .enterDisplayName(DISPLAY_NAME)
+                .clickOnProject(ORG_FOLDER_NAME_UPDATED, new OrganizationFolderPage(getDriver()))
+                .getSideMenu()
+                .clickConfigure(new OrganizationFolderConfigPage(getDriver()))
+                .enterDisplayName(ORG_FOLDER_DISPLAY_NAME)
                 .clickSave(new OrganizationFolderPage(getDriver()))
                 .goHomePage()
                 .getProjectList();
 
         Assert.assertEquals(jobnewlist.size(), 1);
-        Assert.assertEquals(jobnewlist.getFirst(), DISPLAY_NAME);
+        Assert.assertEquals(jobnewlist.getFirst(), ORG_FOLDER_DISPLAY_NAME);
+    }
+
+    @Test(dependsOnMethods = "testAddDisplayName")
+    public void testMove() {
+        List<String> breadcrumb = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(FOLDER_NAME)
+                .selectItemType(TestUtils.JobType.FOLDER)
+                .clickOK(new FolderConfigPage(getDriver()))
+                .goHomePage()
+                .clickOnProject(ORG_FOLDER_DISPLAY_NAME, new OrganizationFolderPage(getDriver()))
+                .getSideMenu()
+                .clickMove()
+                .selectWhereToMove(FOLDER_NAME)
+                .clickMove()
+                .getBreadcrumbs()
+                .getBreadcrumbItems();
+
+        Assert.assertEquals(breadcrumb.size(), 2);
+        Assert.assertTrue(breadcrumb.containsAll(List.of(FOLDER_NAME, ORG_FOLDER_DISPLAY_NAME)));
+    }
+
+    @Test(dependsOnMethods = "testMove")
+    public void testDelete() {
+        List<String> jobList = new HomePage(getDriver())
+                .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickOnChildProject(ORG_FOLDER_DISPLAY_NAME, new OrganizationFolderPage(getDriver()))
+                .getSideMenu()
+                .clickDelete()
+                .getProjectList();
+
+        Assert.assertListNotContainsObject(jobList, ORG_FOLDER_DISPLAY_NAME, "Org folder is not deleted");
     }
 }
