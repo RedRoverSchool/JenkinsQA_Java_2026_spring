@@ -48,6 +48,7 @@ public class BuildHistoryPage extends BasePage {
                 .map(String::trim)
                 .filter(text -> !text.isEmpty())
                 .toList();
+
         return elements;
     }
 }

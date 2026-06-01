@@ -104,7 +104,6 @@ public class CreateProjectPage extends BasePage {
         return new MultiConfigurationProjectPage(getDriver());
     }
 
-    public CreateProjectPage selectPipelineProject() {
     public CreateProjectPage selectPipelineProjectAndWaitError() {
         pipelineOption.click();
 
