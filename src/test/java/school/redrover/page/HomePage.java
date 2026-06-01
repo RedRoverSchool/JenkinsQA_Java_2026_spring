@@ -167,11 +167,10 @@ public class HomePage extends BasePage {
         return getWait10().until(ExpectedConditions.visibilityOf(restApiLink)).getCssValue("cursor");
     }
 
-    public boolean isDashboardVisible() {
+    public boolean isDashboardNotDisplayed() {
         try {
-            return getWait10().until(
-                    ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@href,'/view/')]"))
-            ).isDisplayed();
+            return getWait2().until(
+                    ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[@class='dashboard']")));
         } catch (TimeoutException e) {
             return false;
         }
