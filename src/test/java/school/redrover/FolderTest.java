@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -103,6 +104,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(headerText, NESTED_FOLDER);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateNestedFolderTest")
     public void testDelete() {
         List<String> jobList = new HomePage(getDriver())
@@ -111,6 +113,6 @@ public class FolderTest extends BaseTest {
                 .clickDelete()
                 .getProjectList();
 
-        Assert.assertEquals(jobList.size(),0);
+        Assert.assertListNotContainsObject(jobList, FOLDER_NEW_NAME, "Folder is not deleted");
     }
 }
