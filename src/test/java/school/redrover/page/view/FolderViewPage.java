@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
+import school.redrover.page.components.BaseSideMenuComponent;
 import school.redrover.page.view.config.ViewMyConfigPage;
 
 public class FolderViewPage extends BasePage {
@@ -36,8 +37,15 @@ public class FolderViewPage extends BasePage {
     @FindBy(css = "#description-edit-form .description-cancel-button")
     private WebElement buttonCancel;
 
+    private final BaseSideMenuComponent<FolderViewPage> baseSideMenu;
+
     public FolderViewPage(WebDriver driver) {
         super(driver);
+        this.baseSideMenu = new BaseSideMenuComponent<>(getDriver(), this);
+    }
+
+    public BaseSideMenuComponent<FolderViewPage> getSideMenu() {
+        return this.baseSideMenu;
     }
 
     public FolderViewPage addDescription(String expectedDescription){
