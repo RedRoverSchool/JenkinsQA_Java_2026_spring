@@ -5,6 +5,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
+import school.redrover.page.project.config.FolderConfigPage;
 
 import java.util.List;
 
@@ -15,14 +16,25 @@ public class MainPageTest extends BaseTest {
     private static final String FREESTYLE_NAME = "A_Freestyle";
 
     @Test
-    public void testOrderName() {
-        TestUtils.createJob(getDriver(), PIPELINE_NAME, TestUtils.JobType.PIPELINE);
-        TestUtils.createJob(getDriver(), FOLDER_NAME, TestUtils.JobType.FOLDER);
-        TestUtils.createJob(getDriver(), FREESTYLE_NAME, TestUtils.JobType.FREESTYLE);
+    public void testProjectsOrderedOnDashboard() {
 
-        List<String> projectList = new HomePage(getDriver())
+        List<String> jobList = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PIPELINE_NAME)
+                .selectPipelineProjectAndClickOk()
+                .goHomePage()
+                .clickItemNewJob()
+                .setProjectName(FOLDER_NAME)
+                .selectItemType(TestUtils.JobType.FOLDER)
+                .clickOK(new FolderConfigPage(getDriver()))
+                .goHomePage()
+                .clickItemNewJob()
+                .setProjectName(FREESTYLE_NAME)
+                .selectFreeStyleProjectAndClickOk()
+                .goHomePage()
                 .getProjectList();
 
-        Assert.assertEquals(projectList, projectList.stream().sorted().toList(), "Not an alphabetical order!");
+        Assert.assertEquals(jobList.size(), 3);
+        Assert.assertEquals(jobList, jobList.stream().sorted().toList(), "Not an alphabetical order!");
     }
 }

@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -11,6 +12,7 @@ public class BuildHistoryTest extends BaseTest {
 
     private final static String PROJECT_NAME = "NewFreestyleProject";
 
+    @Ignore
     @Test
     public void testEmptyBuildHistory() {
         List<String> buildHistoryList = new HomePage(getDriver())

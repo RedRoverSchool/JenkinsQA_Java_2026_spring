@@ -10,7 +10,7 @@ import school.redrover.page.view.CreateGlobalViewPage;
 import school.redrover.page.view.GlobalViewPage;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Random;
 
 public class HomePage extends BasePage {
 
@@ -23,7 +23,7 @@ public class HomePage extends BasePage {
     @FindBy(css = "#search-results")
     private List<WebElement> searchList;
 
-    @FindBy(xpath = "//button[@id='root-action-SearchAction']")
+    @FindBy(id = "root-action-SearchAction")
     private WebElement searchButton;
 
     @FindBy(xpath = "//input[@id='command-bar']")
@@ -34,9 +34,6 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, 'rename')]")
     private WebElement elementRename;
-
-    @FindBy(id = "root-action-UserAction")
-    private WebElement userButton;
 
     @FindBy(id = "description-link")
     private WebElement elementDescription;
@@ -49,18 +46,6 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//button[@data-id='ok']")
     private WebElement buttonConfirmDelete;
-
-    @FindBy(xpath = "//button[contains(@class, 'jenkins_ver')]")
-    private WebElement versionJenkins;
-
-    @FindBy(xpath = "//a[@href='/manage/about']")
-    private WebElement aboutJenkins;
-
-    @FindBy(xpath = "//a[@href='https://www.jenkins.io/participate/']")
-    private WebElement getInvolved;
-
-    @FindBy(xpath = "//a[@href='https://www.jenkins.io/']")
-    private WebElement website;
 
     @FindBy(xpath = "//a[@href='/view/all/builds']")
     private WebElement buttonBuildHistory;
@@ -85,12 +70,63 @@ public class HomePage extends BasePage {
     }
 
     public <ProjectPage extends BaseProjectPage> ProjectPage clickOnProject(String projectName, ProjectPage projectPage) {
-        getDriver().findElement(By.xpath("//td/a/span[text() = '%s']/..".formatted(projectName)))
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a/span[text() = '%s']/..".formatted(projectName))))
                 .click();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@class, 'task-link')]//span[text()='Status']")));
 
         return projectPage;
+    }
+
+    public HomePage clickSearchButton() {
+        searchButton.click();
+        return this;
+    }
+
+    public HomePage typeSearchInput(String inputText) {
+        getWait5().until(ExpectedConditions.visibilityOf(searchInputField)).sendKeys(inputText);
+
+        return this;
+    }
+
+    public <T extends BasePage> T typeSearchInputAndPressENTER(String inputText, T returnPage) {
+        searchInputField.sendKeys(inputText);
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@class, 'jenkins-command-palette__results__item') and contains( @href, '%s')]".formatted(inputText)))).click();
+        getWait5().until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("#breadcrumbs .jenkins-breadcrumbs__list-item")));
+
+        return returnPage;
+    }
+
+    public static String randomString(int length) {
+        if (length <= 0) {
+            return "";
+        }
+
+        Random random = new Random();
+        StringBuilder result = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            if (i % 6 == 0 && i != 0) {
+                result.append(' ');
+            } else {
+                char c = (char) ('a' + random.nextInt(26));
+                result.append(c);
+            }
+        }
+        return result.toString();
+    }
+
+    public boolean isNoResultDisplayed() {
+        return getWait5().until(ExpectedConditions.textToBe(By.xpath("//div[@id='search-results']//span"), "No results for"));
+    }
+
+    public HomePage clearSearchField() {
+        searchInputField.clear();
+        return this;
+    }
+
+    public String getSearchInputValue() {
+        return searchInputField.getAttribute("value");
     }
 
     public HomePage search(String name, boolean pressEnter) {
@@ -153,13 +189,9 @@ public class HomePage extends BasePage {
         return elementDescription.getText();
     }
 
-    public CreateGlobalViewPage clickForNewView(){
+    public CreateGlobalViewPage clickForNewView() {
         getWait5().until(ExpectedConditions.visibilityOf(newView)).click();
         return new CreateGlobalViewPage(getDriver());
-    }
-
-    public boolean isUserButtonDisplayed() {
-        return getWait10().until(ExpectedConditions.visibilityOf(userButton)).isDisplayed();
     }
 
     public HomePage clickScheduleBuild(String jobName) {
@@ -179,51 +211,19 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public HomePage clickJenkinsVersionLink() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(versionJenkins)).click();
-        return this;
-    }
-
-    public HomePage clickAboutJenkins() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(aboutJenkins)).click();
-        return this;
-    }
-
-    public void clickGetInvolved() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(getInvolved)).click();
-    }
-
-    public void clickWebSite() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(website)).click();
-    }
-
-    public boolean isAboutJenkinsPresent() {
-        return !getDriver().findElements(By.xpath("//a[contains(text(),'About Jenkins')]")).isEmpty();
-    }
-
-
     public RestApiPage clickRestApiLink() {
         getWait10().until(ExpectedConditions.elementToBeClickable(restApiLink)).click();
         return new RestApiPage(getDriver());
-    }
-
-    public boolean isRestApiLinkDisplayed() {
-        try {
-            return restApiLink.isDisplayed();
-        } catch (NoSuchElementException | StaleElementReferenceException e) {
-            return false;
-        }
     }
 
     public String getRestApiLinkCursor() {
         return getWait10().until(ExpectedConditions.visibilityOf(restApiLink)).getCssValue("cursor");
     }
 
-    public boolean isDashboardVisible() {
+    public boolean isDashboardNotDisplayed() {
         try {
-            return getWait10().until(
-                    ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@href,'/view/')]"))
-            ).isDisplayed();
+            return getWait2().until(
+                    ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[@class='dashboard']")));
         } catch (TimeoutException e) {
             return false;
         }
