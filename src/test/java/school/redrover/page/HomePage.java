@@ -6,6 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
 import school.redrover.page.common.BaseProjectPage;
+import school.redrover.page.external.CommandPalettePage;
 import school.redrover.page.view.CreateGlobalViewPage;
 import school.redrover.page.view.GlobalViewPage;
 
@@ -79,17 +80,27 @@ public class HomePage extends BasePage {
     }
 
     public HomePage clickSearchButton() {
-        searchButton.click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("root-action-SearchAction"))).click();
         return this;
     }
 
-    public HomePage typeSearchInput(String inputText) {
+    public HomePage typeSearchInput(String inputText, boolean pressEnter) {
         getWait5().until(ExpectedConditions.visibilityOf(searchInputField)).sendKeys(inputText);
-
+        if (pressEnter) {
+            searchInputField.sendKeys(Keys.ENTER);
+        }
         return this;
     }
 
-    public <T extends BasePage> T typeSearchInputAndPressENTER(String inputText, T returnPage) {
+    public CommandPalettePage typeEmptyInputAndPressOK() {
+        getWait5().until(ExpectedConditions.visibilityOf(searchInputField)).sendKeys("", Keys.ENTER);
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.id("command-palette")));
+
+        return new CommandPalettePage(getDriver());
+    }
+
+
+    public <T extends BasePage> T typeSearchInputAndGoToResultsPage(String inputText, T returnPage) {
         searchInputField.sendKeys(inputText);
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@class, 'jenkins-command-palette__results__item') and contains( @href, '%s')]".formatted(inputText)))).click();
@@ -129,23 +140,10 @@ public class HomePage extends BasePage {
         return searchInputField.getAttribute("value");
     }
 
-    public HomePage search(String name, boolean pressEnter) {
-        getWait5().until(ExpectedConditions.elementToBeClickable(searchButton)).click();
-        searchInputField.sendKeys(name);
-        if (pressEnter) {
-            searchInputField.sendKeys(Keys.ENTER);
-        }
-        return new HomePage(getDriver());
-    }
-
-    public HomePage search(String name) {
-        return search(name, false);
-    }
-
-    public GlobalViewPage chooseSearchingResult(String name) {
+    public <T extends BasePage> T chooseSearchingResult(String jobname, T returnPage) {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath(String.format(SEARCH_RESULT, name)))).click();
-        return new GlobalViewPage(getDriver());
+                By.xpath(String.format(SEARCH_RESULT, jobname)))).click();
+        return returnPage;
     }
 
     public List<String> getSearchList() {
@@ -204,20 +202,6 @@ public class HomePage extends BasePage {
         getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), "Build History of Jenkins"));
 
         return new BuildHistoryPage(getDriver());
-    }
-
-    public HomePage scrollToBottom() {
-        ((JavascriptExecutor) getDriver()).executeScript("window.scrollTo(0, document.body.scrollHeight);");
-        return this;
-    }
-
-    public RestApiPage clickRestApiLink() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(restApiLink)).click();
-        return new RestApiPage(getDriver());
-    }
-
-    public String getRestApiLinkCursor() {
-        return getWait10().until(ExpectedConditions.visibilityOf(restApiLink)).getCssValue("cursor");
     }
 
     public boolean isDashboardNotDisplayed() {
