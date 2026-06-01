@@ -24,8 +24,7 @@ public class MultibranchPipelineTest extends BaseTest {
 		List<String> projectList = new HomePage(getDriver())
 				.clickItemNewJob()
 				.setProjectName(PROJECT_NAME)
-				.selectMultibranchPipline()
-				.clickOkButton()
+				.selectMultibranchAndClickOk()
 				.goHomePage()
 				.getProjectList();
 

@@ -11,6 +11,7 @@ import school.redrover.page.common.BasePage;
 import school.redrover.page.project.MultiConfigurationProjectPage;
 import school.redrover.page.project.config.FolderConfigPage;
 import school.redrover.page.project.config.FreestyleProjectConfigPage;
+import school.redrover.page.project.config.MultibranchConfigPage;
 import school.redrover.page.project.config.PipelineProjectConfigPage;
 
 public class CreateProjectPage extends BasePage {
@@ -33,7 +34,7 @@ public class CreateProjectPage extends BasePage {
     @FindBy(xpath = "//span[text()='Folder']")
     private WebElement folderOption;
 
-    @FindBy(xpath = "//li[@class='hudson_matrix_MatrixProject']")
+    @FindBy(xpath = "//span[text()='Multi-configuration project']")
     private WebElement optionMultiConfiguration;
 
     @FindBy(xpath = "//li[@class='hudson_model_FreeStyleProject']")
@@ -70,6 +71,15 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
+    public MultibranchConfigPage selectMultibranchAndClickOk(){
+        getDriver().findElement(By.xpath("//span[text()='Multi-configuration project']")).click();
+        okButton.click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(BUTTON_OK));
+
+        return new MultibranchConfigPage(getDriver());
+    }
+
     public CreateProjectPage selectFreeStyleProject() {
         optionFreestyleProject.click();
 
@@ -95,7 +105,11 @@ public class CreateProjectPage extends BasePage {
     }
 
     public MultiConfigurationProjectPage selectMulticonfigAndClickOk() {
-        getDriver().findElement(By.xpath("//span[text()='Multi-configuration project']")).click();
+        optionMultiConfiguration.click();
+        okButton.click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(BUTTON_OK));
+
         return new MultiConfigurationProjectPage(getDriver());
     }
 
@@ -124,11 +138,6 @@ public class CreateProjectPage extends BasePage {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
     }
 
-    public CreateProjectPage selectMultiConfiguration() {
-        optionMultiConfiguration.click();
-        return this;
-    }
-
     public CreateProjectPage selectFolder() {
         getDriver().findElement(By.xpath("//li[contains(@class,'com_cloudbees_hudson_plugins_folder_Folder')]")).click();
 
@@ -136,7 +145,7 @@ public class CreateProjectPage extends BasePage {
     }
 
     public FreestyleProjectConfigPage clickOkButton() {
-        getDriver().findElement(By.id("ok-button")).click();
+        okButton.click();
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(BUTTON_OK));
 
@@ -168,27 +177,5 @@ public class CreateProjectPage extends BasePage {
 
     public boolean isOkButtonEnabled() {
         return okButton.isEnabled();
-    }
-
-    public CreateProjectPage clickOutside() {
-        getDriver().findElement(By.id("main-panel")).click();
-        return this;
-    }
-
-    public CreateProjectPage selectMultibranchPipline() {
-        WebElement MPjobElement = getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", MPjobElement);
-        MPjobElement.click();
-
-        return this;
-    }
-
-    public PipelineProjectConfigPage createPipeline() {
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("workflow-editor-1")));
-
-        return new PipelineProjectConfigPage(getDriver());
     }
 }

@@ -102,7 +102,7 @@ public class PipelineProjectTest extends BaseTest {
         CreateProjectPage createProjectPage = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(" ")
-                .selectItemType(TestUtils.JobType.PIPELINE);
+                .selectPipelineProjectAndWaitError();
 
         Assert.assertEquals(
                 createProjectPage.getErrorEmptyText(),
