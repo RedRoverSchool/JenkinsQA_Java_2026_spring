@@ -8,18 +8,27 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.BuildNowPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.RenameProjectPage;
-import school.redrover.page.common.BaseProjectPage;
+import school.redrover.page.common.BaseJobPage;
+import school.redrover.page.components.FreestylePipelineMulticonfigSideMenuComponent;
 import school.redrover.page.project.config.FreestyleProjectConfigPage;
 
 import java.util.List;
 
-public class FreestyleProjectPage extends BaseProjectPage {
+public class FreestyleProjectPage extends BaseJobPage<FreestyleProjectPage> {
 
     @FindBy(id = "description-content")
     private WebElement descriptionText;
 
+    private final FreestylePipelineMulticonfigSideMenuComponent<FreestyleProjectPage> fullSideMenu;
+
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
+        this.fullSideMenu = new FreestylePipelineMulticonfigSideMenuComponent<>(driver, this);
+    }
+
+    @Override
+    public FreestylePipelineMulticonfigSideMenuComponent<FreestyleProjectPage> getSideMenu() {
+        return this.fullSideMenu;
     }
 
     public FreestyleProjectConfigPage clickConfigure() {
@@ -48,13 +57,6 @@ public class FreestyleProjectPage extends BaseProjectPage {
 
     public String getDescription() {
         return getWait5().until(ExpectedConditions.visibilityOf(descriptionText)).getText();
-    }
-
-    public Boolean getProjectIsDisabledMessage() {
-        String projectIsDisabledMessage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("enable-project"))).getText();
-
-        return projectIsDisabledMessage.contains("This project is currently disabled");
     }
 
     public FreestyleProjectPage enableProject() {

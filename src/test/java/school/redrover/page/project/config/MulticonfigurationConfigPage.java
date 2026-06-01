@@ -1,5 +1,6 @@
 package school.redrover.page.project.config;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import school.redrover.page.common.BaseConfigPage;
 
@@ -10,6 +11,11 @@ public class MulticonfigurationConfigPage extends BaseConfigPage<Multiconfigurat
 
     @Override
     protected MulticonfigurationConfigPage self() {
+        return this;
+    }
+
+    public MulticonfigurationConfigPage disableProjectToggle() {
+        getDriver().findElement(By.xpath("//label[@class='jenkins-toggle-switch__label ']")).click();
         return this;
     }
 }

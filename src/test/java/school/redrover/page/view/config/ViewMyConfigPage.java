@@ -37,6 +37,12 @@ public class ViewMyConfigPage extends BasePage {
         return this;
     }
 
+    public String getViewName() {
+        return getWait5()
+                .until(ExpectedConditions.visibilityOf(elementName))
+                .getAttribute("value");
+    }
+
     public ViewMyConfigPage inputDescription(String newDescription){
         elementDescription.clear();
         elementDescription.sendKeys(newDescription);

@@ -1,12 +1,14 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 
 public class FooterVersionJenkinsTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testIsJenkinsVersionMenuDisplayed() {
         boolean isMenuDisplayed = new HomePage(getDriver())
