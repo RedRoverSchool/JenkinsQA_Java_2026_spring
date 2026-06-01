@@ -16,7 +16,7 @@ public class ViewWithinFolderTest extends BaseTest {
     private static final String NEW_VIEW_DESCRIPTION = "New description text";
 
     @Test
-    public void testCreateMyView(){
+    public void testCreateMyView() {
        String actualViewName = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(FOLDER_NAME)
@@ -45,27 +45,38 @@ public class ViewWithinFolderTest extends BaseTest {
 
     @Ignore
     @Test(dependsOnMethods = "testPreviewAddDescription")
-    public void testSaveViewDescription(){
+    public void testSaveViewDescription() {
        String actualDescriptionText = new HomePage(getDriver())
-               .clickOnProject(FOLDER_NAME,new FolderProjectPage(getDriver()))
+               .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
                .clickOnView()
                .addDescription(VIEW_DESCRIPTION)
                .clickSubmitButton()
                .getDescriptionText();
 
-        Assert.assertEquals(actualDescriptionText,VIEW_DESCRIPTION);
+        Assert.assertEquals(actualDescriptionText, VIEW_DESCRIPTION);
     }
-
+  
     @Ignore
     @Test(dependsOnMethods = "testSaveViewDescription")
-        public void testCanсelDescription(){
+    public void testCancelDescription() {
         String actualDescriptionTest = new HomePage(getDriver())
-                .clickOnProject(FOLDER_NAME,new FolderProjectPage(getDriver()))
+                .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .clickOnView()
                 .editDescription(NEW_VIEW_DESCRIPTION)
                 .clickCancelButton()
                 .getDescriptionText();
 
-        Assert.assertEquals(actualDescriptionTest,VIEW_DESCRIPTION);
+        Assert.assertEquals(actualDescriptionTest, VIEW_DESCRIPTION);
     }
+
+    @Test(dependsOnMethods = "testCreateMyView")
+    public void testOpenEditViewSettings() {
+        String actualViewName = new HomePage(getDriver())
+                .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickOnView()
+                .clickEditView()
+                .getViewName();
+
+        Assert.assertEquals(actualViewName, VIEW_NAME);
+    } 
 }
