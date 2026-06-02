@@ -113,7 +113,6 @@ public class CreateProjectPage extends BasePage {
         return new MultiConfigurationProjectPage(getDriver());
     }
 
-    public CreateProjectPage selectPipelineProjectAndWaitError() {
     public CreateProjectPage selectPipelineProject() {
         pipelineOption.click();
 
@@ -180,5 +179,27 @@ public class CreateProjectPage extends BasePage {
 
     public boolean isOkButtonEnabled() {
         return okButton.isEnabled();
+    }
+
+    public CreateProjectPage clickOutside() {
+        getDriver().findElement(By.id("main-panel")).click();
+        return this;
+    }
+
+    public CreateProjectPage selectMultibranchPipline() {
+        WebElement MPjobElement = getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", MPjobElement);
+        MPjobElement.click();
+
+        return this;
+    }
+
+    public PipelineProjectConfigPage createPipeline() {
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("workflow-editor-1")));
+
+        return new PipelineProjectConfigPage(getDriver());
     }
 }

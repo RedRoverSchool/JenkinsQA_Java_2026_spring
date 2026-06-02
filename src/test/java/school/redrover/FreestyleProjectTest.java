@@ -1,6 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -9,7 +11,6 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
-import school.redrover.page.BuildNowPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.FreestyleProjectPage;
 import school.redrover.page.project.config.FreestyleProjectConfigPage;
@@ -46,10 +47,15 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProject")
+@Test
     public void testCheckboxIsChecked() {
 
         boolean isChecked = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
+                .goHomePage()
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .setDeleteWorkspaceBeforeBuildStartsCheckbox(true)
@@ -60,9 +66,14 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(isChecked);
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProject")
+    @Test
     public void testCheckboxIsUnchecked() {
         boolean isChecked = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
+                .goHomePage()
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .setDeleteWorkspaceBeforeBuildStartsCheckbox(false)
@@ -73,7 +84,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertFalse(isChecked);
     }
 
-    @Test (dependsOnMethods = "testCreateFreestyleProject")
+    @Test
     public void testAddBuildStepDropdownContainsAllOptions(){
         List<String> expectedTexts = Arrays.asList(
                 "Execute Windows batch command",
@@ -84,7 +95,12 @@ public class FreestyleProjectTest extends BaseTest {
                 "Run with timeout",
                 "Set build status to \"pending\" on GitHub commit");
 
-        List<String> actualTexts = new HomePage(getDriver())
+        List<String> actualTexts= new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
+                .goHomePage()
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .clickAddBuildStep()
@@ -94,34 +110,69 @@ public class FreestyleProjectTest extends BaseTest {
                 "Dropdown options should match expected list");
     }
 
-    @Test(dependsOnMethods = "testAddBuildStepDropdownContainsAllOptions")
-    public void testDeleteBuildStep() {
-        boolean commandFieldExists = new HomePage(getDriver())
+    @Test
+    public void testAddBuildStep() {
+        boolean isBuildStepAdded = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
+                .goHomePage()
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .clickAddBuildStep()
-                .clickOnBuildStep()
-                .enterCommand(BUILD_STEP_NAME)
+                .clickExecuteWindowsBatchCommandMenuItem()
+                .clickSaveButton()
+                .clickConfigure()
+                .isBuildStepAdded();
+
+        Assert.assertTrue(isBuildStepAdded);
+    }
+
+    @Test
+    public void testDeleteBuildStep() {
+        boolean commandFieldExists = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
+                .goHomePage()
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .clickAddBuildStep()
+                .clickExecuteWindowsBatchCommandMenuItem()
+                .clickSaveButton()
+                .clickConfigure()
                 .clickDeleteButton();
 
         Assert.assertTrue(commandFieldExists);
     }
 
-    @Test(dependsOnMethods = "testDeleteBuildStep")
+    @Test
     public void testAddDescription() {
         String actualDescriptionText = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
+                .goHomePage()
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .enterDescription(DESCRIPTION_TEXT)
                 .clickSaveButton()
                 .getDescription();
 
-        Assert.assertEquals(actualDescriptionText, DESCRIPTION_TEXT);
+        Assert.assertEquals(actualDescriptionText,DESCRIPTION_TEXT);
     }
 
-    @Test(dependsOnMethods = "testAddDescription")
+    @Test
     public void testDisableProject() {
         Boolean projectDisabledMessage = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
+                .goHomePage()
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .disableProjectToggle()
@@ -131,10 +182,18 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(projectDisabledMessage);
     }
 
-    @Test(dependsOnMethods = "testDisableProject")
+    @Test
     public void testEnableProject() {
         Boolean projectEnabledMessage = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
+                .goHomePage()
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .disableProjectToggle()
+                .clickSaveButton()
                 .enableProject()
                 .clickConfigure()
                 .getProjectState("Enabled");
@@ -142,39 +201,50 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(projectEnabledMessage);
     }
 
-//    @Test(dependsOnMethods = "testEnableProject")
-//    public void testRenameProject() {
-//        Boolean updatedProjectName = new HomePage(getDriver())
-//                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-//                .clickRenameProjectSideMenuButton()
-//                .setNewProjectName(PROJECT_NAME_UPDATED)
-//                .clickRenameButton()
-//                .getUpdatedProjectName(PROJECT_NAME_UPDATED);
-//
-//        Assert.assertTrue(updatedProjectName);
-//    }
-
-    @Test(dependsOnMethods = "testEnableProject")
+    @Test
     public void testBuildNowDisplaysPopupMessage() {
          Boolean popupMessage = new HomePage(getDriver())
-                .clickOnProject(PROJECT_NAME, new BuildNowPage(getDriver()))
-                .clickBuildNowSideMenuButton()
-                .isPopUpMessageDisplayed(POPUP_MESSAGE);
+                 .clickItemNewJob()
+                 .setProjectName(PROJECT_NAME)
+                 .selectFreeStyleProject()
+                 .clickOkButton()
+                 .goHomePage()
+                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                 .isPopupMessageDisplayed(POPUP_MESSAGE);
 
         Assert.assertTrue(popupMessage);
     }
 
-    @Test(dependsOnMethods = "testBuildNowDisplaysPopupMessage")
+    @Test
     public void testBuildNowCreatesBuild() {
         int build_count = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
+                .goHomePage()
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickBuildNowSideMenuButton()
                 .getBuilds().size();
 
-        Assert.assertEquals(build_count, 2);
+        Assert.assertEquals(build_count, 1);
     }
 
     @Test(dependsOnMethods = "testBuildNowDisplaysPopupMessage")
     public void testBuildAfterOtherProjectsAreBuild() {
+        int build_count = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .selectBuildAfterOtherProjectsAreBuiltCheckbox()
+                .enterMessageIntoProjectsToWatchField(PROJECT_NAME)
+                .selectTriggerEvenIfTheBuildFailsRadioButton()
+                .clickSaveButton()
+                .clickBuildNowSideMenuButton()
+                .getBuilds().size();
+
+        Assert.assertEquals(build_count, 1);
+    }
+
         int build_count = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(PROJECT_NAME)
@@ -189,8 +259,23 @@ public class FreestyleProjectTest extends BaseTest {
                 .getBuilds().size();
 
         Assert.assertEquals(build_count, 2);
+    @Test
+    public void testDeleteProject() {
+        int projectCount = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
+                .goHomePage()
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickDeleteProjectSideMenuButton()
+                .confirmDeleteProject()
+                .getProjectList().size();
+
+        Assert.assertEquals(projectCount, 0);
     }
 
+    @Test
     @Test(dependsOnMethods = "testBuildAfterOtherProjectsAreBuild")
     public void testDeleteProject() {
         int projectCount = new HomePage(getDriver()).clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -204,7 +289,13 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testDeleteProject")
     public void testRepositoryURL() {
-        String actualRepositoryURL = new HomePage(getDriver()).clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+        String actualRepositoryURL = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
+                .goHomePage()
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .selectGitRadioButton()
                 .enterRepositoryURL(REPOSITORY_URL)

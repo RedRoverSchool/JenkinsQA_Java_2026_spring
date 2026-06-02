@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.page.BuildNowPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.RenameProjectPage;
 import school.redrover.page.common.BaseJobPage;
@@ -116,6 +117,14 @@ public class FreestyleProjectPage extends BaseJobPage<FreestyleProjectPage> {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).isDisplayed();
 
         return new HomePage(getDriver());
+    }
+
+    public Boolean isPopupMessageDisplayed(String popUpMessage) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//span[text()='Build Now']/.."))).click();
+
+        return getWait10().until(ExpectedConditions.textToBePresentInElementLocated(
+                By.id("notification-bar"), popUpMessage));
     }
 
 }
