@@ -1,5 +1,7 @@
 package school.redrover;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -47,7 +49,8 @@ public class OrganizationFolderTest extends BaseTest {
                 .clickGenerateScript()
                 .isTextContainsFileName(FILE_NAME);
 
-        Assert.assertTrue(isTextContainsFileName);
+        Assert.assertTrue(isTextContainsFileName, "attribute is" + getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@id='prototypeText']")))
+                .getAttribute("value"));
     }
 
     @Test(dependsOnMethods = "testPipelineSyntax")
