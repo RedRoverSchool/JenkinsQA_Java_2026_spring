@@ -5,6 +5,8 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 
+import java.util.List;
+
 public class CredentialsTest extends BaseTest {
 
     private String id;
@@ -25,7 +27,7 @@ public class CredentialsTest extends BaseTest {
     public void testCreateUsernamePasswordCredential() {
 
         long timestamp = System.currentTimeMillis();
-        id = "test-id" + timestamp;
+        id = "id" + timestamp;
         String user = "user-" + timestamp;
         String pass = "pass-" + timestamp;
         String desc = "Test Description " + timestamp;
@@ -55,7 +57,21 @@ public class CredentialsTest extends BaseTest {
     }
 
     @Test
-    public void testAddSecretTextCredentials() {
+    public void testAddSshUsernameWithKey(){
+        List<String> credentialList= new HomePage(getDriver())
+                .clickManageButton()
+                .clickCredentials()
+                .clickAddCredentialsButton()
+                .clickSSHCredentialsButton()
+                .setSSHCredentials("test-cred","SSH key for prod server","deploy",true,true," RSA/Ed25519 key","MyStr0ngP@ss")
+                .clickCreateButton()
+                .getCredentialList("test-cred");
+
+        Assert.assertEquals(credentialList.getFirst(), "test-cred");
+    }
+
+    @Test
+    public void addSecretTextCredentials() {
         boolean isCredentialsCreated = new HomePage(getDriver())
                 .clickManageButton()
                 .clickCredentials()
@@ -63,9 +79,9 @@ public class CredentialsTest extends BaseTest {
                 .clickSecretTextButton()
                 .clickNextButton()
                 .typeSecretText("my-secret")
-                .typeID("test-id")
+                .typeID("test-Id")
                 .clickCreateButton()
-                .isCredentialVisible("test-id");
+                .isCredentialVisible("test-Id");
 
         Assert.assertTrue(isCredentialsCreated);
     }
