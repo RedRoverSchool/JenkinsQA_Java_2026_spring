@@ -1,6 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -38,7 +40,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .getProjectList();
 
         Assert.assertEquals(projectList.size(), 1);
-        Assert.assertEquals(projectList.getFirst() , PROJECT_NAME);
+        Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);
     }
 
     @Test
@@ -260,7 +262,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(projectCount, 0);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testDeleteProject")
     public void testRepositoryURL() {
         String actualRepositoryURL = new HomePage(getDriver())
                 .clickItemNewJob()

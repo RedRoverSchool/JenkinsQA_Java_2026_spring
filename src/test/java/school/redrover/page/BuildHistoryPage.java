@@ -38,7 +38,7 @@ public class BuildHistoryPage extends BasePage {
     }
 
     public ConsolePage clickConsole() {
-        clickButtonConsole.click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(clickButtonConsole)).click();
         return new ConsolePage(getDriver());
     }
 
@@ -48,6 +48,7 @@ public class BuildHistoryPage extends BasePage {
                 .map(String::trim)
                 .filter(text -> !text.isEmpty())
                 .toList();
+
         return elements;
     }
 }

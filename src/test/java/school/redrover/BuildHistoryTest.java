@@ -35,11 +35,21 @@ public class BuildHistoryTest extends BaseTest {
                 .getBuildHistoryList();
 
         Assert.assertEquals(buildHistoryList.size(), 1);
-        Assert.assertEquals(buildHistoryList.get(0), PROJECT_NAME);
+        Assert.assertEquals(buildHistoryList.getFirst(), PROJECT_NAME);
 
     }
 
     @Test(dependsOnMethods = "testScheduledBuildAppearsInBuildHistory")
+    public void testSuccessMessageInConsole() {
+        String consoleText = new HomePage(getDriver())
+                .clickBuildHistory()
+                .clickConsole()
+                .getTextConsole();
+
+        Assert.assertTrue(consoleText.contains("Finished: SUCCESS"));
+    }
+
+    @Test(dependsOnMethods = "testSuccessMessageInConsole")
     public void testDeleteBuild() {
         List<String> buildHistoryList = new HomePage(getDriver())
                 .clickScheduleBuild(PROJECT_NAME)
