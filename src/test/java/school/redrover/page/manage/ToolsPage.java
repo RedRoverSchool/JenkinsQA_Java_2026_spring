@@ -7,6 +7,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.page.common.BasePage;
+
+import java.util.Arrays;
 import java.util.List;
 
 public class ToolsPage extends BasePage {
@@ -108,22 +110,16 @@ public class ToolsPage extends BasePage {
     }
 
     public ToolsPage setJDKName(String name) {
-
-        if(!nameField.getAttribute("value").isEmpty()) {
-            nameField.clear();
-        }
-
+        getWait5().until(ExpectedConditions.visibilityOf(nameField));
+        nameField.clear();
         nameField.sendKeys(name);
 
         return this;
     }
 
     public ToolsPage setJavaPath(String path) {
-
-        if(!pathField.getAttribute("value").isEmpty()) {
-            pathField.clear();
-        }
-
+        getWait5().until(ExpectedConditions.visibilityOf(pathField));
+        pathField.clear();
         pathField.sendKeys(path);
 
         return this;
@@ -131,21 +127,6 @@ public class ToolsPage extends BasePage {
 
     public boolean isEditDisplayed() {
         return !editButtons.isEmpty();
-    }
-
-    public ToolsPage deleteAllJDKs() {
-        while (!deleteButtons.isEmpty()) {
-            WebElement currentButton = deleteButtons.getFirst();
-
-            if (!currentButton.isDisplayed()) {
-                break;
-            }
-
-            currentButton.click();
-            getWait5().until(ExpectedConditions.stalenessOf(currentButton));
-        }
-
-        return this;
     }
 
     public int getJDKsCount() {
@@ -159,8 +140,19 @@ public class ToolsPage extends BasePage {
         return visibleButtons;
     }
 
+    public ToolsPage deleteAllJDKs() {
+        while (getJDKsCount() > 0) {
+            WebElement currentButton = deleteButtons.getFirst();
+
+            currentButton.click();
+            getWait5().until(ExpectedConditions.stalenessOf(currentButton));
+        }
+
+        return this;
+    }
+
     public List<String> getJDKData() {
-        return List.of(
+        return Arrays.asList(
                 nameField.getAttribute("value"),
                 pathField.getAttribute("value")
         );
@@ -187,28 +179,22 @@ public class ToolsPage extends BasePage {
 
     public ToolsPage setGitName (String name) {
         getWait5().until(ExpectedConditions.visibilityOf(gitNameField));
-
-        if(!gitNameField.getAttribute("value").isEmpty()) {
-            gitNameField.clear();
-        }
-
+        gitNameField.clear();
         gitNameField.sendKeys(name);
 
         return this;
     }
 
     public ToolsPage setGitPath (String path) {
-        if(!gitPathField.getAttribute("value").isEmpty()) {
-            gitPathField.clear();
-        }
-
+        getWait5().until(ExpectedConditions.visibilityOf(gitPathField));
+        gitPathField.clear();
         gitPathField.sendKeys(path);
 
         return this;
     }
 
     public List<String> getGitData() {
-        return List.of (
+        return Arrays.asList(
                 gitNameField.getAttribute("value"),
                 gitPathField.getAttribute("value")
         );
