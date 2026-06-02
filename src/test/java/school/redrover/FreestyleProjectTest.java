@@ -8,10 +8,8 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.FreestyleProjectPage;
-import school.redrover.page.project.config.FreestyleProjectConfigPage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,15 +18,13 @@ import java.util.Objects;
 public class FreestyleProjectTest extends BaseTest {
 
     private final static String PROJECT_NAME = "FreestyleProject";
-    private final static String PROJECT_NAME_UPDATED = "My FreestyleProject Test";
+    private final static String NO_EXISTING_PROJECT = "My FreestyleProject Test";
     private final static String NEW_PROJECT_NAME_1 = "FreestyleProject1";
-    private final static String NEW_PROJECT_NAME_2 = "FreestyleProject2";
     private static final String REPOSITORY_URL = "https://github.com/";
     private static final String BRANCH_NAME = "*/main";
     private static final String SOURCE_ITEM_NAME = "source_item";
     private static final String DESCRIPTION_TEXT = "My test description";
     private static final String NEW_ITEM_NAME = "new_item_copy";
-    private static final String BUILD_STEP_NAME = "Test";
     private static final String POPUP_MESSAGE = "Build scheduled";
 
     @Test
@@ -42,7 +38,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .getProjectList();
 
         Assert.assertEquals(projectList.size(), 1);
-        Assert.assertEquals(projectList.get(0), PROJECT_NAME);
+        Assert.assertEquals(projectList.getFirst() , PROJECT_NAME);
     }
 
     @Test
@@ -222,13 +218,15 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickOkButton()
                 .goHomePage()
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickBuildNowSideMenuButton()
-                .getBuilds().size();
+                .getSideMenu()
+                .clickBuildNow()
+                .getBuilds()
+                .size();
 
         Assert.assertEquals(build_count, 1);
     }
 
-    @Test(dependsOnMethods = "testBuildNowDisplaysPopupMessage")
+    @Test(dependsOnMethods = "testBuildNowCreatesBuild")
     public void testBuildAfterOtherProjectsAreBuild() {
         int build_count = new HomePage(getDriver())
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -237,12 +235,13 @@ public class FreestyleProjectTest extends BaseTest {
                 .enterMessageIntoProjectsToWatchField(PROJECT_NAME)
                 .selectTriggerEvenIfTheBuildFailsRadioButton()
                 .clickSaveButton()
-                .clickBuildNowSideMenuButton()
-                .getBuilds().size();
+                .getSideMenu()
+                .clickBuildNow()
+                .getBuilds()
+                .size();
 
         Assert.assertEquals(build_count, 1);
     }
-
 
     @Test
     public void testDeleteProject() {
@@ -253,9 +252,10 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickOkButton()
                 .goHomePage()
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickDeleteProjectSideMenuButton()
-                .confirmDeleteProject()
-                .getProjectList().size();
+                .getSideMenu()
+                .clickDelete()
+                .getProjectList()
+                .size();
 
         Assert.assertEquals(projectCount, 0);
     }
@@ -278,49 +278,54 @@ public class FreestyleProjectTest extends BaseTest {
                 "The repository URL does not match!");
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testRepositoryURL")
-    public void testBranchesToBuild() {
-        new HomePage(getDriver())
-                .clickOnProject(NEW_PROJECT_NAME_1, new FreestyleProjectPage(getDriver()))
+    @Test
+    public void testIsBranchSpecifierValueSaved() {
+        String branchSpecifierText = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
+                .goHomePage()
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
-                .selectGitRadioButton();
-
-        WebElement branchInput = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[contains(text(), 'Branch Specifier')]/following::input[1]")));
-        branchInput.clear();
-        branchInput.sendKeys(BRANCH_NAME);
-
-        Assert.assertEquals(getDriver().findElement(
-                                By.xpath("//div[contains(text(), 'Branch Specifier')]/following::input[1]"))
-                        .getAttribute("value"), BRANCH_NAME,
+                .selectGitRadioButton()
+                .enterBranchSpecifier(BRANCH_NAME)
+                .clickSaveButton()
+                .clickConfigure()
+                .getBranchSpecifierValue();
+        Assert.assertEquals(branchSpecifierText, BRANCH_NAME,
                 "The branch name does not match the expected one!");
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testBranchesToBuild")
+    @Test
     public void testSCMAuthenticationFails(){
-//        goToConfigurePage();
-//        gitButton();
-//        enterRepositoryURL();
+        String actualRepositoryConnectionErrorMessage = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
+                .goHomePage()
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .selectGitRadioButton()
+                .enterRepositoryURL(REPOSITORY_URL)
+                .clickSaveButton()
+                .clickConfigure()
+                .getRepositoryConnectionErrorMessage();
 
-        getDriver().findElement(By.id("page-body")).click();
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(
-                By.xpath("//input[@name='_.url']/following::div[@class='error'][1]"),
-                "Failed to connect to repository"));
-
-        String actualError = getDriver().findElement(
-                By.xpath("//input[@name='_.url']/following::div[@class='error'][1]")).getText();
-
-        Assert.assertTrue(actualError.contains("Failed to connect to repository"),
-                "Ожидаемый текст ошибки не найден" + actualError);
+        Assert.assertTrue(actualRepositoryConnectionErrorMessage.contains("Failed to connect to repository"),
+                "Ожидаемый текст ошибки не найден");
     }
 
-    @Ignore
     @Test
     public void testCreateSourceItem() {
-        TestUtils.createJob(getDriver(), SOURCE_ITEM_NAME, TestUtils.JobType.FREESTYLE)
-                .clickOnProject(SOURCE_ITEM_NAME, new FreestyleProjectPage(getDriver()))
+        new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
+                .goHomePage()
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .fillDescription(DESCRIPTION_TEXT)
                 .clickCheckBoxGitHub()
@@ -330,32 +335,37 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(
                 getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                         By.cssSelector("h1.job-index-headline"))).getText(),
-                SOURCE_ITEM_NAME
+                PROJECT_NAME
         );
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testCreateSourceItem")
-    public void testCreateItemFromExistingWithEmptyListItems() {
-        new HomePage(getDriver())
+    @Test
+    public void testCopyFromShowsNoItemsWhenNoMatchingProjectsFound() {
+        String actualEmptyStateMessage =new HomePage(getDriver())
                 .clickItemNewJob()
-                .setProjectName(NEW_ITEM_NAME)
-                .enterCopyItemName("Empty");
-        Assert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.cssSelector(".jenkins-dropdown__placeholder")
-                )).getText(),
-                "No items"
-        );
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
+                .goHomePage()
+                .clickItemNewJob()
+                .enterMessageToCopyFromField(NO_EXISTING_PROJECT)
+                .getEmptyStateMessage();
+        Assert.assertEquals(actualEmptyStateMessage, "No items");
     }
 
     @Ignore
-    @Test(dependsOnMethods = "testCreateSourceItem")
+    @Test
     public void testCreateItemFromExisting() {
         new HomePage(getDriver())
                 .clickItemNewJob()
-                .setProjectName(NEW_ITEM_NAME)
-                .enterCopyItemName(SOURCE_ITEM_NAME)
+                .setProjectName(PROJECT_NAME)
+                .selectFreeStyleProject()
+                .clickOkButton()
+                .goHomePage()
+                .clickItemNewJob()
+                .enterMessageToCopyFromField(PROJECT_NAME)
+                .setProjectName(NEW_PROJECT_NAME_1)
+                .selectFreeStyleProject()
                 .clickOkButton();
 
         WebElement gitCheckBoxButton = getWait10().until(ExpectedConditions.visibilityOfElementLocated(

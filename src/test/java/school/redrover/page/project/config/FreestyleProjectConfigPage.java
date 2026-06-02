@@ -126,7 +126,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
                 ExpectedConditions.visibilityOfAllElementsLocatedBy(
                         By.cssSelector("button.jenkins-dropdown__item")));
 
-        dropdownItems.get(0).click();
+        dropdownItems.getFirst().click();
 
         return this;
     }
@@ -211,6 +211,19 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         WebElement gitOption = getDriver().findElement(By.xpath("//label[text()='Git']"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", gitOption);
 
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(text(), 'Branch Specifier')]/following::input[1]")));
+
+        return this;
+    }
+
+    public FreestyleProjectConfigPage enterBranchSpecifier(String branch) {
+        WebElement branchSpecifier = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(text(), 'Branch Specifier')]/following::input[1]")));
+
+        branchSpecifier.clear();
+        branchSpecifier.sendKeys(branch);
+
         return this;
     }
 
@@ -220,7 +233,24 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         return this;
     }
 
+    public String getRepositoryConnectionErrorMessage() {
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(
+                By.xpath("//input[@name='_.url']/following::div[@class='error'][1]"),
+                "Failed to connect to repository"));
+
+        String actualRepositoryConnectionErrorMessage = getDriver().findElement(
+                By.xpath("//input[@name='_.url']/following::div[@class='error'][1]")).getText();
+
+        return actualRepositoryConnectionErrorMessage;
+    }
+
     public String getRepositoryUrl() {
         return getDriver().findElement(By.name("_.url")).getAttribute("value");
+    }
+
+    public String getBranchSpecifierValue() {
+        return getDriver().findElement(
+                        By.xpath("//div[contains(text(), 'Branch Specifier')]/following::input[1]"))
+                .getAttribute("value");
     }
 }

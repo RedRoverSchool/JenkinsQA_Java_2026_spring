@@ -5,9 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.page.BuildNowPage;
-import school.redrover.page.HomePage;
-import school.redrover.page.RenameProjectPage;
 import school.redrover.page.common.BaseJobPage;
 import school.redrover.page.components.FreestylePipelineMulticonfigSideMenuComponent;
 import school.redrover.page.project.config.FreestyleProjectConfigPage;
@@ -66,57 +63,14 @@ public class FreestyleProjectPage extends BaseJobPage<FreestyleProjectPage> {
         return this;
     }
 
-    public RenameProjectPage clickRenameProjectSideMenuButton() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='Rename']/.."))).click();
-
-        return new RenameProjectPage(getDriver());
-    }
-
     public List<String> getBuilds() {
         By builds = By.className("app-builds-container__item");
 
-        return getWait5().until(webDriver -> {
-            try {
-                WebElement element = getDriver().findElement(builds);
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(builds));
 
-                if (element.isDisplayed()) {
-                    return getDriver().findElements(builds)
-                            .stream()
-                            .map(WebElement::getText)
-                            .toList();
-                }
-            } catch (Exception e) {
-                return List.of();
-            }
-
-            return List.of();
-        });
-    }
-
-    public FreestyleProjectPage clickBuildNowSideMenuButton() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='Build Now']/.."))).click();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.className("app-builds-container__item"))).isDisplayed();
-
-        return this;
-    }
-
-    public FreestyleProjectPage clickDeleteProjectSideMenuButton() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//a[@data-title='Delete Project']"))).click();
-
-        return this;
-    }
-
-    public HomePage confirmDeleteProject() {
-        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).isDisplayed();
-
-        return new HomePage(getDriver());
+        return getDriver().findElements(builds).stream()
+                .map(WebElement::getText)
+                .toList();
     }
 
     public Boolean isPopupMessageDisplayed(String popUpMessage) {
@@ -126,5 +80,4 @@ public class FreestyleProjectPage extends BaseJobPage<FreestyleProjectPage> {
         return getWait10().until(ExpectedConditions.textToBePresentInElementLocated(
                 By.id("notification-bar"), popUpMessage));
     }
-
 }

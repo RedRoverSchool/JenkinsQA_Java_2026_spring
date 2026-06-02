@@ -54,12 +54,16 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
-    public CreateProjectPage enterCopyItemName(String sourceName) {
+    public CreateProjectPage enterMessageToCopyFromField(String projectName) {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.id("from")))
-                .sendKeys(sourceName);
+                        By.id("from"))).sendKeys(projectName);
 
         return this;
+    }
+
+    public String getEmptyStateMessage() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector(".jenkins-dropdown__placeholder"))).getText();
     }
 
     public CreateProjectPage selectFreeStyleProject() {
