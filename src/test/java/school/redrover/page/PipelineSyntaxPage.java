@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
 import school.redrover.page.project.OrganizationFolderPage;
 
@@ -20,7 +21,7 @@ public class PipelineSyntaxPage extends BasePage {
     }
 
     public PipelineSyntaxPage typeFilesToArchive(String fileName) {
-        inputFilesToArchive.sendKeys(fileName);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='_.artifacts']"))).sendKeys(fileName);
         return this;
     }
 
