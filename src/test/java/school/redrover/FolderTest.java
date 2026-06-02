@@ -24,8 +24,7 @@ public class FolderTest extends BaseTest {
         List<String> joblist = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(FOLDER_NAME)
-                .selectItemType(TestUtils.JobType.FOLDER)
-                .clickOK(new FolderConfigPage(getDriver()))
+                .selectFolderProjectAndClickOk()
                 .goHomePage()
                 .getProjectList();
 
@@ -37,8 +36,9 @@ public class FolderTest extends BaseTest {
     public void testRename() {
         List<String> jobnewlist = new HomePage(getDriver())
                 .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
-                .clickRenameSideMenu()
-                .enterNewName(FOLDER_NEW_NAME)
+                .getSideMenu()
+                .clickRename()
+                .setNewProjectName(FOLDER_NEW_NAME)
                 .clickRenameButton()
                 .goHomePage()
                 .getProjectList();
@@ -58,7 +58,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(errorText, "» A job already exists with the name " + "‘" + FOLDER_NEW_NAME + "’");
     }
 
-    @Test(dependsOnMethods = "testRename")
+    @Test(dependsOnMethods = "testCreateWithSameName")
     public void testAddDescription() {
         String descriptionText = new HomePage(getDriver())
                 .clickOnProject(FOLDER_NEW_NAME, new FolderProjectPage(getDriver()))
@@ -88,7 +88,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualText, HEALTH_METRICS_CHILD_NAME);
     }
 
-    @Test(dependsOnMethods = "testRename")
+    @Test(dependsOnMethods = "testHealthMetrics")
     public void testCreateNestedFolderTest() {
         String headerText = new HomePage(getDriver())
                 .clickOnProject(FOLDER_NEW_NAME, new FolderProjectPage(getDriver()))
@@ -100,5 +100,17 @@ public class FolderTest extends BaseTest {
                 .getHeaderText();
 
         Assert.assertEquals(headerText, NESTED_FOLDER);
+    }
+
+
+    @Test(dependsOnMethods = "testCreateNestedFolderTest")
+    public void testDelete() {
+        boolean dashboardEmpty = new HomePage(getDriver())
+                .clickOnProject(FOLDER_NEW_NAME, new FolderProjectPage(getDriver()))
+                .getSideMenu()
+                .clickDelete()
+                .isDashboardNotDisplayed();
+
+        Assert.assertTrue(dashboardEmpty);
     }
 }

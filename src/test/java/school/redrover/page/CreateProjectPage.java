@@ -8,8 +8,10 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.TestUtils;
 import school.redrover.page.common.BasePage;
+import school.redrover.page.project.MultiConfigurationProjectPage;
+import school.redrover.page.project.config.FolderConfigPage;
 import school.redrover.page.project.config.FreestyleProjectConfigPage;
-import school.redrover.page.project.config.OrganizationFolderConfigPage;
+import school.redrover.page.project.config.MultibranchConfigPage;
 import school.redrover.page.project.config.PipelineProjectConfigPage;
 
 public class CreateProjectPage extends BasePage {
@@ -29,8 +31,19 @@ public class CreateProjectPage extends BasePage {
     @FindBy(xpath = "//span[text()='Pipeline']")
     private WebElement pipelineOption;
 
+    @FindBy(xpath = "//span[text()='Folder']")
+    private WebElement folderOption;
+
+    @FindBy(xpath = "//span[text()='Multi-configuration project']")
+    private WebElement optionMultiConfiguration;
+
+    @FindBy(xpath = "//li[@class='hudson_model_FreeStyleProject']")
+    private WebElement optionFreestyleProject;
+
     @FindBy(xpath = "//*[@id='main-panel']/h1")
     private WebElement errorTitle;
+
+    private static final By BUTTON_OK = By.name("Submit");
 
     public CreateProjectPage(WebDriver driver) {
         super(driver);
@@ -58,12 +71,49 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
+    public MultibranchConfigPage selectMultibranchAndClickOk(){
+        getDriver().findElement(By.xpath("//span[text()='Multi-configuration project']")).click();
+        okButton.click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(BUTTON_OK));
+
+        return new MultibranchConfigPage(getDriver());
+    }
+
     public CreateProjectPage selectFreeStyleProject() {
-        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
+        optionFreestyleProject.click();
 
         return this;
     }
 
+    public FreestyleProjectConfigPage selectFreestyleProjectAndClickOk() {
+        optionFreestyleProject.click();
+        okButton.click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(BUTTON_OK));
+
+        return new FreestyleProjectConfigPage(getDriver());
+    }
+
+    public FolderConfigPage selectFolderProjectAndClickOk() {
+        folderOption.click();
+        okButton.click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
+
+        return new FolderConfigPage(getDriver());
+    }
+
+    public MultiConfigurationProjectPage selectMulticonfigAndClickOk() {
+        optionMultiConfiguration.click();
+        okButton.click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(BUTTON_OK));
+
+        return new MultiConfigurationProjectPage(getDriver());
+    }
+
+    public CreateProjectPage selectPipelineProjectAndWaitError() {
     public CreateProjectPage selectPipelineProject() {
         pipelineOption.click();
 
@@ -74,7 +124,7 @@ public class CreateProjectPage extends BasePage {
         pipelineOption.click();
         okButton.click();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(BUTTON_OK));
 
         return new PipelineProjectConfigPage(getDriver());
     }
@@ -96,6 +146,9 @@ public class CreateProjectPage extends BasePage {
     }
 
     public FreestyleProjectConfigPage clickOkButton() {
+        okButton.click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(BUTTON_OK));
         getDriver().findElement(By.id("ok-button")).click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
 
@@ -104,8 +157,8 @@ public class CreateProjectPage extends BasePage {
 
     public <JobConfigPage extends BasePage> JobConfigPage clickOK(JobConfigPage jobConfig) {
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-        // waiting for the configuration page
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(BUTTON_OK));
 
         return jobConfig;
     }
@@ -127,26 +180,5 @@ public class CreateProjectPage extends BasePage {
 
     public boolean isOkButtonEnabled() {
         return okButton.isEnabled();
-    }
-
-    public CreateProjectPage clickOutside() {
-        getDriver().findElement(By.id("main-panel")).click();
-        return this;
-    }
-
-    public CreateProjectPage selectMultibranchPipline() {
-        WebElement MPjobElement = getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", MPjobElement);
-        MPjobElement.click();
-        return this;
-    }
-
-    public PipelineProjectConfigPage createPipeline() {
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("workflow-editor-1")));
-
-        return new PipelineProjectConfigPage(getDriver());
     }
 }

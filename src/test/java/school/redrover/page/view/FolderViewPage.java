@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
+import school.redrover.page.view.config.ViewMyConfigPage;
 
 public class FolderViewPage extends BasePage {
 
@@ -26,12 +27,14 @@ public class FolderViewPage extends BasePage {
     @FindBy(name = "Submit")
     private WebElement buttonSave;
 
+    @FindBy(xpath = "//a[contains(@href, '/configure') and .//span[normalize-space()='Edit View']]")
+    private WebElement editViewButton;
+  
     @FindBy(id = "description-link")
     private WebElement editDescription;
 
     @FindBy(css = "#description-edit-form .description-cancel-button")
     private WebElement buttonCancel;
-
 
     public FolderViewPage(WebDriver driver) {
         super(driver);
@@ -57,7 +60,12 @@ public class FolderViewPage extends BasePage {
         return getWait10().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(content))).getText();
     }
 
-    public  FolderViewPage editDescription(String newDescriptionText) {
+    public ViewMyConfigPage clickEditView() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(editViewButton)).click();
+        return new ViewMyConfigPage(getDriver());
+    }
+      
+    public FolderViewPage editDescription(String newDescriptionText) {
         editDescription.click();
 
         WebElement descriptionField = getWait5().until(ExpectedConditions.visibilityOf(fieldDescription));

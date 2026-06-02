@@ -1,90 +1,94 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.util.Random;
-
-import school.redrover.page.GlobalSearchPage;
+import java.util.List;
 import school.redrover.page.HomePage;
+import school.redrover.page.project.FolderProjectPage;
 
 public class GlobalSearchTest extends BaseTest {
 
-    private static final By SEARCH_BUTTON = By.id("root-action-SearchAction");
-    private static final By SEARCH_INPUT_FIELD = By.xpath("//div[contains(@class,'jenkins-search')]//input");
     private static final String TEXT_TO_SEARCH = "test12321";
-
-    public void createFolder(String folderName) {
-        new HomePage(getDriver()).clickItemNewJob()
-                .setProjectName(folderName)
-                .selectFolder()
-                .clickOkButton()
-                .clickSaveButton()
-                .goHomePage();
-    }
-
-    public static String randomString(int length) {
-        if (length <= 0) {
-            return "";
-        }
-
-        Random random = new Random();
-        StringBuilder result = new StringBuilder(length);
-        for (int i = 0; i < length; i++) {
-            if (i % 6 == 0 && i != 0) {
-                result.append(' ');
-            } else {
-                char c = (char) ('a' + random.nextInt(26));
-                result.append(c);
-            }
-        }
-
-        return result.toString();
-    }
+    private static final String FOLDER_FIRST = "NewFolder";
+    private static final String FOLDER_NAME1 = "Partialtest";
+    private static final String FOLDER_NAME2 = "Parttaltest";
+    private static final String PARTIAL_WORD = "Partt";
 
     @Test
     public void testClearingTheSearchField() {
-        String input = new GlobalSearchPage(getDriver())
-                .findSearchButton()
-                .clickSearchInputField()
-                .typeSearchQuery(TEXT_TO_SEARCH)
+        String input = new HomePage(getDriver())
+                .clickSearchButton()
+                .typeSearchInput(TEXT_TO_SEARCH, false)
                 .clearSearchField()
                 .getSearchInputValue();
 
         Assert.assertEquals(input, "");
     }
 
-    @Ignore
     @Test
-    public void testReguest() {
-        createFolder("FirstFolder");
-        createFolder("SecondFolder");
+    public void testSearchExistingFolder() {
+        List<String> currentPath = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(FOLDER_FIRST)
+                .selectFolderProjectAndClickOk()
+                .goHomePage()
+                .clickSearchButton()
+                .typeSearchInputAndGoToResultsPage(FOLDER_FIRST, new FolderProjectPage(getDriver()))
+                .getBreadcrumbs()
+                .getBreadcrumbItems();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(SEARCH_BUTTON)).click();
-        WebElement searchInput = getWait5().until(ExpectedConditions.elementToBeClickable(SEARCH_INPUT_FIELD));
-        searchInput.sendKeys("FirstFolder");
-        searchInput.clear();
-        searchInput.sendKeys("SecondFolder");
+        Assert.assertTrue(currentPath.contains(FOLDER_FIRST));
+    }
 
-        WebElement result = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[contains(@href, 'SecondFolder')]")));
-        String actualText = result.getText();
-        Assert.assertTrue(actualText.contains("SecondFolder"));
+    @Test(dependsOnMethods = "testSearchExistingFolder")
+    public void testCaseInsensitivity() {
+        List<String> currentPath = new HomePage(getDriver())
+                .clickSearchButton()
+                .typeSearchInput(FOLDER_FIRST.toLowerCase(), false)
+                .chooseSearchingResult(FOLDER_FIRST, new FolderProjectPage(getDriver()))
+                .getBreadcrumbs()
+                .getBreadcrumbItems();
+
+        Assert.assertTrue(currentPath.contains(FOLDER_FIRST));
+    }
+    
+    @Test
+    public void testSearchPartialWords() {
+        List<String> folderList = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(FOLDER_NAME1)
+                .selectFolderProjectAndClickOk()
+                .goHomePage()
+                .clickItemNewJob()
+                .setProjectName(FOLDER_NAME2)
+                .selectFolderProjectAndClickOk()
+                .goHomePage()
+                .clickSearchButton()
+                .typeSearchInput(PARTIAL_WORD, false)
+                .getSearchList();
+
+        Assert.assertEquals(folderList.size(), 1);
     }
 
     @Test
     public void testLongQuery() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(SEARCH_BUTTON)).click();
-        WebElement searchInput = getWait5().until(ExpectedConditions.elementToBeClickable(SEARCH_INPUT_FIELD));
-        searchInput.sendKeys(randomString(1000));
+        boolean isNoResultsDisplayed = new HomePage(getDriver())
+                .clickSearchButton()
+                .typeSearchInput(HomePage.randomString(1000), false)
+                .isNoResultDisplayed();
 
-        WebElement result = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[contains(text(), 'No results for')]")));
-        Assert.assertTrue(result.isDisplayed(), "Search result message should be visible");
+        Assert.assertTrue(isNoResultsDisplayed);
+    }
+
+    @Test
+    public void testEmptyQuery() {
+        String headerText = new HomePage(getDriver())
+                .clickSearchButton()
+                .typeEmptyInputAndPressOK()
+                .getHeaderText();
+
+        Assert.assertEquals(headerText, "Command Palette");
     }
 }

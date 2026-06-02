@@ -83,4 +83,3 @@ public class BreadcrumbTest extends BaseTest {
         Assert.assertEquals(breadcrumbPath, expectedBreadcrumbPath);
     }
 }
-

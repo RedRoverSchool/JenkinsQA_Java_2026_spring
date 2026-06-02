@@ -4,9 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
-import school.redrover.page.common.BaseProjectPage;
+import school.redrover.page.common.BaseJobPage;
 
-public class MultibranchProjectPage extends BaseProjectPage {
+public class MultibranchProjectPage extends BaseJobPage<MultibranchProjectPage> {
 
     public MultibranchProjectPage(WebDriver driver) {
         super(driver);

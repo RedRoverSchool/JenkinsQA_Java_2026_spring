@@ -12,6 +12,8 @@ import school.redrover.common.TestUtils;
 import school.redrover.page.BuildNowPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.FreestyleProjectPage;
+import school.redrover.page.project.config.FreestyleProjectConfigPage;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -21,7 +23,7 @@ public class FreestyleProjectTest extends BaseTest {
     private final static String PROJECT_NAME = "FreestyleProject";
     private final static String PROJECT_NAME_UPDATED = "My FreestyleProject Test";
     private final static String NEW_PROJECT_NAME_1 = "FreestyleProject1";
-    private final static String NEW_PROJECT_NAME_2 ="FreestyleProject2";
+    private final static String NEW_PROJECT_NAME_2 = "FreestyleProject2";
     private static final String REPOSITORY_URL = "https://github.com/";
     private static final String BRANCH_NAME = "*/main";
     private static final String SOURCE_ITEM_NAME = "source_item";
@@ -82,7 +84,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "Run with timeout",
                 "Set build status to \"pending\" on GitHub commit");
 
-        List<String> actualTexts= new HomePage(getDriver())
+        List<String> actualTexts = new HomePage(getDriver())
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .clickAddBuildStep()
@@ -105,7 +107,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(commandFieldExists);
     }
 
-    @Test (dependsOnMethods = "testDeleteBuildStep")
+    @Test(dependsOnMethods = "testDeleteBuildStep")
     public void testAddDescription() {
         String actualDescriptionText = new HomePage(getDriver())
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -114,7 +116,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton()
                 .getDescription();
 
-        Assert.assertEquals(actualDescriptionText,DESCRIPTION_TEXT);
+        Assert.assertEquals(actualDescriptionText, DESCRIPTION_TEXT);
     }
 
     @Test(dependsOnMethods = "testAddDescription")
@@ -252,7 +254,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Ignore
     @Test
-    public void testCreateSourceItem(){
+    public void testCreateSourceItem() {
         TestUtils.createJob(getDriver(), SOURCE_ITEM_NAME, TestUtils.JobType.FREESTYLE)
                 .clickOnProject(SOURCE_ITEM_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
@@ -270,7 +272,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Ignore
     @Test(dependsOnMethods = "testCreateSourceItem")
-    public void testCreateItemFromExistingWithEmptyListItems(){
+    public void testCreateItemFromExistingWithEmptyListItems() {
         new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(NEW_ITEM_NAME)
