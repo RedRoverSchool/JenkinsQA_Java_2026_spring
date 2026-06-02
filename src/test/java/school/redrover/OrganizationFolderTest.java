@@ -20,6 +20,7 @@ public class OrganizationFolderTest extends BaseTest {
     public static final String ORG_FOLDER_DISPLAY_NAME = "OrgFolderDisplayName";
     public static final String FOLDER_NAME = "Folder new";
     public static final String DESCRIPTION_TEXT = "Description: New project";
+    public static final String FILE_NAME = "1.jar";
 
     @Test
     public void testCreate() {
@@ -36,6 +37,34 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(joblist.getFirst(), ORG_FOLDER_NAME);
     }
 
+    @Test(dependsOnMethods = "testCreate")
+    public void testPipelineSyntax() {
+        boolean isTextContainsFileName = new HomePage(getDriver())
+                .clickOnProject(ORG_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
+                .getSideMenu()
+                .clickPipelineSyntax()
+                .typeFilesToArchive(FILE_NAME)
+                .clickGenerateScript()
+                .isTextContainsFileName(FILE_NAME);
+
+        Assert.assertTrue(isTextContainsFileName);
+    }
+
+    @Test(dependsOnMethods = "testPipelineSyntax")
+    public void testCredentialsOpens() {
+        final List<String> expectedBreadcrumbs = List.of(ORG_FOLDER_NAME, "Credentials");
+
+        List<String> currentBreadcrumbs = new HomePage(getDriver())
+                .clickOnProject(ORG_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
+                .getSideMenu()
+                .clickCredentials()
+                .getBreadcrumbs()
+                .getBreadcrumbItems();
+
+        Assert.assertEquals(currentBreadcrumbs.size(), 2);
+        Assert.assertTrue(currentBreadcrumbs.containsAll(expectedBreadcrumbs));
+    }
+
     @Ignore //bug in Jenkins (worked before)
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescription() {
@@ -49,7 +78,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(actualDescriptionText, DESCRIPTION_TEXT);
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test(dependsOnMethods = "testCredentialsOpens")
     public void testRename() {
         Boolean isUpdatedNameCorrect = new HomePage(getDriver())
                 .clickOnProject(ORG_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
