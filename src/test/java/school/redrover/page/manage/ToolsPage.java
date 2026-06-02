@@ -100,6 +100,7 @@ public class ToolsPage extends BasePage {
     }
 
     public ToolsPage clickAddJDKButton() {
+
         addJDKButton.click();
 
         return this;

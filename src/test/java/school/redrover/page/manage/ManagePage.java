@@ -42,7 +42,7 @@ public class ManagePage extends BasePage {
 
     public ToolsPage clickToolsButton() {
         getDriver().findElement(By.xpath("//a[@href='configureTools']")).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//form[@name='config']")));
 
         return new ToolsPage(getDriver());
     }
