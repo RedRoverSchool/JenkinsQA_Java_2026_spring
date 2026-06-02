@@ -6,12 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
-import school.redrover.page.project.OrganizationFolderPage;
 
 public class PipelineSyntaxPage extends BasePage {
-
-    @FindBy(xpath = "//input[@name='_.artifacts']")
-    private WebElement inputFilesToArchive;
 
     @FindBy(id = "generatePipelineScript")
     private WebElement generatePipelineScriptButton;
@@ -31,7 +27,7 @@ public class PipelineSyntaxPage extends BasePage {
     }
 
     public boolean isTextContainsFileName (String filename) {
-        return getDriver().findElement(By.xpath(" //textarea[@id='prototypeText']"))
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@id='prototypeText']")))
                 .getAttribute("value").contains(filename);
     }
 }
