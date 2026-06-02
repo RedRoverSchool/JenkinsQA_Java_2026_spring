@@ -49,8 +49,7 @@ public class OrganizationFolderTest extends BaseTest {
                 .clickGenerateScript()
                 .isTextContainsFileName(FILE_NAME);
 
-        Assert.assertTrue(isTextContainsFileName, "attribute is" + getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@id='prototypeText']")))
-                .getAttribute("value"));
+        Assert.assertTrue(isTextContainsFileName);
     }
 
     @Test(dependsOnMethods = "testPipelineSyntax")
