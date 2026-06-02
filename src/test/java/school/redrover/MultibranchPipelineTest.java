@@ -11,114 +11,120 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.MultibranchProjectPage;
+
 import java.util.List;
 
 public class MultibranchPipelineTest extends BaseTest {
 
-	private final static String PROJECT_NAME = "MultibranchPipelineProject";
-	private final static String PROJECT_NAME_1 = "MultibranchPipelineProject1";
-	private final static String PROJECT_NAME_DELETE = "Project_To_Delete";
+    private final static String PROJECT_NAME = "MultibranchPipelineProject";
+    private final static String PROJECT_NAME_1 = "MultibranchPipelineProject1";
+    private final static String PROJECT_NAME_DELETE = "ProjectToDelete";
 
-	@Test
-	public void testCreate() {
-		List<String> projectList = new HomePage(getDriver())
-				.clickItemNewJob()
-				.setProjectName(PROJECT_NAME)
-				.selectMultibranchAndClickOk()
-				.goHomePage()
-				.getProjectList();
+    @Test
+    public void testCreate() {
+        List<String> projectList = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectMultibranchAndClickOk()
+                .goHomePage()
+                .getProjectList();
 
-		Assert.assertEquals(projectList.size(), 1);
-		Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);
-	}
+        Assert.assertEquals(projectList.size(), 1);
+        Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);
+    }
 
-	@Ignore
-	@Test
-	public void testStatusIconIsDisplayedForMultibranchPipeline() {
-		final String projectName = "new-multibranch-pipeline-" + System.currentTimeMillis();
-		TestUtils.createJob(
-				getDriver(),
-				projectName,
-				TestUtils.JobType.MULTIBRANCH_PIPELINE);
+    @Ignore
+    @Test
+    public void testStatusIconIsDisplayedForMultibranchPipeline() {
+        final String projectName = "new-multibranch-pipeline-" + System.currentTimeMillis();
+        TestUtils.createJob(
+                getDriver(),
+                projectName,
+                TestUtils.JobType.MULTIBRANCH_PIPELINE);
 
-		getWait10().until(ExpectedConditions.urlContains("/configure"));
-		getWait10().until(ExpectedConditions.elementToBeClickable(By.className("app-jenkins-logo"))).click();
+        getWait10().until(ExpectedConditions.urlContains("/configure"));
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.className("app-jenkins-logo"))).click();
 
-		By statusIcon = By.xpath("//tr[.//span[normalize-space()='" + projectName + "']]//*[name()='svg']");
-		WebElement icon = getWait10().until(ExpectedConditions.visibilityOfElementLocated(statusIcon));
-		Assert.assertTrue(icon.isDisplayed());
-	}
+        By statusIcon = By.xpath("//tr[.//span[normalize-space()='" + projectName + "']]//*[name()='svg']");
+        WebElement icon = getWait10().until(ExpectedConditions.visibilityOfElementLocated(statusIcon));
+        Assert.assertTrue(icon.isDisplayed());
+    }
 
-	@Test(dependsOnMethods = "testCreate")
-	public void testRename() {
-		getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME)))).click();
-		getDriver().findElement(By.xpath("//a[contains(@href,'job') and ./span[text()='Rename']]")).click();
-		getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
-		getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(PROJECT_NAME_1);
-		getDriver().findElement(By.name("Submit")).click();
-		getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-jenkins-logo"))).click();
+    @Test(dependsOnMethods = "testCreate")
+    public void testRename() {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME)))).click();
+        getDriver().findElement(By.xpath("//a[contains(@href,'job') and ./span[text()='Rename']]")).click();
+        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
+        getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(PROJECT_NAME_1);
+        getDriver().findElement(By.name("Submit")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-jenkins-logo"))).click();
 
-		Assert.assertEquals(getWait10().until(
-				ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME_1)))).getText(), PROJECT_NAME_1);
-	}
+        Assert.assertEquals(getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'%s')]".formatted(PROJECT_NAME_1)))).getText(), PROJECT_NAME_1);
+    }
 
-	@Test (dependsOnMethods = "testRename")
-	public void testRenameViaContextMenu() {
-		List<String> projectList = new HomePage(getDriver())
-				.openProjectDropdownMenu(PROJECT_NAME_1)
-				.clickRenameInDropdown()
-				.setNewProjectName(PROJECT_NAME)
-				.clickRenameButton()
-				.goHomePage()
-				.getProjectList();
+    @Test(dependsOnMethods = "testRename")
+    public void testRenameViaContextMenu() {
+        List<String> projectList = new HomePage(getDriver())
+                .openProjectDropdownMenu(PROJECT_NAME_1)
+                .clickRenameInDropdown()
+                .setNewProjectName(PROJECT_NAME)
+                .clickRenameButton()
+                .goHomePage()
+                .getProjectList();
 
-		Assert.assertEquals(projectList.size(), 1);
-		Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);
-	}
+        Assert.assertEquals(projectList.size(), 1);
+        Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);
+    }
 
-	@Ignore
-	@Test
-	public void testDeleteProjectViaSideMenu() {
+    @Test
+    public void testDeleteProjectViaSideMenu() {
+        List<String> projectList = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME_DELETE)
+                .selectMultibranchAndClickOk()
+                .goHomePage()
+                .clickOnProject(PROJECT_NAME_DELETE, new MultibranchProjectPage(getDriver()))
+                .getSideMenu()
+                .clickDelete()
+                .getProjectList();
 
-		List<String> projectList = TestUtils.createJob(getDriver(), PROJECT_NAME_DELETE, TestUtils.JobType.MULTIBRANCH_PIPELINE)
-				.clickOnProject(PROJECT_NAME_DELETE, new MultibranchProjectPage(getDriver()))
-				.clickDeleteInSideMenu()
-				.confirmDelete()
-				.getProjectList();
+        Assert.assertListNotContainsObject(projectList, PROJECT_NAME_DELETE, "Multibranch is not deleted");
+    }
 
-		Assert.assertEquals(projectList.size(), 0);
-	}
+    @Test
+    public void testDeleteProjectViaDashboardMenu() {
+        List<String> projectList = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME_DELETE)
+                .selectMultibranchAndClickOk()
+                .goHomePage()
+                .openProjectDropdownMenu(PROJECT_NAME_DELETE)
+                .clickDeleteInDropdown()
+                .confirmDelete(PROJECT_NAME_DELETE)
+                .getProjectList();
 
-	@Test
-	public void testDeleteProjectViaDashboardMenu() {
+        Assert.assertEquals(projectList.size(), 0);
+    }
 
-		List<String> projectList = TestUtils.createJob(getDriver(), PROJECT_NAME_DELETE, TestUtils.JobType.MULTIBRANCH_PIPELINE)
-				.openProjectDropdownMenu(PROJECT_NAME_DELETE)
-				.clickDeleteInDropdown()
-				.confirmDelete(PROJECT_NAME_DELETE)
-				.getProjectList();
+    @DataProvider(name = "invalid characters")
+    public Object[][] getData() {
+        return new Object[][]{{"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"}, {"!"}
+        };
+    }
 
-		Assert.assertEquals(projectList.size(), 0);
-	}
+    @Test(dataProvider = "invalid characters")
+    public void testInvalidCharactersInName(String invalidCharacter) {
+        String invalidProjectName = "test" + invalidCharacter;
 
-	@DataProvider(name = "invalid characters")
-	public Object[][] getData() {
-		return new Object[][]{{"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"},{"!"}
-		};
-	}
+        String errorMessage = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(invalidProjectName)
+                .scrollToTypeOfProject(TestUtils.JobType.MULTIBRANCH_PIPELINE)
+                .selectItemType(TestUtils.JobType.MULTIBRANCH_PIPELINE)
+                .clickOKWithError()
+                .getErrorMessage();
 
-	@Test(dataProvider = "invalid characters")
-	public void testInvalidCharactersInName(String invalidCharacter) {
-		String invalidProjectName = "test" + invalidCharacter;
-
-		String errorMessage = new HomePage(getDriver())
-				.clickItemNewJob()
-				.setProjectName(invalidProjectName)
-				.scrollToTypeOfProject(TestUtils.JobType.MULTIBRANCH_PIPELINE)
-				.selectItemType(TestUtils.JobType.MULTIBRANCH_PIPELINE)
-				.clickOKWithError()
-				.getErrorMessage();
-
-		Assert.assertEquals(errorMessage, "‘" + invalidCharacter + "’ is an unsafe character");
-	}
+        Assert.assertEquals(errorMessage, "‘" + invalidCharacter + "’ is an unsafe character");
+    }
 }
