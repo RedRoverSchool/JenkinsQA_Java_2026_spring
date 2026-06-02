@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.manage.ToolsPage;
 import java.util.List;
 
 public class ToolsTest extends BaseTest {
@@ -49,6 +50,7 @@ public class ToolsTest extends BaseTest {
         boolean isEditButtonAppears = new HomePage(getDriver())
                 .clickManageButton()
                 .clickToolsButton()
+                .clickJDKInstallationsButton()
                 .clickAddJDKButton()
                 .setJDKName("TestName")
                 .setJavaPath("/test/path/toJDK")
@@ -79,15 +81,37 @@ public class ToolsTest extends BaseTest {
 
     @Test(dependsOnMethods = "testEditExistingJDK")
     public void testDeleteJDK() {
-        boolean isEditButtonAppears = new HomePage(getDriver())
+        int jdksCount = new HomePage(getDriver())
                 .clickManageButton()
                 .clickToolsButton()
                 .clickJDKInstallationsButton()
                 .deleteAllJDKs()
                 .clickSaveButton()
                 .clickToolsButton()
-                .isEditDisplayed();
+                .clickJDKInstallationsButton()
+                .getJDKsCount();
 
-        Assert.assertFalse(isEditButtonAppears);
+        Assert.assertEquals(jdksCount, 0);
+    }
+
+    @Test
+    public void testAddGitInstallation() {
+        boolean isGitInstallationAppears = new HomePage(getDriver())
+                .clickManageButton()
+                .clickToolsButton()
+                .clickAddGitButton()
+                .selectDropDownItem()
+                .setGitName("TestGitName" )
+                .setGitPath("/test/path")
+                .clickSaveButton()
+                .clickToolsButton()
+                .isGitInstallationsAppears ();
+
+        List<String> attributesGit = new ToolsPage(getDriver())
+                .getGitData();
+
+        Assert.assertTrue(isGitInstallationAppears);
+        Assert.assertEquals(attributesGit.get(0), "TestGitName");
+        Assert.assertEquals(attributesGit.get(1), "/test/path");
     }
 }

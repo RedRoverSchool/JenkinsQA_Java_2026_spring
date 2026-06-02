@@ -1,12 +1,12 @@
 package school.redrover.page.manage;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.page.common.BasePage;
-
 import java.util.List;
 
 public class ToolsPage extends BasePage {
@@ -51,6 +51,21 @@ public class ToolsPage extends BasePage {
     @FindBy(id = "settings-search-bar")
     private WebElement searchBar;
 
+    @FindBy(xpath ="//button[contains(@class, 'jenkins-button') and contains(text(), 'Add Git')]")
+    private WebElement addGitButton;
+
+    @FindBy(xpath = "//div[@descriptorid='hudson.plugins.git.GitTool']")
+    private WebElement gitInstallationSection;
+
+    @FindBy(xpath = "//button[contains(@class, 'jenkins-dropdown__item') and normalize-space(.)='Git']")
+    private WebElement firstDropdownItem;
+
+    @FindBy(xpath = "//input[@checkurl = '/manage/descriptorByName/hudson.plugins.git.GitTool/checkName']")
+    private WebElement gitNameField;
+
+    @FindBy(xpath = "//input[@checkurl = '/manage/descriptorByName/hudson.plugins.git.GitTool/checkHome']")
+    private WebElement gitPathField;
+
     public ToolsPage selectMavenOption(String option) {
         new Select(mavenOption).selectByVisibleText(option);
 
@@ -80,6 +95,7 @@ public class ToolsPage extends BasePage {
     }
 
     public ToolsPage clickJDKInstallationsButton() {
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", JDKInstallationsButton);
         JDKInstallationsButton.click();
 
         return this;
@@ -119,7 +135,12 @@ public class ToolsPage extends BasePage {
 
     public ToolsPage deleteAllJDKs() {
         while (!deleteButtons.isEmpty()) {
-            WebElement currentButton = deleteButtons.get(0);
+            WebElement currentButton = deleteButtons.getFirst();
+
+            if (!currentButton.isDisplayed()) {
+                break;
+            }
+
             currentButton.click();
             getWait5().until(ExpectedConditions.stalenessOf(currentButton));
         }
@@ -127,10 +148,69 @@ public class ToolsPage extends BasePage {
         return this;
     }
 
+    public int getJDKsCount() {
+        int visibleButtons = 0;
+        for (WebElement button : deleteButtons) {
+            if (button.isDisplayed()) {
+                visibleButtons++;
+            }
+        }
+
+        return visibleButtons;
+    }
+
     public List<String> getJDKData() {
         return List.of(
                 nameField.getAttribute("value"),
                 pathField.getAttribute("value")
+        );
+    }
+
+    public ToolsPage clickAddGitButton() {
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", addGitButton);
+        addGitButton.click();
+
+        return this;
+    }
+
+    public ToolsPage selectDropDownItem() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(firstDropdownItem));
+        firstDropdownItem.click();
+
+        return this;
+    }
+
+    public boolean isGitInstallationsAppears() {
+        getWait10().until(ExpectedConditions.visibilityOf(gitInstallationSection));
+        return gitInstallationSection.isDisplayed ();
+    }
+
+    public ToolsPage setGitName (String name) {
+        getWait5().until(ExpectedConditions.visibilityOf(gitNameField));
+
+        if(!gitNameField.getAttribute("value").isEmpty()) {
+            gitNameField.clear();
+        }
+
+        gitNameField.sendKeys(name);
+
+        return this;
+    }
+
+    public ToolsPage setGitPath (String path) {
+        if(!gitPathField.getAttribute("value").isEmpty()) {
+            gitPathField.clear();
+        }
+
+        gitPathField.sendKeys(path);
+
+        return this;
+    }
+
+    public List<String> getGitData() {
+        return List.of (
+                gitNameField.getAttribute("value"),
+                gitPathField.getAttribute("value")
         );
     }
 }
