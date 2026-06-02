@@ -92,7 +92,7 @@ public class ToolsPage extends BasePage {
     }
 
     public ToolsPage clickJDKInstallationsButton() {
-        WebElement JDKInstallationsButton = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(normalize-space(.), 'JDK installations')]")));
+        WebElement JDKInstallationsButton = getDriver().findElement(By.xpath("//button[contains(normalize-space(.), 'JDK installations')]"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", JDKInstallationsButton);
         JDKInstallationsButton.click();
 
