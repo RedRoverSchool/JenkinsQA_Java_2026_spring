@@ -1,5 +1,6 @@
 package school.redrover.page.manage;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -32,9 +33,6 @@ public class ToolsPage extends BasePage {
     @FindBy(xpath = "(//input[@name='_.path'])[2]")
     private WebElement globalPathField;
 
-    @FindBy(xpath = "//button[contains(text(),'JDK installations')]")
-    private WebElement JDKInstallationsButton;
-
     @FindBy(xpath = "//button[contains(text(), 'Add JDK')]")
     private WebElement addJDKButton;
 
@@ -52,9 +50,6 @@ public class ToolsPage extends BasePage {
 
     @FindBy(id = "settings-search-bar")
     private WebElement searchBar;
-
-    @FindBy(xpath ="//button[contains(@class, 'jenkins-button') and contains(text(), 'Add Git')]")
-    private WebElement addGitButton;
 
     @FindBy(xpath = "//div[@descriptorid='hudson.plugins.git.GitTool']")
     private WebElement gitInstallationSection;
@@ -97,6 +92,7 @@ public class ToolsPage extends BasePage {
     }
 
     public ToolsPage clickJDKInstallationsButton() {
+        WebElement JDKInstallationsButton = getDriver().findElement(By.xpath("//button[contains(text(),'JDK installations')]"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", JDKInstallationsButton);
         JDKInstallationsButton.click();
 
@@ -159,6 +155,7 @@ public class ToolsPage extends BasePage {
     }
 
     public ToolsPage clickAddGitButton() {
+        WebElement addGitButton = getDriver().findElement(By.xpath("//button[contains(@class, 'jenkins-button') and contains(text(), 'Add Git')]"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", addGitButton);
         addGitButton.click();
 
