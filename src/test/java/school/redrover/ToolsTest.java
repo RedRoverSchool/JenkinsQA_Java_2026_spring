@@ -50,7 +50,7 @@ public class ToolsTest extends BaseTest {
         boolean isEditButtonAppears = new HomePage(getDriver())
                 .clickManageButton()
                 .clickToolsButton()
-                .clickJDKInstallationsButton()
+//                .clickJDKInstallationsButton()
                 .clickAddJDKButton()
                 .setJDKName("TestName")
                 .setJavaPath("/test/path/toJDK")
@@ -67,12 +67,12 @@ public class ToolsTest extends BaseTest {
         List<String> attributesJDK = new HomePage(getDriver())
                 .clickManageButton()
                 .clickToolsButton()
-                .clickJDKInstallationsButton()
+//                .clickJDKInstallationsButton()
                 .setJDKName("UpdateTestName")
                 .setJavaPath("/test/updatePath/toJDK")
                 .clickSaveButton()
                 .clickToolsButton()
-                .clickJDKInstallationsButton()
+//                .clickJDKInstallationsButton()
                 .getJDKData();
 
         Assert.assertEquals(attributesJDK.get(0), "UpdateTestName");
@@ -84,11 +84,11 @@ public class ToolsTest extends BaseTest {
         int jdksCount = new HomePage(getDriver())
                 .clickManageButton()
                 .clickToolsButton()
-                .clickJDKInstallationsButton()
+//                .clickJDKInstallationsButton()
                 .deleteAllJDKs()
                 .clickSaveButton()
                 .clickToolsButton()
-                .clickJDKInstallationsButton()
+//                .clickJDKInstallationsButton()
                 .getJDKsCount();
 
         Assert.assertEquals(jdksCount, 0);
