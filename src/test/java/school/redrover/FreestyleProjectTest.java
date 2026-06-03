@@ -350,7 +350,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickOkButton()
                 .goHomePage()
                 .clickItemNewJob()
-                .enterMessageToCopyFromField(NO_EXISTING_PROJECT)
+                .enterProjectNameToCopyFromField(NO_EXISTING_PROJECT)
                 .getEmptyStateMessage();
         Assert.assertEquals(actualEmptyStateMessage, "No items");
     }
@@ -365,7 +365,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickOkButton()
                 .goHomePage()
                 .clickItemNewJob()
-                .enterMessageToCopyFromField(PROJECT_NAME)
+                .enterProjectNameToCopyFromField(PROJECT_NAME)
                 .setProjectName(NEW_PROJECT_NAME_1)
                 .selectFreeStyleProject()
                 .clickOkButton();
