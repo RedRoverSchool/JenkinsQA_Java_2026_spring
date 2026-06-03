@@ -63,7 +63,7 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
-    public CreateProjectPage enterMessageToCopyFromField(String projectName) {
+    public CreateProjectPage enterProjectNameToCopyFromField(String projectName) {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                         By.id("from"))).sendKeys(projectName);
 
@@ -117,7 +117,7 @@ public class CreateProjectPage extends BasePage {
         return new MultiConfigurationProjectPage(getDriver());
     }
 
-    public CreateProjectPage selectPipelineProject() {
+    public CreateProjectPage selectPipelineProjectAndWaitError() {
         pipelineOption.click();
 
         return this;
@@ -151,10 +151,6 @@ public class CreateProjectPage extends BasePage {
     public FreestyleProjectConfigPage clickOkButton() {
         okButton.click();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(BUTTON_OK));
-        getDriver().findElement(By.id("ok-button")).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
-
         return new FreestyleProjectConfigPage(getDriver());
     }
 
@@ -185,25 +181,11 @@ public class CreateProjectPage extends BasePage {
         return okButton.isEnabled();
     }
 
-    public CreateProjectPage clickOutside() {
-        getDriver().findElement(By.id("main-panel")).click();
-        return this;
-    }
-
-    public CreateProjectPage selectMultibranchPipline() {
+    public CreateProjectPage selectMultibranchPipeline() {
         WebElement MPjobElement = getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", MPjobElement);
         MPjobElement.click();
 
         return this;
-    }
-
-    public PipelineProjectConfigPage createPipeline() {
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("workflow-editor-1")));
-
-        return new PipelineProjectConfigPage(getDriver());
     }
 }

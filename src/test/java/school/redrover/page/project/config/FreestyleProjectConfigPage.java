@@ -173,13 +173,6 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
                 By.className("jenkins-toggle-switch__label"),expectedState));
     }
 
-    public FreestyleProjectConfigPage clickTriggersSideMenuButton() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.cssSelector("button[data-section-id = 'triggers']"))).click();
-
-        return this;
-    }
-
     public FreestyleProjectConfigPage selectBuildAfterOtherProjectsAreBuiltCheckbox() {
         By checkbox = By.name("jenkins-triggers-ReverseBuildTrigger");
 

@@ -23,7 +23,7 @@ public class MultibranchOrgFolderSideMenuComponent<T extends BasePage> extends J
     @FindBy(xpath = "//div[@id='side-panel']//a[contains(@href, '/pipeline-syntax')]")
     private WebElement pipelineSyntaxButton;
 
-    @FindBy(xpath = "//div[@id='side-panel']//a[contains(@href, '/pipeline-syntax')]")
+    @FindBy(xpath = "//div[@id='side-panel']//a[contains(@href, '/credentials')]")
     private WebElement credentialsButton;
 
     public MultibranchOrgFolderSideMenuComponent(WebDriver driver, T parentPage) {
@@ -39,6 +39,8 @@ public class MultibranchOrgFolderSideMenuComponent<T extends BasePage> extends J
 
     public CredentialsPage clickCredentials() {
         credentialsButton.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-notice__description']/button[contains(., 'Add Credentials')]")));
+
         return new CredentialsPage(getDriver());
     }
 }
