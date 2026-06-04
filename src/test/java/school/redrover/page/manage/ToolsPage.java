@@ -92,17 +92,16 @@ public class ToolsPage extends BasePage {
     }
 
     public ToolsPage clickJDKInstallationsButton() {
-        WebElement jdkButton = getWait2().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[contains(normalize-space(.), 'JDK installations')]")));
+        By oldXpath = By.xpath("//button[contains(normalize-space(.), 'JDK installations')]");
+        WebElement jdkButton = getWait5().until(ExpectedConditions.presenceOfElementLocated(oldXpath));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", jdkButton);
-        getWait2().until(ExpectedConditions.elementToBeClickable(jdkButton)).click();
-
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[contains(normalize-space(.), 'Add JDK')]")));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(oldXpath)).click();
 
         return this;
     }
 
     public ToolsPage clickAddJDKButton() {
-        WebElement addJDKButton = getWait2().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[contains(normalize-space(.), 'Add JDK')]")));
+        WebElement addJDKButton = getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[contains(normalize-space(.), 'Add JDK')]")));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", addJDKButton);
         getWait2().until(ExpectedConditions.elementToBeClickable(addJDKButton)).click();
 

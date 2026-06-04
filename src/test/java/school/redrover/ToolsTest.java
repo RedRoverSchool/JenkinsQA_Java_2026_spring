@@ -10,16 +10,6 @@ import java.util.List;
 public class ToolsTest extends BaseTest {
 
     @Test
-    public void testOpenToolsPage() {
-        String headerText = new HomePage(getDriver())
-                .clickManageButton()
-                .clickToolsButton()
-                .getHeaderText();
-
-        Assert.assertEquals(headerText, "Tools");
-    }
-
-    @Test
     public void testSimpleMavenConfiguration() {
         boolean isPathDisplayed = new HomePage(getDriver())
                 .clickManageButton()
@@ -45,7 +35,7 @@ public class ToolsTest extends BaseTest {
         Assert.assertTrue(isGlobalPathDisplayed);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testSimpleMavenConfiguration")
     public void testAddJDK() {
         boolean isEditButtonAppears = new HomePage(getDriver())
                 .clickManageButton()
@@ -113,5 +103,15 @@ public class ToolsTest extends BaseTest {
         Assert.assertTrue(isGitInstallationAppears);
         Assert.assertEquals(attributesGit.get(0), "TestGitName");
         Assert.assertEquals(attributesGit.get(1), "/test/path");
+    }
+
+    @Test
+    public void testOpenToolsPage() {
+        String headerText = new HomePage(getDriver())
+                .clickManageButton()
+                .clickToolsButton()
+                .getHeaderText();
+
+        Assert.assertEquals(headerText, "Tools");
     }
 }
