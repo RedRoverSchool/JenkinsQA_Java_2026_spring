@@ -1,8 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -25,7 +23,6 @@ public class FreestyleProjectTest extends BaseTest {
     private final static String NEW_PROJECT_NAME_1 = "FreestyleProject1";
     private static final String REPOSITORY_URL = "https://github.com/";
     private static final String BRANCH_NAME = "*/main";
-    private static final String SOURCE_ITEM_NAME = "source_item";
     private static final String DESCRIPTION_TEXT = "My test description";
     private static final String NEW_ITEM_NAME = "new_item_copy";
     private static final String POPUP_MESSAGE = "Build scheduled";
