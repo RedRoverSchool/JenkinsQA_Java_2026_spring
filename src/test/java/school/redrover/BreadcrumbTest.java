@@ -68,7 +68,7 @@ public class BreadcrumbTest extends BaseTest {
 
     @Test(dependsOnMethods = "testNavigateToParentFolder")
     public void testBreadcrumbDisplaysAllNestedFolders() {
-        final List<String> expectedBreadcrumbPath = List.of(FOLDER_PARENT, FOLDER_CHILD, FREESTYLE_NESTED, "Configure");
+        final List<String> expectedBreadcrumbPath = List.of(FOLDER_PARENT, FOLDER_CHILD, FREESTYLE_NESTED, "Configuration");
 
         List<String> breadcrumbPath = new HomePage(getDriver())
                 .clickOnProject(FOLDER_PARENT, new FolderProjectPage(getDriver()))
