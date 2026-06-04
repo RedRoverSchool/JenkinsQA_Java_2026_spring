@@ -21,7 +21,7 @@ public class ToolsPage extends BasePage {
     @FindBy(xpath = "(//select[contains(@class,'jenkins-select__input')])[1]")
     private WebElement mavenOption;
 
-    @FindBy(xpath = "(//input[@name='_.path'])[1]")
+    @FindBy(xpath = "//div[@name='settingsProvider']//input[@name='_.path']")
     private WebElement javaHomeField;
 
     @FindBy(name = "Submit")
@@ -30,16 +30,16 @@ public class ToolsPage extends BasePage {
     @FindBy(xpath = "(//select[contains(@class,'jenkins-select__input')])[2]")
     private WebElement globalMavenOption;
 
-    @FindBy(xpath = "(//input[@name='_.path'])[2]")
+    @FindBy(xpath = "//div[@name='globalSettingsProvider']//input[@name='_.path']")
     private WebElement globalPathField;
 
     @FindBy(xpath = "//button[contains(text(), 'Add JDK')]")
     private WebElement addJDKButton;
 
-    @FindBy(name = "_.name")
+    @FindBy(xpath = "//input[contains(@checkurl, 'hudson.model.JDK/checkName')]")
     private WebElement nameField;
 
-    @FindBy(name = "_.home")
+    @FindBy(xpath = "//input[contains(@checkurl, 'hudson.model.JDK/checkHome')]")
     private WebElement pathField;
 
     @FindBy(xpath = "//span[@tooltip='One or more fields in this block have been edited.']")
@@ -92,22 +92,25 @@ public class ToolsPage extends BasePage {
     }
 
     public ToolsPage clickJDKInstallationsButton() {
-        WebElement JDKInstallationsButton = getDriver().findElement(By.xpath("//button[contains(normalize-space(.), 'JDK installations')]"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", JDKInstallationsButton);
-        JDKInstallationsButton.click();
+        WebElement jdkButton = getWait2().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[contains(normalize-space(.), 'JDK installations')]")));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", jdkButton);
+        getWait2().until(ExpectedConditions.elementToBeClickable(jdkButton)).click();
+
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[contains(normalize-space(.), 'Add JDK')]")));
 
         return this;
     }
 
     public ToolsPage clickAddJDKButton() {
-
-        addJDKButton.click();
+        WebElement addJDKButton = getWait2().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[contains(normalize-space(.), 'Add JDK')]")));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", addJDKButton);
+        getWait2().until(ExpectedConditions.elementToBeClickable(addJDKButton)).click();
 
         return this;
     }
 
     public ToolsPage setJDKName(String name) {
-        getWait5().until(ExpectedConditions.visibilityOf(nameField));
+        WebElement nameField = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[contains(@checkurl, 'hudson.model.JDK/checkName')]")));
         nameField.clear();
         nameField.sendKeys(name);
 
