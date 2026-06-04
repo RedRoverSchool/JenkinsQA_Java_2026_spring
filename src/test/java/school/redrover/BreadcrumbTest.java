@@ -75,7 +75,8 @@ public class BreadcrumbTest extends BaseTest {
                 .clickOnChildProject(FOLDER_CHILD, new NestedFolderPage(getDriver()))
                 .clickNewItem()
                 .setProjectName(FREESTYLE_NESTED)
-                .selectFreestyleProjectAndClickOk()
+                .selectFreeStyleProject()
+                .clickOkButton()
                 .getBreadcrumbs()
                 .getBreadcrumbItems();
 

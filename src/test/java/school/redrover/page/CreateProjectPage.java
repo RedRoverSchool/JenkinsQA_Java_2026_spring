@@ -63,12 +63,16 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
-    public CreateProjectPage enterCopyItemName(String sourceName) {
+    public CreateProjectPage enterProjectNameToCopyFromField(String projectName) {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.id("from")))
-                .sendKeys(sourceName);
+                        By.id("from"))).sendKeys(projectName);
 
         return this;
+    }
+
+    public String getEmptyStateMessage() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector(".jenkins-dropdown__placeholder"))).getText();
     }
 
     public MultibranchConfigPage selectMultibranchAndClickOk(){
@@ -147,8 +151,6 @@ public class CreateProjectPage extends BasePage {
     public FreestyleProjectConfigPage clickOkButton() {
         okButton.click();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(BUTTON_OK));
-
         return new FreestyleProjectConfigPage(getDriver());
     }
 
@@ -177,5 +179,13 @@ public class CreateProjectPage extends BasePage {
 
     public boolean isOkButtonEnabled() {
         return okButton.isEnabled();
+    }
+
+    public CreateProjectPage selectMultibranchPipeline() {
+        WebElement MPjobElement = getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", MPjobElement);
+        MPjobElement.click();
+
+        return this;
     }
 }
