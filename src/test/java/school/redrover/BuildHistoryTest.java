@@ -5,6 +5,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+
 import java.util.List;
 
 public class BuildHistoryTest extends BaseTest {
@@ -34,6 +35,7 @@ public class BuildHistoryTest extends BaseTest {
 
         Assert.assertEquals(buildHistoryList.size(), 1);
         Assert.assertEquals(buildHistoryList.getFirst(), PROJECT_NAME);
+
     }
 
     @Test(dependsOnMethods = "testScheduledBuildAppearsInBuildHistory")

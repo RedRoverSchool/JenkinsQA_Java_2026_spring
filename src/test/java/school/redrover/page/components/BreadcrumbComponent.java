@@ -37,7 +37,7 @@ public class BreadcrumbComponent extends BaseModel {
     }
 
     public List<String> getBreadcrumbItems() {
-        List<String> actualBreadcrumbs = getWait5()
+        List<String> actualBreadcrumbs = getWait10()
                 .until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("#breadcrumbs .jenkins-breadcrumbs__list-item")))
                 .stream()
                 .map(WebElement::getText)
