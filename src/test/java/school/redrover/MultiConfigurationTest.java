@@ -44,17 +44,45 @@ public class MultiConfigurationTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testRename")
-    public void testChanges() {
+    public void testChangesBeforeBuilding() {
         String message = new HomePage(getDriver())
                 .clickOnProject(PROJECT_NAME_UPDATED, new MultiConfigurationProjectPage(getDriver()))
                 .getSideMenu()
                 .clickChanges()
-                .getMessage();
+                .getMessageBeforeBuilding();
 
         Assert.assertTrue(message.contains("No builds"));
     }
 
-    @Test(dependsOnMethods = "testChanges")
+    @Test(dependsOnMethods = "testChangesBeforeBuilding")
+    public void testStatus() {
+        List<String> linksList = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME_UPDATED, new MultiConfigurationProjectPage(getDriver()))
+                .getSideMenu()
+                .clickBuildNow()
+                .getSideMenu()
+                .clickStatus()
+                .waitForBuildtoFinish()
+                .getPermalinksList();
+
+        Assert.assertEquals(linksList.size(), 4);
+        Assert.assertTrue(linksList.getFirst().contains("Last build"));
+    }
+
+    @Test(dependsOnMethods = "testChangesBeforeBuilding")
+    public void testChangesAfterBuilding() {
+        String message = new HomePage(getDriver())
+                .clickOnProject(PROJECT_NAME_UPDATED, new MultiConfigurationProjectPage(getDriver()))
+                .getSideMenu()
+                .clickBuildNow()
+                .getSideMenu()
+                .clickChanges()
+                .getMessageAfterBuilding();
+
+        Assert.assertTrue(message.contains("No changes in any of the builds."));
+    }
+
+    @Test(dependsOnMethods = "testChangesAfterBuilding")
     public void testBuildNowDisplaysPopupMessage() {
         Boolean popupMessage = new HomePage(getDriver())
                 .clickOnProject(PROJECT_NAME_UPDATED, new MultiConfigurationProjectPage(getDriver()))

@@ -97,6 +97,33 @@ public class PipelineProjectTest extends BaseTest {
         Assert.assertEquals(jobList.getFirst(), RENAME_PIPELINE);
     }
 
+    @Test(dependsOnMethods = "testRename")
+    public void testStatus() {
+        List<String> linksList = new HomePage(getDriver())
+                .clickOnProject(RENAME_PIPELINE, new PipelineProjectPage(getDriver()))
+                .getSideMenu()
+                .clickBuildNow()
+                .getSideMenu()
+                .clickStatus()
+                .getPermalinksList();
+
+        Assert.assertEquals(linksList.size(), 4);
+        Assert.assertTrue(linksList.getFirst().contains("Last build"));
+    }
+
+    @Test(dependsOnMethods = "testStatus")
+    public void testChangesAfterBuilding() {
+        String message = new HomePage(getDriver())
+                .clickOnProject(RENAME_PIPELINE, new PipelineProjectPage(getDriver()))
+                .getSideMenu()
+                .clickBuildNow()
+                .getSideMenu()
+                .clickChanges()
+                .getMessageAfterBuilding();
+
+        Assert.assertTrue(message.contains("No changes in any of the builds, or multiple SCMs in use."));
+    }
+
     @Test
     public void testCreateWithEmptyName() {
         CreateProjectPage createProjectPage = new HomePage(getDriver())
@@ -114,7 +141,7 @@ public class PipelineProjectTest extends BaseTest {
 
     @DataProvider(name = "invalid characters")
     public Object[][] getData() {
-        return new Object[][]{{"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"},{"!"}
+        return new Object[][]{{"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"}, {"!"}
         };
     }
 
@@ -144,7 +171,7 @@ public class PipelineProjectTest extends BaseTest {
         Assert.assertEquals(saveText, "Saved");
     }
 
-    @Test(dependsOnMethods = "testRename")
+    @Test(dependsOnMethods = "testChangesAfterBuilding")
     public void testDeleteViaSidebar() {
         List<String> jobList = new HomePage(getDriver())
                 .clickOnProject(RENAME_PIPELINE, new PipelineProjectPage(getDriver()))

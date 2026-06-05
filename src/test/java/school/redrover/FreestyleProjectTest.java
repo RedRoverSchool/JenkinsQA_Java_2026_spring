@@ -69,7 +69,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .getSideMenu()
                 .clickChanges()
-                .getMessage();
+                .getMessageBeforeBuilding();
 
         Assert.assertTrue(message.contains("No builds"));
     }
