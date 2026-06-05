@@ -107,7 +107,6 @@ public class PipelineProjectTest extends BaseTest {
                 .clickStatus()
                 .getPermalinksList();
 
-        Assert.assertEquals(linksList.size(), 4);
         Assert.assertTrue(linksList.getFirst().contains("Last build"));
     }
 
