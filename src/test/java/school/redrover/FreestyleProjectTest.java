@@ -20,7 +20,6 @@ public class FreestyleProjectTest extends BaseTest {
 
     private final static String PROJECT_NAME = "FreestyleProject";
     private final static String NO_EXISTING_PROJECT = "My FreestyleProject Test";
-    private final static String NEW_PROJECT_NAME_1 = "FreestyleProject1";
     private static final String REPOSITORY_URL = "https://github.com/";
     private static final String BRANCH_NAME = "*/main";
     private static final String DESCRIPTION_TEXT = "My test description";
@@ -355,18 +354,25 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(actualEmptyStateMessage, "No items");
     }
 
-    @Ignore
+
     @Test
     public void testCreateItemFromExisting() {
         new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(PROJECT_NAME)
                 .selectFreestyleProjectAndClickOk()
+                .enterDescription(DESCRIPTION_TEXT)
+                .selectGitRadioButton()
+                .enterRepositoryURL(REPOSITORY_URL)
+                .selectBuildAfterOtherProjectsAreBuiltCheckbox()
+                .selectTriggerEvenIfTheBuildFailsRadioButton()
+                .clickSaveButton()
                 .goHomePage()
                 .clickItemNewJob()
-                .enterProjectNameToCopyFromField(PROJECT_NAME)
-                .setProjectName(NEW_PROJECT_NAME_1)
+                .setProjectName(NEW_ITEM_NAME)
                 .selectFreeStyleProject()
+                .enterProjectNameToCopyFromField(PROJECT_NAME)
+                .selectProjectDropDown()
                 .clickOkButton();
 
         WebElement gitCheckBoxButton = getWait10().until(ExpectedConditions.visibilityOfElementLocated(

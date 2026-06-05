@@ -188,4 +188,10 @@ public class CreateProjectPage extends BasePage {
 
         return this;
     }
+
+    public CreateProjectPage selectProjectDropDown() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown__item"))).click();
+
+        return this;
+    }
 }
