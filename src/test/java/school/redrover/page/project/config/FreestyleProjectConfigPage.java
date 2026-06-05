@@ -12,6 +12,9 @@ import java.util.List;
 
 public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectConfigPage> {
 
+    By deleteWorkspaceBeforeBuildStartsCheckbox = By.name("hudson-plugins-ws_cleanup-PreBuildCleanup");
+    By executeWindowsBatchCommandMenuItem= By.xpath("//button[contains(., 'Execute Windows batch command')]");
+
     public FreestyleProjectConfigPage(WebDriver driver) {
         super(driver);
     }
@@ -61,6 +64,21 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         return this;
     }
 
+    public FreestyleProjectConfigPage clickBuildStep(By locator) {
+        getDriver().findElement(locator).click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigPage clickExecuteWindowsBatchCommandMenuItem(){
+        return clickBuildStep(executeWindowsBatchCommandMenuItem);
+    }
+
+    public boolean isBuildStepAdded() {
+        return getDriver().findElement(
+                By.xpath("//div[contains(., 'Execute Windows batch command')]")).isDisplayed();
+    }
+
     public List <String> listOfBuildSteps(){
         return getDriver()
                 .findElements(By.xpath("//div[@class='jenkins-dropdown jenkins-dropdown--compact']//button"))
@@ -70,33 +88,44 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     }
 
     public FreestyleProjectPage clickSaveButton() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                        By.name("Submit")))
-                .click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
 
         return new FreestyleProjectPage(getDriver());
     }
 
-    public FreestyleProjectConfigPage  enableDeleteWorkspaceBeforeBuildStarts() {
-        WebElement checkboxLabel = getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//label[contains(.,'Delete workspace before build starts')]")));
+    public FreestyleProjectConfigPage  setDeleteWorkspaceBeforeBuildStartsCheckbox(boolean value) {
+        WebElement checkbox = getWait10().until(
+                ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//label[contains(.,'Delete workspace before build starts')]"))
+        );
 
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block:'center'});", checkboxLabel);
+        if (checkbox.isSelected() != value && checkbox.isEnabled()) {
+            ((JavascriptExecutor) getDriver())
+                    .executeScript("arguments[0].scrollIntoView({block:'center'});", checkbox);
 
-        checkboxLabel.click();
+            checkbox.click();
+        }
+
         return this;
     }
 
-    public boolean isDeleteWorkspaceBeforeBuildStartsSelected() {
-        return getWait10().until(ExpectedConditions.presenceOfElementLocated(By.name("hudson-plugins-ws_cleanup-PreBuildCleanup"))).isSelected();
+    public boolean isCheckBoxChecked(By locator) {
+        return getWait10()
+                .until(ExpectedConditions.visibilityOfElementLocated(locator))
+                .isSelected();
     }
+
+    public boolean isDeleteWorkspaceBeforeBuildStartsCheckboxChecked() {
+        return isCheckBoxChecked(deleteWorkspaceBeforeBuildStartsCheckbox);
+    }
+
 
     public FreestyleProjectConfigPage clickOnBuildStep() {
         List<WebElement> dropdownItems = getWait5().until(
                 ExpectedConditions.visibilityOfAllElementsLocatedBy(
                         By.cssSelector("button.jenkins-dropdown__item")));
 
-        dropdownItems.get(0).click();
+        dropdownItems.getFirst().click();
 
         return this;
     }
@@ -132,12 +161,88 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     }
 
     public FreestyleProjectConfigPage disableProjectToggle() {
-        getDriver().findElement(By.xpath("//label[@class='jenkins-toggle-switch__label ']")).click();
+        getDriver().findElement(
+                By.xpath("//label[@class='jenkins-toggle-switch__label ']")).click();
+
         return this;
     }
 
     public Boolean getProjectState(String expectedState) {
         return getWait10().until(ExpectedConditions.textToBe(
                 By.className("jenkins-toggle-switch__label"),expectedState));
+    }
+
+    public FreestyleProjectConfigPage selectBuildAfterOtherProjectsAreBuiltCheckbox() {
+        By checkbox = By.name("jenkins-triggers-ReverseBuildTrigger");
+
+        WebElement element = getWait5().until(ExpectedConditions.presenceOfElementLocated(checkbox));
+
+        try {
+            getWait10().until(
+                    ExpectedConditions.elementToBeClickable(element)).click();
+        } catch (Exception e) {
+            ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", element);
+            }
+
+        return this;
+    }
+
+    public FreestyleProjectConfigPage enterMessageIntoProjectsToWatchField(String message) {
+        getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(message);
+
+        return this;
+    }
+
+    public FreestyleProjectConfigPage selectTriggerEvenIfTheBuildFailsRadioButton() {
+        getDriver().findElement(By.cssSelector("input[value = 'FAILURE']"));
+
+        return this;
+    }
+
+    public FreestyleProjectConfigPage selectGitRadioButton() {
+        WebElement gitOption = getDriver().findElement(By.xpath("//label[text()='Git']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", gitOption);
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(text(), 'Branch Specifier')]/following::input[1]")));
+
+        return this;
+    }
+
+    public FreestyleProjectConfigPage enterBranchSpecifier(String branch) {
+        WebElement branchSpecifier = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(text(), 'Branch Specifier')]/following::input[1]")));
+
+        branchSpecifier.clear();
+        branchSpecifier.sendKeys(branch);
+
+        return this;
+    }
+
+    public FreestyleProjectConfigPage enterRepositoryURL(String url) {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("_.url"))).
+                sendKeys(url);
+        return this;
+    }
+
+    public String getRepositoryConnectionErrorMessage() {
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(
+                By.xpath("//input[@name='_.url']/following::div[@class='error'][1]"),
+                "Failed to connect to repository"));
+
+        String actualRepositoryConnectionErrorMessage = getDriver().findElement(
+                By.xpath("//input[@name='_.url']/following::div[@class='error'][1]")).getText();
+
+        return actualRepositoryConnectionErrorMessage;
+    }
+
+    public String getRepositoryUrl() {
+        return getDriver().findElement(By.name("_.url")).getAttribute("value");
+    }
+
+    public String getBranchSpecifierValue() {
+        return getDriver().findElement(
+                        By.xpath("//div[contains(text(), 'Branch Specifier')]/following::input[1]"))
+                .getAttribute("value");
     }
 }
