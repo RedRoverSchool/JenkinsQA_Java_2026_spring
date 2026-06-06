@@ -191,7 +191,8 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickConfigure(new FreestyleProjectConfigPage(getDriver()))
                 .disableProjectToggle()
                 .clickSaveButton()
-                .enableProject().getSideMenu()
+                .enableProject()
+                .getSideMenu()
                 .clickConfigure(new FreestyleProjectConfigPage(getDriver()))
                 .getProjectState("Enabled");
 

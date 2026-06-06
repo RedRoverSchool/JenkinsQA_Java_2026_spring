@@ -36,7 +36,7 @@ public class FreestyleProjectPage extends BaseJobPage<FreestyleProjectPage> {
             try {
                 WebElement element = getDriver().findElement(configuration);
 
-                if(element.isDisplayed() && element.isEnabled()) {
+                if (element.isDisplayed() && element.isEnabled()) {
                     element.click();
 
                     return true;
@@ -57,8 +57,8 @@ public class FreestyleProjectPage extends BaseJobPage<FreestyleProjectPage> {
     }
 
     public FreestyleProjectPage enableProject() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//button[contains(., 'Enable')]"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(., 'Enable')]"))).click();
+        getWait5().until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//button[contains(., 'Enable')]")));
 
         return this;
     }
