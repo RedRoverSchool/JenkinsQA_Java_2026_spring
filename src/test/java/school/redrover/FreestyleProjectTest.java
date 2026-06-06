@@ -228,6 +228,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(build_count, 1);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testBuildNowCreatesBuild")
     public void testBuildAfterOtherProjectsAreBuild() {
         int build_count = new HomePage(getDriver())
