@@ -8,6 +8,7 @@ import school.redrover.page.HomePage;
 import school.redrover.page.project.FolderProjectPage;
 import school.redrover.page.project.NestedFolderPage;
 import school.redrover.page.project.config.FolderConfigPage;
+import school.redrover.page.project.config.FreestyleProjectConfigPage;
 
 import java.util.List;
 
@@ -75,8 +76,7 @@ public class BreadcrumbTest extends BaseTest {
                 .clickOnChildProject(FOLDER_CHILD, new NestedFolderPage(getDriver()))
                 .clickNewItem()
                 .setProjectName(FREESTYLE_NESTED)
-                .selectFreeStyleProject()
-                .clickOkButton()
+                .selectFreestyleProjectAndClickOk()
                 .getBreadcrumbs()
                 .getBreadcrumbItems();
 
