@@ -69,7 +69,7 @@ public class MultiConfigurationTest extends BaseTest {
         Assert.assertTrue(linksList.getFirst().contains("Last build"));
     }
 
-    @Test(dependsOnMethods = "testChangesBeforeBuilding")
+    @Test(dependsOnMethods = "testStatus")
     public void testChangesAfterBuilding() {
         String message = new HomePage(getDriver())
                 .clickOnProject(PROJECT_NAME_UPDATED, new MultiConfigurationProjectPage(getDriver()))
