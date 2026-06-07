@@ -191,7 +191,8 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickConfigure(new FreestyleProjectConfigPage(getDriver()))
                 .disableProjectToggle()
                 .clickSaveButton()
-                .enableProject().getSideMenu()
+                .enableProject()
+                .getSideMenu()
                 .clickConfigure(new FreestyleProjectConfigPage(getDriver()))
                 .getProjectState("Enabled");
 
@@ -236,7 +237,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .selectBuildAfterOtherProjectsAreBuiltCheckbox()
                 .enterMessageIntoProjectsToWatchField(PROJECT_NAME)
                 .selectTriggerEvenIfTheBuildFailsRadioButton()
-                .clickSaveButton()
+                .clickSave(new FreestyleProjectPage(getDriver()))
                 .getSideMenu()
                 .clickBuildNow()
                 .getBuilds()

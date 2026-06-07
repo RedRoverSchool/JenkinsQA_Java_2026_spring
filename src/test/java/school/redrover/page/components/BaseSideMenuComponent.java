@@ -33,6 +33,8 @@ public class BaseSideMenuComponent<T extends BasePage> extends BasePage {
 
     public T clickStatus() {
         statusButton.click();
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h2[contains(text(), 'Permalinks')]"), "Permalinks"));
+
         return parentPage;
     }
 

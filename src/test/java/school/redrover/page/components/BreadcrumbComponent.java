@@ -44,6 +44,7 @@ public class BreadcrumbComponent extends BaseModel {
                 .map(String::trim)
                 .filter(text -> !text.isEmpty())
                 .toList();
+
         return actualBreadcrumbs;
     }
 
