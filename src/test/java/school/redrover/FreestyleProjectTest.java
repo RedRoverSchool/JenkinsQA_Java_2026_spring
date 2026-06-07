@@ -1,10 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
@@ -14,13 +12,11 @@ import school.redrover.page.project.config.FreestyleProjectConfigPage;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class FreestyleProjectTest extends BaseTest {
 
     private final static String PROJECT_NAME = "FreestyleProject";
     private final static String NO_EXISTING_PROJECT = "My FreestyleProject Test";
-    private final static String NEW_PROJECT_NAME_1 = "FreestyleProject1";
     private static final String REPOSITORY_URL = "https://github.com/";
     private static final String BRANCH_NAME = "*/main";
     private static final String DESCRIPTION_TEXT = "My test description";
@@ -42,7 +38,6 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testCheckboxIsChecked() {
-
         boolean isChecked = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(PROJECT_NAME)
@@ -345,7 +340,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testCopyFromShowsNoItemsWhenNoMatchingProjectsFound() {
-        String actualEmptyStateMessage =new HomePage(getDriver())
+        String actualEmptyStateMessage = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(PROJECT_NAME)
                 .selectFreestyleProjectAndClickOk()
@@ -356,53 +351,36 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(actualEmptyStateMessage, "No items");
     }
 
-    @Ignore
     @Test
     public void testCreateItemFromExisting() {
+        SoftAssert softAssert = new SoftAssert();
         new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(PROJECT_NAME)
                 .selectFreestyleProjectAndClickOk()
+                .enterDescription(DESCRIPTION_TEXT)
+                .selectGitRadioButton()
+                .enterRepositoryURL(REPOSITORY_URL)
+                .selectBuildAfterOtherProjectsAreBuiltCheckbox()
+                .selectTriggerEvenIfTheBuildFailsRadioButton()
+                .clickSaveButton();
+
+        FreestyleProjectConfigPage freestyleProjectPage = new HomePage(getDriver())
                 .goHomePage()
                 .clickItemNewJob()
-                .enterProjectNameToCopyFromField(PROJECT_NAME)
-                .setProjectName(NEW_PROJECT_NAME_1)
+                .setProjectName(NEW_ITEM_NAME)
                 .selectFreeStyleProject()
-                .clickOkButton();
+                .enterProjectNameToCopyFromField(PROJECT_NAME)
+                .selectProjectDropDown()
+                .clickOkButton()
+                .clickSaveButton()
+                .getSideMenu()
+                .clickConfigure(new FreestyleProjectConfigPage(getDriver()));
 
-        WebElement gitCheckBoxButton = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector("input[name='githubProject'][type='checkbox']")));
-
-        SoftAssert softAssert = new SoftAssert();
-
-        softAssert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.linkText(NEW_ITEM_NAME))).getText(),
-                NEW_ITEM_NAME
-        );
-
-        softAssert.assertTrue(
-                Objects.requireNonNull(getDriver().getCurrentUrl()).contains("/job/" + NEW_ITEM_NAME + "/configure"),
-                "Не удалось перейти на страницу конфигурации нового проекта"
-        );
-
-        softAssert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.name("description"))).getAttribute("value"),
-                DESCRIPTION_TEXT
-        );
-
-        softAssert.assertTrue(
-                gitCheckBoxButton.isSelected(),
-                "Git project is not selected"
-        );
-
-        softAssert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.name("_.projectUrlStr"))).getAttribute("value"),
-                REPOSITORY_URL
-        );
-
+        softAssert.assertEquals(freestyleProjectPage.getProjectName(), NEW_ITEM_NAME, "Project name is not correct");
+        softAssert.assertTrue(freestyleProjectPage.isCurrentUrlCorrect(NEW_ITEM_NAME), "Current url is not correct");
+        softAssert.assertEquals(freestyleProjectPage.getDescriptionText(), DESCRIPTION_TEXT, "Description text is not correct");
+        softAssert.assertEquals(freestyleProjectPage.getRepositoryUrl(), REPOSITORY_URL, "Repository url is not correct");
         softAssert.assertAll();
     }
 }

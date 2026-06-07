@@ -33,7 +33,7 @@ public class BasePage extends BaseModel {
     }
 
     public HomePage goHomePage() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-head-icon"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("jenkins-head-icon"))).click();
         // waiting for the home page
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']")));
 
