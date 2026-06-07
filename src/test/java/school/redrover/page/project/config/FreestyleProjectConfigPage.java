@@ -94,9 +94,11 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     }
 
     public FreestyleProjectPage clickSaveButton() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.name("Submit"))).click();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("jenkins-head-icon")));
+        getWait10().until(ExpectedConditions.invisibilityOfElementLocated(
+                By.xpath("//li[@data-type='breadcrumb-item']//span[text()='Configure']")));
 
         return new FreestyleProjectPage(getDriver());
     }
