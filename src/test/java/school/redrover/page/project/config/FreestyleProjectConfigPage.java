@@ -4,16 +4,22 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BaseConfigPage;
 import school.redrover.page.project.FreestyleProjectPage;
 
 import java.util.List;
+import java.util.Objects;
 
 public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectConfigPage> {
 
     By deleteWorkspaceBeforeBuildStartsCheckbox = By.name("hudson-plugins-ws_cleanup-PreBuildCleanup");
     By executeWindowsBatchCommandMenuItem= By.xpath("//button[contains(., 'Execute Windows batch command')]");
+    By projectName = By.cssSelector("#breadcrumbs a");
+
+    @FindBy(id = "description-content")
+    private WebElement descriptionText;
 
     public FreestyleProjectConfigPage(WebDriver driver) {
         super(driver);
@@ -89,6 +95,8 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
 
     public FreestyleProjectPage clickSaveButton() {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("jenkins-head-icon")));
 
         return new FreestyleProjectPage(getDriver());
     }
@@ -244,5 +252,19 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         return getDriver().findElement(
                         By.xpath("//div[contains(text(), 'Branch Specifier')]/following::input[1]"))
                 .getAttribute("value");
+    }
+
+    public String getDescriptionText() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.name("description"))).getAttribute("value");
+    }
+
+    public String getProjectName() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(projectName)).getText();
+    }
+
+    public boolean isCurrentUrlCorrect(String newItemName) {
+        return Objects.requireNonNull(getDriver().getCurrentUrl())
+                .contains("/job/" + newItemName + "/configure");
     }
 }
