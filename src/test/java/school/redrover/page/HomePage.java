@@ -81,7 +81,7 @@ public class HomePage extends BasePage {
     }
 
     public HomePage clickSearchButton() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("root-action-SearchAction"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("root-action-SearchAction"))).click();
         return this;
     }
 
