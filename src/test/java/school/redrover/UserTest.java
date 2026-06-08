@@ -1,14 +1,12 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.CreateUserPage;
 import school.redrover.page.HomePage;
+import school.redrover.page.view.UserPage;
+
 import java.util.List;
 
 public class UserTest extends BaseTest {
@@ -34,85 +32,53 @@ public class UserTest extends BaseTest {
         Assert.assertTrue(users.contains(USER_NAME));
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateUser")
     public void testSearchUser() {
-
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-SearchAction"))).click();
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Search']")));
-        WebElement searchInput = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("command-bar")));
-        searchInput.sendKeys(USER_NAME);
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='search-results']")));
-        searchInput.sendKeys(Keys.ENTER);
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(text(), 'Jenkins User ID:')]")));
+        String actualUserName = new HomePage(getDriver())
+                .clickSearchButton()
+                .searchUser(USER_NAME)
+                .getUserName();
 
         Assert.assertEquals(
-                getDriver().findElement(By.tagName("h1")).getText(),
+                actualUserName,
                 USER_NAME,
-                "The user with User ID " + USER_NAME + "is not found");
+                "The user with User ID " + USER_NAME + " is not found");
     }
-    
-    @Ignore
+
     @Test(dependsOnMethods = "testSearchUser")
     public void testRenameUser() {
-        final String userFullName = "testUserFullName";
+        String userFullName = "testUserFullName";
 
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-ManageJenkinsAction"))).click();
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='securityRealm/']"))).click();
+        UserPage userPage = new HomePage(getDriver())
+                .clickManageButton()
+                .clickUsersButton()
+                .clickUserByName(USER_NAME)
+                .clickAccount()
+                .setFullName(userFullName)
+                .clickSaveButton();
 
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='%s']".formatted(USER_NAME)))).click();
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(., 'Account')]"))).click();
+        String actualUserName = userPage.getUserName();
 
-        WebElement fullNameInput = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("_.fullName")));
-        fullNameInput.clear();
-        fullNameInput.sendKeys(userFullName);
-
-        getDriver().findElement(By.name("Submit")).click();
-
-        String actualUserName = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1"))).getText();
         Assert.assertEquals(actualUserName, userFullName);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testRenameUser")
+    @Test(dependsOnMethods = "testCreateUserWithDuplicateUsername")
     public void testDeleteUserViaDropDownMenu() {
-
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-ManageJenkinsAction"))).click();
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='securityRealm/']"))).click();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[text()='%s']/button[@class = 'jenkins-menu-dropdown-chevron']".formatted(USER_NAME)))).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//button[contains(@href, 'doDelete')]"))).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='Yes']"))).click();
-
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-ManageJenkinsAction"))).click();
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='securityRealm/']"))).click();
-
-        List<String> actualUsersNameList = getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By
-                .xpath("//a[@class = 'jenkins-table__link model-link inside']")))
-                .stream()
-                .map(WebElement::getText)
-                .toList();
+        List<String> actualUsersNameList = new HomePage(getDriver())
+                .clickManageButton()
+                .clickUsersButton()
+                .clickUserDropdownByName(USER_NAME)
+                .clickDeleteFromDropdown()
+                .confirmDelete()
+                .clickManageButton()
+                .clickUsersButton()
+                .getUsersList();
 
         Assert.assertFalse(
                 actualUsersNameList.contains(USER_NAME),
-                "The user with User ID " + USER_NAME + "was not deleted");
+                "The user with User ID " + USER_NAME + " was not deleted");
     }
 
-    @Ignore
     @Test
     public void testCreateUserWithEmptyFields() {
         final List<String> expectedErrorMessageList = List.of(
@@ -120,90 +86,56 @@ public class UserTest extends BaseTest {
                 "Password is required",
                 "Password is required",
                 "\"\" is prohibited as a full name for security reasons.",
-                "Invalid e-mail address"
-        );
+                "Invalid e-mail address");
 
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-ManageJenkinsAction"))).click();
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='securityRealm/']"))).click();
-        getWait10().until(
-                ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='addUser']"))).click();
-        getWait10().until(
-                ExpectedConditions.elementToBeClickable(By.xpath("//button[@name= 'Submit']"))).click();
+        CreateUserPage createUserPage = new HomePage(getDriver())
+                .clickManageButton()
+                .clickUsersButton()
+                .clickCreateUserButton();
 
-        List<String> actualErrorMessageList = getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By
-                .xpath("//div[@class = 'error jenkins-!-margin-bottom-2']")))
-                .stream()
-                .map(WebElement::getText)
-                .toList();
+        List<String> actualErrorMessageList = createUserPage
+                .submitExpectingError()
+                .getErrorMessageList();
 
         Assert.assertEquals(actualErrorMessageList, expectedErrorMessageList);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testCreateUserWithEmptyFields")
+    @Test
     public void testCreateUserWithAnIncorrectConfirmPassword() {
         final List<String> expectedErrorMessageList = List.of(
                 "Password didn't match",
                 "Password didn't match"
         );
+        List<String> actualErrorMessageList = new HomePage(getDriver())
+                .clickManageButton()
+                .clickUsersButton()
+                .clickCreateUserButton()
+                .setUsername(USER_NAME)
+                .setPassword(USER_PASSWORD)
+                .setConfirmPassword(USER_PASSWORD + "err")
+                .setEmail(USER_EMAIL)
+                .submitExpectingError()
+                .getErrorMessageList();
 
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-ManageJenkinsAction"))).click();
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='securityRealm/']"))).click();
-        getWait10().until(
-                ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='addUser']"))).click();
-
-        sendUserDataAndSubmit(USER_NAME, USER_PASSWORD, USER_PASSWORD + "err", USER_EMAIL);
-
-        List<String> actualErrorMessageList = getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By
-                .xpath("//div[@class = 'error jenkins-!-margin-bottom-2']")))
-                .stream()
-                .map(WebElement::getText)
-                .toList();
-
-        Assert.assertEquals(
-                actualErrorMessageList,
-                expectedErrorMessageList,
+        Assert.assertEquals(actualErrorMessageList, expectedErrorMessageList,
                 "Error Message for incorrect confirmation password not displayed");
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testCreateUserWithAnIncorrectConfirmPassword")
+    @Test(dependsOnMethods = "testCreateUser")
     public void testCreateUserWithDuplicateUsername() {
-        final String expectedErrorMessage = "User name is already taken";
+        final List<String> expectedErrorMessageList = List.of("User name is already taken");
+        List<String> actualErrorMessageList = new HomePage(getDriver())
+                .clickManageButton()
+                .clickUsersButton()
+                .clickCreateUserButton()
+                .setUsername(USER_NAME)
+                .setPassword(USER_PASSWORD + "1")
+                .setConfirmPassword(USER_PASSWORD + "1")
+                .setEmail(USER_EMAIL)
+                .submitExpectingError()
+                .getErrorMessageList();
 
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-ManageJenkinsAction"))).click();
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='securityRealm/']"))).click();
-        getWait10().until(
-                ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='addUser']"))).click();
-
-        sendUserDataAndSubmit(USER_NAME, USER_PASSWORD, USER_PASSWORD, USER_EMAIL);
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='addUser']"))).click();
-
-        sendUserDataAndSubmit(USER_NAME, USER_PASSWORD + "1", USER_PASSWORD + "1", USER_EMAIL);
-
-        String actualErrorMessage = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[@class ='error jenkins-!-margin-bottom-2']"))).getText();
-
-        Assert.assertEquals(
-                actualErrorMessage,
-                expectedErrorMessage,
+        Assert.assertEquals(actualErrorMessageList, expectedErrorMessageList,
                 "Error Message for creating duplicate user name not displayed");
-    }
-
-    private void sendUserDataAndSubmit(String username, String password, String confirmPassword, String email) {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()= 'Create User']")));
-
-        getDriver().findElement(By.id("username")).sendKeys(username);
-        getDriver().findElement(By.xpath("//input[@name = 'password1']")).sendKeys(password);
-        getDriver().findElement(By.xpath("//input[@name = 'password2']")).sendKeys(confirmPassword);
-        getDriver().findElement(By.xpath("//input[@name = 'email']")).sendKeys(email);
-        getDriver().findElement(By.xpath("//button[@name= 'Submit']")).click();
     }
 }
