@@ -220,7 +220,8 @@ public class HomePage extends BasePage {
         searchInput.sendKeys(userName);
 
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(
-                "//div[@id='search-results']/a[@href='/user/" + userName.toLowerCase() + "']"))).click();
+                "//div[@id='search-results']//a[contains(@href, '/user/%s')]"
+                        .formatted(userName.toLowerCase())))).click();
 
         return new UserPage(getDriver());
     }
