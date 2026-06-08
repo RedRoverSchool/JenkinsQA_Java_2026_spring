@@ -32,8 +32,18 @@ public class UserTest extends BaseTest {
         Assert.assertTrue(users.contains(USER_NAME));
     }
 
-    @Test(dependsOnMethods = "testCreateUserWithDuplicateUsername")
+    @Test
     public void testSearchUser() {
+        new HomePage(getDriver())
+                .clickManageButton()
+                .clickUsersButton()
+                .clickCreateUserButton()
+                .setUsername(USER_NAME)
+                .setPassword(USER_PASSWORD)
+                .setConfirmPassword(USER_PASSWORD)
+                .setEmail(USER_EMAIL)
+                .clickCreateUserButton();
+
         String actualUserName = new HomePage(getDriver())
                 .clickManageButton()
                 .clickUsersButton()
