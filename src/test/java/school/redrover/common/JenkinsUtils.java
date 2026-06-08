@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.json.Json;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import school.redrover.page.SignInPage;
 
 import java.net.CookieManager;
 import java.net.URI;
@@ -16,6 +17,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static school.redrover.common.CucumberDriver.getDriver;
 
 public final class JenkinsUtils {
 
@@ -266,8 +269,10 @@ public final class JenkinsUtils {
         login(driver, ProjectUtils.getUserName(), ProjectUtils.getPassword());
     }
 
-    public static void logout(WebDriver driver) {
+    public static SignInPage logout(WebDriver driver) {
         driver.get(ProjectUtils.getUrl() + "logout");
+
+        return new SignInPage(driver);
     }
 }
 

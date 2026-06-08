@@ -34,28 +34,25 @@ public class SignInTest extends BaseTest {
     final private String USER_FULL_NAME = "Berendey";
     final private String USER_EMAIL = "berendey@kingdom.pz";
 
-    @Ignore
+
     @Test
     public void testLoginValidData () {
-        createUser(USER_LOGIN,
+        createUser(
+                USER_LOGIN,
                 USER_FULL_NAME,
                 USER_PASSWORD,
                 USER_PASSWORD,
                 USER_EMAIL,
                 getDriver());
 
-        JenkinsUtils.logout(getDriver());
-        getWait10().until(ExpectedConditions.presenceOfElementLocated(By.className("app-sign-in-register__content-inner")));
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-sign-in-register__content-inner")));
+        String headerText = JenkinsUtils.logout(getDriver())
+                .isSignInFormVisible()
+                .enterLogin(USER_LOGIN)
+                .enterPassword(USER_PASSWORD)
+                .clickSignInButton()
+                .getHeaderText();
 
-        getDriver().findElement(By.name("j_username")).sendKeys(USER_LOGIN);
-        getDriver().findElement(By.name("j_password")).sendKeys(USER_PASSWORD);
-        getDriver().findElement(By.name("Submit")).click();
-
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("empty-state-block")));
-        String header = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1"))).getText();
-
-        Assert.assertEquals(header, "Welcome to Jenkins!");
+        Assert.assertEquals(headerText, "Welcome to Jenkins!");
     }
 
     @Ignore
