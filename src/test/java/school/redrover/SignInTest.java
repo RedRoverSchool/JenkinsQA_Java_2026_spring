@@ -12,6 +12,8 @@ import school.redrover.common.JenkinsUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.LoginPage;
 
+import static java.lang.Thread.sleep;
+
 public class SignInTest extends BaseTest {
 
     private void createUser(String userLogin, String userFullName, String password,

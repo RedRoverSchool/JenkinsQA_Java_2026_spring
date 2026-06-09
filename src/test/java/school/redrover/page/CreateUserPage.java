@@ -2,6 +2,7 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
 import school.redrover.page.manage.UserManagementPage;
 
@@ -43,8 +44,11 @@ public class CreateUserPage extends BasePage {
         return this;
     }
 
-    public UserManagementPage clickCreateUserButton() {
-        getDriver().findElement(submitButton).click();
+    public UserManagementPage clickCreateUserButton(String user_name) {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(submitButton)).click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='user/" + user_name + "']")));
+
         return new UserManagementPage(getDriver());
     }
 }
