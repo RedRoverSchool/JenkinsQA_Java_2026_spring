@@ -31,4 +31,9 @@ public class UserManagementPage extends BasePage{
                 .toList();
         return actualUsersNameList;
     }
+
+    public String getUserName(String userName) {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a[@href='user/" + userName + "']"))).getText();
+    }
 }

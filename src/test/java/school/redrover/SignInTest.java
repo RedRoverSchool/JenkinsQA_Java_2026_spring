@@ -9,6 +9,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.JenkinsUtils;
+import school.redrover.page.CreateUserPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.LoginPage;
 
@@ -16,20 +17,7 @@ import static java.lang.Thread.sleep;
 
 public class SignInTest extends BaseTest {
 
-    private void createUser(String userLogin, String userFullName, String password,
-                            String retryPassword, String userMail, WebDriver driver) {
-        new HomePage(driver)
-                .clickManageButton()
-                .clickUsersButton()
-                .clickCreateUserButton()
-                .setUsername(userLogin)
-                .setFullName(userFullName)
-                .setPassword(password)
-                .setConfirmPassword(retryPassword)
-                .setEmail(userMail)
-                .clickCreateUserButton();
 
-    }
 
     final private String USER_LOGIN = "Berendey";
     final private String USER_PASSWORD = "Beren123";
@@ -39,14 +27,15 @@ public class SignInTest extends BaseTest {
 
     @Test
     public void testLoginValidData () {
-        createUser(
+        new HomePage(getDriver())
+                .clickManageButton()
+                .clickUsersButton()
+                .clickCreateUserButton()
+                .createUser(
                 USER_LOGIN,
                 USER_FULL_NAME,
                 USER_PASSWORD,
-                USER_PASSWORD,
-                USER_EMAIL,
-                getDriver());
-
+                USER_EMAIL);
         String headerText = JenkinsUtils.logout(getDriver())
                 .isSignInFormVisible()
                 .enterLogin(USER_LOGIN)
@@ -61,12 +50,11 @@ public class SignInTest extends BaseTest {
     @Test
     public void testLoginInvalidPassword () {
 
-        createUser(USER_LOGIN,
-                USER_FULL_NAME,
-                USER_PASSWORD,
-                USER_PASSWORD,
-                USER_EMAIL,
-                getDriver());
+//        createUser(USER_LOGIN,
+//                USER_FULL_NAME,
+//                USER_PASSWORD,
+//                USER_EMAIL,
+//                getDriver());
 
         JenkinsUtils.logout(getDriver());
         getWait10().until(ExpectedConditions.presenceOfElementLocated(By.className("app-sign-in-register__content-inner")));
@@ -85,12 +73,12 @@ public class SignInTest extends BaseTest {
     @Test
     public void testLoginInvalidUsername () {
 
-        createUser(USER_LOGIN,
-                USER_FULL_NAME,
-                USER_PASSWORD,
-                USER_PASSWORD,
-                USER_EMAIL,
-                getDriver());
+//        createUser(USER_LOGIN,
+//                USER_FULL_NAME,
+//                USER_PASSWORD,
+//                USER_PASSWORD,
+//                USER_EMAIL,
+//                getDriver());
 
         JenkinsUtils.logout(getDriver());
         getWait10().until(ExpectedConditions.presenceOfElementLocated(By.className("app-sign-in-register__content-inner")));

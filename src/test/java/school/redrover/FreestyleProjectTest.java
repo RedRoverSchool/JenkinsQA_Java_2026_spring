@@ -33,7 +33,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .getProjectList();
 
         Assert.assertEquals(projectList.size(), 1);
-        Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);
+        Assert.assertEquals(projectList.get(0), PROJECT_NAME);
     }
 
     @Test

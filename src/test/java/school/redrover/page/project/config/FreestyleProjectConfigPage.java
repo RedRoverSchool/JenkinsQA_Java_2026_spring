@@ -135,7 +135,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
                 ExpectedConditions.visibilityOfAllElementsLocatedBy(
                         By.cssSelector("button.jenkins-dropdown__item")));
 
-        dropdownItems.getFirst().click();
+        dropdownItems.get(0).click();
 
         return this;
     }

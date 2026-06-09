@@ -25,9 +25,9 @@ public class UserTest extends BaseTest {
                 .clickUsersButton()
                 .clickCreateUserButton()
                 .setUsername(USER_NAME)
-                .setPassword(USER_PASSWORD)
-                .setConfirmPassword(USER_PASSWORD)
-                .setEmail(USER_EMAIL)
+                .setUserPassword(USER_PASSWORD)
+                .setConfirmUserPassword(USER_PASSWORD)
+                .setUserEmail(USER_EMAIL)
                 .clickCreateUserButton()
                 .getUsersList();
 

@@ -34,7 +34,7 @@ public class BuildHistoryTest extends BaseTest {
                 .getBuildHistoryList();
 
         Assert.assertEquals(buildHistoryList.size(), 1);
-        Assert.assertEquals(buildHistoryList.getFirst(), PROJECT_NAME);
+        Assert.assertEquals(buildHistoryList.get(0), PROJECT_NAME);
 
     }
 

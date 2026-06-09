@@ -29,7 +29,7 @@ public class FolderTest extends BaseTest {
                 .getProjectList();
 
         Assert.assertEquals(joblist.size(), 1);
-        Assert.assertEquals(joblist.getFirst(), FOLDER_NAME);
+        Assert.assertEquals(joblist.get(0), FOLDER_NAME);
     }
 
     @Test(dependsOnMethods = "testCreate")
@@ -44,7 +44,7 @@ public class FolderTest extends BaseTest {
                 .getProjectList();
 
         Assert.assertEquals(jobnewlist.size(), 1);
-        Assert.assertEquals(jobnewlist.getFirst(), FOLDER_NEW_NAME);
+        Assert.assertEquals(jobnewlist.get(0), FOLDER_NEW_NAME);
     }
 
     @Test(dependsOnMethods = "testRename")
