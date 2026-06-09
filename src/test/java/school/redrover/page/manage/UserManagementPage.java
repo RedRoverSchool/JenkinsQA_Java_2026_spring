@@ -4,10 +4,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.page.CreateUserPage;
+import school.redrover.page.project.user.CreateUserPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.common.BasePage;
-import school.redrover.page.view.UserPage;
+import school.redrover.page.project.user.UserPage;
 
 import java.util.List;
 
@@ -60,6 +60,9 @@ public class UserManagementPage extends BasePage {
     public HomePage confirmDelete() {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(
                 "//button[text()='Yes']"))).click();
+
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(
+                By.tagName("h1"), "Welcome to Jenkins!"));
 
         return new HomePage(getDriver());
     }

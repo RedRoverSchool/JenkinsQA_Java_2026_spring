@@ -3,9 +3,8 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.CreateUserPage;
 import school.redrover.page.HomePage;
-import school.redrover.page.view.UserPage;
+import school.redrover.page.project.user.UserPage;
 
 import java.util.List;
 
@@ -99,12 +98,10 @@ public class UserTest extends BaseTest {
                 "\"\" is prohibited as a full name for security reasons.",
                 "Invalid e-mail address");
 
-        CreateUserPage createUserPage = new HomePage(getDriver())
+        List<String> actualErrorMessageList = new HomePage(getDriver())
                 .clickManageButton()
                 .clickUsersButton()
-                .clickCreateUserButton();
-
-        List<String> actualErrorMessageList = createUserPage
+                .clickCreateUserButton()
                 .submitExpectingError()
                 .getErrorMessageList();
 
