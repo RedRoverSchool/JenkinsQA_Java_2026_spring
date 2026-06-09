@@ -15,7 +15,7 @@ import java.util.Objects;
 public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectConfigPage> {
 
     By deleteWorkspaceBeforeBuildStartsCheckbox = By.name("hudson-plugins-ws_cleanup-PreBuildCleanup");
-    By executeWindowsBatchCommandMenuItem= By.xpath("//button[contains(., 'Execute Windows batch command')]");
+    By executeWindowsBatchCommandMenuItem = By.xpath("//button[contains(., 'Execute Windows batch command')]");
     By projectName = By.cssSelector("#breadcrumbs a");
 
     @FindBy(id = "description-content")
@@ -29,7 +29,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     protected FreestyleProjectConfigPage self() {
         return this;
     }
-    
+
     public FreestyleProjectConfigPage fillDescription(String descriptiontext) {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                         By.name("description")))
@@ -76,7 +76,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         return this;
     }
 
-    public FreestyleProjectConfigPage clickExecuteWindowsBatchCommandMenuItem(){
+    public FreestyleProjectConfigPage clickExecuteWindowsBatchCommandMenuItem() {
         return clickBuildStep(executeWindowsBatchCommandMenuItem);
     }
 
@@ -85,7 +85,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
                 By.xpath("//div[contains(., 'Execute Windows batch command')]")).isDisplayed();
     }
 
-    public List <String> listOfBuildSteps(){
+    public List<String> listOfBuildSteps() {
         return getDriver()
                 .findElements(By.xpath("//div[@class='jenkins-dropdown jenkins-dropdown--compact']//button"))
                 .stream()
@@ -103,7 +103,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         return new FreestyleProjectPage(getDriver());
     }
 
-    public FreestyleProjectConfigPage  setDeleteWorkspaceBeforeBuildStartsCheckbox(boolean value) {
+    public FreestyleProjectConfigPage setDeleteWorkspaceBeforeBuildStartsCheckbox(boolean value) {
         WebElement checkbox = getWait10().until(
                 ExpectedConditions.presenceOfElementLocated(
                         By.xpath("//label[contains(.,'Delete workspace before build starts')]"))
@@ -179,7 +179,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
 
     public Boolean getProjectState(String expectedState) {
         return getWait10().until(ExpectedConditions.textToBe(
-                By.className("jenkins-toggle-switch__label"),expectedState));
+                By.className("jenkins-toggle-switch__label"), expectedState));
     }
 
     public FreestyleProjectConfigPage selectBuildAfterOtherProjectsAreBuiltCheckbox() {
@@ -192,7 +192,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
                     ExpectedConditions.elementToBeClickable(element)).click();
         } catch (Exception e) {
             ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", element);
-            }
+        }
 
         return this;
     }

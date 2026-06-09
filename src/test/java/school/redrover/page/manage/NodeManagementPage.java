@@ -13,15 +13,17 @@ public class NodeManagementPage extends BasePage {
         super(driver);
     }
 
-    public NodeConfigPage goToNodeConfigPage(String name){
+    public NodeConfigPage goToNodeConfigPage(String name) {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/computer/%s/configure']"
                 .formatted(name.replace(" ", "%20"))))).click();
+
         return new NodeConfigPage(getDriver());
     }
 
     public NodeManagementPage markNodeOffline() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//form [@action='markOffline']"))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button [@name='Submit']"))).click();
+
         return this;
     }
 
@@ -39,6 +41,7 @@ public class NodeManagementPage extends BasePage {
     public NodeManagementPage bringNodeBackOnline() {
         WebElement submitButton = getDriver().findElement(By.className("jenkins-button--primary"));
         submitButton.click();
+
         return this;
     }
 
@@ -57,6 +60,7 @@ public class NodeManagementPage extends BasePage {
     public NodesPage deleteNode() {
         getDriver().findElement(By.className("icon-edit-delete")).click();
         getDriver().findElement(By.xpath("//button [@data-id='ok']")).click();
+
         return new NodesPage(getDriver());
     }
 }

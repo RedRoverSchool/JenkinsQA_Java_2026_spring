@@ -50,7 +50,6 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
     @FindBy(xpath = "//a[contains(@href, 'move')]")
     private WebElement moveSideMenu;
 
-    private static final String PROJECT_NAME = "//a[contains(@href, '%s')]/span";
 
     private final BaseSideMenuComponent<FolderProjectPage> baseSideMenu;
 

@@ -64,7 +64,6 @@ public class GlobalViewPage extends BasePage {
 
     public HomePage clickSave() {
         getWait10().until(ExpectedConditions.visibilityOf(saveButton)).click();
-
         getWait5().until(ExpectedConditions.elementToBeClickable(addDescriptionButton));
 
         return new HomePage(getDriver());
@@ -72,7 +71,6 @@ public class GlobalViewPage extends BasePage {
 
     public HomePage cancelButton() {
         cancelButton.click();
-
         getWait5().until(ExpectedConditions.visibilityOf(descriptionMessage));
 
         return new HomePage(getDriver());
@@ -106,7 +104,7 @@ public class GlobalViewPage extends BasePage {
         return new ViewMyConfigPage(getDriver());
     }
 
-    public String getCurrentViewName(){
+    public String getCurrentViewName() {
         return getWait5().until(ExpectedConditions.visibilityOf(currentViewName)).getText();
     }
 }

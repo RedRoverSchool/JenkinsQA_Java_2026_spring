@@ -372,7 +372,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .selectFreeStyleProject()
                 .enterProjectNameToCopyFromField(PROJECT_NAME)
                 .selectProjectDropDown()
-                .clickOkButton()
+                .clickOK(new FreestyleProjectConfigPage(getDriver()))
                 .clickSaveButton()
                 .getSideMenu()
                 .clickConfigure(new FreestyleProjectConfigPage(getDriver()));
