@@ -37,9 +37,9 @@ public class SignInPage extends BasePage {
     }
 
     public HomePage clickSignInButton() {
-        getDriver().findElement(By.name("Submit")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
 
-        //getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("empty-state-block")));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("empty-state-block")));
 
         return new HomePage(getDriver());
     }

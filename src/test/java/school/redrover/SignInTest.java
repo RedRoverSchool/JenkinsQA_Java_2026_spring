@@ -19,10 +19,10 @@ public class SignInTest extends BaseTest {
 
 
 
-    final private String USER_LOGIN = "Berendey";
-    final private String USER_PASSWORD = "Beren123";
-    final private String USER_FULL_NAME = "Berendey";
-    final private String USER_EMAIL = "berendey@kingdom.pz";
+    final private String USER_LOGIN = "Yerkezhan";
+    final private String USER_PASSWORD = "Yerkezhan123";
+    final private String USER_FULL_NAME = "Yerkezhan";
+    final private String USER_EMAIL = "yerkezhan@gmail.com";
 
 
     @Test
@@ -37,7 +37,6 @@ public class SignInTest extends BaseTest {
                 USER_PASSWORD,
                 USER_EMAIL);
         String headerText = JenkinsUtils.logout(getDriver())
-                .isSignInFormVisible()
                 .enterLogin(USER_LOGIN)
                 .enterPassword(USER_PASSWORD)
                 .clickSignInButton()
