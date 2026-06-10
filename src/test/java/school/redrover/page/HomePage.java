@@ -67,7 +67,8 @@ public class HomePage extends BasePage {
 
     public List<String> getProjectList() {
         return projects.stream()
-                .map(WebElement::getText).toList();
+                .map(WebElement::getText)
+                .toList();
     }
 
     public <ProjectPage extends BaseProjectPage> ProjectPage clickOnProject(String projectName, ProjectPage projectPage) {

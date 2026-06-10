@@ -34,16 +34,16 @@ public class AddCredentialsPage extends BasePage {
     @FindBy(name = "_.description")
     private WebElement descriptionField;
 
-    @FindBy(css= "label.attach-previous")
+    @FindBy(css = "label.attach-previous")
     private WebElement treatUsernameAsSecretCheckbox;
 
-    @FindBy(css= "label.jenkins-radio__label")
+    @FindBy(css = "label.jenkins-radio__label")
     private WebElement enterDirectlyCheckbox;
 
     @FindBy(css = "button.secret-update-btn")
     private WebElement addButton;
 
-    @FindBy(xpath = "//div[@class='jenkins-choice-list__item__label'][contains(text(),'SSH')]" )
+    @FindBy(xpath = "//div[@class='jenkins-choice-list__item__label'][contains(text(),'SSH')]")
     private WebElement SSHUsernameWithKey;
 
     @FindBy(xpath = "//div[@class='jenkins-choice-list__item__label'][text()='Secret text']")
@@ -64,6 +64,7 @@ public class AddCredentialsPage extends BasePage {
     public AddCredentialsPage createUsernameWithPassword(String user, String pass, String id, String desc) {
         getWait5().until(ExpectedConditions.visibilityOfAllElements(kindOptions)).getFirst().click();
         nextButton.click();
+
         getWait5().until(ExpectedConditions.visibilityOf(usernameTextField)).sendKeys(user);
         passwordTextField.sendKeys(pass);
         IDField.sendKeys(id);
@@ -81,20 +82,22 @@ public class AddCredentialsPage extends BasePage {
         return this;
     }
 
-    public AddCredentialsPage clickSSHCredentialsButton(){
+    public AddCredentialsPage clickSSHCredentialsButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(SSHUsernameWithKey)).click();
         nextButton.click();
+
         return this;
     }
 
-    public AddCredentialsPage setSSHCredentials(String id, String desc, String user, Boolean usernameAsSecret, Boolean enterDirectly,String key,String pass ){
+    public AddCredentialsPage setSSHCredentials(String id, String desc, String user, Boolean usernameAsSecret, Boolean enterDirectly, String key, String pass) {
         getWait5().until(ExpectedConditions.visibilityOf(usernameTextField)).sendKeys(user);
         IDField.sendKeys(id);
         descriptionField.sendKeys(desc);
-        if (usernameAsSecret ==true){
-            treatUsernameAsSecretCheckbox.click();}
+        if (usernameAsSecret == true) {
+            treatUsernameAsSecretCheckbox.click();
+        }
         passphraseTextField.sendKeys(pass);
-        if (enterDirectly ==true){
+        if (enterDirectly == true) {
             enterDirectlyCheckbox.click();
             getWait5().until(ExpectedConditions.elementToBeClickable(addButton)).click();
             getDriver().findElement(By.xpath("//textarea[contains(@id,\"secretText\")]")).sendKeys(key);

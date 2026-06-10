@@ -15,6 +15,4 @@ public class ViewListConfigPage extends ViewGlobalConfigPage {
     public ViewListConfigPage(WebDriver driver) {
         super(driver);
     }
-
-
 }

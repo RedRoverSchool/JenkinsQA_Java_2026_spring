@@ -93,7 +93,7 @@ public class ToolsPage extends BasePage {
 
     public ToolsPage setJDKName(String name) {
 
-        if(!nameField.getAttribute("value").isEmpty()) {
+        if (!nameField.getAttribute("value").isEmpty()) {
             nameField.clear();
         }
 
@@ -104,7 +104,7 @@ public class ToolsPage extends BasePage {
 
     public ToolsPage setJavaPath(String path) {
 
-        if(!pathField.getAttribute("value").isEmpty()) {
+        if (!pathField.getAttribute("value").isEmpty()) {
             pathField.clear();
         }
 

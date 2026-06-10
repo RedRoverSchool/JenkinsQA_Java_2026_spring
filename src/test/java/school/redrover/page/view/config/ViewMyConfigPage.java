@@ -31,9 +31,10 @@ public class ViewMyConfigPage extends BasePage {
         super(driver);
     }
 
-    public ViewMyConfigPage inputName(String newName){
+    public ViewMyConfigPage inputName(String newName) {
         getWait5().until(ExpectedConditions.elementToBeClickable(elementName)).clear();
         elementName.sendKeys(newName);
+
         return this;
     }
 
@@ -43,18 +44,19 @@ public class ViewMyConfigPage extends BasePage {
                 .getAttribute("value");
     }
 
-    public ViewMyConfigPage inputDescription(String newDescription){
+    public ViewMyConfigPage inputDescription(String newDescription) {
         elementDescription.clear();
         elementDescription.sendKeys(newDescription);
+
         return this;
     }
 
-    public GlobalViewPage clickSave(){
+    public GlobalViewPage clickSave() {
         buttonSave.click();
         return new GlobalViewPage(getDriver());
     }
 
-    public ViewMyConfigPage clickApply(){
+    public ViewMyConfigPage clickApply() {
         buttonApply.click();
         return this;
     }

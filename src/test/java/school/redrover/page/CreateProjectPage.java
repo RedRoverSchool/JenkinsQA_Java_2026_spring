@@ -65,7 +65,7 @@ public class CreateProjectPage extends BasePage {
 
     public CreateProjectPage enterProjectNameToCopyFromField(String projectName) {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.id("from"))).sendKeys(projectName);
+                By.id("from"))).sendKeys(projectName);
 
         return this;
     }
@@ -75,7 +75,7 @@ public class CreateProjectPage extends BasePage {
                 By.cssSelector(".jenkins-dropdown__placeholder"))).getText();
     }
 
-    public MultibranchConfigPage selectMultibranchAndClickOk(){
+    public MultibranchConfigPage selectMultibranchAndClickOk() {
         getDriver().findElement(By.xpath("//span[text()='Multi-configuration project']")).click();
         okButton.click();
 
@@ -138,7 +138,7 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
-    public String getErrorText(){
+    public String getErrorText() {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
     }
 
@@ -146,12 +146,6 @@ public class CreateProjectPage extends BasePage {
         getDriver().findElement(By.xpath("//li[contains(@class,'com_cloudbees_hudson_plugins_folder_Folder')]")).click();
 
         return this;
-    }
-
-    public FreestyleProjectConfigPage clickOkButton() {
-        okButton.click();
-
-        return new FreestyleProjectConfigPage(getDriver());
     }
 
     public <JobConfigPage extends BasePage> JobConfigPage clickOK(JobConfigPage jobConfig) {
@@ -179,14 +173,6 @@ public class CreateProjectPage extends BasePage {
 
     public boolean isOkButtonEnabled() {
         return okButton.isEnabled();
-    }
-
-    public CreateProjectPage selectMultibranchPipeline() {
-        WebElement MPjobElement = getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", MPjobElement);
-        MPjobElement.click();
-
-        return this;
     }
 
     public CreateProjectPage selectProjectDropDown() {
