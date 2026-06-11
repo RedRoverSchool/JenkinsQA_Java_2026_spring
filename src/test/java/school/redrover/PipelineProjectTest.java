@@ -28,7 +28,7 @@ public class PipelineProjectTest extends BaseTest {
                 .getProjectList();
 
         Assert.assertEquals(jobList.size(), 1);
-        Assert.assertEquals(jobList.getFirst, PROJECT_NAME);
+        Assert.assertEquals(jobList.getFirst(), PROJECT_NAME);
     }
 
     @Test(dependsOnMethods = "testCreate")
@@ -94,7 +94,7 @@ public class PipelineProjectTest extends BaseTest {
                 .getProjectList();
 
         Assert.assertEquals(jobList.size(), 1);
-        Assert.assertEquals(jobList.getFirst, RENAME_PIPELINE);
+        Assert.assertEquals(jobList.getFirst(), RENAME_PIPELINE);
     }
 
     @Test(dependsOnMethods = "testRename")
@@ -107,7 +107,7 @@ public class PipelineProjectTest extends BaseTest {
                 .clickStatus()
                 .getPermalinksList();
 
-        Assert.assertTrue(linksList.getFirst.contains("Last build"));
+        Assert.assertTrue(linksList.getFirst().contains("Last build"));
     }
 
     @Test(dependsOnMethods = "testStatus")

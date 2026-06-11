@@ -36,7 +36,7 @@ public class OrganizationFolderTest extends BaseTest {
                 .getProjectList();
 
         Assert.assertEquals(joblist.size(), 1);
-        Assert.assertEquals(joblist.getFirst, ORG_FOLDER_NAME);
+        Assert.assertEquals(joblist.getFirst(), ORG_FOLDER_NAME);
     }
 
     @Test(dependsOnMethods = "testCreate")
@@ -105,7 +105,7 @@ public class OrganizationFolderTest extends BaseTest {
                 .getProjectList();
 
         Assert.assertEquals(jobnewlist.size(), 1);
-        Assert.assertEquals(jobnewlist.getFirst, ORG_FOLDER_DISPLAY_NAME);
+        Assert.assertEquals(jobnewlist.getFirst(), ORG_FOLDER_DISPLAY_NAME);
     }
 
     @Test(dependsOnMethods = "testAddDisplayName")

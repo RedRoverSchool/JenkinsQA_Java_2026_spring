@@ -119,7 +119,7 @@ public class ToolsPage extends BasePage {
 
     public ToolsPage deleteAllJDKs() {
         while (!deleteButtons.isEmpty()) {
-            WebElement currentButton = deleteButtons.getFirst;
+            WebElement currentButton = deleteButtons.getFirst();
             currentButton.click();
             getWait5().until(ExpectedConditions.stalenessOf(currentButton));
         }

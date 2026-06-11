@@ -62,7 +62,7 @@ public class AddCredentialsPage extends BasePage {
     private WebElement nextButton;
 
     public AddCredentialsPage createUsernameWithPassword(String user, String pass, String id, String desc) {
-        getWait5().until(ExpectedConditions.visibilityOfAllElements(kindOptions)).getFirst.click();
+        getWait5().until(ExpectedConditions.visibilityOfAllElements(kindOptions)).getFirst().click();
         nextButton.click();
         getWait5().until(ExpectedConditions.visibilityOf(usernameTextField)).sendKeys(user);
         passwordTextField.sendKeys(pass);
