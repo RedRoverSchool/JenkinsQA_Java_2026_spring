@@ -15,6 +15,7 @@ public class SignInTest extends BaseTest {
 
     final private String USER_LOGIN = "Berendey";
     final private String USER_PASSWORD = "Beren123";
+    final private String CONFIRM_PASSWORD = "Beren123";
     final private String USER_FULL_NAME = "Berendey";
     final private String USER_EMAIL = "berendey@kingdom.pz";
     final private String USER_WRONG_PASSWORD = "AbraCadabra";
@@ -28,11 +29,11 @@ public class SignInTest extends BaseTest {
                 .createUser(
                         USER_LOGIN,
                         USER_PASSWORD,
-                        USER_PASSWORD,
+                        CONFIRM_PASSWORD,
                         USER_FULL_NAME,
                         USER_EMAIL);
 
-        String headerText = JenkinsUtils.logoutToReturnSignInPage(getDriver())
+        String headerText = JenkinsUtils.logout(getDriver())
                 .enterLogin(USER_LOGIN)
                 .enterPassword(USER_PASSWORD)
                 .clickSignInButtonForValidUser()
@@ -43,23 +44,23 @@ public class SignInTest extends BaseTest {
 
     @Test
     public void testLoginInValidPassword() {
-            new HomePage(getDriver())
+        new HomePage(getDriver())
                 .clickManageButton()
                 .clickUsersButton()
                 .clickCreateUserButton()
                 .createUser(
-            USER_LOGIN,
-            USER_PASSWORD,
-            USER_PASSWORD,
-            USER_FULL_NAME,
-            USER_EMAIL);
+                        USER_LOGIN,
+                        USER_PASSWORD,
+                        CONFIRM_PASSWORD,
+                        USER_FULL_NAME,
+                        USER_EMAIL);
 
-         String errorMessage = JenkinsUtils.logoutToReturnSignInPage(getDriver())
-            .enterLogin(USER_LOGIN)
-            .enterPassword(USER_WRONG_PASSWORD)
-            .clickSignInButtonForInvalidCredentials();
+        String errorMessage = JenkinsUtils.logoutToReturnSignInPage(getDriver())
+                .enterLogin(USER_LOGIN)
+                .enterPassword(USER_WRONG_PASSWORD)
+                .clickSignInButtonForInvalidCredentials();
 
-         Assert.assertEquals(errorMessage, "Invalid username or password");
+        Assert.assertEquals(errorMessage, "Invalid username or password");
     }
 
     @Ignore

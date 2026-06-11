@@ -23,28 +23,28 @@ public class CreateUserPage extends BasePage {
         super(driver);
     }
 
-    public CreateUserPage setUsername(String username) {
-        getDriver().findElement(usernameField).sendKeys(username);
+    public CreateUserPage setUsername(String userName) {
+        getDriver().findElement(usernameField).sendKeys(userName);
         return this;
     }
 
-    public CreateUserPage setUserPassword(String password) {
-        getDriver().findElement(password1).sendKeys(password);
+    public CreateUserPage setUserPassword(String userPassword) {
+        getDriver().findElement(password1).sendKeys(userPassword);
         return this;
     }
 
-    public CreateUserPage setConfirmUserPassword(String password) {
-        getDriver().findElement(password2).sendKeys(password);
+    public CreateUserPage setConfirmUserPassword(String userPassword) {
+        getDriver().findElement(password2).sendKeys(userPassword);
         return this;
     }
 
-    public CreateUserPage setUserFullName(String fullName) {
-        getDriver().findElement(fullnameField).sendKeys(fullName);
+    public CreateUserPage setUserFullName(String userFullName) {
+        getDriver().findElement(fullnameField).sendKeys(userFullName);
         return this;
     }
 
-    public CreateUserPage setUserEmail(String email) {
-        getDriver().findElement(emailField).sendKeys(email);
+    public CreateUserPage setUserEmail(String userEmail) {
+        getDriver().findElement(emailField).sendKeys(userEmail);
         return this;
     }
 
@@ -68,13 +68,13 @@ public class CreateUserPage extends BasePage {
     public UserManagementPage createUser(
             String userName,
             String userPassword,
-            String userConfirmPassword,
+            String confirmUserPassword,
             String userFullName,
             String userEmail
     ) {
         setUsername(userName);
         setUserPassword(userPassword);
-        setConfirmUserPassword(userConfirmPassword);
+        setConfirmUserPassword(confirmUserPassword);
         setUserFullName(userFullName);
         setUserEmail(userEmail);
 
