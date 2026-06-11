@@ -30,7 +30,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .getProjectList();
 
         Assert.assertEquals(projectList.size(), 1);
-        Assert.assertEquals(projectList.get(0), PROJECT_NAME);
+        Assert.assertEquals(projectList.getFirst, PROJECT_NAME);
     }
 
     @Test(dependsOnMethods = "testCreate")
@@ -45,7 +45,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .getProjectList();
 
         Assert.assertEquals(projectList.size(), 1);
-        Assert.assertEquals(projectList.get(0), PROJECT_NAME_1);
+        Assert.assertEquals(projectList.getFirst, PROJECT_NAME_1);
     }
 
     @Test(dependsOnMethods = "testRename")
@@ -59,7 +59,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .getProjectList();
 
         Assert.assertEquals(projectList.size(), 1);
-        Assert.assertEquals(projectList.get(0), PROJECT_NAME);
+        Assert.assertEquals(projectList.getFirst, PROJECT_NAME);
     }
 
     @Test

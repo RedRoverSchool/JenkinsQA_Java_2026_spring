@@ -79,7 +79,7 @@ public class APITest {
         Assert.assertEquals(pokemons.next, "https://pokeapi.co/api/v2/pokemon?offset=20&limit=20");
         Assert.assertEquals(pokemons.results.size(), 20);
         Assert.assertEquals(
-                pokemons.results.get(0),
+                pokemons.results.getFirst,
                 new Pokemon("bulbasaur", "https://pokeapi.co/api/v2/pokemon/1/"));
     }
 

@@ -73,7 +73,7 @@ public class ToolsTest extends BaseTest {
                 .clickJDKInstallationsButton()
                 .getJDKData();
 
-        Assert.assertEquals(attributesJDK.get(0), "UpdateTestName");
+        Assert.assertEquals(attributesJDK.getFirst, "UpdateTestName");
         Assert.assertEquals(attributesJDK.get(1), "/test/updatePath/toJDK");
     }
 

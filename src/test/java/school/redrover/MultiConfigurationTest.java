@@ -27,7 +27,7 @@ public class MultiConfigurationTest extends BaseTest {
                 .getProjectList();
 
         Assert.assertEquals(projectList.size(), 1);
-        Assert.assertEquals(projectList.get(0), PROJECT_NAME);
+        Assert.assertEquals(projectList.getFirst, PROJECT_NAME);
     }
 
     @Test(dependsOnMethods = "testCreate")
@@ -66,7 +66,7 @@ public class MultiConfigurationTest extends BaseTest {
                 .getPermalinksList();
 
         Assert.assertEquals(linksList.size(), 4);
-        Assert.assertTrue(linksList.get(0).contains("Last build"));
+        Assert.assertTrue(linksList.getFirst.contains("Last build"));
     }
 
     @Test(dependsOnMethods = "testStatus")

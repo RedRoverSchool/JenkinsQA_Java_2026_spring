@@ -72,7 +72,7 @@ public final class JenkinsUtils {
     }
 
     private static String getCrumbAsString() {
-        return "%s=%s".formatted(getHeaderCrumb().get(0), getHeaderCrumb().get(1));
+        return "%s=%s".formatted(getHeaderCrumb().getFirst, getHeaderCrumb().get(1));
     }
 
     private static List<String> getCrumbFromJson(String json) {

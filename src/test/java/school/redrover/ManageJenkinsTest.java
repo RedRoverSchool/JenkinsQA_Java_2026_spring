@@ -90,7 +90,7 @@ public class ManageJenkinsTest extends BaseTest {
                 .getSectionList();
 
         Assert.assertEquals(sectionList.size(), 27);
-        Assert.assertEquals(sectionList.get(0), "General");
+        Assert.assertEquals(sectionList.getFirst, "General");
     }
 
     @Test
