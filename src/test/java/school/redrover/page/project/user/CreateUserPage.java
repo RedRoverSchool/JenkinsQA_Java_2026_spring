@@ -1,18 +1,23 @@
-package school.redrover.page;
+package school.redrover.page.project.user;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
 import school.redrover.page.manage.UserManagementPage;
 
+import java.util.List;
+
 public class CreateUserPage extends BasePage {
 
-    private By usernameField = By.name("username");
-    private By password1 = By.name("password1");
-    private By password2 = By.name("password2");
-    private By fullnameField = By.name("fullname");
-    private By emailField = By.name("email");
-    private By submitButton = By.name("Submit");
+    private final By usernameField = By.name("username");
+    private final By password1 = By.name("password1");
+    private final By password2 = By.name("password2");
+    private final By fullnameField = By.name("fullname");
+    private final By emailField = By.name("email");
+    private final By submitButton = By.name("Submit");
+    private final By errorMessages = By.xpath("//div[@class = 'error jenkins-!-margin-bottom-2']");
 
     public CreateUserPage(WebDriver driver) {
         super(driver);
@@ -44,7 +49,19 @@ public class CreateUserPage extends BasePage {
     }
 
     public UserManagementPage clickCreateUserButton() {
-        getDriver().findElement(submitButton).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(submitButton)).click();
         return new UserManagementPage(getDriver());
+    }
+
+    public CreateUserPage submitExpectingError() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(submitButton)).click();
+        return this;
+    }
+
+    public List<String> getErrorMessageList() {
+        return getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(errorMessages))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
     }
 }

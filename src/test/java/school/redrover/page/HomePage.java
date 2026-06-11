@@ -9,6 +9,7 @@ import school.redrover.page.common.BaseProjectPage;
 import school.redrover.page.external.CommandPalettePage;
 import school.redrover.page.view.CreateGlobalViewPage;
 import school.redrover.page.view.GlobalViewPage;
+import school.redrover.page.project.user.UserPage;
 
 import java.util.List;
 import java.util.Random;
@@ -81,7 +82,7 @@ public class HomePage extends BasePage {
     }
 
     public HomePage clickSearchButton() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("root-action-SearchAction"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("root-action-SearchAction"))).click();
         return this;
     }
 
@@ -99,7 +100,6 @@ public class HomePage extends BasePage {
 
         return new CommandPalettePage(getDriver());
     }
-
 
     public <T extends BasePage> T typeSearchInputAndGoToResultsPage(String inputText, T returnPage) {
         searchInputField.sendKeys(inputText);
@@ -212,5 +212,18 @@ public class HomePage extends BasePage {
         } catch (TimeoutException e) {
             return false;
         }
+    }
+
+    public UserPage searchUser(String userName) {
+        WebElement searchInput = getWait10().until(
+                ExpectedConditions.visibilityOf(searchInputField));
+
+        searchInput.sendKeys(userName);
+
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(
+                "//div[@id='search-results']//a[contains(@href, '/user/%s')]"
+                        .formatted(userName.toLowerCase())))).click();
+
+        return new UserPage(getDriver());
     }
 }
