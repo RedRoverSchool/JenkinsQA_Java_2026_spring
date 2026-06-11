@@ -36,11 +36,21 @@ public class SignInPage extends BasePage {
         return this;
     }
 
-    public HomePage clickSignInButton() {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
+    public HomePage clickSignInButtonForValidUser() {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.name("Submit"))).click();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("empty-state-block")));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.className("empty-state-block")));
 
         return new HomePage(getDriver());
+    }
+
+    public String clickSignInButtonForInvalidCredentials() {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.name("Submit"))).click();
+
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.className("app-sign-in-register__error"))).getText();
     }
 }

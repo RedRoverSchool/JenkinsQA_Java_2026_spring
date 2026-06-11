@@ -21,6 +21,7 @@ public class SignInTest extends BaseTest {
 
     final private String USER_LOGIN = "Yerkezhan";
     final private String USER_PASSWORD = "Yerkezhan123";
+    final private String USER_WRONG_PASSWORD = "Test567";
     final private String USER_FULL_NAME = "Yerkezhan";
     final private String USER_EMAIL = "yerkezhan@gmail.com";
 
@@ -32,40 +33,38 @@ public class SignInTest extends BaseTest {
                 .clickUsersButton()
                 .clickCreateUserButton()
                 .createUser(
-                USER_LOGIN,
-                USER_FULL_NAME,
-                USER_PASSWORD,
-                USER_EMAIL);
+                        USER_LOGIN,
+                        USER_PASSWORD,
+                        USER_FULL_NAME,
+                        USER_EMAIL);
+
         String headerText = JenkinsUtils.logout(getDriver())
                 .enterLogin(USER_LOGIN)
                 .enterPassword(USER_PASSWORD)
-                .clickSignInButton()
+                .clickSignInButtonForValidUser()
                 .getHeaderText();
 
         Assert.assertEquals(headerText, "Welcome to Jenkins!");
     }
 
-    @Ignore
     @Test
     public void testLoginInvalidPassword () {
+        new HomePage(getDriver())
+                .clickManageButton()
+                .clickUsersButton()
+                .clickCreateUserButton()
+                .createUser(
+                        USER_LOGIN,
+                        USER_PASSWORD,
+                        USER_FULL_NAME,
+                        USER_EMAIL);
 
-//        createUser(USER_LOGIN,
-//                USER_FULL_NAME,
-//                USER_PASSWORD,
-//                USER_EMAIL,
-//                getDriver());
+        String errorMessage = JenkinsUtils.logout(getDriver())
+                .enterLogin(USER_LOGIN)
+                .enterPassword(USER_WRONG_PASSWORD)
+                .clickSignInButtonForInvalidCredentials();
 
-        JenkinsUtils.logout(getDriver());
-        getWait10().until(ExpectedConditions.presenceOfElementLocated(By.className("app-sign-in-register__content-inner")));
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-sign-in-register__content-inner")));
-
-        getDriver().findElement(By.name("j_username")).sendKeys(USER_LOGIN);
-        getDriver().findElement(By.name("j_password")).sendKeys("nik123");
-        getDriver().findElement(By.name("Submit")).click();
-
-        WebElement errorMessage = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-sign-in-register__error")));
-
-        Assert.assertEquals(errorMessage.getText(), "Invalid username or password");
+        Assert.assertEquals(errorMessage, "Invalid username or password");
     }
 
     @Ignore
