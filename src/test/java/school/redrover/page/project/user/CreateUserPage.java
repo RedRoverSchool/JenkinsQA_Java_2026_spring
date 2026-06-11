@@ -28,22 +28,22 @@ public class CreateUserPage extends BasePage {
         return this;
     }
 
-    public CreateUserPage setPassword(String password) {
+    public CreateUserPage setUserPassword(String password) {
         getDriver().findElement(password1).sendKeys(password);
         return this;
     }
 
-    public CreateUserPage setConfirmPassword(String password) {
+    public CreateUserPage setConfirmUserPassword(String password) {
         getDriver().findElement(password2).sendKeys(password);
         return this;
     }
 
-    public CreateUserPage setFullName(String fullName) {
+    public CreateUserPage setUserFullName(String fullName) {
         getDriver().findElement(fullnameField).sendKeys(fullName);
         return this;
     }
 
-    public CreateUserPage setEmail(String email) {
+    public CreateUserPage setUserEmail(String email) {
         getDriver().findElement(emailField).sendKeys(email);
         return this;
     }
@@ -63,5 +63,21 @@ public class CreateUserPage extends BasePage {
                 .stream()
                 .map(WebElement::getText)
                 .toList();
+    }
+
+    public UserManagementPage createUser(
+            String userName,
+            String userPassword,
+            String userConfirmPassword,
+            String userFullName,
+            String userEmail
+    ) {
+        setUsername(userName);
+        setUserPassword(userPassword);
+        setConfirmUserPassword(userConfirmPassword);
+        setUserFullName(userFullName);
+        setUserEmail(userEmail);
+
+        return clickCreateUserButton();
     }
 }

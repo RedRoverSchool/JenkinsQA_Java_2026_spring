@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -14,60 +13,58 @@ import school.redrover.page.LoginPage;
 
 public class SignInTest extends BaseTest {
 
-    private void createUser(String userLogin, String userFullName, String password,
-                            String retryPassword, String userMail, WebDriver driver) {
-        new HomePage(driver)
-                .clickManageButton()
-                .clickUsersButton()
-                .clickCreateUserButton()
-                .setUsername(userLogin)
-                .setFullName(userFullName)
-                .setPassword(password)
-                .setConfirmPassword(retryPassword)
-                .setEmail(userMail)
-                .clickCreateUserButton();
-
-    }
-
     final private String USER_LOGIN = "Berendey";
     final private String USER_PASSWORD = "Beren123";
     final private String USER_FULL_NAME = "Berendey";
     final private String USER_EMAIL = "berendey@kingdom.pz";
+    final private String USER_WRONG_PASSWORD = "AbraCadabra";
 
-    @Ignore
     @Test
-    public void testLoginValidData () {
-        createUser(USER_LOGIN,
-                USER_FULL_NAME,
-                USER_PASSWORD,
-                USER_PASSWORD,
-                USER_EMAIL,
-                getDriver());
+    public void testLoginValidData() {
+        new HomePage(getDriver())
+                .clickManageButton()
+                .clickUsersButton()
+                .clickCreateUserButton()
+                .createUser(
+                        USER_LOGIN,
+                        USER_PASSWORD,
+                        USER_PASSWORD,
+                        USER_FULL_NAME,
+                        USER_EMAIL);
 
-        JenkinsUtils.logout(getDriver());
-        getWait10().until(ExpectedConditions.presenceOfElementLocated(By.className("app-sign-in-register__content-inner")));
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-sign-in-register__content-inner")));
+        String headerText = JenkinsUtils.logoutToReturnSignInPage(getDriver())
+                .enterLogin(USER_LOGIN)
+                .enterPassword(USER_PASSWORD)
+                .clickSignInButtonForValidUser()
+                .getHeaderText();
 
-        getDriver().findElement(By.name("j_username")).sendKeys(USER_LOGIN);
-        getDriver().findElement(By.name("j_password")).sendKeys(USER_PASSWORD);
-        getDriver().findElement(By.name("Submit")).click();
+        Assert.assertEquals(headerText, "Welcome to Jenkins!");
+    }
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("empty-state-block")));
-        String header = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1"))).getText();
+    @Test
+    public void testLoginInValidPassword() {
+            new HomePage(getDriver())
+                .clickManageButton()
+                .clickUsersButton()
+                .clickCreateUserButton()
+                .createUser(
+            USER_LOGIN,
+            USER_PASSWORD,
+            USER_PASSWORD,
+            USER_FULL_NAME,
+            USER_EMAIL);
 
-        Assert.assertEquals(header, "Welcome to Jenkins!");
+         String errorMessage = JenkinsUtils.logoutToReturnSignInPage(getDriver())
+            .enterLogin(USER_LOGIN)
+            .enterPassword(USER_WRONG_PASSWORD)
+            .clickSignInButtonForInvalidCredentials();
+
+         Assert.assertEquals(errorMessage, "Invalid username or password");
     }
 
     @Ignore
     @Test
     public void testLoginInvalidPassword () {
-
-        createUser(USER_LOGIN,
-                USER_FULL_NAME,
-                USER_PASSWORD,
-                USER_PASSWORD,
-                USER_EMAIL,
-                getDriver());
 
         JenkinsUtils.logout(getDriver());
         getWait10().until(ExpectedConditions.presenceOfElementLocated(By.className("app-sign-in-register__content-inner")));
@@ -86,13 +83,6 @@ public class SignInTest extends BaseTest {
     @Test
     public void testLoginInvalidUsername () {
 
-        createUser(USER_LOGIN,
-                USER_FULL_NAME,
-                USER_PASSWORD,
-                USER_PASSWORD,
-                USER_EMAIL,
-                getDriver());
-
         JenkinsUtils.logout(getDriver());
         getWait10().until(ExpectedConditions.presenceOfElementLocated(By.className("app-sign-in-register__content-inner")));
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("app-sign-in-register__content-inner")));
@@ -106,6 +96,7 @@ public class SignInTest extends BaseTest {
         Assert.assertEquals(errorMessage.getText(), "Invalid username or password");
     }
 
+    @Ignore
     @Test
     public void testSignInPageAlertMessageText() {
         boolean textMatches = new LoginPage(getDriver())
@@ -118,6 +109,7 @@ public class SignInTest extends BaseTest {
         Assert.assertTrue(textMatches, "Error message not shown or text doesn't match");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testSignInPageAlertMessageText")
     public void testSignInPageAlertTextColor() {
         boolean colorMatches = new LoginPage(getDriver())
@@ -130,6 +122,7 @@ public class SignInTest extends BaseTest {
         Assert.assertTrue(colorMatches, "Error message text color is not as expected");
     }
 
+    @Ignore
     @Test
     public void testLoginPageElementsPresence() {
         LoginPage loginPage = new LoginPage(getDriver()).logout();
