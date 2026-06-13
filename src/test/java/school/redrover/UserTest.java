@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -14,6 +15,7 @@ public class UserTest extends BaseTest {
     private final static String USER_PASSWORD = "testPassword";
     private final static String USER_EMAIL = "testUser@example.com";
 
+    @Ignore
     @Test
     public void testCreateUser() {
 

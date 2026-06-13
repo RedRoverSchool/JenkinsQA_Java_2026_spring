@@ -50,4 +50,36 @@ public class ToolsTest extends BaseTest {
 
         Assert.assertTrue(isEditButtonAppears);
     }
+
+    @Test
+    public void testEditExistingJDK() {
+        List<String> attributesJDK = new HomePage(getDriver())
+                .clickManageButton()
+                .clickToolsButton()
+                .clickJDKInstallationsButton()
+                .setJDKName("UpdateTestName")
+                .setJavaPath("/test/updatePath/toJDK")
+                .clickSaveButton()
+                .clickToolsButton()
+                .clickJDKInstallationsButton()
+                .getJDKData();
+
+        Assert.assertEquals(attributesJDK.get(0), "UpdateTestName");
+        Assert.assertEquals(attributesJDK.get(1), "/test/updatePath/toJDK");
+    }
+
+    @Test
+    public void testDeleteJDK() {
+        int jdksCount = new HomePage(getDriver())
+                .clickManageButton()
+                .clickToolsButton()
+                .clickJDKInstallationsButton()
+                .deleteAllJDKs()
+                .clickSaveButton()
+                .clickToolsButton()
+                .clickJDKInstallationsButton()
+                .getJDKsCount();
+
+        Assert.assertEquals(jdksCount, 0);
+    }
 }
