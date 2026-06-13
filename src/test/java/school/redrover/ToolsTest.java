@@ -10,6 +10,32 @@ import java.util.List;
 public class ToolsTest extends BaseTest {
 
     @Test
+    public void testSimpleMavenConfiguration() {
+        boolean isPathDisplayed = new HomePage(getDriver())
+                .clickManageButton()
+                .clickToolsButton()
+                .selectMavenOption("Settings file in filesystem")
+                .clickSaveButton()
+                .clickToolsButton()
+                .isPathFieldAppears();
+
+        Assert.assertTrue(isPathDisplayed);
+    }
+
+    @Test
+    public void testGlobalMavenConfiguration() {
+        boolean isGlobalPathDisplayed = new HomePage(getDriver())
+                .clickManageButton()
+                .clickToolsButton()
+                .selectGlobalMavenOption("Global settings file on filesystem")
+                .clickSaveButton()
+                .clickToolsButton()
+                .isGlobalPathFieldAppears();
+
+        Assert.assertTrue(isGlobalPathDisplayed);
+    }
+
+    @Test
     public void testAddJDK() {
         boolean isEditButtonAppears = new HomePage(getDriver())
                 .clickManageButton()
