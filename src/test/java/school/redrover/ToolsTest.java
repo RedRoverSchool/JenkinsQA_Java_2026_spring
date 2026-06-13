@@ -14,7 +14,6 @@ public class ToolsTest extends BaseTest {
         boolean isEditButtonAppears = new HomePage(getDriver())
                 .clickManageButton()
                 .clickToolsButton()
-                .clickJDKInstallationsButton()
                 .clickAddJDKButton()
                 .setJDKName("TestName")
                 .setJavaPath("/test/path/toJDK")
