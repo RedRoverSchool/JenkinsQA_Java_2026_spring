@@ -1,5 +1,7 @@
 package school.redrover.page.manage;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -7,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.page.common.BasePage;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ToolsPage extends BasePage {
@@ -18,7 +21,7 @@ public class ToolsPage extends BasePage {
     @FindBy(xpath = "(//select[contains(@class,'jenkins-select__input')])[1]")
     private WebElement mavenOption;
 
-    @FindBy(xpath = "(//input[@name='_.path'])[1]")
+    @FindBy(xpath = "//div[@name='settingsProvider']//input[@name='_.path']")
     private WebElement javaHomeField;
 
     @FindBy(name = "Submit")
@@ -27,19 +30,16 @@ public class ToolsPage extends BasePage {
     @FindBy(xpath = "(//select[contains(@class,'jenkins-select__input')])[2]")
     private WebElement globalMavenOption;
 
-    @FindBy(xpath = "(//input[@name='_.path'])[2]")
+    @FindBy(xpath = "//div[@name='globalSettingsProvider']//input[@name='_.path']")
     private WebElement globalPathField;
-
-    @FindBy(xpath = "//button[contains(text(),'JDK installations')]")
-    private WebElement JDKInstallationsButton;
 
     @FindBy(xpath = "//button[contains(text(), 'Add JDK')]")
     private WebElement addJDKButton;
 
-    @FindBy(name = "_.name")
+    @FindBy(xpath = "//input[contains(@checkurl, 'hudson.model.JDK/checkName')]")
     private WebElement nameField;
 
-    @FindBy(name = "_.home")
+    @FindBy(xpath = "//input[contains(@checkurl, 'hudson.model.JDK/checkHome')]")
     private WebElement pathField;
 
     @FindBy(xpath = "//span[@tooltip='One or more fields in this block have been edited.']")
@@ -50,6 +50,18 @@ public class ToolsPage extends BasePage {
 
     @FindBy(id = "settings-search-bar")
     private WebElement searchBar;
+
+    @FindBy(xpath = "//div[@descriptorid='hudson.plugins.git.GitTool']")
+    private WebElement gitInstallationSection;
+
+    @FindBy(xpath = "//button[contains(@class, 'jenkins-dropdown__item') and normalize-space(.)='Git']")
+    private WebElement firstDropdownItem;
+
+    @FindBy(xpath = "//input[@checkurl = '/manage/descriptorByName/hudson.plugins.git.GitTool/checkName']")
+    private WebElement gitNameField;
+
+    @FindBy(xpath = "//input[@checkurl = '/manage/descriptorByName/hudson.plugins.git.GitTool/checkHome']")
+    private WebElement gitPathField;
 
     public ToolsPage selectMavenOption(String option) {
         new Select(mavenOption).selectByVisibleText(option);
@@ -80,34 +92,33 @@ public class ToolsPage extends BasePage {
     }
 
     public ToolsPage clickJDKInstallationsButton() {
-        JDKInstallationsButton.click();
+        By oldXpath = By.xpath("//button[contains(normalize-space(.), 'JDK installations')]");
+        WebElement jdkButton = getWait5().until(ExpectedConditions.presenceOfElementLocated(oldXpath));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", jdkButton);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(oldXpath)).click();
 
         return this;
     }
 
     public ToolsPage clickAddJDKButton() {
-        addJDKButton.click();
+        WebElement addJDKButton = getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[contains(normalize-space(.), 'Add JDK')]")));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", addJDKButton);
+        getWait2().until(ExpectedConditions.elementToBeClickable(addJDKButton)).click();
 
         return this;
     }
 
     public ToolsPage setJDKName(String name) {
-
-        if (!nameField.getAttribute("value").isEmpty()) {
-            nameField.clear();
-        }
-
+        WebElement nameField = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[contains(@checkurl, 'hudson.model.JDK/checkName')]")));
+        nameField.clear();
         nameField.sendKeys(name);
 
         return this;
     }
 
     public ToolsPage setJavaPath(String path) {
-
-        if (!pathField.getAttribute("value").isEmpty()) {
-            pathField.clear();
-        }
-
+        getWait5().until(ExpectedConditions.visibilityOf(pathField));
+        pathField.clear();
         pathField.sendKeys(path);
 
         return this;
@@ -117,9 +128,20 @@ public class ToolsPage extends BasePage {
         return !editButtons.isEmpty();
     }
 
+    public int getJDKsCount() {
+        int visibleButtons = 0;
+        for (WebElement button : deleteButtons) {
+            if (button.isDisplayed()) {
+                visibleButtons++;
+            }
+        }
+        return visibleButtons;
+    }
+
     public ToolsPage deleteAllJDKs() {
-        while (!deleteButtons.isEmpty()) {
-            WebElement currentButton = deleteButtons.get(0);
+        while (getJDKsCount() > 0) {
+            WebElement currentButton = deleteButtons.getFirst();
+
             currentButton.click();
             getWait5().until(ExpectedConditions.stalenessOf(currentButton));
         }
@@ -128,9 +150,52 @@ public class ToolsPage extends BasePage {
     }
 
     public List<String> getJDKData() {
-        return List.of(
+        return Arrays.asList(
                 nameField.getAttribute("value"),
                 pathField.getAttribute("value")
+        );
+    }
+
+    public ToolsPage clickAddGitButton() {
+        WebElement addGitButton = getDriver().findElement(By.xpath("//button[contains(@class, 'jenkins-button') and contains(text(), 'Add Git')]"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", addGitButton);
+        addGitButton.click();
+
+        return this;
+    }
+
+    public ToolsPage selectDropDownItem() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(firstDropdownItem));
+        firstDropdownItem.click();
+
+        return this;
+    }
+
+    public boolean isGitInstallationsAppears() {
+        getWait10().until(ExpectedConditions.visibilityOf(gitInstallationSection));
+        return gitInstallationSection.isDisplayed ();
+    }
+
+    public ToolsPage setGitName (String name) {
+        getWait5().until(ExpectedConditions.visibilityOf(gitNameField));
+        gitNameField.clear();
+        gitNameField.sendKeys(name);
+
+        return this;
+    }
+
+    public ToolsPage setGitPath (String path) {
+        getWait5().until(ExpectedConditions.visibilityOf(gitPathField));
+        gitPathField.clear();
+        gitPathField.sendKeys(path);
+
+        return this;
+    }
+
+    public List<String> getGitData() {
+        return Arrays.asList(
+                gitNameField.getAttribute("value"),
+                gitPathField.getAttribute("value")
         );
     }
 }
