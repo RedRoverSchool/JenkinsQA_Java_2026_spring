@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.page.RenameProjectPage;
 import school.redrover.page.common.BaseJobPage;
 import school.redrover.page.components.FreestylePipelineMulticonfigSideMenuComponent;
 import school.redrover.page.project.config.FreestyleProjectConfigPage;
@@ -37,7 +36,7 @@ public class FreestyleProjectPage extends BaseJobPage<FreestyleProjectPage> {
             try {
                 WebElement element = getDriver().findElement(configuration);
 
-                if(element.isDisplayed() && element.isEnabled()) {
+                if (element.isDisplayed() && element.isEnabled()) {
                     element.click();
 
                     return true;
@@ -58,25 +57,27 @@ public class FreestyleProjectPage extends BaseJobPage<FreestyleProjectPage> {
     }
 
     public FreestyleProjectPage enableProject() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//button[contains(., 'Enable')]"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(., 'Enable')]"))).click();
+        getWait5().until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//button[contains(., 'Enable')]")));
 
         return this;
     }
 
-    public RenameProjectPage clickRenameProjectSideMenuButton() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()='Rename']/.."))).click();
-
-        return new RenameProjectPage(getDriver());
-    }
-
     public List<String> getBuilds() {
-        getWait10().until(ExpectedConditions.presenceOfElementLocated(By.className("app-builds-container__item")));
+        By builds = By.className("app-builds-container__item");
 
-        return getDriver().findElements(By.className("app-builds-container__item"))
-                .stream()
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(builds));
+
+        return getDriver().findElements(builds).stream()
                 .map(WebElement::getText)
                 .toList();
+    }
+
+    public Boolean isPopupMessageDisplayed(String popUpMessage) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//span[text()='Build Now']/.."))).click();
+
+        return getWait10().until(ExpectedConditions.textToBePresentInElementLocated(
+                By.id("notification-bar"), popUpMessage));
     }
 }

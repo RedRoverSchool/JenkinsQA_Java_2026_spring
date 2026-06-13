@@ -63,15 +63,19 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
-    public CreateProjectPage enterCopyItemName(String sourceName) {
+    public CreateProjectPage enterProjectNameToCopyFromField(String projectName) {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.id("from")))
-                .sendKeys(sourceName);
+                By.id("from"))).sendKeys(projectName);
 
         return this;
     }
 
-    public MultibranchConfigPage selectMultibranchAndClickOk(){
+    public String getEmptyStateMessage() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector(".jenkins-dropdown__placeholder"))).getText();
+    }
+
+    public MultibranchConfigPage selectMultibranchAndClickOk() {
         getDriver().findElement(By.xpath("//span[text()='Multi-configuration project']")).click();
         okButton.click();
 
@@ -134,7 +138,7 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
-    public String getErrorText(){
+    public String getErrorText() {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
     }
 
@@ -142,14 +146,6 @@ public class CreateProjectPage extends BasePage {
         getDriver().findElement(By.xpath("//li[contains(@class,'com_cloudbees_hudson_plugins_folder_Folder')]")).click();
 
         return this;
-    }
-
-    public FreestyleProjectConfigPage clickOkButton() {
-        okButton.click();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(BUTTON_OK));
-
-        return new FreestyleProjectConfigPage(getDriver());
     }
 
     public <JobConfigPage extends BasePage> JobConfigPage clickOK(JobConfigPage jobConfig) {
@@ -177,5 +173,11 @@ public class CreateProjectPage extends BasePage {
 
     public boolean isOkButtonEnabled() {
         return okButton.isEnabled();
+    }
+
+    public CreateProjectPage selectProjectDropDown() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown__item"))).click();
+
+        return this;
     }
 }

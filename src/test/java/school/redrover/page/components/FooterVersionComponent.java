@@ -11,9 +11,6 @@ import school.redrover.page.external.JenkinsWebsite;
 
 public class FooterVersionComponent extends BaseModel {
 
-    @FindBy(css = "button.jenkins_ver")
-    private WebElement buttonVersion;
-
     @FindBy(xpath = "//a[@href='/manage/about']")
     private WebElement linkAboutJenkins;
 
@@ -28,7 +25,7 @@ public class FooterVersionComponent extends BaseModel {
     }
 
     public FooterVersionComponent clickButtonVersion() {
-        buttonVersion.click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("button.jenkins_ver"))).click();
         return this;
     }
 

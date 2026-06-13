@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.page.HomePage;
 import school.redrover.page.common.BaseJobPage;
 import school.redrover.page.components.FreestylePipelineMulticonfigSideMenuComponent;
 
@@ -65,13 +64,11 @@ public class PipelineProjectPage extends BaseJobPage<PipelineProjectPage> {
 
     public PipelineProjectPage enterDescription(String description) {
         descriptionElement.sendKeys(description);
-
         return this;
     }
 
     public PipelineProjectPage clickSaveDescription() {
         saveButton.click();
-
         return this;
     }
 

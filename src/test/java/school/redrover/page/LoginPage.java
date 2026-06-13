@@ -1,6 +1,5 @@
 package school.redrover.page;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -9,6 +8,7 @@ import school.redrover.common.JenkinsUtils;
 import school.redrover.page.common.BasePage;
 
 public class LoginPage extends BasePage {
+
     @FindBy(css = "#j_username")
     private WebElement usernameField;
 
@@ -45,13 +45,6 @@ public class LoginPage extends BasePage {
         return new ErrorLoginPage(getDriver());
     }
 
-    public HomePage loginAs(String username, String password) {
-        enterUsername(username);
-        enterPassword(password);
-        clickSignIn();
-        return new HomePage(getDriver());
-    }
-
     public boolean isUsernameFieldDisplayed() {
         return getWait10().until(ExpectedConditions.visibilityOf(usernameField)).isDisplayed();
     }
@@ -74,23 +67,5 @@ public class LoginPage extends BasePage {
 
     public boolean isSignInButtonEnabled() {
         return submitButton.isEnabled();
-    }
-
-    public LoginPage clearUsername() {
-        usernameField.clear();
-        return this;
-    }
-
-    public LoginPage clearPassword() {
-        passwordField.clear();
-        return this;
-    }
-
-    public String getUsernameValue() {
-        return usernameField.getAttribute("value");
-    }
-
-    public String getPasswordValue() {
-        return passwordField.getAttribute("value");
     }
 }

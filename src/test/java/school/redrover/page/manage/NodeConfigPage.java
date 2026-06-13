@@ -48,6 +48,7 @@ public class NodeConfigPage extends BasePage {
 
         actualAttributes.add(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//a[@href='/label/%s']".formatted(label)))).getText());
+
         return actualAttributes;
     }
 }
