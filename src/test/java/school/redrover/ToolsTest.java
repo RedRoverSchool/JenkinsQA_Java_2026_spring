@@ -51,7 +51,7 @@ public class ToolsTest extends BaseTest {
         Assert.assertTrue(isEditButtonAppears);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testAddJDK")
     public void testEditExistingJDK() {
         List<String> attributesJDK = new HomePage(getDriver())
                 .clickManageButton()
@@ -68,7 +68,7 @@ public class ToolsTest extends BaseTest {
         Assert.assertEquals(attributesJDK.get(1), "/test/updatePath/toJDK");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testEditExistingJDK")
     public void testDeleteJDK() {
         int jdksCount = new HomePage(getDriver())
                 .clickManageButton()
@@ -81,5 +81,26 @@ public class ToolsTest extends BaseTest {
                 .getJDKsCount();
 
         Assert.assertEquals(jdksCount, 0);
+    }
+
+    @Test
+    public void testAddGitInstallation() {
+        boolean isGitInstallationAppears = new HomePage(getDriver())
+                .clickManageButton()
+                .clickToolsButton()
+                .clickAddGitButton()
+                .selectDropDownItem()
+                .setGitName("TestGitName" )
+                .setGitPath("/test/path")
+                .clickSaveButton()
+                .clickToolsButton()
+                .isGitInstallationsAppears ();
+
+        List<String> attributesGit = new ToolsPage(getDriver())
+                .getGitData();
+
+        Assert.assertTrue(isGitInstallationAppears);
+        Assert.assertEquals(attributesGit.get(0), "TestGitName");
+        Assert.assertEquals(attributesGit.get(1), "/test/path");
     }
 }
