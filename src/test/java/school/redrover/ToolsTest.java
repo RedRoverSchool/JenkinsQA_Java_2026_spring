@@ -22,7 +22,7 @@ public class ToolsTest extends BaseTest {
         Assert.assertTrue(isPathDisplayed);
     }
 
-    @Test(dependsOnMethods = "testSimpleMavenConfiguration")
+    @Test
     public void testGlobalMavenConfiguration() {
         boolean isGlobalPathDisplayed = new HomePage(getDriver())
                 .clickManageButton()
@@ -35,7 +35,7 @@ public class ToolsTest extends BaseTest {
         Assert.assertTrue(isGlobalPathDisplayed);
     }
 
-    @Test(dependsOnMethods = "testSimpleMavenConfiguration")
+    @Test
     public void testAddJDK() {
         boolean isEditButtonAppears = new HomePage(getDriver())
                 .clickManageButton()
@@ -52,7 +52,7 @@ public class ToolsTest extends BaseTest {
         Assert.assertTrue(isEditButtonAppears);
     }
 
-    @Test(dependsOnMethods = "testAddJDK")
+    @Test
     public void testEditExistingJDK() {
         List<String> attributesJDK = new HomePage(getDriver())
                 .clickManageButton()
@@ -69,7 +69,7 @@ public class ToolsTest extends BaseTest {
         Assert.assertEquals(attributesJDK.get(1), "/test/updatePath/toJDK");
     }
 
-    @Test(dependsOnMethods = "testEditExistingJDK")
+    @Test
     public void testDeleteJDK() {
         int jdksCount = new HomePage(getDriver())
                 .clickManageButton()
