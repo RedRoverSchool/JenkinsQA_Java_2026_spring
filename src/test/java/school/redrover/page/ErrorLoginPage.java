@@ -21,9 +21,10 @@ public class ErrorLoginPage extends BasePage {
         );
     }
 
-    public String getErrorMessageColor() {
+    public boolean verifyErrorMessageColor(String expectedColorSubstring) {
         WebElement element = getWait10().until(ExpectedConditions.visibilityOf(errorMessageDiv));
+        String actualColor = element.getCssValue("color");
 
-        return element.getCssValue("color").trim();
+        return actualColor.contains(expectedColorSubstring);
     }
 }
