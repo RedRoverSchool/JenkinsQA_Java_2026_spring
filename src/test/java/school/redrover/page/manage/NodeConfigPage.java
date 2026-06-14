@@ -6,10 +6,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import school.redrover.page.common.BasePage;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,8 +41,7 @@ public class NodeConfigPage extends BasePage {
                     usageSelect
             );
 
-            new WebDriverWait(getDriver(), Duration.ofSeconds(5))
-                    .until(ExpectedConditions.elementToBeClickable(usageSelect));
+            getWait5().until(ExpectedConditions.elementToBeClickable(usageSelect));
 
             new Select(usageSelect).selectByValue(usage);
 
