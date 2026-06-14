@@ -1,12 +1,10 @@
 package school.redrover;
 
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.FolderProjectPage;
-import school.redrover.page.project.config.FolderConfigPage;
 
 public class ViewWithinFolderTest extends BaseTest {
 
@@ -42,7 +40,6 @@ public class ViewWithinFolderTest extends BaseTest {
         Assert.assertEquals(actualPreviewText, VIEW_DESCRIPTION);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testPreviewAddDescription")
     public void testSaveViewDescription() {
        String actualDescriptionText = new HomePage(getDriver())
@@ -54,8 +51,7 @@ public class ViewWithinFolderTest extends BaseTest {
 
         Assert.assertEquals(actualDescriptionText, VIEW_DESCRIPTION);
     }
-  
-    @Ignore
+
     @Test(dependsOnMethods = "testSaveViewDescription")
     public void testCancelDescription() {
         String actualDescriptionTest = new HomePage(getDriver())
