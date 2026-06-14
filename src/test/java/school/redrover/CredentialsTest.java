@@ -3,8 +3,10 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.AddCredentialsPage;
 import school.redrover.page.HomePage;
 
+import java.time.format.DecimalStyle;
 import java.util.List;
 
 public class CredentialsTest extends BaseTest {
@@ -82,6 +84,23 @@ public class CredentialsTest extends BaseTest {
                 .typeID("test-Id")
                 .clickCreateButton()
                 .isCredentialVisible("test-Id");
+
+        Assert.assertTrue(isCredentialsCreated);
+    }
+
+    @Test
+    public void testAddSecretFile() {
+
+        long timestamp = System.currentTimeMillis();
+        id = "secretFile" + timestamp;
+
+                boolean isCredentialsCreated = new HomePage(getDriver())
+                .clickManageButton()
+                .clickCredentials()
+                .clickAddCredentialsButton()
+                .clickSecretFileButton()
+                .addSecretFile(id, "desc")
+                .clickCreateButton().isCredentialVisible(id);
 
         Assert.assertTrue(isCredentialsCreated);
     }
