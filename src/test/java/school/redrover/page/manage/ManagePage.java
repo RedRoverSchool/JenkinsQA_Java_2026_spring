@@ -16,6 +16,8 @@ public class ManagePage extends BasePage {
     @FindBy(xpath = "//a[@href='appearance']")
     private WebElement appearanceButton;
 
+    @FindBy(xpath = "//a[@href='prepareShutdown']")
+    private WebElement prepareShutdownButton;
 
     private static final By SEARCH_BAR = By.id("settings-search-bar");
     private static final By EMPTY_DROPDOWN = By.className("jenkins-search__results__no-results-label");
@@ -62,11 +64,20 @@ public class ManagePage extends BasePage {
         return new NodesPage(getDriver());
     }
 
+    public PrepareShutdownPage clickPrepareShutdown() {
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].scrollIntoView({block: 'center'});",prepareShutdownButton);
+        getWait10().until(ExpectedConditions.elementToBeClickable(prepareShutdownButton)).click();
+
+        return new PrepareShutdownPage(getDriver());
+    }
+
     public List<String> getManageItems() {
         List<String> actualItems = new ArrayList<>();
         for (WebElement manageitem : manageItems) {
             actualItems.add(manageitem.getText());
         }
+
         return actualItems;
     }
 
@@ -99,6 +110,7 @@ public class ManagePage extends BasePage {
                 return false;
             }
         });
+
         return new BasePage(getDriver());
     }
 }

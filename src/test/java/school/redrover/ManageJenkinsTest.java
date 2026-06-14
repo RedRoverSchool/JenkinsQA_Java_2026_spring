@@ -6,7 +6,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-
 import java.util.List;
 
 public class ManageJenkinsTest extends BaseTest {
@@ -110,5 +109,19 @@ public class ManageJenkinsTest extends BaseTest {
                 .clickAppearance()
                 .clickLightTheme()
                 .clickOK();
+    }
+
+    @Test
+    public void testPrepareForShutdown() {
+        String shutdownReason = "Server maintenance scheduled";
+
+        String redBannerText = new HomePage(getDriver())
+                .clickManageButton()
+                .clickPrepareShutdown()
+                .enterShutdownReason(shutdownReason)
+                .confirmShutdown()
+                .getRedBannerText();
+
+        Assert.assertEquals(redBannerText, shutdownReason);
     }
 }
