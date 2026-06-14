@@ -1,11 +1,11 @@
 package school.redrover;
 
-import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.manage.PrepareShutdownPage;
 import java.util.List;
 
 public class ManageJenkinsTest extends BaseTest {
@@ -123,5 +123,30 @@ public class ManageJenkinsTest extends BaseTest {
                 .getRedBannerText();
 
         Assert.assertEquals(redBannerText, shutdownReason);
+    }
+
+    @Test(dependsOnMethods = "testPrepareForShutdown")
+    public void testEditReasonForShutdown() {
+        String newShutdownReason = "New Reason";
+
+        String redBannerText = new HomePage(getDriver())
+                .clickManageButton()
+                .clickPrepareShutdown()
+                .enterShutdownReason(newShutdownReason)
+                .clickUpdate()
+                .getRedBannerText();
+
+        Assert.assertEquals(redBannerText, newShutdownReason);
+    }
+
+    @Test(dependsOnMethods = "testEditReasonForShutdown")
+    public void testCancelShutdown() {
+
+        PrepareShutdownPage prepareShutdownPage = new HomePage(getDriver())
+                .clickManageButton()
+                .clickPrepareShutdown()
+                .clickCancel();
+
+        Assert.assertFalse(prepareShutdownPage.isRedBannerDisplayed());
     }
 }
