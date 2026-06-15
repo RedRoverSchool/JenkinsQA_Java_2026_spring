@@ -267,10 +267,8 @@ public final class JenkinsUtils {
         login(driver, ProjectUtils.getUserName(), ProjectUtils.getPassword());
     }
 
-    public static SignInPage logout(WebDriver driver) {
+    public static void logout(WebDriver driver) {
         driver.get(ProjectUtils.getUrl() + "logout");
-
-        return new SignInPage(driver);
     }
 
     public static SignInPage logoutToReturnSignInPage(WebDriver driver) {
