@@ -19,7 +19,7 @@ public class PrepareShutdownPage extends BasePage {
     @FindBy(xpath = "//input[@name='parameter.shutdownReason']")
     private WebElement shutdownReasonField;
 
-    @FindBy(name = "Submit")
+    @FindBy(xpath = "//button[@value='Prepare for Shutdown']")
     private WebElement confirmShutdownButton;
 
     @FindBy(id = "shutdown-msg")
@@ -58,6 +58,14 @@ public class PrepareShutdownPage extends BasePage {
 
     public String getRedBannerText() {
         return getWait10().until(ExpectedConditions.visibilityOf(redBanner)).getText();
+    }
+
+    public boolean isPrepareButtonDisplayed() {
+        try {
+            return confirmShutdownButton.isDisplayed();
+        } catch (org.openqa.selenium.NoSuchElementException e) {
+            return false;
+        }
     }
 
     public boolean isRedBannerDisplayed() {

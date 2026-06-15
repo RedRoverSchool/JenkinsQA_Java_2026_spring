@@ -147,6 +147,6 @@ public class ManageJenkinsTest extends BaseTest {
                 .clickPrepareShutdown()
                 .clickCancel();
 
-        Assert.assertFalse(prepareShutdownPage.isRedBannerDisplayed());
+        Assert.assertTrue(prepareShutdownPage.isPrepareButtonDisplayed());
     }
 }
