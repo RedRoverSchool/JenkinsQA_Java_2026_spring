@@ -9,6 +9,10 @@ import school.redrover.page.common.BasePage;
 import school.redrover.page.manage.CredentialsPage;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class AddCredentialsPage extends BasePage {
@@ -145,14 +149,23 @@ public class AddCredentialsPage extends BasePage {
 
     public AddCredentialsPage addSecretFile(String id, String desc) {
 
-        File fakeFile = new File("test_file.txt");
-        String filePath = fakeFile.getAbsolutePath();
-        getWait5().until(ExpectedConditions.visibilityOf(fileInput));
-        fileInput.sendKeys(filePath);
-        IDField.sendKeys(id);
-        descriptionField.sendKeys(desc);
+        try {
+            Path tempFile = Files.createTempFile("jenkins_secret_", ".txt");
+            Files.writeString(tempFile, "Fake secret file content");
+            tempFile.toFile().deleteOnExit();
+
+            String absolutePath = tempFile.toAbsolutePath().toString();
+
+            WebElement fileInput = getWait5().until(
+                    ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[type='file']")));
+
+            fileInput.sendKeys(absolutePath);
+            IDField.sendKeys(id);
+            descriptionField.sendKeys(desc);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to create fake file on disk", e);
+        }
 
         return this;
     }
-
 }
