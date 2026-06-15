@@ -79,7 +79,7 @@ public class CredentialsTest extends BaseTest {
     public void addSecretTextCredentials() {
 
         long timestamp = System.currentTimeMillis();
-        id = "SecretText" + timestamp;
+        id = "test-" + timestamp;
 
         boolean isCredentialsCreated = new HomePage(getDriver())
                 .clickManageButton()
@@ -99,7 +99,7 @@ public class CredentialsTest extends BaseTest {
     public void testAddSecretFile() {
 
         long timestamp = System.currentTimeMillis();
-        id = "secretFile" + timestamp;
+        id = "test-" + timestamp;
 
                 boolean isCredentialsCreated = new HomePage(getDriver())
                 .clickManageButton()
