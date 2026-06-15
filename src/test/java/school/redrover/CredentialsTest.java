@@ -74,6 +74,10 @@ public class CredentialsTest extends BaseTest {
 
     @Test
     public void addSecretTextCredentials() {
+
+        long timestamp = System.currentTimeMillis();
+        id = "SecretText" + timestamp;
+
         boolean isCredentialsCreated = new HomePage(getDriver())
                 .clickManageButton()
                 .clickCredentials()
@@ -81,9 +85,9 @@ public class CredentialsTest extends BaseTest {
                 .clickSecretTextButton()
                 .clickNextButton()
                 .typeSecretText("my-secret")
-                .typeID("test-Id")
+                .typeID(id)
                 .clickCreateButton()
-                .isCredentialVisible("test-Id");
+                .isCredentialVisible(id);
 
         Assert.assertTrue(isCredentialsCreated);
     }
