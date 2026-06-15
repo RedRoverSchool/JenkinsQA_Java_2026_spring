@@ -1,28 +1,13 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.JenkinsUtils;
 import school.redrover.page.HomePage;
+import school.redrover.page.LoginPage;
 
 public class SignOutTest extends BaseTest {
-
-    private boolean isAlertPresent(WebDriver driver) {
-        try {
-            driver.switchTo().alert();
-            return true;
-        } catch (NoAlertPresentException e) {
-            return false;
-        }
-    }
 
     @Ignore
     @Test
@@ -36,123 +21,61 @@ public class SignOutTest extends BaseTest {
 
     @Ignore
     @Test
-    public void testSingOutIsImmediate() {
-        WebElement userButton = getDriver().findElement(By.id("root-action-UserAction"));
+    public void testSignOutIsImmediate() {
+        LoginPage loginPage = new HomePage(getDriver())
+                .openUserActionMenuAndLogout();
 
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(userButton).perform();
-
-        WebElement dropdownMenu = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']")));
-        dropdownMenu.findElement(By.xpath(".//a[@href='/logout']")).click();
-
-        Assert.assertFalse(isAlertPresent(getDriver()),
+        Assert.assertFalse(loginPage.isAlertPresent(),
                 "Не должно быть alert-окна подтверждения выхода. Выход должен быть мгновенным.");
 
-        getWait5().until(ExpectedConditions.urlContains("login"));
+        Assert.assertTrue(loginPage.isUrlContains("login"),
+                "После Sign out должен быть переход на страницу логина.");
     }
 
     @Ignore
-    @Test (dependsOnMethods = "testSingOutIsImmediate")
-    public void testJenkinsSingOutButton() {
-        String currentUrl = getDriver().getCurrentUrl();
-        String baseUrl = currentUrl.replaceFirst("(https?://[^/]+).*", "$1");
-        getDriver().get(baseUrl);
-        JenkinsUtils.login(getDriver());
+    @Test
+    public void testJenkinsSignOutButton() {
+        LoginPage loginPage = new HomePage(getDriver())
+                .openUserActionMenuAndLogout();
 
-        WebElement userButton = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
-
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(userButton).perform();
-
-        WebElement dropdownMenu = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']")));
-        dropdownMenu.findElement(By.xpath(".//a[@href='/logout']")).click();
-
-        WebElement buttonSingIn = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='submit']")));
-
-        Assert.assertEquals(buttonSingIn.getText(), "Sign in");
+        Assert.assertEquals(loginPage.getSignInButtonText(), "Sign in");
     }
 
     @Ignore
-    @Test (dependsOnMethods = "testSingOutIsImmediate")
-     public void testJenkinsSingOutButtonUserNameEmpty() {
-        String currentUrl = getDriver().getCurrentUrl();
-        String baseUrl = currentUrl.replaceFirst("(https?://[^/]+).*", "$1");
-        getDriver().get(baseUrl);
+    @Test
+    public void testJenkinsSignOutButtonUserNameEmpty() {
+        LoginPage loginPage = new HomePage(getDriver())
+                .openUserActionMenuAndLogout();
 
-        JenkinsUtils.login(getDriver());
-
-        WebElement userButton = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
-
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(userButton).perform();
-
-        WebElement dropdownMenu = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']")));
-        dropdownMenu.findElement(By.xpath(".//a[@href='/logout']")).click();
-
-        WebElement usernameField = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("j_username")));
-
-        String usernameValue = usernameField.getAttribute("value");
-        Assert.assertEquals(usernameValue, "",
-                "Поле 'Username' должно быть пустым, но содержит: '" + usernameValue + "'");
+        Assert.assertTrue(loginPage.isUsernameFieldEmpty(),
+                "Поле 'Username' должно быть пустым, но содержит: '" + loginPage.getUsernameValue() + "'");
     }
 
     @Ignore
-    @Test (dependsOnMethods = "testSingOutIsImmediate")
-    public void testJenkinsSingOutButtonPasswordEmpty() {
-        String currentUrl = getDriver().getCurrentUrl();
-        String baseUrl = currentUrl.replaceFirst("(https?://[^/]+).*", "$1");
-        getDriver().get(baseUrl);
+    @Test
+    public void testJenkinsSignOutButtonPasswordEmpty() {
+        LoginPage loginPage = new HomePage(getDriver())
+                .openUserActionMenuAndLogout();
 
-        JenkinsUtils.login(getDriver());
-
-        WebElement userButton = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
-
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(userButton).perform();
-
-        WebElement dropdownMenu = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']")));
-        dropdownMenu.findElement(By.xpath(".//a[@href='/logout']")).click();
-
-        WebElement passwordField = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("j_password")));
-
-        String passwordValue = passwordField.getAttribute("value");
-        Assert.assertEquals(passwordValue, "",
-                "Поле 'Password' должно быть пустым, но содержит: '" + passwordValue + "'");
+        Assert.assertTrue(loginPage.isPasswordFieldEmpty(),
+                "Поле 'Password' должно быть пустым, но содержит: '" + loginPage.getPasswordValue() + "'");
     }
 
     @Test
     public void testDropdownMenuClosesWhenMouseMovesAway() {
-        WebElement userButton = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
+        HomePage homePage = new HomePage(getDriver());
 
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(userButton).perform();
+        homePage.openUserActionMenu();
 
-        WebElement dropdownMenu = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//div[contains(@class,'jenkins-dropdown')]")));
+        Assert.assertTrue(homePage.isUserActionMenuDisplayed(),
+                "Меню не появилось после наведения");
 
-        Assert.assertTrue(dropdownMenu.isDisplayed(), "Меню не появилось после наведения");
+        homePage.closeUserActionMenuByClickingHeader();
 
-        WebElement header = getDriver().findElement(By.tagName("header"));
-        actions.moveToElement(header).click().perform();
+        Assert.assertTrue(homePage.isUserActionButtonDisplayed(),
+                "Пользователь разлогинился, кнопка не видна");
 
-        getWait5().until(ExpectedConditions.invisibilityOf(dropdownMenu));
-
-        WebElement userButtonStillVisible = getDriver().findElement(By.id("root-action-UserAction"));
-        Assert.assertTrue(userButtonStillVisible.isDisplayed(), "Пользователь разлогинился, кнопка не видна");
-
-        boolean isLoginFormPresent = getDriver().findElements(By.id("j_username")).isEmpty();
-        Assert.assertTrue(isLoginFormPresent, "Произошёл переход на страницу логина, сессия потеряна");
+        Assert.assertTrue(homePage.isLoginFormAbsent(),
+                "Произошёл переход на страницу логина, сессия потеряна");
     }
 }
