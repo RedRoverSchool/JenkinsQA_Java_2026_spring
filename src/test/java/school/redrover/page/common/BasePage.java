@@ -57,6 +57,8 @@ public class BasePage extends BaseModel {
     }
 
     public String getHeaderText() {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+
         return getDriver().findElement(By.cssSelector("div>#main-panel>div>div>h1")).getText();
     }
 }

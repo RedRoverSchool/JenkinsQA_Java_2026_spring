@@ -18,43 +18,52 @@ public class CreateUserPage extends BasePage {
     private final By emailField = By.name("email");
     private final By submitButton = By.name("Submit");
     private final By errorMessages = By.xpath("//div[@class = 'error jenkins-!-margin-bottom-2']");
+    private final By addUserButton = By.xpath("//div[@class='jenkins-app-bar__controls']");
 
     public CreateUserPage(WebDriver driver) {
         super(driver);
     }
 
-    public CreateUserPage setUsername(String username) {
-        getDriver().findElement(usernameField).sendKeys(username);
+    public CreateUserPage setUsername(String userName) {
+        getDriver().findElement(usernameField).sendKeys(userName);
+
         return this;
     }
 
-    public CreateUserPage setPassword(String password) {
-        getDriver().findElement(password1).sendKeys(password);
+    public CreateUserPage setUserPassword(String userPassword) {
+        getDriver().findElement(password1).sendKeys(userPassword);
+
         return this;
     }
 
-    public CreateUserPage setConfirmPassword(String password) {
-        getDriver().findElement(password2).sendKeys(password);
+    public CreateUserPage setConfirmUserPassword(String userPassword) {
+        getDriver().findElement(password2).sendKeys(userPassword);
+
         return this;
     }
 
-    public CreateUserPage setFullName(String fullName) {
-        getDriver().findElement(fullnameField).sendKeys(fullName);
+    public CreateUserPage setUserFullName(String userFullName) {
+        getDriver().findElement(fullnameField).sendKeys(userFullName);
+
         return this;
     }
 
-    public CreateUserPage setEmail(String email) {
-        getDriver().findElement(emailField).sendKeys(email);
+    public CreateUserPage setUserEmail(String userEmail) {
+        getDriver().findElement(emailField).sendKeys(userEmail);
+
         return this;
     }
 
     public UserManagementPage clickCreateUserButton() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(submitButton)).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(submitButton)).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(addUserButton));
+
         return new UserManagementPage(getDriver());
     }
 
     public CreateUserPage submitExpectingError() {
         getWait10().until(ExpectedConditions.elementToBeClickable(submitButton)).click();
+
         return this;
     }
 
@@ -63,5 +72,21 @@ public class CreateUserPage extends BasePage {
                 .stream()
                 .map(WebElement::getText)
                 .toList();
+    }
+
+    public UserManagementPage createUser(
+            String userName,
+            String userPassword,
+            String confirmUserPassword,
+            String userFullName,
+            String userEmail
+    ) {
+        setUsername(userName);
+        setUserPassword(userPassword);
+        setConfirmUserPassword(confirmUserPassword);
+        setUserFullName(userFullName);
+        setUserEmail(userEmail);
+
+        return clickCreateUserButton();
     }
 }
