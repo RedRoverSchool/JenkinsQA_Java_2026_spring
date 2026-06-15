@@ -9,7 +9,7 @@ import school.redrover.page.common.BaseProjectPage;
 import school.redrover.page.external.CommandPalettePage;
 import school.redrover.page.view.CreateGlobalViewPage;
 import school.redrover.page.view.GlobalViewPage;
-import school.redrover.page.project.user.UserPage;
+import school.redrover.page.user.UserPage;
 
 import java.util.List;
 import java.util.Random;
