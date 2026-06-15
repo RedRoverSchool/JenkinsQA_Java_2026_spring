@@ -3,6 +3,8 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
 
@@ -11,6 +13,9 @@ public class SignInPage extends BasePage {
     public SignInPage(WebDriver driver) {
         super(driver);
     }
+
+    @FindBy(xpath = "//div[@class='app-sign-in-register__error']")
+    private WebElement errorMessageDiv;
 
     public SignInPage enterLogin(String userLogin) {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
@@ -42,5 +47,15 @@ public class SignInPage extends BasePage {
 
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.className("app-sign-in-register__error"))).getText();
+    }
+
+    public boolean clickSignInButtonToVerifyErrorTextColor(String expectedColorSubstring) {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.name("Submit"))).click();
+
+        WebElement element = getWait10().until(ExpectedConditions.visibilityOf(errorMessageDiv));
+        String actualColor = element.getCssValue("color");
+
+        return actualColor.contains(expectedColorSubstring);
     }
 }
