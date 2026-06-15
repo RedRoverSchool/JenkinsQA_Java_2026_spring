@@ -104,7 +104,8 @@ public class CredentialsTest extends BaseTest {
                 .clickAddCredentialsButton()
                 .clickSecretFileButton()
                 .addSecretFile(id, "desc")
-                .clickCreateButton().isCredentialVisible(id);
+                .clickCreateButton()
+                .isCredentialVisible(id);
 
         Assert.assertTrue(isCredentialsCreated);
     }
