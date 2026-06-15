@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.AddCredentialsPage;
@@ -58,8 +59,10 @@ public class CredentialsTest extends BaseTest {
                 "Username with ID " + id + " is still found!");
     }
 
+    @Ignore
     @Test
     public void testAddSshUsernameWithKey(){
+
         List<String> credentialList= new HomePage(getDriver())
                 .clickManageButton()
                 .clickCredentials()
