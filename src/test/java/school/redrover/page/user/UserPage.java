@@ -1,4 +1,4 @@
-package school.redrover.page.project.user;
+package school.redrover.page.user;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

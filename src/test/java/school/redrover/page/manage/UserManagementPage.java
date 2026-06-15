@@ -4,11 +4,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.page.SignInPage;
-import school.redrover.page.project.user.CreateUserPage;
+import school.redrover.page.user.CreateUserPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.common.BasePage;
-import school.redrover.page.project.user.UserPage;
+import school.redrover.page.user.UserPage;
 
 import java.util.List;
 
