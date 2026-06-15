@@ -141,12 +141,11 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test(dependsOnMethods = "testEditReasonForShutdown")
     public void testCancelShutdown() {
-
         PrepareShutdownPage prepareShutdownPage = new HomePage(getDriver())
                 .clickManageButton()
                 .clickPrepareShutdown()
                 .clickCancel();
 
-        Assert.assertTrue(prepareShutdownPage.isPrepareButtonDisplayed());
+        Assert.assertFalse(prepareShutdownPage.isPrepareButtonDisplayed());
     }
 }
