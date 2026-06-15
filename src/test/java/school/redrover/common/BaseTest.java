@@ -1,5 +1,7 @@
 package school.redrover.common;
 
+import io.qameta.allure.Allure;
+import org.testng.annotations.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
@@ -13,7 +15,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-@Listeners({FilterForTests.class, OrderForTests.class})
+@Listeners({FilterForTests.class, OrderForTests.class, io.qameta.allure.testng.AllureTestNg.class})
 public abstract class BaseTest {
 
     private WebDriver driver;
