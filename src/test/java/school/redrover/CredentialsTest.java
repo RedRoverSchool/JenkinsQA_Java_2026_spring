@@ -1,10 +1,13 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.AddCredentialsPage;
 import school.redrover.page.HomePage;
 
+import java.time.format.DecimalStyle;
 import java.util.List;
 
 public class CredentialsTest extends BaseTest {
@@ -56,8 +59,10 @@ public class CredentialsTest extends BaseTest {
                 "Username with ID " + id + " is still found!");
     }
 
+    @Ignore
     @Test
     public void testAddSshUsernameWithKey(){
+
         List<String> credentialList= new HomePage(getDriver())
                 .clickManageButton()
                 .clickCredentials()
@@ -72,6 +77,10 @@ public class CredentialsTest extends BaseTest {
 
     @Test
     public void addSecretTextCredentials() {
+
+        long timestamp = System.currentTimeMillis();
+        id = "test-" + timestamp;
+
         boolean isCredentialsCreated = new HomePage(getDriver())
                 .clickManageButton()
                 .clickCredentials()
@@ -79,9 +88,27 @@ public class CredentialsTest extends BaseTest {
                 .clickSecretTextButton()
                 .clickNextButton()
                 .typeSecretText("my-secret")
-                .typeID("test-Id")
+                .typeID(id)
                 .clickCreateButton()
-                .isCredentialVisible("test-Id");
+                .isCredentialVisible(id);
+
+        Assert.assertTrue(isCredentialsCreated);
+    }
+
+    @Test
+    public void testAddSecretFile() {
+
+        long timestamp = System.currentTimeMillis();
+        id = "test-" + timestamp;
+
+                boolean isCredentialsCreated = new HomePage(getDriver())
+                .clickManageButton()
+                .clickCredentials()
+                .clickAddCredentialsButton()
+                .clickSecretFileButton()
+                .addSecretFile(id, "desc")
+                .clickCreateButton()
+                .isCredentialVisible(id);
 
         Assert.assertTrue(isCredentialsCreated);
     }

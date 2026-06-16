@@ -68,4 +68,24 @@ public class LoginPage extends BasePage {
     public boolean isSignInButtonEnabled() {
         return submitButton.isEnabled();
     }
+
+    public String getSignInButtonText() {
+        return getWait5().until(ExpectedConditions.visibilityOf(submitButton)).getText();
+    }
+
+    public String getUsernameValue() {
+        return getWait10().until(ExpectedConditions.visibilityOf(usernameField)).getAttribute("value");
+    }
+
+    public String getPasswordValue() {
+        return getWait10().until(ExpectedConditions.visibilityOf(passwordField)).getAttribute("value");
+    }
+
+    public boolean isUsernameFieldEmpty() {
+        return getUsernameValue().isEmpty();
+    }
+
+    public boolean isPasswordFieldEmpty() {
+        return getPasswordValue().isEmpty();
+    }
 }

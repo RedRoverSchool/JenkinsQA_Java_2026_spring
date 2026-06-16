@@ -24,9 +24,9 @@ public class UserTest extends BaseTest {
                 .clickUsersButton()
                 .clickCreateUserButton()
                 .setUsername(USER_NAME)
-                .setPassword(USER_PASSWORD)
-                .setConfirmPassword(USER_PASSWORD)
-                .setEmail(USER_EMAIL)
+                .setUserPassword(USER_PASSWORD)
+                .setConfirmUserPassword(USER_PASSWORD)
+                .setUserEmail(USER_EMAIL)
                 .clickCreateUserButton()
                 .getUsersList();
 
@@ -40,9 +40,9 @@ public class UserTest extends BaseTest {
                 .clickUsersButton()
                 .clickCreateUserButton()
                 .setUsername(USER_NAME)
-                .setPassword(USER_PASSWORD)
-                .setConfirmPassword(USER_PASSWORD)
-                .setEmail(USER_EMAIL)
+                .setUserPassword(USER_PASSWORD)
+                .setConfirmUserPassword(USER_PASSWORD)
+                .setUserEmail(USER_EMAIL)
                 .clickCreateUserButton();
 
         String actualUserName = new HomePage(getDriver())
@@ -121,9 +121,9 @@ public class UserTest extends BaseTest {
                 .clickUsersButton()
                 .clickCreateUserButton()
                 .setUsername(USER_NAME)
-                .setPassword(USER_PASSWORD)
-                .setConfirmPassword(USER_PASSWORD + "err")
-                .setEmail(USER_EMAIL)
+                .setUserPassword(USER_PASSWORD)
+                .setConfirmUserPassword(USER_PASSWORD + "err")
+                .setUserEmail(USER_EMAIL)
                 .submitExpectingError()
                 .getErrorMessageList();
 
@@ -139,9 +139,9 @@ public class UserTest extends BaseTest {
                 .clickUsersButton()
                 .clickCreateUserButton()
                 .setUsername(USER_NAME)
-                .setPassword(USER_PASSWORD + "1")
-                .setConfirmPassword(USER_PASSWORD + "1")
-                .setEmail(USER_EMAIL)
+                .setUserPassword(USER_PASSWORD + "1")
+                .setConfirmUserPassword(USER_PASSWORD + "1")
+                .setUserEmail(USER_EMAIL)
                 .submitExpectingError()
                 .getErrorMessageList();
 

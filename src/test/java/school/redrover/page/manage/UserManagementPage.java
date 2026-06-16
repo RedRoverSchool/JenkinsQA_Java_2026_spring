@@ -25,9 +25,8 @@ public class UserManagementPage extends BasePage {
     }
 
     public List<String> getUsersList() {
-        List<String> actualUsersNameList = getWait10().until(
-                        ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(
-                                "//a[@class = 'jenkins-table__link model-link inside']")))
+        List<String> actualUsersNameList = getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                By.xpath("//a[@class = 'jenkins-table__link model-link inside']")))
                 .stream()
                 .map(WebElement::getText)
                 .toList();
@@ -58,8 +57,8 @@ public class UserManagementPage extends BasePage {
     }
 
     public HomePage confirmDelete() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(
-                "//button[text()='Yes']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//button[text()='Yes']"))).click();
 
         getWait10().until(ExpectedConditions.textToBePresentInElementLocated(
                 By.tagName("h1"), "Welcome to Jenkins!"));

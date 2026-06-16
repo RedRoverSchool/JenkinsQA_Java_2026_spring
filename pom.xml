@@ -15,6 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <cucumber.version>7.32.0</cucumber.version>
+        <allure.version>2.34.0</allure.version>
     </properties>
 
     <dependencies>
@@ -57,5 +58,24 @@
             <version>6.0.0</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-testng</artifactId>
+            <version>2.34.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+    <build>
+        <plugins>
+             <plugin>
+                 <groupId>io.qameta.allure</groupId>
+                 <artifactId>allure-maven</artifactId>
+                 <version>3.0.1</version>
+                 <configuration>
+                     <reportVersion>2.34.0</reportVersion>
+                 </configuration>
+              </plugin>
+        </plugins>
+    </build>
 </project>
