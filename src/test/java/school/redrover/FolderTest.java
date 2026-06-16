@@ -1,5 +1,6 @@
 package school.redrover;
 
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -19,6 +20,10 @@ public class FolderTest extends BaseTest {
     private static final String DESCRIPTION_TEXT = "DescriptionForTest";
     private static final String HEALTH_METRICS_CHILD_NAME = "ChildName";
 
+    @Story("New Item > Folder")
+    @Owner("Nadia S")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify that folder is created")
     @Test
     public void testCreate() {
         List<String> joblist = new HomePage(getDriver())

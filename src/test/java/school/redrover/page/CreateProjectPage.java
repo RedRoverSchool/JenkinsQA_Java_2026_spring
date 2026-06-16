@@ -1,5 +1,6 @@
 package school.redrover.page;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -49,6 +50,7 @@ public class CreateProjectPage extends BasePage {
         super(driver);
     }
 
+    @Step("Enter an item name")
     public CreateProjectPage setProjectName(String name) {
         inputName.sendKeys(name);
 
@@ -99,6 +101,7 @@ public class CreateProjectPage extends BasePage {
         return new FreestyleProjectConfigPage(getDriver());
     }
 
+    @Step("Select Folder and click OK")
     public FolderConfigPage selectFolderProjectAndClickOk() {
         folderOption.click();
         okButton.click();
