@@ -19,9 +19,6 @@ public class PrepareShutdownPage extends BasePage {
     @FindBy(xpath = "//input[@name='parameter.shutdownReason']")
     private WebElement shutdownReasonField;
 
-    @FindBy(xpath = "//button[@value='Prepare for Shutdown']")
-    private WebElement confirmShutdownButton;
-
     @FindBy(xpath = "//button[@value='Cancel Shutdown']")
     private WebElement cancelButton;
 
@@ -35,7 +32,7 @@ public class PrepareShutdownPage extends BasePage {
     }
 
     public PrepareShutdownPage confirmShutdown() {
-        WebElement button = getWait10().until(ExpectedConditions.elementToBeClickable(confirmShutdownButton));
+        WebElement button = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@value='Prepare for Shutdown']")));
 
         ((JavascriptExecutor) getDriver()).executeScript(
                 "arguments[0].scrollIntoView(true); arguments[0].click();", button);
@@ -59,14 +56,9 @@ public class PrepareShutdownPage extends BasePage {
 
     public boolean isPrepareButtonDisplayed() {
         try {
-            return confirmShutdownButton.isDisplayed();
+            return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@value='Prepare for Shutdown']"))).isDisplayed();
         } catch (org.openqa.selenium.NoSuchElementException e) {
             return false;
         }
-    }
-
-    public boolean isRedBannerDisplayed() {
-        List<WebElement> banners = getDriver().findElements(By.id("shutdown-msg"));
-        return !banners.isEmpty() && banners.get(0).isDisplayed();
     }
 }
