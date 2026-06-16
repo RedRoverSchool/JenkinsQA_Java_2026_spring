@@ -1,5 +1,6 @@
 package school.redrover.page.common;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
@@ -38,6 +39,7 @@ public class BasePage extends BaseModel {
         return this.version;
     }
 
+    @Step("Go Home page")
     public HomePage goHomePage() {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("jenkins-head-icon"))).click();
         // waiting for the home page
