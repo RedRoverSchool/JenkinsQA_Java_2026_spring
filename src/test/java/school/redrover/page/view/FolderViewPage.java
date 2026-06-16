@@ -30,7 +30,7 @@ public class FolderViewPage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, '/configure') and .//span[normalize-space()='Edit View']]")
     private WebElement editViewButton;
-  
+
     @FindBy(id = "description-link")
     private WebElement editDescription;
 
@@ -48,23 +48,24 @@ public class FolderViewPage extends BasePage {
         return this.baseSideMenu;
     }
 
-    public FolderViewPage addDescription(String expectedDescription){
+    public FolderViewPage addDescription(String expectedDescription) {
         buttonDescription.click();
         getWait5().until(ExpectedConditions.visibilityOf(fieldDescription)).sendKeys(expectedDescription);
+
         return this;
     }
 
-    public String getTextPreview(){
+    public String getTextPreview() {
         linkPreview.click();
         return getWait10().until(ExpectedConditions.visibilityOf(areaPreview)).getText();
     }
 
-    public FolderViewPage clickSubmitButton(){
+    public FolderViewPage clickSubmitButton() {
         buttonSave.click();
         return this;
     }
 
-    public String getDescriptionText(){
+    public String getDescriptionText() {
         return getWait10().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(content))).getText();
     }
 
@@ -72,18 +73,18 @@ public class FolderViewPage extends BasePage {
         getWait5().until(ExpectedConditions.elementToBeClickable(editViewButton)).click();
         return new ViewMyConfigPage(getDriver());
     }
-      
+
     public FolderViewPage editDescription(String newDescriptionText) {
         editDescription.click();
 
         WebElement descriptionField = getWait5().until(ExpectedConditions.visibilityOf(fieldDescription));
-
         descriptionField.clear();
         descriptionField.sendKeys(newDescriptionText);
+
         return this;
     }
 
-    public FolderViewPage clickCancelButton(){
+    public FolderViewPage clickCancelButton() {
         buttonCancel.click();
         return this;
     }

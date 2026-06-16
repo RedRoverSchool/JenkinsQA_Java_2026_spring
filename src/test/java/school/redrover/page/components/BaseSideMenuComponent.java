@@ -37,6 +37,8 @@ public class BaseSideMenuComponent<T extends BasePage> extends BasePage {
 
     public T clickStatus() {
         statusButton.click();
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h2[contains(text(), 'Permalinks')]"), "Permalinks"));
+
         return parentPage;
     }
 
@@ -56,7 +58,7 @@ public class BaseSideMenuComponent<T extends BasePage> extends BasePage {
     }
 
     public <ConfigPage extends BaseConfigPage> ConfigPage clickConfigure(ConfigPage configPage) {
-        configureButton.click();
+        getWait5().until(ExpectedConditions.visibilityOf(configureButton)).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
 
         return configPage;

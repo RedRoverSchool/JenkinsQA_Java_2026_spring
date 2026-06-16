@@ -19,5 +19,4 @@ public class ConsolePage extends BasePage {
         getWait10().until(ExpectedConditions.textToBePresentInElement(textConsole, "Finished:"));
         return textConsole.getText();
     }
-
 }

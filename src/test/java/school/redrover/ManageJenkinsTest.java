@@ -1,29 +1,81 @@
 package school.redrover;
 
-import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-
+import school.redrover.page.manage.PrepareShutdownPage;
 import java.util.List;
 
 public class ManageJenkinsTest extends BaseTest {
 
-    private final List<String> expectedItems = List.of("System", "Tools", "Plugins", "Nodes", "Clouds",
-            "Appearance", "Security", "Credentials", "Credential Providers", "Users", "System Information",
-            "System Log", "Load Statistics", "About Jenkins", "Manage Old Data", "Reload Configuration from Disk",
-            "Jenkins CLI", "Script Console", "Prepare for Shutdown"
-    );
-
     @Test
-    public void testsPageItems() {
+    public void testsPageItemsDefault() {
+        List<String> expectedItems = List.of("System", "Tools", "Plugins", "Nodes", "Clouds",
+                "Appearance", "Security", "Credentials", "Credential Providers", "Users", "System Information",
+                "System Log", "Load Statistics", "About Jenkins", "Manage Old Data", "Reload Configuration from Disk",
+                "Jenkins CLI", "Script Console", "Prepare for Shutdown"
+        );
+
         List<String> actualItems = new HomePage(getDriver())
                 .clickManageButton()
                 .getManageItems();
 
         Assert.assertEquals(actualItems, expectedItems);
+    }
+
+    @Test(dependsOnMethods = "testsPageItemsDefault")
+    public void testPrepareForShutdown() {
+        String shutdownReason = "Server maintenance scheduled";
+
+        String redBannerText = new HomePage(getDriver())
+                .clickManageButton()
+                .clickPrepareShutdown()
+                .enterShutdownReason(shutdownReason)
+                .confirmShutdown()
+                .getRedBannerText();
+
+        Assert.assertEquals(redBannerText, shutdownReason);
+    }
+
+    @Test(dependsOnMethods = "testPrepareForShutdown")
+    public void testEditReasonForShutdown() {
+        String newShutdownReason = "New Reason";
+
+        String redBannerText = new HomePage(getDriver())
+                .clickManageButton()
+                .clickPrepareShutdown()
+                .enterShutdownReason(newShutdownReason)
+                .clickUpdate()
+                .getRedBannerText();
+
+        Assert.assertEquals(redBannerText, newShutdownReason);
+    }
+
+    @Test(dependsOnMethods = "testEditReasonForShutdown")
+    public void testsPageItemsWithPrepareForShutdown() {
+        List<String> expectedItems = List.of("System", "Tools", "Plugins", "Nodes", "Clouds",
+                "Appearance", "Security", "Credentials", "Credential Providers", "Users", "System Information",
+                "System Log", "Load Statistics", "About Jenkins", "Manage Old Data", "Reload Configuration from Disk",
+                "Jenkins CLI", "Script Console", "Update shutdown preparation"
+        );
+
+        List<String> actualItems = new HomePage(getDriver())
+                .clickManageButton()
+                .getManageItems();
+
+        Assert.assertEquals(actualItems, expectedItems);
+    }
+
+    @Test(dependsOnMethods = "testsPageItemsWithPrepareForShutdown")
+    public void testCancelShutdown() {
+        PrepareShutdownPage prepareShutdownPage = new HomePage(getDriver())
+                .clickManageButton()
+                .clickPrepareShutdown()
+                .clickCancel();
+
+        Assert.assertTrue(prepareShutdownPage.isPrepareButtonDisplayed());
     }
 
     @DataProvider

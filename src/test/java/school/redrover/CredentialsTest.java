@@ -1,9 +1,14 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.AddCredentialsPage;
 import school.redrover.page.HomePage;
+
+import java.time.format.DecimalStyle;
+import java.util.List;
 
 public class CredentialsTest extends BaseTest {
 
@@ -25,7 +30,7 @@ public class CredentialsTest extends BaseTest {
     public void testCreateUsernamePasswordCredential() {
 
         long timestamp = System.currentTimeMillis();
-        id = "test-id" + timestamp;
+        id = "id" + timestamp;
         String user = "user-" + timestamp;
         String pass = "pass-" + timestamp;
         String desc = "Test Description " + timestamp;
@@ -54,8 +59,28 @@ public class CredentialsTest extends BaseTest {
                 "Username with ID " + id + " is still found!");
     }
 
+    @Ignore
     @Test
-    public void testAddSecretTextCredentials() {
+    public void testAddSshUsernameWithKey(){
+
+        List<String> credentialList= new HomePage(getDriver())
+                .clickManageButton()
+                .clickCredentials()
+                .clickAddCredentialsButton()
+                .clickSSHCredentialsButton()
+                .setSSHCredentials("test-cred","SSH key for prod server","deploy",true,true," RSA/Ed25519 key","MyStr0ngP@ss")
+                .clickCreateButton()
+                .getCredentialList("test-cred");
+
+        Assert.assertEquals(credentialList.getFirst(), "test-cred");
+    }
+
+    @Test
+    public void addSecretTextCredentials() {
+
+        long timestamp = System.currentTimeMillis();
+        id = "test-" + timestamp;
+
         boolean isCredentialsCreated = new HomePage(getDriver())
                 .clickManageButton()
                 .clickCredentials()
@@ -63,9 +88,27 @@ public class CredentialsTest extends BaseTest {
                 .clickSecretTextButton()
                 .clickNextButton()
                 .typeSecretText("my-secret")
-                .typeID("test-id")
+                .typeID(id)
                 .clickCreateButton()
-                .isCredentialVisible("test-id");
+                .isCredentialVisible(id);
+
+        Assert.assertTrue(isCredentialsCreated);
+    }
+
+    @Test
+    public void testAddSecretFile() {
+
+        long timestamp = System.currentTimeMillis();
+        id = "test-" + timestamp;
+
+                boolean isCredentialsCreated = new HomePage(getDriver())
+                .clickManageButton()
+                .clickCredentials()
+                .clickAddCredentialsButton()
+                .clickSecretFileButton()
+                .addSecretFile(id, "desc")
+                .clickCreateButton()
+                .isCredentialVisible(id);
 
         Assert.assertTrue(isCredentialsCreated);
     }
