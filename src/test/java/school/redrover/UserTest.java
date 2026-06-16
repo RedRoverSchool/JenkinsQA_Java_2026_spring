@@ -5,7 +5,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-import school.redrover.page.project.user.UserPage;
+import school.redrover.page.user.UserPage;
 
 import java.util.List;
 

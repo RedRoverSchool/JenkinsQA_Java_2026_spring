@@ -22,9 +22,6 @@ public class PrepareShutdownPage extends BasePage {
     @FindBy(xpath = "//button[@value='Prepare for Shutdown']")
     private WebElement confirmShutdownButton;
 
-    @FindBy(id = "shutdown-msg")
-    private WebElement redBanner;
-
     @FindBy(xpath = "//button[@value='Cancel Shutdown']")
     private WebElement cancelButton;
 
@@ -57,7 +54,7 @@ public class PrepareShutdownPage extends BasePage {
     }
 
     public String getRedBannerText() {
-        return getWait10().until(ExpectedConditions.visibilityOf(redBanner)).getText();
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("shutdown-msg"))).getText();
     }
 
     public boolean isPrepareButtonDisplayed() {
