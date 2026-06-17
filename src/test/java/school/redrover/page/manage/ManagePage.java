@@ -3,6 +3,7 @@ package school.redrover.page.manage;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.page.plugin.PluginPage;
 import school.redrover.page.common.BasePage;
 
 import java.util.ArrayList;
@@ -15,6 +16,12 @@ public class ManagePage extends BasePage {
 
     @FindBy(xpath = "//a[@href='appearance']")
     private WebElement appearanceButton;
+
+    @FindBy(xpath = "//a[@href='configureTools']")
+    private WebElement toolsButton;
+
+    @FindBy(xpath = "//a[@href='pluginManager']")
+    private WebElement pluginsButton;
 
 
     private static final By SEARCH_BAR = By.id("settings-search-bar");
@@ -41,7 +48,7 @@ public class ManagePage extends BasePage {
     }
 
     public ToolsPage clickToolsButton() {
-        getDriver().findElement(By.xpath("//a[@href='configureTools']")).click();
+        toolsButton.click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//form[@name='config']")));
 
         return new ToolsPage(getDriver());
@@ -60,6 +67,12 @@ public class ManagePage extends BasePage {
     public NodesPage clickNodesButton() {
         getDriver().findElement(By.xpath("//a[contains(@href, 'computer')]")).click();
         return new NodesPage(getDriver());
+    }
+
+    public PluginPage clickPluginsButton() {
+        pluginsButton.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder='Search plugin updates']")));
+        return new PluginPage(getDriver());
     }
 
     public List<String> getManageItems() {
