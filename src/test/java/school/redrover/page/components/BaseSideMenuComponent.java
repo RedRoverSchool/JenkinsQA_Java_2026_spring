@@ -25,9 +25,6 @@ public class BaseSideMenuComponent<T extends BasePage> extends BasePage {
     @FindBy(xpath = "//div[@id='side-panel']//a[contains(@href, '/confirm-rename')]")
     private WebElement renameButton;
 
-    @FindBy(xpath = "//a[contains(@href, '/configure') and .//span[normalize-space()='Edit View']]")
-    private WebElement editViewButton;
-
     protected final T parentPage;
 
     public BaseSideMenuComponent(WebDriver driver, T parentPage) {
@@ -62,10 +59,5 @@ public class BaseSideMenuComponent<T extends BasePage> extends BasePage {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
 
         return configPage;
-    }
-
-    public ViewMyConfigPage clickEditView() {
-      getWait5().until(ExpectedConditions.elementToBeClickable(editViewButton)).click();
-      return new ViewMyConfigPage(getDriver());
     }
 }
