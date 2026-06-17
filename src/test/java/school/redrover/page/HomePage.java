@@ -1,5 +1,6 @@
 package school.redrover.page;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -61,11 +62,13 @@ public class HomePage extends BasePage {
         super(driver);
     }
 
+    @Step("Click New Item button")
     public CreateProjectPage clickItemNewJob() {
         getWait5().until(ExpectedConditions.elementToBeClickable(buttonNewJob)).click();
         return new CreateProjectPage(getDriver());
     }
 
+    @Step("Get list of projects on the main page")
     public List<String> getProjectList() {
         return projects.stream()
                 .map(WebElement::getText)

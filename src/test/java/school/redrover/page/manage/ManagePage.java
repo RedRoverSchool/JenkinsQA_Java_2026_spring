@@ -17,12 +17,11 @@ public class ManagePage extends BasePage {
     @FindBy(xpath = "//a[@href='appearance']")
     private WebElement appearanceButton;
 
-    @FindBy(xpath = "//a[@href='configureTools']")
-    private WebElement toolsButton;
+    @FindBy(xpath = "//a[@href='prepareShutdown']")
+    private WebElement prepareShutdownButton;
 
     @FindBy(xpath = "//a[@href='pluginManager']")
     private WebElement pluginsButton;
-
 
     private static final By SEARCH_BAR = By.id("settings-search-bar");
     private static final By EMPTY_DROPDOWN = By.className("jenkins-search__results__no-results-label");
@@ -48,7 +47,7 @@ public class ManagePage extends BasePage {
     }
 
     public ToolsPage clickToolsButton() {
-        toolsButton.click();
+        getDriver().findElement(By.xpath("//a[@href='configureTools']")).click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//form[@name='config']")));
 
         return new ToolsPage(getDriver());
@@ -69,6 +68,14 @@ public class ManagePage extends BasePage {
         return new NodesPage(getDriver());
     }
 
+    public PrepareShutdownPage clickPrepareShutdown() {
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].scrollIntoView({block: 'center'});",prepareShutdownButton);
+        getWait10().until(ExpectedConditions.elementToBeClickable(prepareShutdownButton)).click();
+
+        return new PrepareShutdownPage(getDriver());
+    }
+
     public PluginPage clickPluginsButton() {
         pluginsButton.click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder='Search plugin updates']")));
@@ -80,6 +87,7 @@ public class ManagePage extends BasePage {
         for (WebElement manageitem : manageItems) {
             actualItems.add(manageitem.getText());
         }
+
         return actualItems;
     }
 
@@ -112,6 +120,7 @@ public class ManagePage extends BasePage {
                 return false;
             }
         });
+
         return new BasePage(getDriver());
     }
 }
