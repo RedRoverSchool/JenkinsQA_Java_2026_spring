@@ -3,6 +3,7 @@ package school.redrover.page.manage;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.page.plugin.PluginPage;
 import school.redrover.page.common.BasePage;
 
 import java.util.ArrayList;
@@ -18,6 +19,9 @@ public class ManagePage extends BasePage {
 
     @FindBy(xpath = "//a[@href='prepareShutdown']")
     private WebElement prepareShutdownButton;
+
+    @FindBy(xpath = "//a[@href='pluginManager']")
+    private WebElement pluginsButton;
 
     private static final By SEARCH_BAR = By.id("settings-search-bar");
     private static final By EMPTY_DROPDOWN = By.className("jenkins-search__results__no-results-label");
@@ -70,6 +74,12 @@ public class ManagePage extends BasePage {
         getWait10().until(ExpectedConditions.elementToBeClickable(prepareShutdownButton)).click();
 
         return new PrepareShutdownPage(getDriver());
+    }
+
+    public PluginPage clickPluginsButton() {
+        pluginsButton.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder='Search plugin updates']")));
+        return new PluginPage(getDriver());
     }
 
     public List<String> getManageItems() {
