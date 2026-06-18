@@ -383,4 +383,17 @@ public class FreestyleProjectTest extends BaseTest {
         softAssert.assertEquals(freestyleProjectPage.getRepositoryUrl(), REPOSITORY_URL, "Repository url is not correct");
         softAssert.assertAll();
     }
+
+    @Test
+    public void testSkipConfigShowsItemOnDashboard() {
+        List<String> actualProjectList = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreestyleProjectAndClickOk()
+                .goHomePage()
+                .getProjectList();
+
+        Assert.assertTrue(actualProjectList.contains(PROJECT_NAME),
+                "Created item is not displayed on the dashboard");
+    }
 }
