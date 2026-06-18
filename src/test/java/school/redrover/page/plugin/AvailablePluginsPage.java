@@ -29,7 +29,7 @@ public class AvailablePluginsPage extends PluginPage {
         return this;
     }
 
-    public AvailablePluginsPage selectSearchResalt(String pluginName) {
+    public AvailablePluginsPage selectSearchResult(String pluginName) {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//tr[.//a[@class='jenkins-table__link' and contains(text(), '" + pluginName + "')]]//label"))).click();
         return this;
     }
