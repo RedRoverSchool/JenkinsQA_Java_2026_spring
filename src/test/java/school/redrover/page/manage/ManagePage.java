@@ -17,6 +17,9 @@ public class ManagePage extends BasePage {
     @FindBy(xpath = "//a[@href='appearance']")
     private WebElement appearanceButton;
 
+    @FindBy(xpath = "//a[@href='credentials']")
+    private WebElement credentialsButton;
+
     @FindBy(xpath = "//a[@href='prepareShutdown']")
     private WebElement prepareShutdownButton;
 
@@ -71,7 +74,7 @@ public class ManagePage extends BasePage {
     }
 
     public CredentialsPage clickCredentials() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='credentials']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(credentialsButton)).click();
         return new CredentialsPage(getDriver());
     }
 
