@@ -17,9 +17,20 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     By deleteWorkspaceBeforeBuildStartsCheckbox = By.name("hudson-plugins-ws_cleanup-PreBuildCleanup");
     By executeWindowsBatchCommandMenuItem = By.xpath("//button[contains(., 'Execute Windows batch command')]");
     By projectName = By.cssSelector("#breadcrumbs a");
+    By daysToKeepArtifactsInput = By.name("_.artifactDaysToKeepStr");
+    By maxOfBuildToKeepWithArtifactsInput = By.name("_.artifactNumToKeepStr");
+    By discardOldBuildsCheckbox = By.xpath("//label[text()='Discard old builds']");
 
-    @FindBy(id = "description-content")
-    private WebElement descriptionText;
+    @FindBy(name = "_.daysToKeepStr")
+    private WebElement daysToKeepBuildsInput;
+
+    @FindBy(name = "_.numToKeepStr")
+    private WebElement maxOfBuildToKeepInput;
+
+    @FindBy(xpath = "//label[normalize-space()='Discard old builds']\n" +
+            "    /ancestor::div[contains(@class,'optionalBlock')]\n" +
+            "    //button[normalize-space()='Advanced']")
+    private WebElement advancedButton;
 
     public FreestyleProjectConfigPage(WebDriver driver) {
         super(driver);
@@ -127,6 +138,10 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
 
     public boolean isDeleteWorkspaceBeforeBuildStartsCheckboxChecked() {
         return isCheckBoxChecked(deleteWorkspaceBeforeBuildStartsCheckbox);
+    }
+
+    public boolean idDiscardOldBuildsCheckboxChecked() {
+        return isCheckBoxChecked(discardOldBuildsCheckbox);
     }
 
 
@@ -268,5 +283,65 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     public boolean isCurrentUrlCorrect(String newItemName) {
         return Objects.requireNonNull(getDriver().getCurrentUrl())
                 .contains("/job/" + newItemName + "/configure");
+    }
+
+    public FreestyleProjectConfigPage clickDiscardOldBuildsCheckbox() {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//label[text()='Discard old builds']"))).click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigPage enterMessageToDaysToKeepBuildsInput(String num) {
+        getWait10().until(ExpectedConditions.visibilityOf(daysToKeepBuildsInput)).click();
+        daysToKeepBuildsInput.sendKeys(num);
+
+        return this;
+    }
+
+    public String getDaysToKeepBuildsValue() {
+        return getDriver().findElement(By.name("_.daysToKeepStr")).getText();
+    }
+
+    public FreestyleProjectConfigPage enterMessageToMaxOfBuildToKeepInput(String num) {
+        getWait10().until(ExpectedConditions.visibilityOf(maxOfBuildToKeepInput)).click();
+        maxOfBuildToKeepInput.sendKeys(num);
+
+        return this;
+    }
+
+    public String getMaxOfBuildToKeepValue() {
+        return getDriver().findElement(By.name("_.numToKeepStr")).getText();
+    }
+
+    public FreestyleProjectConfigPage clickAdvancedAccordion() throws InterruptedException {
+        getWait10().until(ExpectedConditions.visibilityOf(advancedButton)).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(daysToKeepArtifactsInput));
+
+        return this;
+    }
+
+    public FreestyleProjectConfigPage enterMessagesToDaysToKeepArtifacts(String num) {
+        WebElement input = getWait10().until(ExpectedConditions.elementToBeClickable(daysToKeepArtifactsInput));
+        input.clear();
+        input.sendKeys(num);
+
+        return this;
+    }
+
+    public String getDaysToKeepArtifactsValue() {
+        return getDriver().findElement(By.name("_.artifactDaysToKeepStr")).getText();
+    }
+
+    public FreestyleProjectConfigPage enterMessageToMaxOfBuildsToKeepWithArtifacts(String num) {
+        WebElement input = getWait10().until(ExpectedConditions.elementToBeClickable(maxOfBuildToKeepWithArtifactsInput));
+        input.clear();
+        input.sendKeys(num);
+
+        return this;
+    }
+
+    public String getMaxOfBuildsToKeepWithArtifactsValue() {
+        return getDriver().findElement(By.name("_.artifactNumToKeepStr")).getText();
     }
 }

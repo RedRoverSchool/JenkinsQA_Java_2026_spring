@@ -396,4 +396,29 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(actualProjectList.contains(PROJECT_NAME),
                 "Created item is not displayed on the dashboard");
     }
+
+    @Test
+    public void testDiscardOldBuildsCheckboxConfigurationSaved() throws InterruptedException {
+        SoftAssert softAssert = new SoftAssert();
+        FreestyleProjectConfigPage freestyleProjectConfigPage = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreestyleProjectAndClickOk()
+                .clickDiscardOldBuildsCheckbox()
+                .enterMessageToDaysToKeepBuildsInput("30")
+                .enterMessageToMaxOfBuildToKeepInput("10")
+                .clickAdvancedAccordion()
+                .enterMessagesToDaysToKeepArtifacts("13")
+                .enterMessageToMaxOfBuildsToKeepWithArtifacts("100")
+                .clickSaveButton()
+                .getSideMenu()
+                .clickConfigure(new FreestyleProjectConfigPage(getDriver()))
+                .clickAdvancedAccordion();
+
+        softAssert.assertTrue(freestyleProjectConfigPage.idDiscardOldBuildsCheckboxChecked());
+        softAssert.assertEquals(freestyleProjectConfigPage.getDaysToKeepBuildsValue(), 30);
+        softAssert.assertEquals(freestyleProjectConfigPage.getMaxOfBuildToKeepValue(), 10);
+        softAssert.assertEquals(freestyleProjectConfigPage.getDaysToKeepArtifactsValue(), 13);
+        softAssert.assertEquals(freestyleProjectConfigPage.getMaxOfBuildsToKeepWithArtifactsValue(), 100);
+    }
 }
