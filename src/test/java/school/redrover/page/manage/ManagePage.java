@@ -23,6 +23,18 @@ public class ManagePage extends BasePage {
     @FindBy(xpath = "//a[@href='pluginManager']")
     private WebElement pluginsButton;
 
+    @FindBy(xpath = "//a[@href='configureTools']")
+    private WebElement toolsButton;
+
+    @FindBy(xpath = "//a[contains(@href, 'computer')]")
+    private WebElement nodesButton;
+
+    @FindBy(xpath = "//a[@href='securityRealm/']")
+    private WebElement usersButton;
+
+    @FindBy(id = "settings-search-bar")
+    private WebElement inputSettingsSearch;
+
     private static final By SEARCH_BAR = By.id("settings-search-bar");
     private static final By EMPTY_DROPDOWN = By.className("jenkins-search__results__no-results-label");
     private static final By HEADER = By.xpath("//h1");
@@ -47,14 +59,14 @@ public class ManagePage extends BasePage {
     }
 
     public ToolsPage clickToolsButton() {
-        getDriver().findElement(By.xpath("//a[@href='configureTools']")).click();
+        toolsButton.click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//form[@name='config']")));
 
         return new ToolsPage(getDriver());
     }
 
     public UserManagementPage clickUsersButton() {
-        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+        usersButton.click();
         return new UserManagementPage(getDriver());
     }
 
@@ -64,7 +76,7 @@ public class ManagePage extends BasePage {
     }
 
     public NodesPage clickNodesButton() {
-        getDriver().findElement(By.xpath("//a[contains(@href, 'computer')]")).click();
+        nodesButton.click();
         return new NodesPage(getDriver());
     }
 
@@ -92,7 +104,7 @@ public class ManagePage extends BasePage {
     }
 
     public ManagePage typeSearchQuery(String text) {
-        getDriver().findElement(By.id("settings-search-bar")).sendKeys(text);
+        inputSettingsSearch.sendKeys(text);
 
         return this;
     }
