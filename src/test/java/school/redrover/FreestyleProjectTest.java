@@ -385,6 +385,19 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    public void testSkipConfigShowsItemOnDashboard() {
+        List<String> actualProjectList = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreestyleProjectAndClickOk()
+                .goHomePage()
+                .getProjectList();
+
+        Assert.assertTrue(actualProjectList.contains(PROJECT_NAME),
+                "Created item is not displayed on the dashboard");
+    }
+
+    @Test
     public void testDiscardOldBuildsCheckboxConfigurationSaved() throws InterruptedException {
         SoftAssert softAssert = new SoftAssert();
         FreestyleProjectConfigPage freestyleProjectConfigPage = new HomePage(getDriver())
