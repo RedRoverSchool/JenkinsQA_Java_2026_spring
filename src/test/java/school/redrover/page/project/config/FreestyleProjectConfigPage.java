@@ -293,7 +293,9 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     }
 
     public FreestyleProjectConfigPage enterMessageToDaysToKeepBuildsInput(String num) {
-        getWait10().until(ExpectedConditions.visibilityOf(daysToKeepBuildsInput)).click();
+        WebElement element = getWait10().until(ExpectedConditions.visibilityOf(daysToKeepBuildsInput));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
+        getWait10().until(ExpectedConditions.elementToBeClickable(element)).click();
         daysToKeepBuildsInput.sendKeys(num);
 
         return this;
@@ -314,8 +316,10 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         return getDriver().findElement(By.name("_.numToKeepStr")).getText();
     }
 
-    public FreestyleProjectConfigPage clickAdvancedAccordion() throws InterruptedException {
-        getWait10().until(ExpectedConditions.visibilityOf(advancedButton)).click();
+    public FreestyleProjectConfigPage clickAdvancedAccordion()  {
+        WebElement element = getWait10().until(ExpectedConditions.visibilityOf(advancedButton));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
+        getWait10().until(ExpectedConditions.elementToBeClickable(element)).click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(daysToKeepArtifactsInput));
 
         return this;
