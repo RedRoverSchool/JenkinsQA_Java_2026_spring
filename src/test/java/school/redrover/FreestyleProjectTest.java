@@ -15,8 +15,8 @@ import java.util.List;
 
 public class FreestyleProjectTest extends BaseTest {
 
-    private final static String PROJECT_NAME = "FreestyleProject";
-    private final static String NO_EXISTING_PROJECT = "My FreestyleProject Test";
+    private static final String PROJECT_NAME = "FreestyleProject";
+    private static final String NO_EXISTING_PROJECT = "My FreestyleProject Test";
     private static final String REPOSITORY_URL = "https://github.com/";
     private static final String BRANCH_NAME = "*/main";
     private static final String DESCRIPTION_TEXT = "My test description";

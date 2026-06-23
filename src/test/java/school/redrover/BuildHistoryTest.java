@@ -10,7 +10,7 @@ import java.util.List;
 
 public class BuildHistoryTest extends BaseTest {
 
-    private final static String PROJECT_NAME = "NewFreestyleProject";
+    private static final String PROJECT_NAME = "NewFreestyleProject";
 
     @Ignore
     @Test

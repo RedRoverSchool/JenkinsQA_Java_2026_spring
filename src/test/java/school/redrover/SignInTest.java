@@ -8,14 +8,14 @@ import school.redrover.page.HomePage;
 
 public class SignInTest extends BaseTest {
 
-    final private String USER_LOGIN = "Berendey";
-    final private String USER_PASSWORD = "Beren123";
-    final private String CONFIRM_PASSWORD = "Beren123";
-    final private String USER_FULL_NAME = "Berendey";
-    final private String USER_EMAIL = "berendey@kingdom.pz";
-    final private String USER_WRONG_PASSWORD = "AbraCadabra";
-    final private String USER_WRONG_USERNAME = "MyTestName";
-    final private String EXPECTED_COLOR = "oklch(0.6 0.2671 30)";
+    private static final String USER_LOGIN = "Berendey";
+    private static final String USER_PASSWORD = "Beren123";
+    private static final String CONFIRM_PASSWORD = "Beren123";
+    private static final String USER_FULL_NAME = "Berendey";
+    private static final String USER_EMAIL = "berendey@kingdom.pz";
+    private static final String USER_WRONG_PASSWORD = "AbraCadabra";
+    private static final String USER_WRONG_USERNAME = "MyTestName";
+    private static final String EXPECTED_COLOR = "oklch(0.6 0.2671 30)";
 
     @Test
     public void testLoginValidData() {
