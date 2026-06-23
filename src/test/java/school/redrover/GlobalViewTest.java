@@ -9,12 +9,12 @@ import school.redrover.page.view.GlobalViewPage;
 
 public class GlobalViewTest extends BaseTest {
 
-    private final static String DESCRIPTION_INPUT = "Test";
-    private final static String UPDATED_DESC_MESSAGE = "Updated desc message";
-    private final static String ADD_DESCRIPTION_BUTTON_TEXT = "Add description";
-    private final static String PIPELINE_NAME = "New pipeline";
-    private final static String VIEW_NAME = "New View";
-    private final static String UPDATED_VIEW_NAME = "Updated My view";
+    private static final String DESCRIPTION_INPUT = "Test";
+    private static final String UPDATED_DESC_MESSAGE = "Updated desc message";
+    private static final String ADD_DESCRIPTION_BUTTON_TEXT = "Add description";
+    private static final String PIPELINE_NAME = "New pipeline";
+    private static final String VIEW_NAME = "New View";
+    private static final String UPDATED_VIEW_NAME = "Updated My view";
 
     @Test
     public void testAddViewDescription() {

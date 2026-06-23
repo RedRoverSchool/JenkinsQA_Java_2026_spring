@@ -14,9 +14,9 @@ import java.util.List;
 
 public class BreadcrumbTest extends BaseTest {
 
-    public static final String FOLDER_PARENT = "FolderParent";
-    public static final String FOLDER_CHILD = "FolderChild";
-    public static final String FREESTYLE_NESTED = "FreestyleNested";
+    private static final String FOLDER_PARENT = "FolderParent";
+    private static final String FOLDER_CHILD = "FolderChild";
+    private static final String FREESTYLE_NESTED = "FreestyleNested";
 
     @Test
     public void testNavigateToParentFolder() {

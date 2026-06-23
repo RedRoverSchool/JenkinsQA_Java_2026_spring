@@ -12,9 +12,9 @@ import java.util.List;
 @Ignore
 public class UserTest extends BaseTest {
 
-    private final static String USER_NAME = "testUser";
-    private final static String USER_PASSWORD = "testPassword";
-    private final static String USER_EMAIL = "testUser@example.com";
+    private static final String USER_NAME = "testUser";
+    private static final String USER_PASSWORD = "testPassword";
+    private static final String USER_EMAIL = "testUser@example.com";
 
     @Test
     public void testCreateUser() {
