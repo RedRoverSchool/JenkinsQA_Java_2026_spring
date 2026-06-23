@@ -155,6 +155,7 @@ public class HomePage extends BasePage {
                 .map(WebElement::getText).toList();
     }
 
+    @Step ("Open Drop-down menu for selected project")
     public HomePage openProjectDropdownMenu(String projectName) {
         WebElement row = getDriver().findElement(By.id("job_" + projectName));
         new Actions(getDriver()).moveToElement(row).perform();
@@ -167,6 +168,7 @@ public class HomePage extends BasePage {
         return this;
     }
 
+    @Step ("Click Rename option in Drop-down menu")
     public RenameProjectPage clickRenameInDropdown() {
         getWait5().until(ExpectedConditions.elementToBeClickable(elementRename)).click();
         return new RenameProjectPage(getDriver());

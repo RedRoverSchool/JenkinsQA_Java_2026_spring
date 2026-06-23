@@ -3,6 +3,7 @@ package school.redrover.page.manage;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.page.plugin.PluginPage;
 import school.redrover.page.common.BasePage;
 
 import java.util.ArrayList;
@@ -16,8 +17,26 @@ public class ManagePage extends BasePage {
     @FindBy(xpath = "//a[@href='appearance']")
     private WebElement appearanceButton;
 
+    @FindBy(xpath = "//a[@href='credentials']")
+    private WebElement credentialsButton;
+
     @FindBy(xpath = "//a[@href='prepareShutdown']")
     private WebElement prepareShutdownButton;
+
+    @FindBy(xpath = "//a[@href='pluginManager']")
+    private WebElement pluginsButton;
+
+    @FindBy(xpath = "//a[@href='configureTools']")
+    private WebElement toolsButton;
+
+    @FindBy(xpath = "//a[contains(@href, 'computer')]")
+    private WebElement nodesButton;
+
+    @FindBy(xpath = "//a[@href='securityRealm/']")
+    private WebElement usersButton;
+
+    @FindBy(id = "settings-search-bar")
+    private WebElement inputSettingsSearch;
 
     private static final By SEARCH_BAR = By.id("settings-search-bar");
     private static final By EMPTY_DROPDOWN = By.className("jenkins-search__results__no-results-label");
@@ -43,24 +62,24 @@ public class ManagePage extends BasePage {
     }
 
     public ToolsPage clickToolsButton() {
-        getDriver().findElement(By.xpath("//a[@href='configureTools']")).click();
+        toolsButton.click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//form[@name='config']")));
 
         return new ToolsPage(getDriver());
     }
 
     public UserManagementPage clickUsersButton() {
-        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+        usersButton.click();
         return new UserManagementPage(getDriver());
     }
 
     public CredentialsPage clickCredentials() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='credentials']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(credentialsButton)).click();
         return new CredentialsPage(getDriver());
     }
 
     public NodesPage clickNodesButton() {
-        getDriver().findElement(By.xpath("//a[contains(@href, 'computer')]")).click();
+        nodesButton.click();
         return new NodesPage(getDriver());
     }
 
@@ -70,6 +89,12 @@ public class ManagePage extends BasePage {
         getWait10().until(ExpectedConditions.elementToBeClickable(prepareShutdownButton)).click();
 
         return new PrepareShutdownPage(getDriver());
+    }
+
+    public PluginPage clickPluginsButton() {
+        pluginsButton.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder='Search plugin updates']")));
+        return new PluginPage(getDriver());
     }
 
     public List<String> getManageItems() {
@@ -82,7 +107,7 @@ public class ManagePage extends BasePage {
     }
 
     public ManagePage typeSearchQuery(String text) {
-        getDriver().findElement(By.id("settings-search-bar")).sendKeys(text);
+        inputSettingsSearch.sendKeys(text);
 
         return this;
     }

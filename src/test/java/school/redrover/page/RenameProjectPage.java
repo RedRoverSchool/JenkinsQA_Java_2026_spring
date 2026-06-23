@@ -1,5 +1,6 @@
 package school.redrover.page;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,6 +16,7 @@ public class RenameProjectPage extends BasePage {
         super(driver);
     }
 
+    @Step("Set new name for the project")
     public RenameProjectPage setNewProjectName(String projectName){
         WebElement nameField = getDriver().findElement(NEW_NAME_INPUT);
         nameField.clear();
