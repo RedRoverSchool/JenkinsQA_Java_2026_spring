@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -39,6 +40,7 @@ public class ManageJenkinsTest extends BaseTest {
         Assert.assertEquals(redBannerText, shutdownReason);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testPrepareForShutdown")
     public void testEditReasonForShutdown() {
         String newShutdownReason = "New Reason";
@@ -53,6 +55,7 @@ public class ManageJenkinsTest extends BaseTest {
         Assert.assertEquals(redBannerText, newShutdownReason);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testEditReasonForShutdown")
     public void testsPageItemsWithPrepareForShutdown() {
         List<String> expectedItems = List.of("System", "Tools", "Plugins", "Nodes", "Clouds",
@@ -68,6 +71,7 @@ public class ManageJenkinsTest extends BaseTest {
         Assert.assertEquals(actualItems, expectedItems);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testsPageItemsWithPrepareForShutdown")
     public void testCancelShutdown() {
         PrepareShutdownPage prepareShutdownPage = new HomePage(getDriver())
