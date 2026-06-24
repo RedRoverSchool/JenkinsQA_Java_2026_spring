@@ -19,6 +19,15 @@ public class PipelineProjectConfigPage extends BaseConfigPage<PipelineProjectCon
     @FindBy(id = "notification-bar")
     private WebElement notification;
 
+    @FindBy(xpath = "//label[normalize-space(.)='Discard old builds']")
+    private WebElement discardOldBuildsLabel;
+
+    @FindBy(xpath = "//label[normalize-space(.)='Discard old builds']" + "/preceding-sibling::input[@type='checkbox']")
+    private WebElement discardOldBuildsCheckbox;
+
+    @FindBy(name = "_.numToKeepStr")
+    private WebElement maxNumberOfBuilds;
+
     public PipelineProjectConfigPage(WebDriver driver) {
         super(driver);
     }
@@ -44,5 +53,27 @@ public class PipelineProjectConfigPage extends BaseConfigPage<PipelineProjectCon
 
     public String getSaveText() {
         return getWait5().until(ExpectedConditions.visibilityOf(notification)).getText();
+    }
+
+    public PipelineProjectConfigPage enableDiscardOldBuilds() {
+        discardOldBuildsLabel.click();
+
+        getWait5().until(ExpectedConditions.visibilityOf(maxNumberOfBuilds));
+
+        return this;
+    }
+
+    public PipelineProjectConfigPage setMaxNumberOfBuilds(int numberOfBuilds) {
+        maxNumberOfBuilds.sendKeys(String.valueOf(numberOfBuilds));
+
+        return this;
+    }
+
+    public boolean isDiscardOldBuildsSelected() {
+        return getWait5().until(ExpectedConditions.visibilityOf(discardOldBuildsCheckbox)).isSelected();
+    }
+
+    public String getMaxNumberOfBuilds() {
+        return getWait5().until(ExpectedConditions.visibilityOf(maxNumberOfBuilds)).getAttribute("value");
     }
 }
