@@ -20,8 +20,6 @@ public class FolderTest extends BaseTest {
     private static final String DESCRIPTION_TEXT = "DescriptionForTest";
     private static final String HEALTH_METRICS_CHILD_NAME = "ChildName";
 
-    @Story("New Item > Folder")
-    @Owner("Nadia S")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify that folder is created")
     @Test
@@ -37,6 +35,8 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(joblist.getFirst(), FOLDER_NAME);
     }
 
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify that we can rename folder")
     @Test(dependsOnMethods = "testCreate")
     public void testRename() {
         List<String> jobnewlist = new HomePage(getDriver())
@@ -52,6 +52,8 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(jobnewlist.getFirst(), FOLDER_NEW_NAME);
     }
 
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify that we can't create folder with the same name")
     @Test(dependsOnMethods = "testRename")
     public void testCreateWithSameName() {
        String errorText = new HomePage(getDriver())
@@ -63,6 +65,8 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(errorText, "» A job already exists with the name " + "‘" + FOLDER_NEW_NAME + "’");
     }
 
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify that we can add description to the existing folder")
     @Test(dependsOnMethods = "testCreateWithSameName")
     public void testAddDescription() {
         String descriptionText = new HomePage(getDriver())
@@ -75,6 +79,8 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(descriptionText, DESCRIPTION_TEXT);
     }
 
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify that we can add metric and choose the filter")
     @Test(dependsOnMethods = "testAddDescription")
     public void testHealthMetrics() {
         String actualText = new HomePage(getDriver())
@@ -93,6 +99,8 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualText, HEALTH_METRICS_CHILD_NAME);
     }
 
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify that we can create nested folder under existing folder")
     @Test(dependsOnMethods = "testHealthMetrics")
     public void testCreateNestedFolderTest() {
         String headerText = new HomePage(getDriver())
@@ -107,7 +115,8 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(headerText, NESTED_FOLDER);
     }
 
-
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify that we can delete existing folder")
     @Test(dependsOnMethods = "testCreateNestedFolderTest")
     public void testDelete() {
         boolean dashboardEmpty = new HomePage(getDriver())

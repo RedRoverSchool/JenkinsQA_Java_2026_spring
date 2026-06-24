@@ -155,12 +155,5 @@ public class ManageJenkinsTest extends BaseTest {
                 .getThemeAttribute();
 
         Assert.assertEquals(theme, "dark");
-
-        //Restoring Light theme for subsequent tests
-        new HomePage(getDriver())
-                .clickManageButton()
-                .clickAppearance()
-                .clickLightTheme()
-                .clickOK();
     }
 }

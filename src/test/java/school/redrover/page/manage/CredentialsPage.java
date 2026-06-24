@@ -12,10 +12,6 @@ import java.util.List;
 
 public class CredentialsPage extends BasePage {
 
-    public CredentialsPage(WebDriver driver) {
-        super(driver);
-    }
-
     @FindBy(css = "button[data-type='credentials-add-store-item']")
     private WebElement addCredentialsButton;
 
@@ -30,6 +26,10 @@ public class CredentialsPage extends BasePage {
 
     @FindBy(css = "button[data-id='ok']")
     private WebElement confirmOkButton;
+
+    public CredentialsPage(WebDriver driver) {
+        super(driver);
+    }
 
     public AddCredentialsPage clickAddCredentialsButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(addCredentialsButton)).click();

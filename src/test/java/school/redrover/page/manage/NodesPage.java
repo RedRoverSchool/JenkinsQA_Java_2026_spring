@@ -34,7 +34,7 @@ public class NodesPage extends BasePage {
                 .toList();
     }
 
-    public NodeManagementPage goToNodeManagementPage(String name){
+    public NodeManagementPage goToNodeManagementPage(String name) {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='../computer/%s/']"
                 .formatted(name.replace(" ", "%20"))))).click();
         return new NodeManagementPage(getDriver());

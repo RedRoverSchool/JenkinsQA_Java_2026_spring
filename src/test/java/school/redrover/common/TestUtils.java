@@ -3,7 +3,6 @@ package school.redrover.common;
 import org.openqa.selenium.WebDriver;
 import school.redrover.page.*;
 import school.redrover.page.common.BaseConfigPage;
-import school.redrover.page.project.FolderProjectPage;
 import school.redrover.page.project.config.*;
 
 public class TestUtils {
@@ -27,7 +26,7 @@ public class TestUtils {
         }
     }
 
-    private static BaseConfigPage getConfigPage(JobType jobType, WebDriver driver) {
+    private static BaseConfigPage<?> getConfigPage(JobType jobType, WebDriver driver) {
         return switch (jobType) {
             case PIPELINE -> new PipelineProjectConfigPage(driver);
             case FREESTYLE -> new FreestyleProjectConfigPage(driver);
@@ -39,22 +38,10 @@ public class TestUtils {
     }
 
     public static HomePage createJob(WebDriver driver, String projectName, JobType jobType) {
-        BaseConfigPage configPage = getConfigPage(jobType, driver);
+        BaseConfigPage<?> configPage = getConfigPage(jobType, driver);
         return new HomePage(driver)
                 .clickItemNewJob()
                 .setProjectName(projectName)
-                .scrollToTypeOfProject(jobType)
-                .selectItemType(jobType)
-                .clickOK(configPage)
-                .goHomePage();
-    }
-
-    public static HomePage createNestedJob(WebDriver driver, String projectName, String childName, JobType jobType) {
-        BaseConfigPage configPage = getConfigPage(jobType, driver);
-        return new HomePage(driver)
-                .clickOnProject(projectName, new FolderProjectPage(driver))
-                .clickNewItem()
-                .setProjectName(childName)
                 .scrollToTypeOfProject(jobType)
                 .selectItemType(jobType)
                 .clickOK(configPage)
