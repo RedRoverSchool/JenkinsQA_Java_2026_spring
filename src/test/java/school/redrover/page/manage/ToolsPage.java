@@ -14,10 +14,6 @@ import java.util.List;
 
 public class ToolsPage extends BasePage {
 
-    public ToolsPage(WebDriver driver) {
-        super(driver);
-    }
-
     @FindBy(xpath = "(//select[contains(@class,'jenkins-select__input')])[1]")
     private WebElement mavenOption;
 
@@ -62,6 +58,10 @@ public class ToolsPage extends BasePage {
 
     @FindBy(xpath = "//input[@checkurl = '/manage/descriptorByName/hudson.plugins.git.GitTool/checkHome']")
     private WebElement gitPathField;
+
+    public ToolsPage(WebDriver driver) {
+        super(driver);
+    }
 
     public ToolsPage selectMavenOption(String option) {
         new Select(mavenOption).selectByVisibleText(option);

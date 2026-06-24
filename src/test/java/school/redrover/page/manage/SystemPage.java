@@ -17,12 +17,10 @@ public class SystemPage extends BasePage {
     }
 
     public List<String> getSectionList() {
-        List<String> sectionTextList = sectionList.stream()
+        return sectionList.stream()
                 .map(WebElement::getText)
                 .map(String::trim)
                 .filter(text -> !text.isEmpty())
                 .toList();
-
-        return sectionTextList;
     }
 }
