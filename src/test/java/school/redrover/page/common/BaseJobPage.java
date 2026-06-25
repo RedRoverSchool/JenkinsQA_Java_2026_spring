@@ -15,16 +15,16 @@ public abstract class BaseJobPage<SELF extends BaseJobPage<SELF>> extends BasePr
     @FindBy(xpath = "//ul[@class='permalinks-list']//a[contains(@class, 'permalink-link')]")
     private List<WebElement> permalinksList;
 
-    private final JobSideMenuComponent<SELF> sideMenu;
+   // private final JobSideMenuComponent<SELF> sideMenu;
 
     public BaseJobPage(WebDriver driver) {
         super(driver);
-        this.sideMenu = new JobSideMenuComponent<>(driver, (SELF) this);
+       // this.sideMenu = new JobSideMenuComponent<>(driver, (SELF) this);
     }
 
     @Override
     public JobSideMenuComponent<SELF> getSideMenu() {
-        return this.sideMenu;
+        return new JobSideMenuComponent<>(getDriver(), (SELF) this);
     }
 
     public Boolean isPopUpMessageDisplayed(String popUpMessage) {

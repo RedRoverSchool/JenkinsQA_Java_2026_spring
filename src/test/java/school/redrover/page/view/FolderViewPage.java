@@ -33,15 +33,15 @@ public class FolderViewPage extends BasePage {
     @FindBy(css = "#description-edit-form .description-cancel-button")
     private WebElement buttonCancel;
 
-    private final ViewSideMenuComponent<FolderViewPage> viewSideMenu;
+ //   private final ViewSideMenuComponent<FolderViewPage> viewSideMenu;
 
     public FolderViewPage(WebDriver driver) {
         super(driver);
-        this.viewSideMenu = new ViewSideMenuComponent<>(getDriver(), this);
+       // this.viewSideMenu = new ViewSideMenuComponent<>(getDriver(), this);
     }
 
     public ViewSideMenuComponent<FolderViewPage> getSideMenu() {
-        return this.viewSideMenu;
+        return new ViewSideMenuComponent<>(getDriver(), this);
     }
 
     public FolderViewPage addDescription(String expectedDescription) {

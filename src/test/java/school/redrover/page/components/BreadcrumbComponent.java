@@ -6,12 +6,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BaseConfigPage;
-import school.redrover.page.common.BaseModel;
 import school.redrover.page.common.BaseProjectPage;
 
 import java.util.List;
 
-public class BreadcrumbComponent extends BaseModel {
+public class BreadcrumbComponent extends BaseComponent {
+
     public BreadcrumbComponent(WebDriver driver) {
         super(driver);
     }

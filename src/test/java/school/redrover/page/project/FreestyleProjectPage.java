@@ -16,16 +16,16 @@ public class FreestyleProjectPage extends BaseJobPage<FreestyleProjectPage> {
     @FindBy(id = "description-content")
     private WebElement descriptionText;
 
-    private final FreestylePipelineMulticonfigSideMenuComponent<FreestyleProjectPage> fullSideMenu;
+    //private final FreestylePipelineMulticonfigSideMenuComponent<FreestyleProjectPage> fullSideMenu;
 
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
-        this.fullSideMenu = new FreestylePipelineMulticonfigSideMenuComponent<>(driver, this);
+      //  this.fullSideMenu = new FreestylePipelineMulticonfigSideMenuComponent<>(driver, this);
     }
 
     @Override
     public FreestylePipelineMulticonfigSideMenuComponent<FreestyleProjectPage> getSideMenu() {
-        return this.fullSideMenu;
+        return  new FreestylePipelineMulticonfigSideMenuComponent<>(getDriver(), this);
     }
 
     public FreestyleProjectConfigPage clickConfigure() {

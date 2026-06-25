@@ -6,14 +6,14 @@ import school.redrover.page.components.BaseSideMenuComponent;
 public abstract class BaseProjectPage<SELF extends BaseProjectPage<SELF>> extends BasePage{
 //for all items including folder: Freestyle, Pipeline, Multi-configuration, Multibranch pipeline, Folder, Organization folder
 
-    private final BaseSideMenuComponent<SELF> sideMenu;
+   // private final BaseSideMenuComponent<SELF> sideMenu;
 
     public BaseProjectPage(WebDriver driver) {
         super(driver);
-        this.sideMenu = new BaseSideMenuComponent<>(driver,(SELF)this);
+        //   this.sideMenu = new BaseSideMenuComponent<>(driver,(SELF)this);
     }
 
     public BaseSideMenuComponent<SELF> getSideMenu() {
-        return this.sideMenu;
+        return new BaseSideMenuComponent<>(getDriver(),(SELF)this);
     }
 }

@@ -9,9 +9,8 @@ import school.redrover.page.HomePage;
 import school.redrover.page.RenameProjectPage;
 import school.redrover.page.common.BaseConfigPage;
 import school.redrover.page.common.BasePage;
-import school.redrover.page.view.config.ViewMyConfigPage;
 
-public class BaseSideMenuComponent<T extends BasePage> extends BasePage {
+public class BaseSideMenuComponent<T extends BasePage> extends BaseComponent {
 
     @FindBy(xpath = "//a[contains(@class, 'task-link')][.//span[text()='Status']]")
     private WebElement statusButton;
