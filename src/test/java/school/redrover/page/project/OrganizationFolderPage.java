@@ -11,8 +11,6 @@ import school.redrover.page.components.MultibranchOrgFolderSideMenuComponent;
 
 public class OrganizationFolderPage extends BaseProjectPage<OrganizationFolderPage> {
 
-    private final MultibranchOrgFolderSideMenuComponent<OrganizationFolderPage> fullSideMenu;
-
     @FindBy(id = "description-link")
     private WebElement addDescriptionButton;
 
@@ -27,12 +25,11 @@ public class OrganizationFolderPage extends BaseProjectPage<OrganizationFolderPa
 
     public OrganizationFolderPage(WebDriver driver) {
         super(driver);
-        this.fullSideMenu = new MultibranchOrgFolderSideMenuComponent<>(driver, this);
     }
 
     @Override
     public MultibranchOrgFolderSideMenuComponent<OrganizationFolderPage> getSideMenu() {
-        return this.fullSideMenu;
+        return new MultibranchOrgFolderSideMenuComponent<>(getDriver(), this);
     }
 
     public OrganizationFolderPage clickAddDescription() {
