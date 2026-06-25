@@ -43,11 +43,8 @@ public class PipelineProjectPage extends BaseJobPage<PipelineProjectPage> {
     @FindBy(xpath = "//a[@href='/view/all/newJob']")
     private WebElement addNewItemButton;
 
-  //  private final FreestylePipelineMulticonfigSideMenuComponent<PipelineProjectPage> fullSideMenu;
-
     public PipelineProjectPage(WebDriver driver) {
         super(driver);
-     //   this.fullSideMenu = new FreestylePipelineMulticonfigSideMenuComponent<>(driver, this);
     }
 
     @Override

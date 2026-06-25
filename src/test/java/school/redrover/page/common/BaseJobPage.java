@@ -15,11 +15,8 @@ public abstract class BaseJobPage<SELF extends BaseJobPage<SELF>> extends BasePr
     @FindBy(xpath = "//ul[@class='permalinks-list']//a[contains(@class, 'permalink-link')]")
     private List<WebElement> permalinksList;
 
-   // private final JobSideMenuComponent<SELF> sideMenu;
-
     public BaseJobPage(WebDriver driver) {
         super(driver);
-       // this.sideMenu = new JobSideMenuComponent<>(driver, (SELF) this);
     }
 
     @Override

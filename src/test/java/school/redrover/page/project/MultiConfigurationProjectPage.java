@@ -6,11 +6,8 @@ import school.redrover.page.components.FreestylePipelineMulticonfigSideMenuCompo
 
 public class MultiConfigurationProjectPage extends BaseJobPage<MultiConfigurationProjectPage> {
 
-  //  private final FreestylePipelineMulticonfigSideMenuComponent<MultiConfigurationProjectPage> fullSideMenu;
-
     public MultiConfigurationProjectPage(WebDriver driver) {
         super(driver);
-       // this.fullSideMenu = new FreestylePipelineMulticonfigSideMenuComponent<>(driver, this);
     }
 
     @Override

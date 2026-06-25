@@ -50,12 +50,8 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
     @FindBy(xpath = "//a[contains(@href, 'move')]")
     private WebElement moveSideMenu;
 
-
-   // private final BaseSideMenuComponent<FolderProjectPage> baseSideMenu;
-
     public FolderProjectPage(WebDriver driver) {
         super(driver);
-      //  this.baseSideMenu = new BaseSideMenuComponent<>(getDriver(),this);
     }
 
     @Override

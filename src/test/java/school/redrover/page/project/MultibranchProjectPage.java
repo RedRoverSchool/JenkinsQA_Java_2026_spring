@@ -6,16 +6,12 @@ import school.redrover.page.components.MultibranchOrgFolderSideMenuComponent;
 
 public class MultibranchProjectPage extends BaseJobPage<MultibranchProjectPage> {
 
-   // private final MultibranchOrgFolderSideMenuComponent<MultibranchProjectPage> fullSideMenu;
-
     public MultibranchProjectPage(WebDriver driver) {
         super(driver);
-     //   this.fullSideMenu = new MultibranchOrgFolderSideMenuComponent<>(driver, this);
     }
 
     @Override
     public MultibranchOrgFolderSideMenuComponent<MultibranchProjectPage> getSideMenu() {
         return new MultibranchOrgFolderSideMenuComponent<>(getDriver(), this);
-
     }
 }
