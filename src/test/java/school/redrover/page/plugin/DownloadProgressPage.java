@@ -13,10 +13,10 @@ public class DownloadProgressPage extends PluginPage {
         super(driver);
     }
 
-    public String getSuccessInstall() {
+    public String getSuccessInstall(String pluginName) {
         // Нужно время на установку плагина и на изменения отображаемого статуса на странице
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(60));
 
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[@id='log']/tbody/tr[td[contains(text(), 'ChuckNorris')] and td[contains(text(), 'Success')]]"))).getText();
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[@id='log']/tbody/tr[td[contains(text(), '%s')] and td[contains(text(), 'Success')]]".formatted(pluginName)))).getText();
     }
 }
