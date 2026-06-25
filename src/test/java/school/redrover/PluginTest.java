@@ -17,7 +17,7 @@ public class PluginTest extends BaseTest {
                 .setSearchPluginName(PLUGIN_NAME)
                 .selectSearchResult(PLUGIN_NAME)
                 .clickInstallButton()
-                .getSuccessInstall();
+                .getSuccessInstall(PLUGIN_NAME);
 
         assert installPlugin.contains(PLUGIN_NAME) && installPlugin.contains("Success");
     }

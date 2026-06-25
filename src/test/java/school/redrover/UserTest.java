@@ -88,7 +88,7 @@ public class UserTest extends BaseTest {
 
         Assert.assertFalse(
                 actualUsersNameList.contains(USER_NAME),
-                "The user with User ID " + USER_NAME + " was not deleted");
+                "The user with User ID %s was not deleted".formatted(USER_NAME));
     }
 
     @Test
