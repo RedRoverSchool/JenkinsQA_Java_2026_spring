@@ -114,6 +114,17 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         return new FreestyleProjectPage(getDriver());
     }
 
+    public FreestyleProjectConfigPage clickApplyButton() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.name("Apply"))).click();
+
+        getWait10().until(ExpectedConditions.invisibilityOfElementLocated(
+                By.xpath("//*[@id=\"notification-bar\"]")));
+
+        return this;
+    }
+
+
     public FreestyleProjectConfigPage setDeleteWorkspaceBeforeBuildStartsCheckbox(boolean value) {
         WebElement checkbox = getWait10().until(
                 ExpectedConditions.presenceOfElementLocated(
