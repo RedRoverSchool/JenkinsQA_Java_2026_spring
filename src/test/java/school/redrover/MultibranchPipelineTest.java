@@ -11,6 +11,7 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.MultibranchProjectPage;
+import school.redrover.page.project.config.MultibranchConfigPage;
 
 import java.util.List;
 
@@ -111,5 +112,25 @@ public class MultibranchPipelineTest extends BaseTest {
                 .getErrorMessage();
 
         Assert.assertEquals(errorMessage, "‘" + invalidCharacter + "’ is an unsafe character");
+    }
+
+    @Test
+    public void testChooseHealthmetrics() {
+        MultibranchConfigPage jobPage = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName("MultibranchEntityOlgaTest")
+                .selectMultibranchAndClickOk()
+                .chooseHealthMetricsOnTheSideMenu()
+                .clickHealthMetricsButton();
+
+        boolean addMetricButtonIsEnabled = jobPage
+                .clickAddMetricsButton(jobPage.healthMetric1)
+                .clickAddMetricsButton(jobPage.healthMetric2)
+                .clickAddMetricsButton(jobPage.healthMetric3)
+                .statusOfAddMetricButton();
+
+        Assert.assertFalse(addMetricButtonIsEnabled);
+
+
     }
 }

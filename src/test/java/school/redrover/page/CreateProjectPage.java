@@ -78,7 +78,7 @@ public class CreateProjectPage extends BasePage {
     }
 
     public MultibranchConfigPage selectMultibranchAndClickOk() {
-        getDriver().findElement(By.xpath("//span[text()='Multi-configuration project']")).click();
+        getDriver().findElement(By.xpath("//*[contains(text(), 'Multibranch Pipeline')]")).click();
         okButton.click();
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(BUTTON_OK));
