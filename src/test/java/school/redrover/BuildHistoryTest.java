@@ -12,14 +12,14 @@ public class BuildHistoryTest extends BaseTest {
 
     private static final String PROJECT_NAME = "NewFreestyleProject";
 
-    @Ignore
     @Test
-    public void testEmptyBuildHistory() {
-        List<String> buildHistoryList = new HomePage(getDriver())
+    public void testIsBuildHistoryEmpty() {
+        boolean isBuildHistoryEmpty = new HomePage(getDriver())
                 .clickBuildHistory()
-                .getBuildHistoryList();
+                .getBuildHistoryList()
+                .isEmpty();
 
-        Assert.assertEquals(buildHistoryList.size(), 0);
+        Assert.assertTrue(isBuildHistoryEmpty);
     }
 
     @Ignore

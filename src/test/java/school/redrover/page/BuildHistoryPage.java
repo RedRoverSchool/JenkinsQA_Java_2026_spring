@@ -43,12 +43,10 @@ public class BuildHistoryPage extends BasePage {
     }
 
     public List<String> getBuildHistoryList() {
-        List<String> elements = buildTable.stream()
+        return buildTable.stream()
                 .map(WebElement::getText)
                 .map(String::trim)
                 .filter(text -> !text.isEmpty())
                 .toList();
-
-        return elements;
     }
 }
