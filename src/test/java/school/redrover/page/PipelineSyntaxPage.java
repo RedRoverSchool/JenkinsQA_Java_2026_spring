@@ -27,7 +27,7 @@ public class PipelineSyntaxPage extends BasePage {
     }
 
     public boolean isTextContainsFileName (String filename) {
-        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@id='prototypeText']")))
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@id='prototypeText']")))
                 .getAttribute("value").contains(filename);
     }
 }

@@ -8,13 +8,7 @@ import school.redrover.page.common.BasePage;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import java.util.List;
-
 public class PrepareShutdownPage extends BasePage {
-
-    public PrepareShutdownPage(WebDriver driver) {
-        super(driver);
-    }
 
     @FindBy(xpath = "//input[@name='parameter.shutdownReason']")
     private WebElement shutdownReasonField;
@@ -25,9 +19,14 @@ public class PrepareShutdownPage extends BasePage {
     @FindBy(xpath = "//button[@value='Update reason']")
     private WebElement updateButton;
 
+    public PrepareShutdownPage(WebDriver driver) {
+        super(driver);
+    }
+
     public PrepareShutdownPage enterShutdownReason(String reason) {
         shutdownReasonField.clear();
         shutdownReasonField.sendKeys(reason);
+
         return this;
     }
 

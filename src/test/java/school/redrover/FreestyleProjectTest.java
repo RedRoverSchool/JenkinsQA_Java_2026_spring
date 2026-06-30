@@ -1,5 +1,6 @@
 package school.redrover;
 
+import io.qameta.allure.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -16,6 +17,7 @@ import java.util.List;
 public class FreestyleProjectTest extends BaseTest {
 
     private final static String PROJECT_NAME = "FreestyleProject";
+    private final static String PROJECT_NAME_1 = "FreestyleProjectSuper";
     private final static String NO_EXISTING_PROJECT = "My FreestyleProject Test";
     private static final String REPOSITORY_URL = "https://github.com/";
     private static final String BRANCH_NAME = "*/main";
@@ -34,6 +36,24 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(projectList.size(), 1);
         Assert.assertEquals(projectList.getFirst(), PROJECT_NAME);
+    }
+
+    @Story("16.010 Freestyle Project Management > Rename Project ")
+    @Owner("Yulia R.")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that project is renamed")
+    @Test(dependsOnMethods = "testCreate")
+    public void testRenameViaContextMenu() {
+        List<String> projectList = new HomePage(getDriver())
+                .openProjectDropdownMenu(PROJECT_NAME)
+                .clickRenameInDropdown()
+                .setNewProjectName(PROJECT_NAME_1)
+                .clickRenameButton()
+                .goHomePage()
+                .getProjectList();
+
+        Assert.assertEquals(projectList.size(), 1);
+        Assert.assertEquals(projectList.getFirst(), PROJECT_NAME_1);
     }
 
     @Test
@@ -382,5 +402,43 @@ public class FreestyleProjectTest extends BaseTest {
         softAssert.assertEquals(freestyleProjectPage.getDescriptionText(), DESCRIPTION_TEXT, "Description text is not correct");
         softAssert.assertEquals(freestyleProjectPage.getRepositoryUrl(), REPOSITORY_URL, "Repository url is not correct");
         softAssert.assertAll();
+    }
+
+    @Test
+    public void testSkipConfigShowsItemOnDashboard() {
+        List<String> actualProjectList = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreestyleProjectAndClickOk()
+                .goHomePage()
+                .getProjectList();
+
+        Assert.assertTrue(actualProjectList.contains(PROJECT_NAME),
+                "Created item is not displayed on the dashboard");
+    }
+
+    @Test
+    public void testDiscardOldBuildsCheckboxConfigurationSaved() {
+        SoftAssert softAssert = new SoftAssert();
+        FreestyleProjectConfigPage freestyleProjectConfigPage = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreestyleProjectAndClickOk()
+                .clickDiscardOldBuildsCheckbox()
+                .enterMessageToDaysToKeepBuildsInput("30")
+                .enterMessageToMaxOfBuildToKeepInput("10")
+                .clickAdvancedAccordion()
+                .enterMessagesToDaysToKeepArtifacts("13")
+                .enterMessageToMaxOfBuildsToKeepWithArtifacts("100")
+                .clickSaveButton()
+                .getSideMenu()
+                .clickConfigure(new FreestyleProjectConfigPage(getDriver()))
+                .clickAdvancedAccordion();
+
+        softAssert.assertTrue(freestyleProjectConfigPage.idDiscardOldBuildsCheckboxChecked());
+        softAssert.assertEquals(freestyleProjectConfigPage.getDaysToKeepBuildsValue(), 30);
+        softAssert.assertEquals(freestyleProjectConfigPage.getMaxOfBuildToKeepValue(), 10);
+        softAssert.assertEquals(freestyleProjectConfigPage.getDaysToKeepArtifactsValue(), 13);
+        softAssert.assertEquals(freestyleProjectConfigPage.getMaxOfBuildsToKeepWithArtifactsValue(), 100);
     }
 }

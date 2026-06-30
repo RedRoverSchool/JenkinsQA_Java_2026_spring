@@ -10,7 +10,7 @@ import school.redrover.page.RenameProjectPage;
 import school.redrover.page.common.BaseConfigPage;
 import school.redrover.page.common.BasePage;
 
-public class BaseSideMenuComponent<T extends BasePage> extends BasePage {
+public class BaseSideMenuComponent<T extends BasePage> extends BaseComponent {
 
     @FindBy(xpath = "//a[contains(@class, 'task-link')][.//span[text()='Status']]")
     private WebElement statusButton;
@@ -29,6 +29,10 @@ public class BaseSideMenuComponent<T extends BasePage> extends BasePage {
     public BaseSideMenuComponent(WebDriver driver, T parentPage) {
         super(driver);
         this.parentPage = parentPage;
+    }
+
+    public T getParent(){
+        return parentPage;
     }
 
     public T clickStatus() {

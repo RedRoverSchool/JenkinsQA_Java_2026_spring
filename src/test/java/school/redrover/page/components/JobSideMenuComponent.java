@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.MoveProjectPage;
-import school.redrover.page.RenameProjectPage;
 import school.redrover.page.common.BasePage;
 
 public class JobSideMenuComponent<T extends BasePage> extends BaseSideMenuComponent<T> {

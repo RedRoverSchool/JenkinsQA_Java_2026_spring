@@ -12,8 +12,8 @@ import java.util.List;
 
 public class MultiConfigurationTest extends BaseTest {
 
-    private final static String PROJECT_NAME = "MulticonfigProject";
-    private final static String PROJECT_NAME_UPDATED = "MulticonfigProject Rename";
+    private static final String PROJECT_NAME = "MulticonfigProject";
+    private static final String PROJECT_NAME_UPDATED = "MulticonfigProject Rename";
     private static final String POPUP_MESSAGE = "Build scheduled";
 
     @Test

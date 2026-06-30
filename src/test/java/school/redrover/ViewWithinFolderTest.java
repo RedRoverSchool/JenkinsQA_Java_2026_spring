@@ -15,7 +15,7 @@ public class ViewWithinFolderTest extends BaseTest {
 
     @Test
     public void testCreateMyView() {
-       String actualViewName = new HomePage(getDriver())
+        String actualViewName = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(FOLDER_NAME)
                 .selectFolderProjectAndClickOk()
@@ -29,7 +29,7 @@ public class ViewWithinFolderTest extends BaseTest {
         Assert.assertEquals(actualViewName, VIEW_NAME);
     }
 
-    @Test (dependsOnMethods = "testCreateMyView")
+    @Test(dependsOnMethods = "testCreateMyView")
     public void testPreviewAddDescription() {
         String actualPreviewText = new HomePage(getDriver())
                 .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
@@ -42,26 +42,26 @@ public class ViewWithinFolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testPreviewAddDescription")
     public void testSaveViewDescription() {
-       String actualDescriptionText = new HomePage(getDriver())
-               .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
-               .clickOnView()
-               .addDescription(VIEW_DESCRIPTION)
-               .clickSubmitButton()
-               .getDescriptionText();
+        String actualDescriptionText = new HomePage(getDriver())
+                .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickOnView()
+                .addDescription(VIEW_DESCRIPTION)
+                .clickSubmitButton()
+                .getDescriptionText();
 
         Assert.assertEquals(actualDescriptionText, VIEW_DESCRIPTION);
     }
 
     @Test(dependsOnMethods = "testSaveViewDescription")
     public void testCancelDescription() {
-        String actualDescriptionTest = new HomePage(getDriver())
+        String actualDescriptionText = new HomePage(getDriver())
                 .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .clickOnView()
                 .editDescription(NEW_VIEW_DESCRIPTION)
                 .clickCancelButton()
                 .getDescriptionText();
 
-        Assert.assertEquals(actualDescriptionTest, VIEW_DESCRIPTION);
+        Assert.assertEquals(actualDescriptionText, VIEW_DESCRIPTION);
     }
 
     @Test(dependsOnMethods = "testCreateMyView")
@@ -69,9 +69,10 @@ public class ViewWithinFolderTest extends BaseTest {
         String actualViewName = new HomePage(getDriver())
                 .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .clickOnView()
+                .getSideMenu()
                 .clickEditView()
                 .getViewName();
 
         Assert.assertEquals(actualViewName, VIEW_NAME);
-    } 
+    }
 }

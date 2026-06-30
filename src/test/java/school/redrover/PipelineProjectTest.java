@@ -17,6 +17,7 @@ public class PipelineProjectTest extends BaseTest {
     private static final String PROJECT_NAME = "MyPipelineProject";
     private static final String DESCRIPTION_TEXT = "PipelineDescription";
     private static final String RENAME_PIPELINE = "RenamedPipeline";
+    private static final int MAX_NUMBER_OF_BUILDS = 3;
 
     @Test
     public void testCreate() {
@@ -179,5 +180,21 @@ public class PipelineProjectTest extends BaseTest {
                 .getProjectList();
 
         Assert.assertListNotContainsObject(jobList, RENAME_PIPELINE, "Pipeline is not deleted");
+    }
+
+    @Test
+    public void pipelineDiscardOldBuildsTest() {
+        PipelineProjectConfigPage configPage = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectPipelineProjectAndClickOk()
+                .enableDiscardOldBuilds()
+                .setMaxNumberOfBuilds(MAX_NUMBER_OF_BUILDS)
+                .clickSaveButton()
+                .getSideMenu()
+                .clickConfigure(new PipelineProjectConfigPage(getDriver()));
+
+        Assert.assertTrue(configPage.isDiscardOldBuildsSelected());
+        Assert.assertEquals(configPage.getMaxNumberOfBuilds(), String.valueOf(MAX_NUMBER_OF_BUILDS));
     }
 }

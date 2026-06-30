@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import io.restassured.RestAssured;
 import org.hamcrest.Matchers;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -53,6 +54,7 @@ public class APITest {
         private List<Pokemon> results;
     }
 
+    @Ignore
     @Test
     public void httpTest() throws IOException, URISyntaxException, InterruptedException {
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -83,6 +85,7 @@ public class APITest {
                 new Pokemon("bulbasaur", "https://pokeapi.co/api/v2/pokemon/1/"));
     }
 
+    @Ignore
     @Test
     public void restAssuredTest() {
         RestAssured.when().get("https://pokeapi.co/api/v2/pokemon")

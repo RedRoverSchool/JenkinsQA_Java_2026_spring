@@ -17,9 +17,9 @@ import java.util.List;
 
 public class MultibranchPipelineTest extends BaseTest {
 
-    private final static String PROJECT_NAME = "MultibranchPipelineProject";
-    private final static String PROJECT_NAME_1 = "MultibranchPipelineProject1";
-    private final static String PROJECT_NAME_DELETE = "ProjectToDelete";
+    private static final String PROJECT_NAME = "MultibranchPipelineProject";
+    private static final String PROJECT_NAME_1 = "MultibranchPipelineProject1";
+    private static final String PROJECT_NAME_DELETE = "ProjectToDelete";
 
     @Test
     public void testCreate() {

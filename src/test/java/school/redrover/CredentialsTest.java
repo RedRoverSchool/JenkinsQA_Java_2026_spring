@@ -59,7 +59,6 @@ public class CredentialsTest extends BaseTest {
                 "Username with ID " + id + " is still found!");
     }
 
-    @Ignore
     @Test
     public void testAddSshUsernameWithKey(){
 

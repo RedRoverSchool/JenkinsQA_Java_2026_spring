@@ -31,11 +31,6 @@ public class AppearancePage extends BasePage {
         return this;
     }
 
-    public AppearancePage clickLightTheme() {
-        darkTheme.click();
-        return this;
-    }
-
     public AppearancePage clickApply() {
         applyButton.click();
         return this;
