@@ -32,7 +32,7 @@ public class MultibranchConfigPage extends BaseConfigPage<MultibranchConfigPage>
     }
 
     public MultibranchConfigPage clickHealthMetricsButton() {
-    getWait5().until(ExpectedConditions.elementToBeClickable(
+    getWait10().until(ExpectedConditions.elementToBeClickable(
             By.xpath("//button[contains(text(), 'Health metrics')]"))).click();
 
     return this;
