@@ -4,9 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import school.redrover.page.common.BasePage;
 import school.redrover.page.components.FreestylePipelineMulticonfigSideMenuComponent;
-import school.redrover.page.interfaces.IHasSideMenu;
 
-public class ChangesProjectPage extends BasePage implements IHasSideMenu<FreestylePipelineMulticonfigSideMenuComponent<ChangesProjectPage>, ChangesProjectPage> {
+public class ChangesProjectPage extends BasePage {
 
     public ChangesProjectPage(WebDriver driver) {
         super(driver);
@@ -20,7 +19,6 @@ public class ChangesProjectPage extends BasePage implements IHasSideMenu<Freesty
         return getDriver().findElement(By.xpath("//div[@id='main-panel' and contains(., 'No changes')]")).getText();
     }
 
-    @Override
     public FreestylePipelineMulticonfigSideMenuComponent<ChangesProjectPage> getSideMenu() {
         return new FreestylePipelineMulticonfigSideMenuComponent<>(getDriver(), this);
     }
