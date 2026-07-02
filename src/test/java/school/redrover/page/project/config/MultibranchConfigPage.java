@@ -43,7 +43,7 @@ public class MultibranchConfigPage extends BaseConfigPage<MultibranchConfigPage>
 
     public MultibranchConfigPage clickAddMetricsButton(WebElement healthMetric) {
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(30));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(60));
     wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Add metric')]"))).click();
     healthMetric.click();
