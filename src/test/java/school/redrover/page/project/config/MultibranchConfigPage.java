@@ -5,7 +5,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import school.redrover.page.common.BaseConfigPage;
+
+import java.time.Duration;
 
 public class MultibranchConfigPage extends BaseConfigPage<MultibranchConfigPage> {
     public MultibranchConfigPage(WebDriver driver) {
@@ -40,7 +43,8 @@ public class MultibranchConfigPage extends BaseConfigPage<MultibranchConfigPage>
 
     public MultibranchConfigPage clickAddMetricsButton(WebElement healthMetric) {
 
-    getWait10().until(ExpectedConditions.elementToBeClickable(
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
+    wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Add metric')]"))).click();
     healthMetric.click();
 
