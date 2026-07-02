@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
-import school.redrover.page.manage.UserManagementPage;
 
 import java.util.List;
 
@@ -54,11 +53,11 @@ public class CreateUserPage extends BasePage {
         return this;
     }
 
-    public UserManagementPage clickCreateUserButton() {
+    public <T> T clickCreateUserButton(T page) {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(submitButton)).click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(addUserButton));
 
-        return new UserManagementPage(getDriver());
+        return page;
     }
 
     public CreateUserPage submitExpectingError() {
@@ -74,7 +73,7 @@ public class CreateUserPage extends BasePage {
                 .toList();
     }
 
-    public UserManagementPage createUser(
+    public CreateUserPage createUser(
             String userName,
             String userPassword,
             String confirmUserPassword,
@@ -87,6 +86,6 @@ public class CreateUserPage extends BasePage {
         setUserFullName(userFullName);
         setUserEmail(userEmail);
 
-        return clickCreateUserButton();
+        return this;
     }
 }

@@ -19,7 +19,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     By projectName = By.cssSelector("#breadcrumbs a");
     By daysToKeepArtifactsInput = By.name("_.artifactDaysToKeepStr");
     By maxOfBuildToKeepWithArtifactsInput = By.name("_.artifactNumToKeepStr");
-    By discardOldBuildsCheckbox = By.xpath("//label[text()='Discard old builds']");
+    By discardOldBuildsCheckbox = By.id("cb2");
 
     @FindBy(name = "_.daysToKeepStr")
     private WebElement daysToKeepBuildsInput;
@@ -302,7 +302,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     }
 
     public String getDaysToKeepBuildsValue() {
-        return getDriver().findElement(By.name("_.daysToKeepStr")).getText();
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("_.daysToKeepStr"))).getAttribute("value");
     }
 
     public FreestyleProjectConfigPage enterMessageToMaxOfBuildToKeepInput(String num) {
@@ -313,7 +313,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     }
 
     public String getMaxOfBuildToKeepValue() {
-        return getDriver().findElement(By.name("_.numToKeepStr")).getText();
+        return getDriver().findElement(By.name("_.numToKeepStr")).getAttribute("value");
     }
 
     public FreestyleProjectConfigPage clickAdvancedAccordion()  {
@@ -334,7 +334,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     }
 
     public String getDaysToKeepArtifactsValue() {
-        return getDriver().findElement(By.name("_.artifactDaysToKeepStr")).getText();
+        return getDriver().findElement(By.name("_.artifactDaysToKeepStr")).getAttribute("value");
     }
 
     public FreestyleProjectConfigPage enterMessageToMaxOfBuildsToKeepWithArtifacts(String num) {
@@ -346,6 +346,6 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
     }
 
     public String getMaxOfBuildsToKeepWithArtifactsValue() {
-        return getDriver().findElement(By.name("_.artifactNumToKeepStr")).getText();
+        return getDriver().findElement(By.name("_.artifactNumToKeepStr")).getAttribute("value");
     }
 }

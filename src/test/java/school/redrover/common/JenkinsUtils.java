@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.json.Json;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import school.redrover.page.SignInPage;
 
 import java.net.CookieManager;
 import java.net.URI;
@@ -268,12 +267,6 @@ public final class JenkinsUtils {
 
     public static void logout(WebDriver driver) {
         driver.get(ProjectUtils.getUrl() + "logout");
-    }
-
-    public static SignInPage logoutToReturnSignInPage(WebDriver driver) {
-        driver.get(ProjectUtils.getUrl() + "logout");
-
-        return new SignInPage(driver);
     }
 }
 
