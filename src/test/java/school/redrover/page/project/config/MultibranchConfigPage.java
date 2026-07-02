@@ -45,7 +45,7 @@ public class MultibranchConfigPage extends BaseConfigPage<MultibranchConfigPage>
 
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
     wait.until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//button[contains(text(), 'Add metric')]"))).click();
+                By.xpath("//*[@id='main-panel']/form/div[1]/section[6]/div[3]/div/div/div/span/button"))).click();
     healthMetric.click();
 
     return this;
@@ -53,6 +53,6 @@ public class MultibranchConfigPage extends BaseConfigPage<MultibranchConfigPage>
 
     public boolean statusOfAddMetricButton(){
 
-        return getDriver().findElement(By.xpath("//button[contains(text(), 'Add metric')]")).isEnabled();
+        return getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[6]/div[3]/div/div/div/span/button")).isEnabled();
     }
 }
