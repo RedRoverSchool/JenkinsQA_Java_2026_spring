@@ -142,7 +142,6 @@ public class CredentialsTest extends BaseTest {
                 .clickSecretFileButton()
                 .doNotAddSecretFile(id,"Empty file")
                 .clickCreateButton()
-                //one more step
                 .isErrorMessageVisible();
 
         Assert.assertTrue(isValidationErrorDisplayed,"Credentials creation failed");
