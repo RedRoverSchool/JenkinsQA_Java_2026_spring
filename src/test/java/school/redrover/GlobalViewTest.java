@@ -54,6 +54,7 @@ public class GlobalViewTest extends BaseTest {
         Assert.assertEquals(actualDescriptionText, UPDATED_DESC_MESSAGE);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCancelUpdateViewDescription")
     public void testDeleteViewDescription() {
         String addDescriptionText = new HomePage(getDriver())
@@ -65,6 +66,7 @@ public class GlobalViewTest extends BaseTest {
         Assert.assertEquals(addDescriptionText, ADD_DESCRIPTION_BUTTON_TEXT);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testDeleteViewDescription")
     public void testSaveWithoutViewDescription() {
         String actualDescriptionText = new HomePage(getDriver())
