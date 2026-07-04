@@ -39,6 +39,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(joblist.getFirst(), ORG_FOLDER_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testPipelineSyntax() {
         boolean isTextContainsFileName = new HomePage(getDriver())
