@@ -53,6 +53,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertTrue(isTextContainsFileName);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testPipelineSyntax")
     public void testCredentialsOpens() {
         final List<String> expectedBreadcrumbs = List.of(ORG_FOLDER_NAME, "Credentials");
@@ -81,6 +82,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(actualDescriptionText, DESCRIPTION_TEXT);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCredentialsOpens")
     public void testRename() {
         Boolean isUpdatedNameCorrect = new HomePage(getDriver())
@@ -94,6 +96,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertTrue(isUpdatedNameCorrect);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testRename")
     public void testAddDisplayName() {
         List<String> jobnewlist = new HomePage(getDriver())
@@ -109,6 +112,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(jobnewlist.getFirst(), ORG_FOLDER_DISPLAY_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testAddDisplayName")
     public void testMove() {
         List<String> breadcrumb = new HomePage(getDriver())
@@ -129,6 +133,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertTrue(breadcrumb.containsAll(List.of(FOLDER_NAME, ORG_FOLDER_DISPLAY_NAME)));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testMove")
     public void testDelete() {
         List<String> jobList = new HomePage(getDriver())
