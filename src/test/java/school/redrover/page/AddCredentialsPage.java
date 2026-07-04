@@ -168,4 +168,14 @@ public class AddCredentialsPage extends BasePage {
 
         return this;
     }
+
+    public AddCredentialsPage doNotAddSecretFile (String id, String desc) {
+
+            getWait5().until(ExpectedConditions.visibilityOf(IDField));
+
+            IDField.sendKeys(id);
+            descriptionField.sendKeys(desc);
+
+        return this;
+    }
 }
