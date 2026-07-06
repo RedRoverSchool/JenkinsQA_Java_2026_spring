@@ -9,7 +9,7 @@ import school.redrover.page.LoginPage;
 
 public class SignOutTest extends BaseTest {
 
-    @Ignore
+
     @Test
     public void testSignOut() {
         String headerText = new HomePage(getDriver())
@@ -61,6 +61,8 @@ public class SignOutTest extends BaseTest {
                 "Поле 'Password' должно быть пустым, но содержит: '" + loginPage.getPasswordValue() + "'");
     }
 
+
+@Ignore
     @Test
     public void testDropdownMenuClosesWhenMouseMovesAway() {
         HomePage homePage = new HomePage(getDriver());
