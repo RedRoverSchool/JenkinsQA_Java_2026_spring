@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.json.Json;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import school.redrover.page.SignInPage;
 
 import java.net.CookieManager;
 import java.net.URI;
@@ -195,7 +194,6 @@ public final class JenkinsUtils {
         String credentialsPage = getPage("manage/credentials/store/system/domain/_/");
         deleteByLink("manage/credentials/store/system/domain/_/credential/%s/doDelete",
                 getSubstringsFromPage(credentialsPage, "href=\"credential/", "\">").stream()
-                        .filter(id -> id.startsWith("test-"))
                         .filter(id -> !id.contains("/"))
                         .collect(Collectors.toSet()),
                 getCrumbAsString());
@@ -269,12 +267,6 @@ public final class JenkinsUtils {
 
     public static void logout(WebDriver driver) {
         driver.get(ProjectUtils.getUrl() + "logout");
-    }
-
-    public static SignInPage logoutToReturnSignInPage(WebDriver driver) {
-        driver.get(ProjectUtils.getUrl() + "logout");
-
-        return new SignInPage(driver);
     }
 }
 
