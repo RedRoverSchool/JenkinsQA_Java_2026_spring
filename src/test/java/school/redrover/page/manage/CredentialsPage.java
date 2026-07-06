@@ -10,6 +10,7 @@ import school.redrover.page.common.BasePage;
 
 import java.util.List;
 
+
 public class CredentialsPage extends BasePage {
 
     @FindBy(css = "button[data-type='credentials-add-store-item']")
@@ -26,6 +27,9 @@ public class CredentialsPage extends BasePage {
 
     @FindBy(css = "button[data-id='ok']")
     private WebElement confirmOkButton;
+
+    @FindBy (css = ".jenkins-notification--error span")
+    private WebElement errorMessage;
 
     public CredentialsPage(WebDriver driver) {
         super(driver);
@@ -73,4 +77,11 @@ public class CredentialsPage extends BasePage {
         return  getWait10()
                 .until(ExpectedConditions.invisibilityOfElementLocated(getCredentialLocator(id)));
     }
+
+    public boolean isErrorMessageVisible() {
+        return getWait5()
+                .until(ExpectedConditions.visibilityOf(errorMessage))
+                .isDisplayed();
+    }
+
 }
