@@ -1,11 +1,8 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -116,21 +113,17 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testChooseHealthmetrics() {
-        MultibranchConfigPage jobPage = new HomePage(getDriver())
+        boolean addMetricButtonIsEnabled = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName("MultibranchEntityOlgaTest")
                 .selectMultibranchAndClickOk()
                 .chooseHealthMetricsOnTheSideMenu()
-                .clickHealthMetricsButton();
-
-        boolean addMetricButtonIsEnabled = jobPage
-                .clickAddMetricsButton(jobPage.healthMetric1)
-                .clickAddMetricsButton(jobPage.healthMetric2)
-                .clickAddMetricsButton(jobPage.healthMetric3)
+                .clickHealthMetricsButton()
+                .clickAddMetricsButton(new MultibranchConfigPage(getDriver()).healthMetric1)
+                .clickAddMetricsButton(new MultibranchConfigPage(getDriver()).healthMetric2)
+                .clickAddMetricsButton(new MultibranchConfigPage(getDriver()).healthMetric3)
                 .statusOfAddMetricButton();
 
         Assert.assertFalse(addMetricButtonIsEnabled);
-
-
     }
 }

@@ -1,14 +1,12 @@
 package school.redrover.page.project.config;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import school.redrover.page.common.BaseConfigPage;
-
-import java.time.Duration;
 
 public class MultibranchConfigPage extends BaseConfigPage<MultibranchConfigPage> {
     public MultibranchConfigPage(WebDriver driver) {
@@ -29,26 +27,30 @@ public class MultibranchConfigPage extends BaseConfigPage<MultibranchConfigPage>
 
     public MultibranchConfigPage chooseHealthMetricsOnTheSideMenu() {
         getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//button[@data-section-id='health-metrics'] | //*[contains(text(), 'Health metrics')]"))).click();
+                By.xpath("//button[@data-section-id='health-metrics']"))).click();
+        WebElement target = getDriver().findElement(By.xpath("//h3[text()='Health metrics'] | //*[@id='health-metrics']"));
+        ((JavascriptExecutor) getDriver())
+                .executeScript("arguments[0].scrollIntoView({block: 'start', behavior: 'instant'});", target);
 
         return this;
     }
 
     public MultibranchConfigPage clickHealthMetricsButton() {
     getWait10().until(ExpectedConditions.elementToBeClickable(
-            By.xpath("//button[contains(text(), 'Health metrics')]"))).click();
+            By.cssSelector(".jenkins-button.advanced-button.advancedButton"))).click();
 
     return this;
 }
 
     public MultibranchConfigPage clickAddMetricsButton(WebElement healthMetric) {
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(60));
-    wait.until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//button[contains(text(), 'Add metric')]"))).click();
-    healthMetric.click();
+        WebElement addMetric =getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//button[contains(text(), 'Add metric')]")));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", addMetric);
+        addMetric.click();
+        healthMetric.click();
 
-    return this;
+        return this;
 }
 
     public boolean statusOfAddMetricButton(){
