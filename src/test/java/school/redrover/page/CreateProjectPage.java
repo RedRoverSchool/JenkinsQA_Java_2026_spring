@@ -103,10 +103,10 @@ public class CreateProjectPage extends BasePage {
 
     @Step("Select Folder and click OK")
     public FolderConfigPage selectFolderProjectAndClickOk() {
-        folderOption.click();
+        WebElement jobElement = folderOption;
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", jobElement);
+        jobElement.click();
         okButton.click();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
 
         return new FolderConfigPage(getDriver());
     }
