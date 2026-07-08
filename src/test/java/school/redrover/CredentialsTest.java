@@ -51,7 +51,7 @@ public class CredentialsTest extends BaseTest {
                 .clickCreateButton()
                 .isCredentialVisible(id);
 
-        Assert.assertTrue(isCreated,"Username with ID " + id + " is not found!");
+        Assert.assertTrue(isCreated,"Username with ID %s is not found!".formatted(id));
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -66,7 +66,7 @@ public class CredentialsTest extends BaseTest {
                 .isCredentialDeleted(id);
 
         Assert.assertTrue(isDeleted,
-                "Username with ID " + id + " is still found!");
+                "Username with ID %s is still found!".formatted(id));
     }
 
     @Severity(SeverityLevel.CRITICAL)
