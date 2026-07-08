@@ -14,7 +14,7 @@ public class ManageJenkinsTest extends BaseTest {
     @Test
     public void testsPageItemsDefault() {
         List<String> expectedItems = List.of("System", "Tools", "Plugins", "Nodes", "Clouds",
-                "Appearance", "Security", "Credentials", "Credential Providers", "Users", "System Information",
+                "Appearance", "Security", "Credentials", "Credential Providers", "Manage and Assign Roles","Users", "System Information",
                 "System Log", "Load Statistics", "About Jenkins", "Manage Old Data", "Reload Configuration from Disk",
                 "Jenkins CLI", "Script Console", "Prepare for Shutdown"
         );
