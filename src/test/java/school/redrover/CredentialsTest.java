@@ -12,6 +12,7 @@ import school.redrover.page.HomePage;
 
 import java.time.format.DecimalStyle;
 import java.util.List;
+import java.util.UUID;
 
 public class CredentialsTest extends BaseTest {
 
@@ -36,17 +37,17 @@ public class CredentialsTest extends BaseTest {
     @Test
     public void testCreateUsernamePasswordCredential() {
 
-        long timestamp = System.currentTimeMillis();
-        id = "id" + timestamp;
-        String user = "user-" + timestamp;
-        String pass = "pass-" + timestamp;
-        String desc = "Test Description " + timestamp;
+        String uniqueId = "test-" + UUID.randomUUID().toString().substring(0, 8);
+        id = uniqueId;
+        String user = "user-" + uniqueId;
+        String pass = "pass-" + uniqueId;
+        String desc = "Test Description " + uniqueId;
 
         boolean isCreated = new HomePage(getDriver())
                 .clickManageButton()
                 .clickCredentials()
                 .clickAddCredentialsButton()
-                .createUsernameWithPassword(user, pass, id, desc)
+                .createUsernameWithPassword(user, pass, uniqueId, desc)
                 .clickCreateButton()
                 .isCredentialVisible(id);
 
@@ -88,10 +89,10 @@ public class CredentialsTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify secret test is created")
     @Test
-    public void addSecretTextCredentials() {
+    public void testAddSecretTextCredentials() {
 
-        long timestamp = System.currentTimeMillis();
-        id = "test-" + timestamp;
+        String uniqueId = "test-" + UUID.randomUUID().toString();
+        id = "test-" + uniqueId;
 
         boolean isCredentialsCreated = new HomePage(getDriver())
                 .clickManageButton()
@@ -112,15 +113,17 @@ public class CredentialsTest extends BaseTest {
     @Test
     public void testAddSecretFile() {
 
-        long timestamp = System.currentTimeMillis();
-        id = "test-" + timestamp;
+        String uniqueId = "test-" + UUID.randomUUID().toString();
+        id = "test-" + uniqueId;
 
                 boolean isCredentialsCreated = new HomePage(getDriver())
                 .clickManageButton()
                 .clickCredentials()
                 .clickAddCredentialsButton()
                 .clickSecretFileButton()
-                .addSecretFile(id, "desc")
+                .addSecretFile()
+                .typeID(id)
+                .typeDescription("Desc")
                 .clickCreateButton()
                 .isCredentialVisible(id);
 
@@ -132,15 +135,16 @@ public class CredentialsTest extends BaseTest {
     @Test
     public void testAddEmptySecretFile() {
 
-        long timestamp = System.currentTimeMillis();
-        id = "test-" + timestamp;
+        String uniqueId = "test-" + UUID.randomUUID().toString().substring(0, 8);
+        id = uniqueId;
 
         boolean isValidationErrorDisplayed = new HomePage(getDriver())
                 .clickManageButton()
                 .clickCredentials()
                 .clickAddCredentialsButton()
                 .clickSecretFileButton()
-                .doNotAddSecretFile(id,"Empty file")
+                .typeID(id)
+                .typeDescription("Desc")
                 .clickCreateButton()
                 .isErrorMessageVisible();
 

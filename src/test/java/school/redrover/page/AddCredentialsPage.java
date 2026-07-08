@@ -126,7 +126,12 @@ public class AddCredentialsPage extends BasePage {
     }
 
     public AddCredentialsPage typeID(String ID) {
-        IDField.sendKeys(ID);
+        getWait5().until(ExpectedConditions.visibilityOf(IDField)).sendKeys(ID);
+        return this;
+    }
+
+    public AddCredentialsPage typeDescription(String desc) {
+        descriptionField.sendKeys(desc);
         return this;
     }
 
@@ -147,7 +152,7 @@ public class AddCredentialsPage extends BasePage {
         return new CredentialsPage(getDriver());
     }
 
-    public AddCredentialsPage addSecretFile(String id, String desc) {
+        public AddCredentialsPage addSecretFile() {
 
         try {
             Path tempFile = Files.createTempFile("jenkins_secret_", ".txt");
@@ -160,22 +165,9 @@ public class AddCredentialsPage extends BasePage {
                     ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[type='file']")));
 
             fileInput.sendKeys(absolutePath);
-            IDField.sendKeys(id);
-            descriptionField.sendKeys(desc);
         } catch (IOException e) {
             throw new RuntimeException("Failed to create fake file on disk", e);
         }
-
-        return this;
-    }
-
-    public AddCredentialsPage doNotAddSecretFile (String id, String desc) {
-
-            getWait5().until(ExpectedConditions.visibilityOf(IDField));
-
-            IDField.sendKeys(id);
-            descriptionField.sendKeys(desc);
-
         return this;
     }
 }
