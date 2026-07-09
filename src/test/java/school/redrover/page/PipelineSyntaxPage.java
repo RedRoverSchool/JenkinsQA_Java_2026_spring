@@ -23,6 +23,7 @@ public class PipelineSyntaxPage extends BasePage {
 
     public PipelineSyntaxPage clickGenerateScript() {
         generatePipelineScriptButton.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class=\"copy-button jenkins-button jenkins-copy-button jenkins-!-margin-top-1\"]")));
         return this;
     }
 

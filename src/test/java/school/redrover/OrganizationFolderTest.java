@@ -1,9 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -39,7 +36,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(joblist.getFirst(), ORG_FOLDER_NAME);
     }
 
-    @Ignore
+
     @Test(dependsOnMethods = "testCreate")
     public void testPipelineSyntax() {
         boolean isTextContainsFileName = new HomePage(getDriver())
@@ -53,7 +50,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertTrue(isTextContainsFileName);
     }
 
-    @Ignore
+
     @Test(dependsOnMethods = "testPipelineSyntax")
     public void testCredentialsOpens() {
         final List<String> expectedBreadcrumbs = List.of(ORG_FOLDER_NAME, "Credentials");
@@ -69,7 +66,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertTrue(currentBreadcrumbs.containsAll(expectedBreadcrumbs));
     }
 
-    @Ignore //bug in Jenkins (worked before)
+     //bug in Jenkins (worked before)
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescription() {
         String actualDescriptionText = new HomePage(getDriver())
@@ -82,7 +79,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(actualDescriptionText, DESCRIPTION_TEXT);
     }
 
-    @Ignore
+
     @Test(dependsOnMethods = "testCredentialsOpens")
     public void testRename() {
         Boolean isUpdatedNameCorrect = new HomePage(getDriver())
@@ -96,7 +93,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertTrue(isUpdatedNameCorrect);
     }
 
-    @Ignore
+
     @Test(dependsOnMethods = "testRename")
     public void testAddDisplayName() {
         List<String> jobnewlist = new HomePage(getDriver())
@@ -112,7 +109,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(jobnewlist.getFirst(), ORG_FOLDER_DISPLAY_NAME);
     }
 
-    @Ignore
+
     @Test(dependsOnMethods = "testAddDisplayName")
     public void testMove() {
         List<String> breadcrumb = new HomePage(getDriver())
@@ -133,7 +130,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertTrue(breadcrumb.containsAll(List.of(FOLDER_NAME, ORG_FOLDER_DISPLAY_NAME)));
     }
 
-    @Ignore
+
     @Test(dependsOnMethods = "testMove")
     public void testDelete() {
         List<String> jobList = new HomePage(getDriver())
