@@ -104,11 +104,19 @@ public class RoleBasedAuthorizationStrategySteps {
     @Then("Role with name {string} is exists")
     public void checkRoleName(String roleName) {
         String role = new WebDriverWait(CucumberDriver.getDriver(), Duration.ofSeconds(5))
-                    .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[@id='globalRoles']//td[contains(text(), '%s')]".formatted(roleName)))).getText();
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[@id='globalRoles']//td[contains(text(), '%s')]".formatted(roleName)))).getText();
+
         // Возвращаю настройки авторизации, потому что потом падают тесты с созданием пользователей
         goToManageJenkins();
         clickSecurityButton();
         selectTypeAuthorization("Logged-in users can do anything");
+
+        WebElement checkbox = new WebDriverWait(CucumberDriver.getDriver(), Duration.ofSeconds(5))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@type='checkbox' and ../label[contains(text(), 'Allow anonymous read access')]]")));
+
+        if (checkbox.isSelected()) {
+            checkbox.findElement(By.xpath("../label")).click();
+        }
         clickSaveButton();
 
         Assert.assertEquals(roleName, role);
