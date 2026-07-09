@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.page.HomePage;
 import school.redrover.page.common.BaseJobPage;
 import school.redrover.page.components.FreestylePipelineMulticonfigSideMenuComponent;
 import school.redrover.page.project.config.FreestyleProjectConfigPage;
@@ -76,5 +77,12 @@ public class FreestyleProjectPage extends BaseJobPage<FreestyleProjectPage> {
 
         return getWait10().until(ExpectedConditions.textToBePresentInElementLocated(
                 By.id("notification-bar"), popUpMessage));
+    }
+
+    public HomePage goHomePage() {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("jenkins-head-icon"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']")));
+
+        return new HomePage(getDriver());
     }
 }

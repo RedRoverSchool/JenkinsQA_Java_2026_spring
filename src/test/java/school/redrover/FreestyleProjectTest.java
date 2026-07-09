@@ -5,7 +5,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.FreestyleProjectPage;
@@ -16,9 +15,9 @@ import java.util.List;
 
 public class FreestyleProjectTest extends BaseTest {
 
-    private final static String PROJECT_NAME = "FreestyleProject";
-    private final static String PROJECT_NAME_1 = "FreestyleProjectSuper";
-    private final static String NO_EXISTING_PROJECT = "My FreestyleProject Test";
+    private static final String PROJECT_NAME = "FreestyleProject";
+    private static final String PROJECT_NAME_1 = "FreestyleProjectSuper";
+    private static final String NO_EXISTING_PROJECT = "My FreestyleProject Test";
     private static final String REPOSITORY_URL = "https://github.com/";
     private static final String BRANCH_NAME = "*/main";
     private static final String DESCRIPTION_TEXT = "My test description";
@@ -311,6 +310,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .getSideMenu()
                 .clickConfigure(new FreestyleProjectConfigPage(getDriver()))
                 .getBranchSpecifierValue();
+
         Assert.assertEquals(branchSpecifierText, BRANCH_NAME,
                 "The branch name does not match the expected one!");
     }
@@ -368,13 +368,13 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickItemNewJob()
                 .enterProjectNameToCopyFromField(NO_EXISTING_PROJECT)
                 .getEmptyStateMessage();
+
         Assert.assertEquals(actualEmptyStateMessage, "No items");
     }
 
     @Test
     public void testCreateItemFromExisting() {
-        SoftAssert softAssert = new SoftAssert();
-        new HomePage(getDriver())
+        FreestyleProjectConfigPage freestyleProjectPage = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(PROJECT_NAME)
                 .selectFreestyleProjectAndClickOk()
@@ -383,9 +383,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .enterRepositoryURL(REPOSITORY_URL)
                 .selectBuildAfterOtherProjectsAreBuiltCheckbox()
                 .selectTriggerEvenIfTheBuildFailsRadioButton()
-                .clickSaveButton();
-
-        FreestyleProjectConfigPage freestyleProjectPage = new HomePage(getDriver())
+                .clickSaveButton()
                 .goHomePage()
                 .clickItemNewJob()
                 .setProjectName(NEW_ITEM_NAME)
@@ -397,11 +395,10 @@ public class FreestyleProjectTest extends BaseTest {
                 .getSideMenu()
                 .clickConfigure(new FreestyleProjectConfigPage(getDriver()));
 
-        softAssert.assertEquals(freestyleProjectPage.getProjectName(), NEW_ITEM_NAME, "Project name is not correct");
-        softAssert.assertTrue(freestyleProjectPage.isCurrentUrlCorrect(NEW_ITEM_NAME), "Current url is not correct");
-        softAssert.assertEquals(freestyleProjectPage.getDescriptionText(), DESCRIPTION_TEXT, "Description text is not correct");
-        softAssert.assertEquals(freestyleProjectPage.getRepositoryUrl(), REPOSITORY_URL, "Repository url is not correct");
-        softAssert.assertAll();
+        Assert.assertEquals(freestyleProjectPage.getProjectName(), NEW_ITEM_NAME, "Project name is not correct");
+        Assert.assertTrue(freestyleProjectPage.isCurrentUrlCorrect(NEW_ITEM_NAME), "Current url is not correct");
+        Assert.assertEquals(freestyleProjectPage.getDescriptionText(), DESCRIPTION_TEXT, "Description text is not correct");
+        Assert.assertEquals(freestyleProjectPage.getRepositoryUrl(), REPOSITORY_URL, "Repository url is not correct");
     }
 
     @Test
@@ -419,7 +416,6 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testDiscardOldBuildsCheckboxConfigurationSaved() {
-        SoftAssert softAssert = new SoftAssert();
         FreestyleProjectConfigPage freestyleProjectConfigPage = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(PROJECT_NAME)
@@ -435,10 +431,10 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickConfigure(new FreestyleProjectConfigPage(getDriver()))
                 .clickAdvancedAccordion();
 
-        softAssert.assertTrue(freestyleProjectConfigPage.idDiscardOldBuildsCheckboxChecked());
-        softAssert.assertEquals(freestyleProjectConfigPage.getDaysToKeepBuildsValue(), 30);
-        softAssert.assertEquals(freestyleProjectConfigPage.getMaxOfBuildToKeepValue(), 10);
-        softAssert.assertEquals(freestyleProjectConfigPage.getDaysToKeepArtifactsValue(), 13);
-        softAssert.assertEquals(freestyleProjectConfigPage.getMaxOfBuildsToKeepWithArtifactsValue(), 100);
+        Assert.assertTrue(freestyleProjectConfigPage.idDiscardOldBuildsCheckboxChecked());
+        Assert.assertEquals(freestyleProjectConfigPage.getDaysToKeepBuildsValue(), "30");
+        Assert.assertEquals(freestyleProjectConfigPage.getMaxOfBuildToKeepValue(), "10");
+        Assert.assertEquals(freestyleProjectConfigPage.getDaysToKeepArtifactsValue(), "13");
+        Assert.assertEquals(freestyleProjectConfigPage.getMaxOfBuildsToKeepWithArtifactsValue(), "100");
     }
 }

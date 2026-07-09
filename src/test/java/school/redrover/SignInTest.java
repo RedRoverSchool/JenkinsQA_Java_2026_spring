@@ -3,8 +3,8 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.JenkinsUtils;
 import school.redrover.page.HomePage;
+import school.redrover.page.LoginPage;
 
 public class SignInTest extends BaseTest {
 
@@ -19,7 +19,7 @@ public class SignInTest extends BaseTest {
 
     @Test
     public void testLoginValidData() {
-        new HomePage(getDriver())
+        String actualHeaderText = new HomePage(getDriver())
                 .clickManageButton()
                 .clickUsersButton()
                 .clickCreateUserButton()
@@ -28,20 +28,20 @@ public class SignInTest extends BaseTest {
                         USER_PASSWORD,
                         CONFIRM_PASSWORD,
                         USER_FULL_NAME,
-                        USER_EMAIL);
-
-        String headerText = JenkinsUtils.logoutToReturnSignInPage(getDriver())
-                .enterLogin(USER_LOGIN)
+                        USER_EMAIL)
+                .clickCreateUserButton(new LoginPage(getDriver()))
+                .logout()
+                .enterUsername(USER_LOGIN)
                 .enterPassword(USER_PASSWORD)
                 .clickSignInButtonForValidUser()
                 .getHeaderText();
 
-        Assert.assertEquals(headerText, "Welcome to Jenkins!");
+        Assert.assertEquals(actualHeaderText, "Welcome to Jenkins!");
     }
 
     @Test
     public void testLoginInValidPassword() {
-        new HomePage(getDriver())
+        String errorMessage = new HomePage(getDriver())
                 .clickManageButton()
                 .clickUsersButton()
                 .clickCreateUserButton()
@@ -50,19 +50,19 @@ public class SignInTest extends BaseTest {
                         USER_PASSWORD,
                         CONFIRM_PASSWORD,
                         USER_FULL_NAME,
-                        USER_EMAIL);
-
-        String errorMessage = JenkinsUtils.logoutToReturnSignInPage(getDriver())
-                .enterLogin(USER_LOGIN)
+                        USER_EMAIL)
+                .clickCreateUserButton(new LoginPage(getDriver()))
+                .logout()
+                .enterUsername(USER_LOGIN)
                 .enterPassword(USER_WRONG_PASSWORD)
-                .clickSignInButtonForInvalidCredentials();
+                .clickSignInButtonForInvalidUser();
 
         Assert.assertEquals(errorMessage, "Invalid username or password");
     }
 
     @Test
     public void testLoginInvalidUsername () {
-        new HomePage(getDriver())
+        String errorMessage = new HomePage(getDriver())
                 .clickManageButton()
                 .clickUsersButton()
                 .clickCreateUserButton()
@@ -72,19 +72,19 @@ public class SignInTest extends BaseTest {
                         CONFIRM_PASSWORD,
                         USER_FULL_NAME,
                         USER_EMAIL
-                );
-
-        String errorMessage = JenkinsUtils.logoutToReturnSignInPage(getDriver())
-                .enterLogin(USER_WRONG_USERNAME)
+                )
+                .clickCreateUserButton(new LoginPage(getDriver()))
+                .logout()
+                .enterUsername(USER_WRONG_USERNAME)
                 .enterPassword(USER_PASSWORD)
-                .clickSignInButtonForInvalidCredentials();
+                .clickSignInButtonForInvalidUser();
 
         Assert.assertEquals(errorMessage, "Invalid username or password");
     }
 
     @Test
     public void testSignInPageAlertTextColor() {
-        new HomePage(getDriver())
+        boolean colorMatches = new HomePage(getDriver())
                 .clickManageButton()
                 .clickUsersButton()
                 .clickCreateUserButton()
@@ -94,10 +94,10 @@ public class SignInTest extends BaseTest {
                         CONFIRM_PASSWORD,
                         USER_FULL_NAME,
                         USER_EMAIL
-                );
-
-        boolean colorMatches = JenkinsUtils.logoutToReturnSignInPage(getDriver())
-                .enterLogin(USER_LOGIN)
+                )
+                .clickCreateUserButton(new LoginPage(getDriver()))
+                .logout()
+                .enterUsername(USER_LOGIN)
                 .enterPassword(USER_WRONG_PASSWORD)
                 .clickSignInButtonToVerifyErrorTextColor(EXPECTED_COLOR);
 
@@ -106,7 +106,7 @@ public class SignInTest extends BaseTest {
 
     @Test
     public void testLoginEmptyData() {
-        new HomePage(getDriver())
+        String errorMessage = new HomePage(getDriver())
                 .clickManageButton()
                 .clickUsersButton()
                 .clickCreateUserButton()
@@ -116,12 +116,11 @@ public class SignInTest extends BaseTest {
                         CONFIRM_PASSWORD,
                         USER_FULL_NAME,
                         USER_EMAIL
-                );
-
-        String errorMessage = JenkinsUtils.logoutToReturnSignInPage(getDriver())
-                .enterLogin("")
+                )
+                .clickCreateUserButton(new LoginPage(getDriver()))
+                .logout()
                 .enterPassword("")
-                .clickSignInButtonForInvalidCredentials();
+                .clickSignInButtonForInvalidUser();
 
         Assert.assertEquals(errorMessage, "Invalid username or password");
     }
