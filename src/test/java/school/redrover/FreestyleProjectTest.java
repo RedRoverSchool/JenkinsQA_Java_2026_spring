@@ -77,7 +77,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testApplyButton() {
-                new HomePage(getDriver())
+        boolean isSelected = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(PROJECT_NAME)
                 .selectFreestyleProjectAndClickOk()
@@ -86,7 +86,14 @@ public class FreestyleProjectTest extends BaseTest {
                 .getSideMenu()
                 .clickConfigure(new FreestyleProjectConfigPage(getDriver()))
                 .setDeleteWorkspaceBeforeBuildStartsCheckbox(true)
-                .clickApplyButton();
+                .clickApply()
+                .goHomePage()
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .getSideMenu()
+                .clickConfigure(new FreestyleProjectConfigPage(getDriver()))
+                .isDeleteWorkspaceBeforeBuildStartsCheckboxChecked();
+
+        Assert.assertTrue(isSelected);
     }
 
     @Test
