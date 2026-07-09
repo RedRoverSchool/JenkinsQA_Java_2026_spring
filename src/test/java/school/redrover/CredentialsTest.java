@@ -4,19 +4,16 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.AddCredentialsPage;
 import school.redrover.page.HomePage;
 
-import java.time.format.DecimalStyle;
 import java.util.List;
 import java.util.UUID;
 
 public class CredentialsTest extends BaseTest {
 
-    private String id;
+    private String credentialId;
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify modal window 'Add Credentials' is displayed")
@@ -38,7 +35,7 @@ public class CredentialsTest extends BaseTest {
     public void testCreateUsernamePasswordCredential() {
 
         String uniqueId = UUID.randomUUID().toString().substring(0, 8);
-        id = "test-" + uniqueId;
+        credentialId = "test-" + uniqueId;
         String user = "user-" + uniqueId;
         String pass = "pass-" + uniqueId;
         String desc = "Test Description " + uniqueId;
@@ -47,11 +44,11 @@ public class CredentialsTest extends BaseTest {
                 .clickManageButton()
                 .clickCredentials()
                 .clickAddCredentialsButton()
-                .createUsernameWithPassword(user, pass, id, desc)
+                .createUsernameWithPassword(user, pass, credentialId, desc)
                 .clickCreateButton()
-                .isCredentialVisible(id);
+                .isCredentialVisible(credentialId);
 
-        Assert.assertTrue(isCreated,"Username with ID %s is not found!".formatted(id));
+        Assert.assertTrue(isCreated,"Username with ID %s is not found!".formatted(credentialId));
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -62,11 +59,11 @@ public class CredentialsTest extends BaseTest {
         boolean isDeleted = new HomePage(getDriver())
                 .clickManageButton()
                 .clickCredentials()
-                .clickDeleteCredential(id)
-                .isCredentialDeleted(id);
+                .clickDeleteCredential(credentialId)
+                .isCredentialDeleted(credentialId);
 
         Assert.assertTrue(isDeleted,
-                "Username with ID %s is still found!".formatted(id));
+                "Username with ID %s is still found!".formatted(credentialId));
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -92,7 +89,7 @@ public class CredentialsTest extends BaseTest {
     public void testAddSecretTextCredentials() {
 
         String uniqueId = UUID.randomUUID().toString();
-        id = "test-" + uniqueId;
+        credentialId = "test-" + uniqueId;
 
         boolean isCredentialsCreated = new HomePage(getDriver())
                 .clickManageButton()
@@ -101,9 +98,9 @@ public class CredentialsTest extends BaseTest {
                 .clickSecretTextButton()
                 .clickNextButton()
                 .typeSecretText("my-secret")
-                .typeID(id)
+                .typeID(credentialId)
                 .clickCreateButton()
-                .isCredentialVisible(id);
+                .isCredentialVisible(credentialId);
 
         Assert.assertTrue(isCredentialsCreated);
     }
@@ -114,7 +111,7 @@ public class CredentialsTest extends BaseTest {
     public void testAddSecretFile() {
 
         String uniqueId = UUID.randomUUID().toString();
-        id = "test-" + uniqueId;
+        credentialId = "test-" + uniqueId;
 
                 boolean isCredentialsCreated = new HomePage(getDriver())
                 .clickManageButton()
@@ -122,10 +119,10 @@ public class CredentialsTest extends BaseTest {
                 .clickAddCredentialsButton()
                 .clickSecretFileButton()
                 .addSecretFile()
-                .typeID(id)
+                .typeID(credentialId)
                 .typeDescription("Desc")
                 .clickCreateButton()
-                .isCredentialVisible(id);
+                .isCredentialVisible(credentialId);
 
         Assert.assertTrue(isCredentialsCreated);
     }
@@ -136,14 +133,14 @@ public class CredentialsTest extends BaseTest {
     public void testAddEmptySecretFile() {
 
         String uniqueId = UUID.randomUUID().toString().substring(0, 8);
-        id = "test-" + uniqueId;
+        credentialId = "test-" + uniqueId;
 
         boolean isValidationErrorDisplayed = new HomePage(getDriver())
                 .clickManageButton()
                 .clickCredentials()
                 .clickAddCredentialsButton()
                 .clickSecretFileButton()
-                .typeID(id)
+                .typeID(credentialId)
                 .typeDescription("Desc")
                 .clickCreateButton()
                 .isErrorMessageVisible();
