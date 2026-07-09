@@ -53,7 +53,7 @@ public class UserSteps {
 
     @Затем("Нажать кнопку Create User")
     public void clickButtonCreateUser() {
-        userManagementPage = createUserPage.clickCreateUserButton();
+        userManagementPage = createUserPage.clickCreateUserButton(new UserManagementPage(CucumberDriver.getDriver()));
     }
 
     @То("Пользователь с именем {string} создан в списке пользователей")
