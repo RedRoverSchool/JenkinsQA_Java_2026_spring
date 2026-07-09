@@ -91,7 +91,7 @@ public class CredentialsTest extends BaseTest {
     @Test
     public void testAddSecretTextCredentials() {
 
-        String uniqueId = "test-" + UUID.randomUUID().toString();
+        String uniqueId = UUID.randomUUID().toString();
         id = "test-" + uniqueId;
 
         boolean isCredentialsCreated = new HomePage(getDriver())
