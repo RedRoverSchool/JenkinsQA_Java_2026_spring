@@ -37,8 +37,8 @@ public class CredentialsTest extends BaseTest {
     @Test
     public void testCreateUsernamePasswordCredential() {
 
-        String uniqueId = "test-" + UUID.randomUUID().toString().substring(0, 8);
-        id = uniqueId;
+        String uniqueId = UUID.randomUUID().toString().substring(0, 8);
+        id = "test-" + uniqueId;
         String user = "user-" + uniqueId;
         String pass = "pass-" + uniqueId;
         String desc = "Test Description " + uniqueId;
@@ -47,7 +47,7 @@ public class CredentialsTest extends BaseTest {
                 .clickManageButton()
                 .clickCredentials()
                 .clickAddCredentialsButton()
-                .createUsernameWithPassword(user, pass, uniqueId, desc)
+                .createUsernameWithPassword(user, pass, id, desc)
                 .clickCreateButton()
                 .isCredentialVisible(id);
 
