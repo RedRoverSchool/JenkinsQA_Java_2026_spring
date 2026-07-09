@@ -113,7 +113,7 @@ public class CredentialsTest extends BaseTest {
     @Test
     public void testAddSecretFile() {
 
-        String uniqueId = "test-" + UUID.randomUUID().toString();
+        String uniqueId = UUID.randomUUID().toString();
         id = "test-" + uniqueId;
 
                 boolean isCredentialsCreated = new HomePage(getDriver())
@@ -135,8 +135,8 @@ public class CredentialsTest extends BaseTest {
     @Test
     public void testAddEmptySecretFile() {
 
-        String uniqueId = "test-" + UUID.randomUUID().toString().substring(0, 8);
-        id = uniqueId;
+        String uniqueId = UUID.randomUUID().toString().substring(0, 8);
+        id = "test-" + uniqueId;
 
         boolean isValidationErrorDisplayed = new HomePage(getDriver())
                 .clickManageButton()
