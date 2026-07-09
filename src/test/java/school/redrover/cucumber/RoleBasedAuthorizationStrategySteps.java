@@ -106,6 +106,7 @@ public class RoleBasedAuthorizationStrategySteps {
         String role = new WebDriverWait(CucumberDriver.getDriver(), Duration.ofSeconds(5))
                     .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[@id='globalRoles']//td[contains(text(), '%s')]".formatted(roleName)))).getText();
         // Возвращаю настройки авторизации, потому что потом падают тесты с созданием пользователей
+        goToManageJenkins();
         clickSecurityButton();
         selectTypeAuthorization("Logged-in users can do anything");
         clickSaveButton();
