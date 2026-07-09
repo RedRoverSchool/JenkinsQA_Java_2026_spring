@@ -105,6 +105,10 @@ public class RoleBasedAuthorizationStrategySteps {
     public void checkRoleName(String roleName) {
         String role = new WebDriverWait(CucumberDriver.getDriver(), Duration.ofSeconds(5))
                     .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[@id='globalRoles']//td[contains(text(), '%s')]".formatted(roleName)))).getText();
+        // Возвращаю настройки авторизации, потому что потом падают тесты с созданием пользователей
+        clickSecurityButton();
+        selectTypeAuthorization("Logged-in users can do anything");
+        clickSaveButton();
 
         Assert.assertEquals(roleName, role);
     }
