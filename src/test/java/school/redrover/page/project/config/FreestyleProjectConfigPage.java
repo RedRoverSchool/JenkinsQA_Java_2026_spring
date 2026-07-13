@@ -114,6 +114,7 @@ public class FreestyleProjectConfigPage extends BaseConfigPage<FreestyleProjectC
         return new FreestyleProjectPage(getDriver());
     }
 
+
     public FreestyleProjectConfigPage setDeleteWorkspaceBeforeBuildStartsCheckbox(boolean value) {
         WebElement checkbox = getWait10().until(
                 ExpectedConditions.presenceOfElementLocated(
