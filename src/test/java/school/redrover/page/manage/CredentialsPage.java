@@ -52,6 +52,21 @@ public class CredentialsPage extends BasePage {
                 .isDisplayed();
     }
 
+    private By getCredentialDescriptionLocator(String id) {
+        return By.xpath("//*[contains(text(), '%s')]/ancestor::div[contains(@class, 'credentials-card')]//div[@class='credentials-card__details']".formatted(id));
+    }
+    
+    public String getCredentialDescription(String credentialId) {
+        String fullText = getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(getCredentialDescriptionLocator(credentialId)))
+                .getText();
+        return fullText
+                .replace("System", "")
+                .replace("Global", "")
+                .replace("-", "")
+                .trim();
+    }
+
     public List<String> getCredentialList(String credentialId) {
         getWait10()
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[contains(@href, '/manage/credentials/store/system/domain/_/credential/') and text()='" + credentialId + "']")));
@@ -83,5 +98,4 @@ public class CredentialsPage extends BasePage {
                 .until(ExpectedConditions.visibilityOf(errorMessage))
                 .isDisplayed();
     }
-
 }
