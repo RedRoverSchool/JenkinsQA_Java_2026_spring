@@ -119,7 +119,8 @@ public class BasePage extends BaseModel {
     }
 
     public String getHeaderText() {
-       return getWait10().until(ExpectedConditions.visibilityOfElementLocated
-               (By.cssSelector("#main-panel > div > h1"))).getText();
+        return getWait10()
+                .until(ExpectedConditions.visibilityOfElementLocated(HEADER))
+                .getText();
     }
 }
