@@ -55,6 +55,7 @@ public class BasePage extends BaseModel {
         return new ManagePage(getDriver());
     }
 
+    @Step("Open user action menu")
     public BasePage openUserActionMenu() {
         WebElement userButton = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(USER_ACTION_BUTTON));
@@ -68,6 +69,7 @@ public class BasePage extends BaseModel {
         return this;
     }
 
+    @Step("Click Sign Out")
     public LoginPage clickSignOut() {
         WebElement dropdownMenu = getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(USER_ACTION_DROPDOWN));
@@ -77,6 +79,7 @@ public class BasePage extends BaseModel {
         return new LoginPage(getDriver());
     }
 
+    @Step("Sign out from Jenkins")
     public LoginPage openUserActionMenuAndLogout() {
         return openUserActionMenu()
                 .clickSignOut();
@@ -101,13 +104,8 @@ public class BasePage extends BaseModel {
         return this;
     }
 
-    public boolean isUserActionButtonDisplayed() {
-        return getWait10().until(
-                        ExpectedConditions.visibilityOfElementLocated(USER_ACTION_BUTTON))
-                .isDisplayed();
-    }
-
     public boolean isLoginFormAbsent() {
+
         return getDriver().findElements(USERNAME_FIELD).isEmpty();
     }
 
@@ -120,13 +118,8 @@ public class BasePage extends BaseModel {
         }
     }
 
-    public boolean isUrlContains(String text) {
-        return getWait5().until(ExpectedConditions.urlContains(text));
-    }
-
     public String getHeaderText() {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
-
-        return getDriver().findElement(By.cssSelector("div>#main-panel>div>div>h1")).getText();
+       return getWait10().until(ExpectedConditions.visibilityOfElementLocated
+               (By.cssSelector("#main-panel > div > h1"))).getText();
     }
 }

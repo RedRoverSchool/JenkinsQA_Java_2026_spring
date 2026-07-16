@@ -1,5 +1,6 @@
 package school.redrover;
 
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -9,9 +10,10 @@ import school.redrover.page.LoginPage;
 
 public class SignOutTest extends BaseTest {
 
-
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verifies that signing out redirects the user to the Jenkins sign-in page.")
     @Test
-    public void testSignOut() {
+    public void testSignOutRedirectsToLoginPage() {
         String headerText = new HomePage(getDriver())
                 .openUserActionMenuAndLogout()
                 .getHeaderText();
@@ -19,63 +21,44 @@ public class SignOutTest extends BaseTest {
         Assert.assertEquals(headerText, "Sign in to Jenkins");
     }
 
-    @Ignore
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verifies that signing out completes without displaying a confirmation alert.")
     @Test
-    public void testSignOutIsImmediate() {
+    public void testSignOutDoesNotRequireConfirmation() {
         LoginPage loginPage = new HomePage(getDriver())
                 .openUserActionMenuAndLogout();
 
         Assert.assertFalse(loginPage.isAlertPresent(),
-                "Не должно быть alert-окна подтверждения выхода. Выход должен быть мгновенным.");
-
-        Assert.assertTrue(loginPage.isUrlContains("login"),
-                "После Sign out должен быть переход на страницу логина.");
+                "Sign out should not require confirmation.");
     }
 
-    @Ignore
+    @Severity(SeverityLevel.TRIVIAL)
+    @Description("Verifies that the username and password fields are cleared after signing out, " +
+            "preventing previously entered credentials from remaining on the login page.")
     @Test
-    public void testJenkinsSignOutButton() {
+    public void testSignOutClearsLoginFields() {
         LoginPage loginPage = new HomePage(getDriver())
                 .openUserActionMenuAndLogout();
 
-        Assert.assertEquals(loginPage.getSignInButtonText(), "Sign in");
+        Assert.assertEquals(loginPage.getUsernameValue(), "",
+                "Username field should be empty after sign out.");
+        Assert.assertEquals(loginPage.getPasswordValue(), "",
+                "Password field should be empty after sign out.");
     }
 
-    @Ignore
+    @Ignore("Temporarily disabled pending team review: the scenario has unclear value for Sign Out coverage," +
+            " and the current assertions do not verify that the user action " +
+            "menu closes. isUserActionMenuDisplayed() waits for the menu to become visible and cannot validate " +
+            "its disappearance, while isLoginFormAbsent() only confirms that logout did not occur.")
+    @Severity(SeverityLevel.NORMAL)
     @Test
-    public void testJenkinsSignOutButtonUserNameEmpty() {
-        LoginPage loginPage = new HomePage(getDriver())
-                .openUserActionMenuAndLogout();
-
-        Assert.assertTrue(loginPage.isUsernameFieldEmpty(),
-                "Поле 'Username' должно быть пустым, но содержит: '" + loginPage.getUsernameValue() + "'");
-    }
-
-    @Ignore
-    @Test
-    public void testJenkinsSignOutButtonPasswordEmpty() {
-        LoginPage loginPage = new HomePage(getDriver())
-                .openUserActionMenuAndLogout();
-
-        Assert.assertTrue(loginPage.isPasswordFieldEmpty(),
-                "Поле 'Password' должно быть пустым, но содержит: '" + loginPage.getPasswordValue() + "'");
-    }
-
-
-@Ignore
-    @Test
-    public void testDropdownMenuClosesWhenMouseMovesAway() {
+    public void testUserActionMenuClosesWhenClickingHeader() {
         HomePage homePage = new HomePage(getDriver());
-
         homePage.openUserActionMenu();
+        homePage.closeUserActionMenuByClickingHeader();
 
         Assert.assertTrue(homePage.isUserActionMenuDisplayed(),
                 "Меню не появилось после наведения");
-
-        homePage.closeUserActionMenuByClickingHeader();
-
-        Assert.assertTrue(homePage.isUserActionButtonDisplayed(),
-                "Пользователь разлогинился, кнопка не видна");
 
         Assert.assertTrue(homePage.isLoginFormAbsent(),
                 "Произошёл переход на страницу логина, сессия потеряна");
