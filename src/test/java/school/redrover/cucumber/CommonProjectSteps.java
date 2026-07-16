@@ -8,8 +8,20 @@ import school.redrover.page.HomePage;
 
 public class CommonProjectSteps {
 
-    public HomePage homePage;
-    public CreateProjectPage createProjectPage;
+    private HomePage homePage;
+    private CreateProjectPage createProjectPage;
+
+    public HomePage getHomePage() {
+        return homePage;
+    }
+
+    public CreateProjectPage getCreateProjectPage() {
+        return createProjectPage;
+    }
+
+    public void setCreateProjectPage(CreateProjectPage createProjectPage) {
+        this.createProjectPage = createProjectPage;
+    }
 
     @When("Go to NewJob")
     public void goToNewJob() {
@@ -20,6 +32,5 @@ public class CommonProjectSteps {
     @And("Type job name {string}")
     public void enterItemName(String name) {
         createProjectPage.setProjectName(name);
-
     }
 }

@@ -26,9 +26,9 @@ public class FreestyleSteps {
     @And("Choose job type as {string}")
     public void setJobType(String jobType) {
         if ("FreestyleProject".equals(jobType)) {
-            createProjectPage = common.createProjectPage.selectFreeStyleProject();
+            createProjectPage = common.getCreateProjectPage().selectFreeStyleProject();
         } else if ("Folder".equals(jobType)) {
-            createProjectPage = common.createProjectPage.selectFolder();
+            createProjectPage = common.getCreateProjectPage().selectFolder();
         } else {
             throw new RuntimeException("Project type {%s} does not found.".formatted(jobType));
         }
@@ -36,7 +36,7 @@ public class FreestyleSteps {
 
     @And("Choose job type as Freestyle")
     public void setJobTypeAsFreestyle() {
-        createProjectPage = common.createProjectPage.selectFreeStyleProject();
+        createProjectPage = common.getCreateProjectPage().selectFreeStyleProject();
     }
 
     @And("Click Ok and go to config")
