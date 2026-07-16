@@ -67,6 +67,20 @@ public class CredentialsPage extends BasePage {
                 .trim();
     }
 
+        private By getCredentialTagLocator(String credentialId) {
+        return By.xpath("//a[text()='%s']/following-sibling::span[@class='credentials-card__tags']".formatted(credentialId));
+    }
+
+    public boolean isCredentialTagsVisible(String credentialId) {
+        try {
+            return getWait5()
+                    .until((ExpectedConditions.visibilityOfElementLocated(getCredentialTagLocator(credentialId))))
+                    .isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public List<String> getCredentialList(String credentialId) {
         getWait10()
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[contains(@href, '/manage/credentials/store/system/domain/_/credential/') and text()='" + credentialId + "']")));

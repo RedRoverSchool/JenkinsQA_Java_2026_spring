@@ -55,6 +55,8 @@ public class CredentialsTest extends BaseTest {
                 "Username with ID %s is not found!".formatted(credentialId));
 
         softAssert.assertEquals(credentialsPage.getCredentialDescription(credentialId),desc);
+        softAssert.assertTrue(credentialsPage.isCredentialTagsVisible(credentialId),
+                "Login and password mask line  '%s' not found!".formatted(credentialId));
         softAssert.assertAll();
     }
 
