@@ -108,6 +108,8 @@ public class CreateProjectPage extends BasePage {
         jobElement.click();
         okButton.click();
 
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
+        
         return new FolderConfigPage(getDriver());
     }
 
