@@ -197,4 +197,26 @@ public class PipelineProjectTest extends BaseTest {
         Assert.assertTrue(configPage.isDiscardOldBuildsSelected());
         Assert.assertEquals(configPage.getMaxNumberOfBuilds(), String.valueOf(MAX_NUMBER_OF_BUILDS));
     }
+
+    @Test
+    public void buildTriggerAfterOtherProjectTest(){
+        new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectPipelineProjectAndClickOk()
+                .clickSaveButton()
+                .goHomePage()
+                .clickItemNewJob()
+                .setProjectName(RENAME_PIPELINE)
+                .selectPipelineProjectAndClickOk()
+                .setBuildTrigger1(PROJECT_NAME)
+                .clickSaveButton()
+                .goHomePage()
+                .openProjectDropdownMenu(PROJECT_NAME)
+                .clickBuildInDropdown();
+
+
+    }
+
+
 }

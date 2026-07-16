@@ -38,6 +38,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, 'rename')]")
     private WebElement elementRename;
 
+    @FindBy(xpath = "//button[contains(@href,\"build\")]")
+    private WebElement buildNowOption;
+
     @FindBy(id = "description-link")
     private WebElement elementDescription;
 
@@ -172,6 +175,12 @@ public class HomePage extends BasePage {
     public RenameProjectPage clickRenameInDropdown() {
         getWait5().until(ExpectedConditions.elementToBeClickable(elementRename)).click();
         return new RenameProjectPage(getDriver());
+    }
+
+    @Step ("Click Build option in Drop-down menu")
+    public HomePage clickBuildInDropdown() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(buildNowOption)).click();
+        return this;
     }
 
     public HomePage confirmDelete(String projectName) {

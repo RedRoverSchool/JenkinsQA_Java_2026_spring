@@ -76,4 +76,12 @@ public class PipelineProjectConfigPage extends BaseConfigPage<PipelineProjectCon
     public String getMaxNumberOfBuilds() {
         return getWait5().until(ExpectedConditions.visibilityOf(maxNumberOfBuilds)).getAttribute("value");
     }
+
+    public PipelineProjectConfigPage setBuildTrigger1(String projectToWatchName){
+        getDriver().findElement(By.cssSelector("[data-section-id ='triggers']")).click();
+        getDriver().findElement(By.cssSelector("[id= 'cb8'] +.attach-previous")).click();
+        getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(projectToWatchName);
+        return this;
+
+    }
 }
