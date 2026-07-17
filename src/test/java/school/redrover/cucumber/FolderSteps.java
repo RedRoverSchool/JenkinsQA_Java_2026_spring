@@ -20,10 +20,8 @@ public class FolderSteps {
     }
 
     private CreateProjectPage createProjectPage;
-
     private FolderProjectPage folderProjectPage;
     private FolderConfigPage folderConfigurationPage;
-
 
     @And("Choose job type as Folder")
     public void setJobTypeAsFolder() {
@@ -42,7 +40,7 @@ public class FolderSteps {
 
     @And("Go to Home page")
     public void goToHomePage() {
-        homePage = folderProjectPage.goHomePage();
+        folderProjectPage.goHomePage();
     }
 
     @And("Click New View")
