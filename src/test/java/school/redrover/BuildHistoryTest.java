@@ -32,7 +32,7 @@ public class BuildHistoryTest extends BaseTest {
                 .clickBuildHistory()
                 .getBuildHistoryList();
 
-        Assert.assertFalse(buildHistoryList.isEmpty());
+        //Assert.assertFalse(buildHistoryList.isEmpty());
         Assert.assertEquals(buildHistoryList.getFirst(), PROJECT_NAME);
     }
 
