@@ -38,6 +38,16 @@ public class FolderSteps {
         folderProjectPage = folderConfigurationPage.clickSave(new FolderProjectPage(CucumberDriver.getDriver()));
     }
 
+    @And("Go to Home page")
+    public void goToHomePage() {
+        homePage = folderProjectPage.goHomePage();
+    }
+
+    @And("Click New View")
+    public void clickNewView() {
+        common.createFolderViewPage = folderProjectPage.clickNewView();
+    }
+
     @Then("Folder job name is {string}")
     public void assertFolderJobName(String jobName) {
         Assert.assertEquals(folderProjectPage.getHeaderText(), jobName);

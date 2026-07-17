@@ -22,8 +22,7 @@ public class ViewWithinFolderTest extends BaseTest {
                 .clickSave(new FolderProjectPage(getDriver()))
                 .clickNewView()
                 .inputName(VIEW_NAME)
-                .chooseMyView()
-                .clickCreateButton()
+                .selectListViewAndClickCreate() // fix
                 .getCurrentViewName();
 
         Assert.assertEquals(actualViewName, VIEW_NAME);

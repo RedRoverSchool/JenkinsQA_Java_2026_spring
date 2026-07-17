@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
-import school.redrover.page.view.GlobalViewPage;
+import school.redrover.page.view.GeneralViewPage;
 
 public class GlobalViewTest extends BaseTest {
 
@@ -90,13 +90,13 @@ public class GlobalViewTest extends BaseTest {
 
     @Test
     public void testClickHidePreviewOption() {
-        GlobalViewPage globalViewPage = new HomePage(getDriver())
+        GeneralViewPage generalViewPage = new HomePage(getDriver())
                 .clickDescription()
                 .inputDescription(DESCRIPTION_INPUT)
                 .clickPreviewButton()
                 .clickHideButton();
 
-        Assert.assertFalse(globalViewPage.isPreviewDisplayed());
+        Assert.assertFalse(generalViewPage.isPreviewDisplayed());
     }
 
     @Test
@@ -104,8 +104,7 @@ public class GlobalViewTest extends BaseTest {
         String nameView = TestUtils.createJob(getDriver(), PIPELINE_NAME, TestUtils.JobType.PIPELINE)
                 .clickForNewView()
                 .inputName(VIEW_NAME)
-                .chooseMyView()
-                .clickCreateButton()
+                .selectMyViewAndClickCreate()
                 .clickEditView()
                 .inputName(UPDATED_VIEW_NAME)
                 .clickSave()

@@ -9,7 +9,7 @@ import school.redrover.page.HomePage;
 import school.redrover.page.common.BasePage;
 import school.redrover.page.view.config.ViewMyConfigPage;
 
-public class GlobalViewPage extends BasePage {
+public class GeneralViewPage extends BasePage {
 
     @FindBy(xpath = "//h1[@class='job-index-headline page-headline']")
     private WebElement jobName;
@@ -41,7 +41,7 @@ public class GlobalViewPage extends BasePage {
     @FindBy(xpath = "//div[@class='tab active']/a")
     private WebElement currentViewName;
 
-    public GlobalViewPage(WebDriver driver) {
+    public GeneralViewPage(WebDriver driver) {
         super(driver);
     }
 
@@ -49,14 +49,14 @@ public class GlobalViewPage extends BasePage {
         return getWait5().until(ExpectedConditions.visibilityOf(jobName)).getText();
     }
 
-    public GlobalViewPage inputDescription(String textInput) {
+    public GeneralViewPage inputDescription(String textInput) {
         getWait5().until(ExpectedConditions.visibilityOf(descriptionInput));
         descriptionInput.sendKeys(textInput);
 
         return this;
     }
 
-    public GlobalViewPage clearDescription() {
+    public GeneralViewPage clearDescription() {
         getWait5().until(ExpectedConditions.elementToBeClickable(descriptionInput)).clear();
 
         return this;
@@ -76,7 +76,7 @@ public class GlobalViewPage extends BasePage {
         return new HomePage(getDriver());
     }
 
-    public GlobalViewPage clickPreviewButton() {
+    public GeneralViewPage clickPreviewButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(previewButton)).click();
 
         return this;
@@ -86,7 +86,7 @@ public class GlobalViewPage extends BasePage {
         return getWait5().until(ExpectedConditions.visibilityOf(previewText)).getText();
     }
 
-    public GlobalViewPage clickHideButton() {
+    public GeneralViewPage clickHideButton() {
         getWait5().until(ExpectedConditions.visibilityOf(hidePreview)).click();
         return this;
     }
