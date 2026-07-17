@@ -200,7 +200,7 @@ public class PipelineProjectTest extends BaseTest {
 
     @Test
     public void buildTriggerAfterOtherProjectTest(){
-        new HomePage(getDriver())
+        List<String> buildsList = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(PROJECT_NAME)
                 .selectPipelineProjectAndClickOk()
@@ -213,9 +213,11 @@ public class PipelineProjectTest extends BaseTest {
                 .clickSaveButton()
                 .goHomePage()
                 .openProjectDropdownMenu(PROJECT_NAME)
-                .clickBuildInDropdown();
+                .clickBuildInDropdown()
+                .goHomePage()
+                .getQueueProjectsList();
 
-
+        Assert.assertEquals(buildsList.getFirst(),RENAME_PIPELINE);
     }
 
 

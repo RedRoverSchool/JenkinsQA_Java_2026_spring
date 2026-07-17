@@ -23,6 +23,9 @@ public class HomePage extends BasePage {
     @FindBy(css = ".jenkins-table__link > span:first-child")
     private List<WebElement> projects;
 
+    @FindBy(css = "[id =\"buildQueue\"] .pane.pane-grow")
+    private List<WebElement> buildQueue;
+
     @FindBy(css = "#search-results")
     private List<WebElement> searchList;
 
@@ -74,6 +77,12 @@ public class HomePage extends BasePage {
     @Step("Get list of projects on the main page")
     public List<String> getProjectList() {
         return projects.stream()
+                .map(WebElement::getText)
+                .toList();
+    }
+
+    public List<String> getQueueProjectsList(){
+        return buildQueue.stream()
                 .map(WebElement::getText)
                 .toList();
     }

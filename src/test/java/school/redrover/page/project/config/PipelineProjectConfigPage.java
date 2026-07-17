@@ -1,6 +1,7 @@
 package school.redrover.page.project.config;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -78,10 +79,11 @@ public class PipelineProjectConfigPage extends BaseConfigPage<PipelineProjectCon
     }
 
     public PipelineProjectConfigPage setBuildTrigger1(String projectToWatchName){
-        getDriver().findElement(By.cssSelector("[data-section-id ='triggers']")).click();
-        getDriver().findElement(By.cssSelector("[id= 'cb8'] +.attach-previous")).click();
+        WebElement trigger = getDriver().findElement(By.cssSelector("[id= 'cb8'] +.attach-previous"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", trigger);
+        trigger.click();
         getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(projectToWatchName);
-        return this;
 
+        return this;
     }
 }
