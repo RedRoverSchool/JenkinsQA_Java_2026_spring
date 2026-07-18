@@ -1,6 +1,6 @@
 Feature: View within Folder
 
-  Scenario: Create MyView
+  Scenario: Create MyView within Folder
     When +Go to NewJob
     And +Type job name "folder name"
     And +Choose job type as Folder
