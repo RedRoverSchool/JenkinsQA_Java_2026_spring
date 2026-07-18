@@ -1,10 +1,10 @@
 package school.redrover.page.view.create;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.page.view.GeneralViewPage;
-import school.redrover.page.view.config.ViewGlobalConfigPage;
+import school.redrover.page.view.FolderViewPage;
 
 public class CreateFolderViewPage extends CreateViewBasePage<CreateFolderViewPage> {
 
@@ -15,17 +15,27 @@ public class CreateFolderViewPage extends CreateViewBasePage<CreateFolderViewPag
         super(driver);
     }
 
-    public ViewGlobalConfigPage selectGlobalViewAndClickCreate() {
+    @Step("Select Global View (Folder) and click Create")
+    public FolderViewPage selectGlobalViewAndClickCreate() {
         ratioGlobalView.click();
         buttonCreate.click();
 
-        return new ViewGlobalConfigPage(getDriver());
+        return new FolderViewPage(getDriver());
     }
 
-    public GeneralViewPage selectListViewAndClickCreate() {
+    @Step("Select List View (Folder) and click Create")
+    public FolderViewPage selectListViewAndClickCreate() {
         ratioListView.click();
         buttonCreate.click();
 
-        return new GeneralViewPage(getDriver());
+        return new FolderViewPage(getDriver());
+    }
+
+    @Step("Select My View (Folder) and click Create")
+    public FolderViewPage selectMyViewAndClickCreate() {
+        ratioMyView.click();
+        buttonCreate.click();
+
+        return new FolderViewPage(getDriver());
     }
 }

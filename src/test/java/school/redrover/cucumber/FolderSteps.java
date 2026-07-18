@@ -8,7 +8,6 @@ import school.redrover.common.CucumberDriver;
 import school.redrover.page.CreateProjectPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.FolderProjectPage;
-import school.redrover.page.project.FreestyleProjectPage;
 import school.redrover.page.project.config.FolderConfigPage;
 
 public class FolderSteps {
@@ -36,16 +35,6 @@ public class FolderSteps {
     @And("Save config and go to Folder job")
     public void saveConfigAndGoToFolderJob() {
         folderProjectPage = folderConfigurationPage.clickSave(new FolderProjectPage(CucumberDriver.getDriver()));
-    }
-
-    @And("Go to Home page")
-    public void goToHomePage() {
-        folderProjectPage.goHomePage();
-    }
-
-    @And("Click New View")
-    public void clickNewView() {
-        common.createFolderViewPage = folderProjectPage.clickNewView();
     }
 
     @Then("Folder job name is {string}")

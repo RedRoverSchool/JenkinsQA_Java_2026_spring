@@ -1,14 +1,13 @@
 package school.redrover;
 
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.view.GeneralViewPage;
 
-public class GlobalViewTest extends BaseTest {
+public class GeneralViewTest extends BaseTest {
 
     private static final String DESCRIPTION_INPUT = "Test";
     private static final String UPDATED_DESC_MESSAGE = "Updated desc message";
@@ -28,7 +27,6 @@ public class GlobalViewTest extends BaseTest {
         Assert.assertEquals(actualDescriptionText, DESCRIPTION_INPUT);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testAddViewDescription")
     public void testUpdateViewDescription() {
         String updatedDescriptionText = new HomePage(getDriver())
@@ -41,7 +39,6 @@ public class GlobalViewTest extends BaseTest {
         Assert.assertEquals(updatedDescriptionText, UPDATED_DESC_MESSAGE);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testUpdateViewDescription")
     public void testCancelUpdateViewDescription() {
         String actualDescriptionText = new HomePage(getDriver())
@@ -54,7 +51,6 @@ public class GlobalViewTest extends BaseTest {
         Assert.assertEquals(actualDescriptionText, UPDATED_DESC_MESSAGE);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCancelUpdateViewDescription")
     public void testDeleteViewDescription() {
         String addDescriptionText = new HomePage(getDriver())
@@ -66,7 +62,6 @@ public class GlobalViewTest extends BaseTest {
         Assert.assertEquals(addDescriptionText, ADD_DESCRIPTION_BUTTON_TEXT);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testDeleteViewDescription")
     public void testSaveWithoutViewDescription() {
         String actualDescriptionText = new HomePage(getDriver())

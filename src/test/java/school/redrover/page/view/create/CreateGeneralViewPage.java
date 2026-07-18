@@ -1,8 +1,8 @@
 package school.redrover.page.view.create;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import school.redrover.page.view.GeneralViewPage;
-import school.redrover.page.view.config.ViewListConfigPage;
 
 public class CreateGeneralViewPage extends CreateViewBasePage<CreateGeneralViewPage> {
 
@@ -10,12 +10,14 @@ public class CreateGeneralViewPage extends CreateViewBasePage<CreateGeneralViewP
         super(driver);
     }
 
-    public ViewListConfigPage selectListViewAndClickCreate() {
+    @Step("Select List View (General) and click Create")
+    public GeneralViewPage selectListViewAndClickCreate() {
         ratioListView.click();
         buttonCreate.click();
-        return new ViewListConfigPage(getDriver());
+        return new GeneralViewPage(getDriver());
     }
 
+    @Step("Select My View (General) and click Create")
     public GeneralViewPage selectMyViewAndClickCreate() {
         ratioMyView.click();
         buttonCreate.click();

@@ -5,15 +5,11 @@ import io.cucumber.java.en.When;
 import school.redrover.common.CucumberDriver;
 import school.redrover.page.CreateProjectPage;
 import school.redrover.page.HomePage;
-import school.redrover.page.view.GeneralViewPage;
-import school.redrover.page.view.create.CreateFolderViewPage;
 
 public class CommonProjectSteps {
 
     private HomePage homePage;
     private CreateProjectPage createProjectPage;
-    public CreateFolderViewPage createFolderViewPage;
-    public GeneralViewPage generalViewPage;
 
     public HomePage getHomePage() {
         return homePage;

@@ -6,7 +6,7 @@ Feature: General View
     And Choose job type as Folder
     And Click Ok and go to folder config page
     And Save config and go to Folder job
-    And Go to Home page
+    And +Go to Home page
     And Go to NewView
     And Enter view name "view name"
     And Select MyView type and save

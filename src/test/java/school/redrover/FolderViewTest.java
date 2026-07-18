@@ -1,14 +1,12 @@
 package school.redrover;
 
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.FolderProjectPage;
 
-@Ignore
-public class ViewWithinFolderTest extends BaseTest {
+public class FolderViewTest extends BaseTest {
 
     private static final String FOLDER_NAME = "NewFolder";
     private static final String VIEW_NAME = "MyViewWithinFolder";
@@ -25,7 +23,7 @@ public class ViewWithinFolderTest extends BaseTest {
                 .clickSave(new FolderProjectPage(getDriver()))
                 .clickNewView()
                 .inputName(VIEW_NAME)
-                .selectListViewAndClickCreate() // fix
+                .selectMyViewAndClickCreate()
                 .getCurrentViewName();
 
         Assert.assertEquals(actualViewName, VIEW_NAME);

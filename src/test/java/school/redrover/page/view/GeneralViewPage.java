@@ -1,110 +1,76 @@
 package school.redrover.page.view;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
-import school.redrover.page.common.BasePage;
+import school.redrover.page.view.base.BaseViewPage;
 import school.redrover.page.view.config.ViewMyConfigPage;
 
-public class GeneralViewPage extends BasePage {
-
-    @FindBy(xpath = "//h1[@class='job-index-headline page-headline']")
-    private WebElement jobName;
-
-    @FindBy(name = "description")
-    private WebElement descriptionInput;
-
-    @FindBy(xpath = "//button[text()='Cancel']")
-    private WebElement cancelButton;
-
-    @FindBy(xpath = "//button[@name='Submit']")
-    private WebElement saveButton;
-
-    @FindBy(id = "description-content")
-    private WebElement descriptionMessage;
-
-    @FindBy(id = "description-link")
-    private WebElement addDescriptionButton;
-
-    @FindBy(className = "textarea-show-preview")
-    private WebElement previewButton;
-
-    @FindBy(className = "textarea-preview")
-    private WebElement previewText;
-
-    @FindBy(className = "textarea-hide-preview")
-    private WebElement hidePreview;
-
-    @FindBy(xpath = "//div[@class='tab active']/a")
-    private WebElement currentViewName;
+public class GeneralViewPage extends BaseViewPage {
 
     public GeneralViewPage(WebDriver driver) {
         super(driver);
     }
 
-    public String getJobTitle() {
-        return getWait5().until(ExpectedConditions.visibilityOf(jobName)).getText();
-    }
-
+    @Step("Input description: '{textInput}'")
     public GeneralViewPage inputDescription(String textInput) {
-        getWait5().until(ExpectedConditions.visibilityOf(descriptionInput));
-        descriptionInput.sendKeys(textInput);
+        getWait5().until(ExpectedConditions.visibilityOf(fieldDescription));
+        fieldDescription.sendKeys(textInput);
 
         return this;
     }
 
+    @Step("Clear description field")
     public GeneralViewPage clearDescription() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(descriptionInput)).clear();
+        getWait5().until(ExpectedConditions.elementToBeClickable(fieldDescription)).clear();
 
         return this;
     }
 
+    @Step("Click 'Save' button")
     public HomePage clickSave() {
-        getWait10().until(ExpectedConditions.visibilityOf(saveButton)).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(addDescriptionButton));
+        getWait10().until(ExpectedConditions.visibilityOf(buttonSave)).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(editDescription));
 
         return new HomePage(getDriver());
     }
 
+    @Step("Click 'Cancel' button")
     public HomePage cancelButton() {
-        cancelButton.click();
+        buttonCancel.click();
         getWait5().until(ExpectedConditions.visibilityOf(descriptionMessage));
 
         return new HomePage(getDriver());
     }
 
+    @Step("Click 'Preview' button")
     public GeneralViewPage clickPreviewButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(previewButton)).click();
 
         return this;
     }
 
-    public String getPreviewText() {
-        return getWait5().until(ExpectedConditions.visibilityOf(previewText)).getText();
-    }
-
+    @Step("Click 'Hide' preview button")
     public GeneralViewPage clickHideButton() {
         getWait5().until(ExpectedConditions.visibilityOf(hidePreview)).click();
         return this;
     }
 
+    @Step("Check if preview is displayed")
     public boolean isPreviewDisplayed() {
-        return previewText.isDisplayed();
+        return areaPreview.isDisplayed();
     }
 
+    @Step("Check if 'Hide Preview' button is displayed")
     public boolean isHidePreviewButtonDisplayed() {
         return getWait5().until(ExpectedConditions.visibilityOf(hidePreview)).isDisplayed();
     }
 
+    @Step("Click 'Edit View' link in the side menu")
     public ViewMyConfigPage clickEditView() {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("Edit View"))).click();
         return new ViewMyConfigPage(getDriver());
-    }
-
-    public String getCurrentViewName() {
-        return getWait5().until(ExpectedConditions.visibilityOf(currentViewName)).getText();
     }
 }
