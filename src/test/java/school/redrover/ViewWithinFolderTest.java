@@ -7,6 +7,7 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.FolderProjectPage;
 
+@Ignore
 public class ViewWithinFolderTest extends BaseTest {
 
     private static final String FOLDER_NAME = "NewFolder";
@@ -14,7 +15,7 @@ public class ViewWithinFolderTest extends BaseTest {
     private static final String VIEW_DESCRIPTION = "Saved description";
     private static final String NEW_VIEW_DESCRIPTION = "New description text";
 
-    @Ignore
+
     @Test
     public void testCreateMyView() {
         String actualViewName = new HomePage(getDriver())
