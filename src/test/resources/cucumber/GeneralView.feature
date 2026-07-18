@@ -8,7 +8,7 @@ Feature: General View
     And Save config and go to Folder job
     And Go to Home page
     And Go to NewView
-    And Type view name "view name"
+    And Enter view name "view name"
     And Select MyView type and save
     Then General MyView name is "view name"
 

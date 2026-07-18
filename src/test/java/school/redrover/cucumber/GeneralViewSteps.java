@@ -9,32 +9,34 @@ import school.redrover.page.view.GeneralViewPage;
 import school.redrover.page.view.create.CreateGeneralViewPage;
 
 public class GeneralViewSteps {
-    private final CommonProjectSteps common;
+    private final TestContext context;
 
-    public GeneralViewSteps (CommonProjectSteps common) {
-        this.common = common;
+    public GeneralViewSteps (TestContext context) {
+        this.context = context;
     }
-
-    public CreateGeneralViewPage createGeneralViewPage;
-    public GeneralViewPage generalViewPage;
 
     @And("Go to NewView")
     public void goToNewView() {
-        createGeneralViewPage = new HomePage(CucumberDriver.getDriver()).clickForNewView();
+        CreateGeneralViewPage page = new HomePage(CucumberDriver.getDriver()).clickForNewView();
+        context.setCurrentPage(page);
     }
 
-    @And("Type view name {string}")
-    public void typeViewName(String viewName) {
-        createGeneralViewPage.inputName(viewName);
+    @And("Enter view name {string}")
+    public void enterViewName(String viewName) {
+        CreateGeneralViewPage page = context.getCurrentPage();
+        page.inputName(viewName);
     }
 
     @And("Select MyView type and save")
     public void selectMyViewType() {
-        generalViewPage = createGeneralViewPage.selectMyViewAndClickCreate();
+        CreateGeneralViewPage page = context.getCurrentPage();
+        GeneralViewPage generalViewPage = page.selectMyViewAndClickCreate();
+        context.setCurrentPage(generalViewPage);
     }
 
     @Then("General MyView name is {string}")
     public void assertGenMyViewName(String viewName) {
-        Assert.assertEquals(generalViewPage.getCurrentViewName(), viewName);
+        GeneralViewPage page = context.getCurrentPage();
+        Assert.assertEquals(page.getCurrentViewName(), viewName);
     }
 }
