@@ -10,7 +10,7 @@ import school.redrover.page.common.BasePage;
 import school.redrover.page.common.BaseProjectPage;
 import school.redrover.page.components.BaseSideMenuComponent;
 import school.redrover.page.project.config.FolderConfigPage;
-import school.redrover.page.view.CreateFolderViewPage;
+import school.redrover.page.view.create.CreateFolderViewPage;
 import school.redrover.page.view.FolderViewPage;
 
 import java.util.regex.Pattern;

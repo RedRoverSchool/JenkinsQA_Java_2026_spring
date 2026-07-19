@@ -1,13 +1,12 @@
-package school.redrover.page.view.config;
+package school.redrover.page.view.base;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
-import school.redrover.page.view.GeneralViewPage;
 
-public class ViewMyConfigPage extends BasePage {
+public abstract class BaseViewConfigPage<T extends BaseViewConfigPage<T>> extends BasePage {
 
     @FindBy(name = "name")
     private WebElement elementName;
@@ -27,15 +26,16 @@ public class ViewMyConfigPage extends BasePage {
     @FindBy(name = "Apply")
     private WebElement buttonApply;
 
-    public ViewMyConfigPage(WebDriver driver) {
+    public BaseViewConfigPage(WebDriver driver) {
         super(driver);
     }
 
-    public ViewMyConfigPage inputName(String newName) {
+    @SuppressWarnings("unchecked")
+    public T inputName(String newName) {
         getWait5().until(ExpectedConditions.elementToBeClickable(elementName)).clear();
         elementName.sendKeys(newName);
 
-        return this;
+        return (T) this;
     }
 
     public String getViewName() {
@@ -44,20 +44,11 @@ public class ViewMyConfigPage extends BasePage {
                 .getAttribute("value");
     }
 
-    public ViewMyConfigPage inputDescription(String newDescription) {
+    @SuppressWarnings("unchecked")
+    public T inputDescription(String newDescription) {
         elementDescription.clear();
         elementDescription.sendKeys(newDescription);
 
-        return this;
-    }
-
-    public GeneralViewPage clickSave() {
-        buttonSave.click();
-        return new GeneralViewPage(getDriver());
-    }
-
-    public ViewMyConfigPage clickApply() {
-        buttonApply.click();
-        return this;
+        return (T) this;
     }
 }

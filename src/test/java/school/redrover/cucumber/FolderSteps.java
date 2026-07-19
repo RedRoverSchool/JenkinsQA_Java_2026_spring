@@ -8,7 +8,6 @@ import school.redrover.common.CucumberDriver;
 import school.redrover.page.CreateProjectPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.FolderProjectPage;
-import school.redrover.page.project.FreestyleProjectPage;
 import school.redrover.page.project.config.FolderConfigPage;
 
 public class FolderSteps {
@@ -20,10 +19,8 @@ public class FolderSteps {
     }
 
     private CreateProjectPage createProjectPage;
-
     private FolderProjectPage folderProjectPage;
     private FolderConfigPage folderConfigurationPage;
-
 
     @And("Choose job type as Folder")
     public void setJobTypeAsFolder() {

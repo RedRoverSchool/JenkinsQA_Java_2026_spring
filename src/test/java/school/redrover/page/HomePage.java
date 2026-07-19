@@ -8,8 +8,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
 import school.redrover.page.common.BaseProjectPage;
 import school.redrover.page.external.CommandPalettePage;
-import school.redrover.page.view.CreateGlobalViewPage;
-import school.redrover.page.view.GlobalViewPage;
+import school.redrover.page.view.create.CreateGeneralViewPage;
+import school.redrover.page.view.GeneralViewPage;
 import school.redrover.page.user.UserPage;
 
 import java.util.List;
@@ -180,9 +180,9 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public GlobalViewPage clickDescription() {
+    public GeneralViewPage clickDescription() {
         getWait10().until(ExpectedConditions.visibilityOf(elementDescription)).click();
-        return new GlobalViewPage(getDriver());
+        return new GeneralViewPage(getDriver());
     }
 
     public String getViewDescriptionText() {
@@ -193,9 +193,9 @@ public class HomePage extends BasePage {
         return elementDescription.getText();
     }
 
-    public CreateGlobalViewPage clickForNewView() {
+    public CreateGeneralViewPage clickForNewView() {
         getWait5().until(ExpectedConditions.visibilityOf(newView)).click();
-        return new CreateGlobalViewPage(getDriver());
+        return new CreateGeneralViewPage(getDriver());
     }
 
     public HomePage clickScheduleBuild(String jobName) {

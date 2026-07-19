@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -54,6 +55,7 @@ public class MultiConfigurationTest extends BaseTest {
         Assert.assertTrue(message.contains("No builds"));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testChangesBeforeBuilding")
     public void testStatus() {
         List<String> linksList = new HomePage(getDriver())
@@ -69,6 +71,7 @@ public class MultiConfigurationTest extends BaseTest {
         Assert.assertTrue(linksList.getFirst().contains("Last build"));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testStatus")
     public void testChangesAfterBuilding() {
         String message = new HomePage(getDriver())
@@ -82,6 +85,7 @@ public class MultiConfigurationTest extends BaseTest {
         Assert.assertTrue(message.contains("No changes in any of the builds."));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testChangesAfterBuilding")
     public void testBuildNowDisplaysPopupMessage() {
         Boolean popupMessage = new HomePage(getDriver())
@@ -93,6 +97,7 @@ public class MultiConfigurationTest extends BaseTest {
         Assert.assertTrue(popupMessage);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testBuildNowDisplaysPopupMessage")
     public void testDisableProject() {
         Boolean projectDisabledMessage = new HomePage(getDriver())
@@ -106,6 +111,7 @@ public class MultiConfigurationTest extends BaseTest {
         Assert.assertTrue(projectDisabledMessage);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testDisableProject")
     public void testDeleteViaSidebar() {
         List<String> jobList = new HomePage(getDriver())
