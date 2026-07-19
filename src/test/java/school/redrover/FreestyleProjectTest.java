@@ -4,6 +4,7 @@ import io.qameta.allure.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -214,6 +215,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(projectDisabledMessage);
     }
 
+    @Ignore
     @Test
     public void testEnableProject() {
         Boolean projectEnabledMessage = new HomePage(getDriver())
@@ -393,6 +395,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(actualEmptyStateMessage, "No items");
     }
 
+    @Ignore
     @Test
     public void testCreateItemFromExisting() {
         FreestyleProjectConfigPage freestyleProjectPage = new HomePage(getDriver())

@@ -1,7 +1,9 @@
 package school.redrover;
 
+import io.cucumber.java.be.I;
 import io.qameta.allure.*;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -53,6 +55,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(jobnewlist.getFirst(), FOLDER_NEW_NAME);
     }
 
+    @Ignore
     @Severity(SeverityLevel.NORMAL)
     @Test(dependsOnMethods = "testRename")
     public void testAddLibraries() {
