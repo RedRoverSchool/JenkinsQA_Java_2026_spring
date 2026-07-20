@@ -5,32 +5,31 @@ import io.cucumber.java.en.When;
 import school.redrover.common.CucumberDriver;
 import school.redrover.page.CreateProjectPage;
 import school.redrover.page.HomePage;
+import school.redrover.page.project.FolderProjectPage;
 
 public class CommonProjectSteps {
 
-    private HomePage homePage;
-    private CreateProjectPage createProjectPage;
+    private final TestContext context;
 
-    public HomePage getHomePage() {
-        return homePage;
+    public CommonProjectSteps(TestContext context) {
+        this.context = context;
     }
 
-    public CreateProjectPage getCreateProjectPage() {
-        return createProjectPage;
-    }
-
-    public void setCreateProjectPage(CreateProjectPage createProjectPage) {
-        this.createProjectPage = createProjectPage;
+    @And("Go to Home page")
+    public void goToHomePage() {
+        FolderProjectPage page = context.getCurrentPage();
+        context.setCurrentPage(page.goHomePage());
     }
 
     @When("Go to NewJob")
     public void goToNewJob() {
-        createProjectPage = new HomePage(CucumberDriver.getDriver())
-                .clickItemNewJob();
+        context.setCurrentPage(new HomePage(CucumberDriver.getDriver())
+                .clickItemNewJob());
     }
 
     @And("Type job name {string}")
     public void enterItemName(String name) {
-        createProjectPage.setProjectName(name);
+        CreateProjectPage page = context.getCurrentPage();
+        page.setProjectName(name);
     }
 }
