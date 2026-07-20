@@ -5,8 +5,10 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.manage.CredentialsPage;
 
 import java.util.List;
 import java.util.UUID;
@@ -40,15 +42,22 @@ public class CredentialsTest extends BaseTest {
         String pass = "pass-" + uniqueId;
         String desc = "Test Description " + uniqueId;
 
-        boolean isCreated = new HomePage(getDriver())
+        SoftAssert softAssert = new SoftAssert();
+
+        CredentialsPage credentialsPage = new HomePage(getDriver())
                 .clickManageButton()
                 .clickCredentials()
                 .clickAddCredentialsButton()
                 .createUsernameWithPassword(user, pass, credentialId, desc)
-                .clickCreateButton()
-                .isCredentialVisible(credentialId);
+                .clickCreateButton();
 
-        Assert.assertTrue(isCreated,"Username with ID %s is not found!".formatted(credentialId));
+        softAssert.assertTrue(credentialsPage.isCredentialVisible(credentialId),
+                "Username with ID %s is not found!".formatted(credentialId));
+
+        softAssert.assertEquals(credentialsPage.getCredentialDescription(credentialId),desc);
+        softAssert.assertTrue(credentialsPage.isCredentialTagsVisible(credentialId),
+                "Login and password mask line  '%s' not found!".formatted(credentialId));
+        softAssert.assertAll();
     }
 
     @Severity(SeverityLevel.CRITICAL)
