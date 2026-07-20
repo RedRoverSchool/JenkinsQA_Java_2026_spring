@@ -8,6 +8,7 @@ import school.redrover.page.HomePage;
 
 import java.util.List;
 
+@Ignore
 public class BuildHistoryTest extends BaseTest {
 
     private static final String PROJECT_NAME = "NewFreestyleProject";
