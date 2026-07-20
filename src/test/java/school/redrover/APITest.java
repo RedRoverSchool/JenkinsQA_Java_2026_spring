@@ -4,11 +4,14 @@ package school.redrover;
 import com.google.common.net.HttpHeaders;
 import com.google.gson.Gson;
 import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import org.hamcrest.Matchers;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.common.ProjectUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -17,6 +20,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Objects;
+
+import static io.restassured.RestAssured.*;
 
 public class APITest {
 
@@ -88,10 +93,54 @@ public class APITest {
     @Ignore
     @Test
     public void restAssuredTest() {
-        RestAssured.when().get("https://pokeapi.co/api/v2/pokemon")
+        RestAssured
+                .when()
+                .get("https://pokeapi.co/api/v2/pokemon")
                 .then()
                 .statusCode(200)
                 .body("count", Matchers.equalTo(1350),
                         "results.name", Matchers.hasItems("bulbasaur", "ivysaur"));
+    }
+
+    @Test
+    public void checkJenkinsIsRunningTest() {
+        given()
+                .baseUri("http://localhost:8080")
+                .auth().preemptive().basic(ProjectUtils.getUserName(), ProjectUtils.getPassword())
+        .when()
+                .get("/api/json")
+        .then()
+                .statusCode(200)
+                .body("mode", Matchers.equalTo("NORMAL"));
+    }
+
+    @Test
+    public void createJobTest(){
+        String BASE_URL = "http://localhost:8080";
+        String JOB_NAME = "apiFreestyle";
+
+        Response crumbresponse =
+        given()
+               .baseUri(BASE_URL)
+               .auth().preemptive().basic(ProjectUtils.getUserName(), ProjectUtils.getPassword())
+        .when()
+                .get("/crumbIssuer/api/json");
+
+        String crumb = crumbresponse.jsonPath().getString("crumb");
+        String crumbRequestField = crumbresponse.jsonPath().getString("crumbRequestField");
+        File configFile = new File("src/test/resources/api/job-config.xml");
+
+        given()
+                .baseUri(BASE_URL)
+                .auth().preemptive().basic(ProjectUtils.getUserName(), ProjectUtils.getPassword())
+                .cookies(crumbresponse.getCookies())
+                .header("Content-Type", "application/xml")
+                .header (crumbRequestField, crumb)
+                .body (configFile)
+                .queryParam("name", JOB_NAME)
+        .when()
+                .post("/createItem")
+        .then()
+                .statusCode(200);
     }
 }
