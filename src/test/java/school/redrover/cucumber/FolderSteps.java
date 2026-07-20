@@ -73,15 +73,17 @@ public class FolderSteps {
         page.selectCache();
     }
 
-//    @And("Click Save")
-//    public void clickSave() {
-//        folderProjectPage = folderConfigurationPage.clickSave();
-//    }
-//
-//    @Then("Library is shown in folder configuration and name is {string}")
-//    public void assertLibraryName(String name) {
-//        Assert.assertEquals(folderConfigurationPage.getLibraryName(), name);
-//    }
+    @And("Click Save Folder configure")
+    public void clickSave() {
+        FolderConfigPage page = context.getCurrentPage();
+        context.setCurrentPage(page.clickSave());
+    }
+
+    @Then("Library is shown in folder configuration and name is {string}")
+    public void assertLibraryName(String name) {
+        FolderConfigPage page = context.getCurrentPage();
+        Assert.assertEquals(page.getLibraryName(), name);
+    }
 
     @And("Click New View")
     public void clickNewView() {

@@ -14,6 +14,6 @@ Feature: Folder job
     And Click Add pipeline libraries
     And Set library name "libname"
     And Select cache fetched
-    And Click Save
+    And Click Save Folder configure
     And Click Folder configure
     Then Library is shown in folder configuration and name is "libname"

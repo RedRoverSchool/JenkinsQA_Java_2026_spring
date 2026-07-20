@@ -23,7 +23,6 @@ public class FolderViewSteps {
     public void selectMyViewType() {
         CreateFolderViewPage page = context.getCurrentPage();
         context.setCurrentPage(page.selectMyViewAndClickCreate());
-
     }
 
     @Then("View within folder name is {string}")
