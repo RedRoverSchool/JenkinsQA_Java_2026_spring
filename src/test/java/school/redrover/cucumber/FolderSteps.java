@@ -18,12 +18,6 @@ public class FolderSteps {
         this.context = context;
     }
 
-    @And("Choose job type as Folder")
-    public void setJobTypeAsFolder() {
-        CreateProjectPage page = context.getCurrentPage();
-        page.selectFolder();
-    }
-
     @And("Click Ok and go to folder config page")
     public void clickOkAndGoToFolderConfig() {
         CreateProjectPage page = context.getCurrentPage();
@@ -85,7 +79,7 @@ public class FolderSteps {
         Assert.assertEquals(page.getLibraryName(), name);
     }
 
-    @And("Click New View")
+    @And("Go to create New View in Folder")
     public void clickNewView() {
         FolderProjectPage page = context.getCurrentPage();
         context.setCurrentPage(page.clickNewView());

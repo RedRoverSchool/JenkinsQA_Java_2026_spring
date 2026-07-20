@@ -16,7 +16,7 @@ public class GeneralViewSteps {
         this.context = context;
     }
 
-    @And("Go to NewView")
+    @And("Go to create general NewView")
     public void goToNewView() {
         CreateGeneralViewPage page = new HomePage(CucumberDriver.getDriver()).clickForNewView();
         context.setCurrentPage(page);
@@ -31,22 +31,19 @@ public class GeneralViewSteps {
     @And("Select MyView type for general view and save")
     public void selectMyViewType() {
         CreateGeneralViewPage page = context.getCurrentPage();
-        GeneralViewPage generalViewPage = page.selectMyViewAndClickCreate();
-        context.setCurrentPage(generalViewPage);
+        context.setCurrentPage(page.selectMyViewAndClickCreate());
     }
 
     @And("Select ListView type for general view and save")
     public void selectListViewType() {
         CreateGeneralViewPage page = context.getCurrentPage();
-        GeneralListViewConfigPage generalListViewConfigPage = page.selectListViewAndClickCreate();
-        context.setCurrentPage(generalListViewConfigPage);
+        context.setCurrentPage(page.selectListViewAndClickCreate());
     }
 
     @And("Confirm settings and go to General ListView")
     public void confirmSettingsAndGoToGeneralListView() {
         GeneralListViewConfigPage page = context.getCurrentPage();
-        GeneralViewPage generalViewPage = page.clickSave();
-        context.setCurrentPage(generalViewPage);
+        context.setCurrentPage(page.clickSave());
     }
 
     @Then("General MyView name is {string}")
