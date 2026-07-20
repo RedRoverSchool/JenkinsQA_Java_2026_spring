@@ -1,1 +1,1 @@
-[{"data":{"failed":0,"broken":0,"skipped":0,"passed":0,"unknown":0,"total":0}}]
+[{"buildOrder":1491,"reportUrl":"https://RedRoverSchool.github.io/JenkinsQA_Java_2026_spring/1491","reportName":"Allure Report with history","data":{"failed":0,"broken":1,"skipped":0,"passed":162,"unknown":30,"total":193}}]
