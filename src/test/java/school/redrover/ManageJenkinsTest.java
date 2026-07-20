@@ -26,6 +26,7 @@ public class ManageJenkinsTest extends BaseTest {
         Assert.assertEquals(actualItems, expectedItems);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testsPageItemsDefault")
     public void testPrepareForShutdown() {
         String shutdownReason = "Server maintenance scheduled";

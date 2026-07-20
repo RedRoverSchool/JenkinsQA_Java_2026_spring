@@ -12,69 +12,76 @@ import school.redrover.page.project.config.FolderConfigPage;
 
 public class FolderSteps {
 
-    private final CommonProjectSteps common;
+    private final TestContext context;
 
-    public FolderSteps(CommonProjectSteps common) {
-        this.common = common;
-    }
-
-    private CreateProjectPage createProjectPage;
-    private FolderProjectPage folderProjectPage;
-    private FolderConfigPage folderConfigurationPage;
-
-    @And("Choose job type as Folder")
-    public void setJobTypeAsFolder() {
-        createProjectPage = common.getCreateProjectPage().selectFolder();
+    public FolderSteps(TestContext context) {
+        this.context = context;
     }
 
     @And("Click Ok and go to folder config page")
     public void clickOkAndGoToFolderConfig() {
-        folderConfigurationPage = createProjectPage.clickOK(new FolderConfigPage(CucumberDriver.getDriver()));
+        CreateProjectPage page = context.getCurrentPage();
+        context.setCurrentPage(page.clickOK(new FolderConfigPage(CucumberDriver.getDriver())));
     }
 
     @And("Save config and go to Folder job")
     public void saveConfigAndGoToFolderJob() {
-        folderProjectPage = folderConfigurationPage.clickSave(new FolderProjectPage(CucumberDriver.getDriver()));
+        FolderConfigPage page = context.getCurrentPage();
+        context.setCurrentPage(page.clickSave());
     }
 
     @Then("Folder job name is {string}")
     public void assertFolderJobName(String jobName) {
-        Assert.assertEquals(folderProjectPage.getHeaderText(), jobName);
+        FolderProjectPage page = context.getCurrentPage();
+        Assert.assertEquals(page.getHeaderText(), jobName);
     }
 
     @When("Click Folder job {string}")
     public void clickFolderJob(String jobName) {
-        folderProjectPage = new HomePage(CucumberDriver.getDriver())
+        FolderProjectPage folderProjectPage = new HomePage(CucumberDriver.getDriver())
                 .clickOnProject(jobName, new FolderProjectPage(CucumberDriver.getDriver()));
+        context.setCurrentPage(folderProjectPage);
     }
 
     @And("Click Folder configure")
     public void clickFolderConfigure() {
-        folderConfigurationPage = folderProjectPage.clickConfigure();
+        FolderProjectPage page = context.getCurrentPage();
+        context.setCurrentPage(page.clickConfigure());
     }
 
     @And("Click Add pipeline libraries")
     public void clickAddLibraries(){
-        folderConfigurationPage = folderConfigurationPage.addLibraries();
+        FolderConfigPage page = context.getCurrentPage();
+        page.addLibraries();
     }
 
     @And("Set library name {string}")
     public void setLibraryName(String name) {
-        folderConfigurationPage = folderConfigurationPage.setLibraryName(name);
+        FolderConfigPage page = context.getCurrentPage();
+        page.setLibraryName(name);
     }
 
     @And("Select cache fetched")
     public void selectCache() {
-        folderConfigurationPage = folderConfigurationPage.selectCache();
+        FolderConfigPage page = context.getCurrentPage();
+        page.selectCache();
     }
 
-    @And("Click Save")
+    @And("Click Save Folder configure")
     public void clickSave() {
-        folderProjectPage = folderConfigurationPage.clickSave();
+        FolderConfigPage page = context.getCurrentPage();
+        context.setCurrentPage(page.clickSave());
     }
 
     @Then("Library is shown in folder configuration and name is {string}")
     public void assertLibraryName(String name) {
-        Assert.assertEquals(folderConfigurationPage.getLibraryName(), name);
+        FolderConfigPage page = context.getCurrentPage();
+        Assert.assertEquals(page.getLibraryName(), name);
+    }
+
+    @And("Go to create New View in Folder")
+    public void clickNewView() {
+        FolderProjectPage page = context.getCurrentPage();
+        context.setCurrentPage(page.clickNewView());
     }
 }
