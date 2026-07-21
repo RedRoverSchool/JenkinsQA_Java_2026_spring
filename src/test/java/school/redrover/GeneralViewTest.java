@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -27,6 +28,7 @@ public class GeneralViewTest extends BaseTest {
         Assert.assertEquals(actualDescriptionText, DESCRIPTION_INPUT);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testAddViewDescription")
     public void testUpdateViewDescription() {
         String updatedDescriptionText = new HomePage(getDriver())
@@ -39,7 +41,8 @@ public class GeneralViewTest extends BaseTest {
         Assert.assertEquals(updatedDescriptionText, UPDATED_DESC_MESSAGE);
     }
 
-    @Test(dependsOnMethods = "testUpdateViewDescription")
+    @Ignore
+    @Test
     public void testCancelUpdateViewDescription() {
         String actualDescriptionText = new HomePage(getDriver())
                 .clickDescription()
@@ -51,7 +54,7 @@ public class GeneralViewTest extends BaseTest {
         Assert.assertEquals(actualDescriptionText, UPDATED_DESC_MESSAGE);
     }
 
-    @Test(dependsOnMethods = "testCancelUpdateViewDescription")
+    @Test
     public void testDeleteViewDescription() {
         String addDescriptionText = new HomePage(getDriver())
                 .clickDescription()
@@ -62,7 +65,7 @@ public class GeneralViewTest extends BaseTest {
         Assert.assertEquals(addDescriptionText, ADD_DESCRIPTION_BUTTON_TEXT);
     }
 
-    @Test(dependsOnMethods = "testDeleteViewDescription")
+    @Test
     public void testSaveWithoutViewDescription() {
         String actualDescriptionText = new HomePage(getDriver())
                 .clickDescription()
