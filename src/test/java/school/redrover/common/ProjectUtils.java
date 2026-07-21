@@ -69,7 +69,7 @@ public final class ProjectUtils {
         return driver;
     }
 
-    static String getUrl() {
+    public static String getUrl() {
         return String.format("http://%s:%s/",
                 getValue(PREFIX_JENKINS_PROP + "host"),
                 getValue(PREFIX_JENKINS_PROP + "port"));
