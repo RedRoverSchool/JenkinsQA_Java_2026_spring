@@ -29,7 +29,7 @@ public class GeneralViewTest extends BaseTest {
     }
 
     @Ignore
-    @Test(dependsOnMethods = "testAddViewDescription")
+    @Test
     public void testUpdateViewDescription() {
         String updatedDescriptionText = new HomePage(getDriver())
                 .clickDescription()
@@ -42,7 +42,7 @@ public class GeneralViewTest extends BaseTest {
     }
 
     @Ignore
-    @Test
+    @Test(dependsOnMethods = "testUpdateViewDescription")
     public void testCancelUpdateViewDescription() {
         String actualDescriptionText = new HomePage(getDriver())
                 .clickDescription()
