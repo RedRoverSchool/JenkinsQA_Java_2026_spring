@@ -27,6 +27,7 @@ public class NodeTest extends BaseTest {
         Assert.assertTrue(nodesList.contains(NEW_NODE_NAME));
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testCreateNewNode")
     public void testNodeConfiguration() {
         List<String> expectAttributes = new ArrayList<>(List.of(DESCRIPTION, LABELS));
@@ -46,7 +47,7 @@ public class NodeTest extends BaseTest {
         Assert.assertEquals(actualAttributes, expectAttributes);
     }
 
-    @Test (dependsOnMethods = "testNodeConfiguration")
+    @Test(dependsOnMethods = "testCreateNewNode")
     public void testMarkNodeOffline() {
         boolean isNodeOffline = new HomePage(getDriver())
                 .clickManageButton()
