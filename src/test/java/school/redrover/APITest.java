@@ -24,6 +24,8 @@ import java.util.Objects;
 import static io.restassured.RestAssured.*;
 
 public class APITest {
+    String BASE_URL = "http://localhost:8080";
+    String JOB_NAME = "apiFreestyle";
 
     private static final class Pokemon {
         private final String name;
@@ -103,7 +105,7 @@ public class APITest {
     }
 
     @Test
-    public void checkJenkinsIsRunningTest() {
+    public void testCheckJenkinsIsRunning() {
         given()
                 .baseUri("http://localhost:8080")
                 .auth().preemptive().basic(ProjectUtils.getUserName(), ProjectUtils.getPassword())
@@ -115,10 +117,7 @@ public class APITest {
     }
 
     @Test
-    public void createJobTest(){
-        String BASE_URL = "http://localhost:8080";
-        String JOB_NAME = "apiFreestyle";
-
+    public void testCreateJob(){
         Response crumbresponse =
         given()
                .baseUri(BASE_URL)
@@ -142,5 +141,11 @@ public class APITest {
                 .post("/createItem")
         .then()
                 .statusCode(200);
+    }
+
+    @Test
+    public void testJobCreated(){
+        given()
+                .baseUri(BASE_URL)
     }
 }
