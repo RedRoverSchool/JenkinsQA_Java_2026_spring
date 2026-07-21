@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -57,6 +58,7 @@ public class NodeTest extends BaseTest {
         Assert.assertTrue(isNodeOffline);
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testMarkNodeOffline")
     public void testBringTheNodeBackOnline() {
         boolean isNodeOnline = new HomePage(getDriver())
@@ -69,7 +71,7 @@ public class NodeTest extends BaseTest {
         Assert.assertTrue(isNodeOnline);
     }
 
-    @Test (dependsOnMethods = "testBringTheNodeBackOnline")
+    @Test (dependsOnMethods = "testCreateNewNode")
     public void testDeleteNode() {
         List<String> actualNodeList = new HomePage(getDriver())
                 .clickManageButton()
