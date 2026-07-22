@@ -6,6 +6,15 @@ on:
       - main
 
   workflow_dispatch:
+    inputs:
+      run_all_tests:
+        description: 'Run all tests'
+        type: boolean
+        default: true
+      test_classes:
+        description: 'Specific test classes (comma-separated, e.g. FreestyleProjectTest,FolderTest). Ignored if "Run all tests" is checked.'
+        type: string
+        required: false
 
 jobs:
   run-test:
@@ -62,8 +71,15 @@ jobs:
         run: ./.github/wait-for-jenkins.sh
 
       - name: Maven test
-        run: mvn test
+        run: |
+          if [ "$RUN_ALL_TESTS" = "false" ] && [ -n "$TEST_CLASSES" ]; then
+            mvn test -Dtest="$TEST_CLASSES"
+          else
+            mvn test
+          fi
         env:
+          RUN_ALL_TESTS: ${{ inputs.run_all_tests }}
+          TEST_CLASSES: ${{ inputs.test_classes }}
           JENKINS_USERNAME: ${{ secrets.ADMIN_USERNAME }}
           JENKINS_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
           JENKINS_HOST: localhost

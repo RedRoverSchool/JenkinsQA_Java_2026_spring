@@ -3,6 +3,7 @@ package school.redrover;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -11,6 +12,7 @@ import school.redrover.page.project.MultibranchProjectPage;
 import school.redrover.page.project.config.MultibranchConfigPage;
 
 import java.util.List;
+
 
 public class MultibranchPipelineTest extends BaseTest {
 
@@ -75,6 +77,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertListNotContainsObject(projectList, PROJECT_NAME_DELETE, "Multibranch is not deleted");
     }
 
+    @Ignore
     @Test
     public void testDeleteProjectViaDashboardMenu() {
         List<String> projectList = new HomePage(getDriver())

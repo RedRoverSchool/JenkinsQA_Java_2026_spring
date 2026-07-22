@@ -13,6 +13,8 @@ import school.redrover.page.LoginPage;
 import school.redrover.page.components.FooterVersionComponent;
 import school.redrover.page.manage.ManagePage;
 
+import java.util.function.BiFunction;
+
 public class BasePage extends BaseModel {
 
     private static final By HEADER = By.xpath("//h1");
@@ -41,7 +43,7 @@ public class BasePage extends BaseModel {
 
     @Step("Go Home page")
     public HomePage goHomePage() {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("jenkins-head-icon"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-head-icon"))).click();
         // waiting for the home page
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']")));
 
@@ -128,5 +130,9 @@ public class BasePage extends BaseModel {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
 
         return getDriver().findElement(By.cssSelector("div>#main-panel>div>div>h1")).getText();
+    }
+
+    public <R extends BasePage, A extends BasePage> R action(BiFunction<A, WebDriver, R> action) {
+        return action.apply((A) this, getDriver());
     }
 }

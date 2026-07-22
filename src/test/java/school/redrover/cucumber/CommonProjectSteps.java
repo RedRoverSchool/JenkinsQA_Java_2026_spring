@@ -5,46 +5,43 @@ import io.cucumber.java.en.When;
 import school.redrover.common.CucumberDriver;
 import school.redrover.page.CreateProjectPage;
 import school.redrover.page.HomePage;
-import school.redrover.page.RenameProjectPage;
+import school.redrover.page.common.BasePage;
 
 public class CommonProjectSteps {
 
-    private HomePage homePage;
-    private CreateProjectPage createProjectPage;
-    private RenameProjectPage renameProjectPage;
+    private final TestContext context;
 
-    public HomePage getHomePage() {
-        return homePage;
+    public CommonProjectSteps(TestContext context) {
+        this.context = context;
     }
 
-    public void setHomePage(HomePage homePage) {
-        this.homePage = homePage;
-    }
-
-    public CreateProjectPage getCreateProjectPage() {
-        return createProjectPage;
-    }
-
-    public void setCreateProjectPage(CreateProjectPage createProjectPage) {
-        this.createProjectPage = createProjectPage;
-    }
-
-    public RenameProjectPage getRenameProjectPage() {
-        return renameProjectPage;
-    }
-
-    public void setRenameProjectPage(RenameProjectPage renameProjectPage) {
-        this.renameProjectPage = renameProjectPage;
+    @And("Go to Home page")
+    public void goToHomePage() {
+        BasePage page = context.getCurrentPage();
+        context.setCurrentPage(page.goHomePage());
     }
 
     @When("Go to NewJob")
     public void goToNewJob() {
-        createProjectPage = new HomePage(CucumberDriver.getDriver())
-                .clickItemNewJob();
+        context.setCurrentPage(new HomePage(CucumberDriver.getDriver())
+                .clickItemNewJob());
     }
 
     @And("Type job name {string}")
     public void enterItemName(String name) {
-        createProjectPage.setProjectName(name);
+        CreateProjectPage page = context.getCurrentPage();
+        page.setProjectName(name);
+    }
+
+    @And("Choose job type as {string}")
+    public void setJobType(String jobType) {
+        CreateProjectPage page = context.getCurrentPage();
+        if ("FreestyleProject".equals(jobType)) {
+            page.selectFreeStyleProject();
+        } else if ("Folder".equals(jobType)) {
+            page.selectFolder();
+        } else {
+            throw new RuntimeException("Project type {%s} does not found.".formatted(jobType));
+        }
     }
 }

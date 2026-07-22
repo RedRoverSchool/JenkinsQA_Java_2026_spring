@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -11,6 +12,8 @@ import school.redrover.page.project.config.FolderConfigPage;
 import school.redrover.page.project.config.FreestyleProjectConfigPage;
 
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class BreadcrumbTest extends BaseTest {
 
@@ -18,18 +21,34 @@ public class BreadcrumbTest extends BaseTest {
     private static final String FOLDER_CHILD = "FolderChild";
     private static final String FREESTYLE_NESTED = "FreestyleNested";
 
+    public static final BiFunction<HomePage, WebDriver, FolderConfigPage> CREATE_FOLDER = (homePage, driver) ->
+            homePage.clickItemNewJob()
+                    .setProjectName(FOLDER_PARENT)
+                    .selectItemType(TestUtils.JobType.FOLDER)
+                    .clickOK(new FolderConfigPage(driver));
+
+    public static BiFunction<HomePage, WebDriver, FolderConfigPage> createFolderFromHome(String name) {
+        return (homePage, driver) ->
+                homePage.clickItemNewJob()
+                        .setProjectName(name)
+                        .selectItemType(TestUtils.JobType.FOLDER)
+                        .clickOK(new FolderConfigPage(driver));
+    }
+
+    public static BiFunction<FolderProjectPage, WebDriver, FolderConfigPage> createFolderFromProject(String name) {
+        return (homePage, driver) ->
+                homePage.clickNewItem()
+                        .setProjectName(name)
+                        .selectItemType(TestUtils.JobType.FOLDER)
+                        .clickOK(new FolderConfigPage(driver));
+    }
+
     @Test
     public void testNavigateToParentFolder() {
         String header = new HomePage(getDriver())
-                .clickItemNewJob()
-                .setProjectName(FOLDER_PARENT)
-                .selectItemType(TestUtils.JobType.FOLDER)
-                .clickOK(new FolderConfigPage(getDriver()))
+                .action(createFolderFromHome(FOLDER_PARENT))
                 .clickSave(new FolderProjectPage(getDriver()))
-                .clickNewItem()
-                .setProjectName(FOLDER_CHILD)
-                .selectItemType(TestUtils.JobType.FOLDER)
-                .clickOK(new FolderConfigPage(getDriver()))
+                .action(createFolderFromProject(FOLDER_CHILD))
                 .goHomePage()
                 .clickOnProject(FOLDER_PARENT, new FolderProjectPage(getDriver()))
                 .clickOnChildProject(FOLDER_CHILD, new NestedFolderPage(getDriver()))

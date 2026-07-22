@@ -4,11 +4,16 @@ package school.redrover;
 import com.google.common.net.HttpHeaders;
 import com.google.gson.Gson;
 import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import org.hamcrest.Matchers;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.common.ProjectUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,7 +23,16 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Objects;
 
+import static io.restassured.RestAssured.*;
+
 public class APITest {
+    String BASE_URL = ProjectUtils.getUrl();
+    String JOB_NAME = "apiFreestyle";
+
+    private final RequestSpecification jenkinsSpec = new RequestSpecBuilder()
+            .setBaseUri(BASE_URL)
+            .setAuth(RestAssured.preemptive().basic(ProjectUtils.getUserName(), ProjectUtils.getPassword()))
+            .build();
 
     private static final class Pokemon {
         private final String name;
@@ -88,10 +102,86 @@ public class APITest {
     @Ignore
     @Test
     public void restAssuredTest() {
-        RestAssured.when().get("https://pokeapi.co/api/v2/pokemon")
+        RestAssured
+                .when()
+                .get("https://pokeapi.co/api/v2/pokemon")
                 .then()
                 .statusCode(200)
                 .body("count", Matchers.equalTo(1350),
                         "results.name", Matchers.hasItems("bulbasaur", "ivysaur"));
+    }
+
+    @Test
+    public void testCheckJenkinsIsRunning() {
+        given()
+                .spec(jenkinsSpec)
+        .when()
+                .get("/api/json")
+        .then()
+                .statusCode(200)
+                .body("mode", Matchers.equalTo("NORMAL"));
+    }
+
+    private Response getCrumbResponse() {
+        return given()
+                .spec(jenkinsSpec)
+        .when()
+                .get("/crumbIssuer/api/json");
+    }
+
+    @Test
+    public void testCreateJob(){
+        Response crumbresponse = getCrumbResponse();
+        String crumb = crumbresponse.jsonPath().getString("crumb");
+        String crumbRequestField = crumbresponse.jsonPath().getString("crumbRequestField");
+        File configFile = new File("src/test/resources/api/job-config.xml");
+
+        given()
+                .spec(jenkinsSpec)
+                .cookies(crumbresponse.getCookies())
+                .header("Content-Type", "application/xml")
+                .header (crumbRequestField, crumb)
+                .body (configFile)
+                .queryParam("name", JOB_NAME)
+        .when()
+                .post("/createItem")
+        .then()
+                .statusCode(200);
+    }
+
+    @Test(dependsOnMethods = "testCreateJob")
+    public void testJobCreated(){
+        given()
+                .spec(jenkinsSpec)
+        .when()
+                .get("/api/json")
+        .then()
+                .statusCode(200)
+                .body("jobs.name", Matchers.hasItem(JOB_NAME));
+
+    }
+
+    @Test(dependsOnMethods = "testJobCreated")
+    public void testJobDelete(){
+        Response crumbresponse = getCrumbResponse();
+        String crumb = crumbresponse.jsonPath().getString("crumb");
+        String crumbRequestField = crumbresponse.jsonPath().getString("crumbRequestField");
+
+        given()
+                .spec(jenkinsSpec)
+                .cookies(crumbresponse.getCookies())
+                .header("Content-Type", "application/xml")
+                .header (crumbRequestField, crumb)
+        .when()
+                .post("/job/%s/doDelete".formatted(JOB_NAME))
+        .then()
+                .statusCode(302);
+
+        given()
+                .spec(jenkinsSpec)
+        .when()
+                .get("/job/%s/api/json".formatted(JOB_NAME))
+        .then()
+                .statusCode(404);
     }
 }
