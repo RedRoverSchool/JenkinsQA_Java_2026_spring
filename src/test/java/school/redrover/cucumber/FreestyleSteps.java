@@ -7,14 +7,29 @@ import org.testng.Assert;
 import school.redrover.common.CucumberDriver;
 import school.redrover.page.CreateProjectPage;
 import school.redrover.page.HomePage;
+import school.redrover.page.RenameProjectPage;
 import school.redrover.page.project.FreestyleProjectPage;
 import school.redrover.page.project.config.FreestyleProjectConfigPage;
 
 public class FreestyleSteps {
     private final TestContext context;
+    private final CommonProjectSteps commonProjectSteps;
 
-    public FreestyleSteps(TestContext context) {
+    public FreestyleSteps(TestContext context, CommonProjectSteps commonProjectSteps) {
         this.context = context;
+        this.commonProjectSteps = commonProjectSteps;
+    }
+
+    @And("I open the project dropdown menu for {string}")
+    public void openProjectDropdownMenu(String projectName) {
+        HomePage homePage = context.getCurrentPage();
+        homePage.openProjectDropdownMenu(projectName);
+    }
+
+    @And("I click rename in dropdown")
+    public void clickRenameInDropdown() {
+        HomePage homePage = context.getCurrentPage();
+        context.setCurrentPage(homePage.clickRenameInDropdown());
     }
 
     @And("Click Ok and go to config")
@@ -22,12 +37,6 @@ public class FreestyleSteps {
         CreateProjectPage page = context.getCurrentPage();
         context.setCurrentPage(page.clickOK(new FreestyleProjectConfigPage(CucumberDriver.getDriver())));
     }
-
-//    @And("Go home")
-//    public void goHome() {
-//        ProjectUtils.get(CucumberDriver.getDriver());
-//        homePage = new HomePage(CucumberDriver.getDriver());
-//    }
 
     @And("Job with name {string} is exists")
     public void checkJobName(String jobName) {
@@ -70,5 +79,14 @@ public class FreestyleSteps {
     public void assertFreestyleJobDescription(String jobDescription) {
         FreestyleProjectPage page = context.getCurrentPage();
         Assert.assertEquals(page.getDescription(), jobDescription);
+    }
+
+    @When("Freestyle project exists")
+    public void ensureProjectExists() {
+        commonProjectSteps.goToNewJob();
+        commonProjectSteps.enterItemName("FreestyleProject");
+        commonProjectSteps.setJobType("FreestyleProject");
+        clickOkAndGoToConfig();
+        saveConfigAndGoToFreestyleJob();
     }
 }
