@@ -55,7 +55,6 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(jobnewlist.getFirst(), FOLDER_NEW_NAME);
     }
 
-    @Ignore
     @Severity(SeverityLevel.NORMAL)
     @Test(dependsOnMethods = "testRename")
     public void testAddLibraries() {
@@ -74,7 +73,7 @@ public class FolderTest extends BaseTest {
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify that we can't create folder with the same name")
-    @Test(dependsOnMethods = "testRename")
+    @Test(dependsOnMethods = "testAddLibraries")
     public void testCreateWithSameName() {
         String errorText = new HomePage(getDriver())
                 .clickItemNewJob()

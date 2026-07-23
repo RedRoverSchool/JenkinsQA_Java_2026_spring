@@ -70,7 +70,6 @@ public class APITest {
         private List<Pokemon> results;
     }
 
-    @Ignore
     @Test
     public void httpTest() throws IOException, URISyntaxException, InterruptedException {
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -88,11 +87,11 @@ public class APITest {
         Assert.assertNotNull(body);
 
         // simple check
-        Assert.assertTrue(body.startsWith("{\"count\":1350"));
+        Assert.assertTrue(body.startsWith("{\"count\":1351"));
 
         // regular check
         Pokemons pokemons = new Gson().fromJson(body, Pokemons.class);
-        Assert.assertEquals(pokemons.count, 1350);
+        Assert.assertEquals(pokemons.count, 1351);
         Assert.assertNull(pokemons.previous);
         Assert.assertEquals(pokemons.next, "https://pokeapi.co/api/v2/pokemon?offset=20&limit=20");
         Assert.assertEquals(pokemons.results.size(), 20);
@@ -101,7 +100,6 @@ public class APITest {
                 new Pokemon("bulbasaur", "https://pokeapi.co/api/v2/pokemon/1/"));
     }
 
-    @Ignore
     @Test
     public void restAssuredTest() {
         RestAssured
@@ -109,7 +107,7 @@ public class APITest {
                 .get("https://pokeapi.co/api/v2/pokemon")
         .then()
                 .statusCode(200)
-                .body("count", Matchers.equalTo(1350),
+                .body("count", Matchers.equalTo(1351),
                         "results.name", Matchers.hasItems("bulbasaur", "ivysaur"));
     }
 
