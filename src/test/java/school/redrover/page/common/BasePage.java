@@ -20,8 +20,6 @@ public class BasePage extends BaseModel {
     private static final By HEADER = By.xpath("//h1");
     private static final By USER_ACTION_BUTTON = By.id("root-action-UserAction");
     private static final By USER_ACTION_DROPDOWN = By.xpath("//div[contains(@class,'jenkins-dropdown')]");
-    private static final By USERNAME_FIELD = By.id("j_username");
-    private static final By TOP_HEADER = By.tagName("header");
     private static final By SIGN_OUT_LINK = By.xpath(".//a[@href='/logout']");
 
     private BreadcrumbComponent breadcrumb;
@@ -57,6 +55,7 @@ public class BasePage extends BaseModel {
         return new ManagePage(getDriver());
     }
 
+    @Step("Open user action menu")
     public BasePage openUserActionMenu() {
         WebElement userButton = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(USER_ACTION_BUTTON));
@@ -70,6 +69,7 @@ public class BasePage extends BaseModel {
         return this;
     }
 
+    @Step("Click Sign Out")
     public LoginPage clickSignOut() {
         WebElement dropdownMenu = getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(USER_ACTION_DROPDOWN));
@@ -79,38 +79,10 @@ public class BasePage extends BaseModel {
         return new LoginPage(getDriver());
     }
 
+    @Step("Sign out from Jenkins")
     public LoginPage openUserActionMenuAndLogout() {
         return openUserActionMenu()
                 .clickSignOut();
-    }
-
-    public boolean isUserActionMenuDisplayed() {
-        return getWait5().until(
-                        ExpectedConditions.visibilityOfElementLocated(USER_ACTION_DROPDOWN))
-                .isDisplayed();
-    }
-
-    public BasePage closeUserActionMenuByClickingHeader() {
-        WebElement header = getDriver().findElement(TOP_HEADER);
-
-        new Actions(getDriver())
-                .moveToElement(header)
-                .click()
-                .perform();
-
-        getWait5().until(ExpectedConditions.invisibilityOfElementLocated(USER_ACTION_DROPDOWN));
-
-        return this;
-    }
-
-    public boolean isUserActionButtonDisplayed() {
-        return getWait10().until(
-                        ExpectedConditions.visibilityOfElementLocated(USER_ACTION_BUTTON))
-                .isDisplayed();
-    }
-
-    public boolean isLoginFormAbsent() {
-        return getDriver().findElements(USERNAME_FIELD).isEmpty();
     }
 
     public boolean isAlertPresent() {
@@ -122,14 +94,10 @@ public class BasePage extends BaseModel {
         }
     }
 
-    public boolean isUrlContains(String text) {
-        return getWait5().until(ExpectedConditions.urlContains(text));
-    }
-
     public String getHeaderText() {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
-
-        return getDriver().findElement(By.cssSelector("div>#main-panel>div>div>h1")).getText();
+        return getWait10()
+                .until(ExpectedConditions.visibilityOfElementLocated(HEADER))
+                .getText();
     }
 
     public <R extends BasePage, A extends BasePage> R action(BiFunction<A, WebDriver, R> action) {

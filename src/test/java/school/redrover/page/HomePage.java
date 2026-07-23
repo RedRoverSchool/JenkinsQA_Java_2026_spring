@@ -209,17 +209,4 @@ public class HomePage extends BasePage {
             return false;
         }
     }
-
-    public UserPage searchUser(String userName) {
-        WebElement searchInput = getWait10().until(
-                ExpectedConditions.visibilityOf(searchInputField));
-
-        searchInput.sendKeys(userName);
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(
-                "//div[@id='search-results']//a[contains(@href, '/user/%s')]"
-                        .formatted(userName.toLowerCase())))).click();
-
-        return new UserPage(getDriver());
-    }
 }
