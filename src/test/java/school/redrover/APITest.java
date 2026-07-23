@@ -12,6 +12,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.ProjectUtils;
+import school.redrover.common.api.JobInfo;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static io.restassured.RestAssured.*;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
 public class APITest {
     String BASE_URL = ProjectUtils.getUrl();
@@ -103,9 +105,9 @@ public class APITest {
     @Test
     public void restAssuredTest() {
         RestAssured
-                .when()
+        .when()
                 .get("https://pokeapi.co/api/v2/pokemon")
-                .then()
+        .then()
                 .statusCode(200)
                 .body("count", Matchers.equalTo(1350),
                         "results.name", Matchers.hasItems("bulbasaur", "ivysaur"));
@@ -130,7 +132,7 @@ public class APITest {
     }
 
     @Test
-    public void testCreateJob(){
+    public void testCreateJob() {
         Response crumbresponse = getCrumbResponse();
         String crumb = crumbresponse.jsonPath().getString("crumb");
         String crumbRequestField = crumbresponse.jsonPath().getString("crumbRequestField");
@@ -162,6 +164,32 @@ public class APITest {
     }
 
     @Test(dependsOnMethods = "testJobCreated")
+    public void testJobInfoPOJO(){
+        JobInfo job = given()
+                .spec(jenkinsSpec)
+        .when()
+                .get("/job/%s/api/json".formatted(JOB_NAME))
+        .then()
+                .statusCode(200)
+                .extract().as(JobInfo.class);
+
+        Assert.assertEquals(job.getName(), JOB_NAME);
+        Assert.assertEquals(job.getDescription(), "");
+
+    }
+
+    @Test(dependsOnMethods = "testJobInfoPOJO")
+        public void testJobSchemaValidation() {
+        given()
+                .spec(jenkinsSpec)
+        .when()
+                .get("/job/%s/api/json".formatted(JOB_NAME))
+        .then()
+                .statusCode(200)
+                .body(matchesJsonSchemaInClasspath("api/job-schema.json"));
+    }
+
+    @Test(dependsOnMethods = "testJobSchemaValidation")
     public void testJobDelete(){
         Response crumbresponse = getCrumbResponse();
         String crumb = crumbresponse.jsonPath().getString("crumb");

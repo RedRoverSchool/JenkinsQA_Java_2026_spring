@@ -26,9 +26,6 @@ public class HomePage extends BasePage {
     @FindBy(css = "#search-results")
     private List<WebElement> searchList;
 
-    @FindBy(id = "root-action-SearchAction")
-    private WebElement searchButton;
-
     @FindBy(xpath = "//input[@id='command-bar']")
     private WebElement searchInputField;
 
@@ -49,12 +46,6 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//button[@data-id='ok']")
     private WebElement buttonConfirmDelete;
-
-    @FindBy(xpath = "//a[@href='/view/all/builds']")
-    private WebElement buttonBuildHistory;
-
-    @FindBy(xpath = "//footer//a[contains(text(),'REST API')]")
-    private WebElement restApiLink;
 
     private static final String SEARCH_RESULT = "//*[@id='search-results']/a[@href='/job/%s/']";
 
@@ -204,7 +195,7 @@ public class HomePage extends BasePage {
     }
 
     public BuildHistoryPage clickBuildHistory() {
-        buttonBuildHistory.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/builds']"))).click();
         getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), "Build History of Jenkins"));
 
         return new BuildHistoryPage(getDriver());
