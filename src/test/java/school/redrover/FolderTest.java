@@ -55,7 +55,6 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(jobnewlist.getFirst(), FOLDER_NEW_NAME);
     }
 
-    @Ignore
     @Severity(SeverityLevel.NORMAL)
     @Test(dependsOnMethods = "testRename")
     public void testAddLibraries() {
