@@ -32,7 +32,7 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//button[contains(@href, 'doDelete')]")
     private WebElement buttonDelete;
 
-    @FindBy(xpath = "//a[contains(@href, 'rename')]")
+    @FindBy(xpath = "//a[contains(@href, 'confirm-rename')]")
     private WebElement elementRename;
 
     @FindBy(id = "description-link")

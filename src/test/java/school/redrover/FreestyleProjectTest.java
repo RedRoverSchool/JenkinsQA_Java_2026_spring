@@ -42,9 +42,13 @@ public class FreestyleProjectTest extends BaseTest {
     @Owner("Yulia R.")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify that project is renamed")
-    @Test(dependsOnMethods = "testCreate")
+    @Test
     public void testRenameViaContextMenu() {
         List<String> projectList = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreestyleProjectAndClickOk()
+                .goHomePage()
                 .openProjectDropdownMenu(PROJECT_NAME)
                 .clickRenameInDropdown()
                 .setNewProjectName(PROJECT_NAME_1)

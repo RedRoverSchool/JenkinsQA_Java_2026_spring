@@ -27,3 +27,13 @@ Feature: Freestyle job
     | job_name         | job_type            |
     | Freestyle name   | FreestyleProject    |
     | Folder name      | Folder              |
+
+  Scenario: Rename Project Name
+    When Freestyle project exists
+    And Go to Home page
+    When I open the project dropdown menu for "FreestyleProject"
+    Then I click rename in dropdown
+    And Set new Project name as "FreestyleProjectSuper"
+    And Click rename button
+    And Go to Home page
+    Then "FreestyleProjectSuper" project is displayed
