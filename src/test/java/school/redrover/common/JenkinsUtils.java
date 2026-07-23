@@ -163,6 +163,16 @@ public final class JenkinsUtils {
         postHttp(url, body);
     }
 
+    private static void resetGlobalTheme() {
+        String url = ProjectUtils.getUrl() + "manage/appearance/configure";
+        String jsonPayload = "{\"io-jenkins-plugins-thememanager-ThemeManagerPageDecorator\":{\"theme\":{\"value\":\"0\",\"stapler-class\":\"io.jenkins.plugins.thememanager.none.NoOpThemeManagerFactory\",\"$class\":\"io.jenkins.plugins.thememanager.none.NoOpThemeManagerFactory\"}}}";
+        String encodedJson = URLEncoder.encode(jsonPayload, StandardCharsets.UTF_8);
+        String body = String.format("%s&json=%s&Submit=Submit&core:apply=true",
+                getCrumbAsString(),
+                encodedJson);
+        postHttp(url, body);
+    }
+
     private static void deleteJobs() {
         String mainPage = getPage("");
         deleteByLink("job/%s/doDelete",
@@ -252,6 +262,7 @@ public final class JenkinsUtils {
         JenkinsUtils.deleteSystemMessage();
         JenkinsUtils.deleteDomains();
         JenkinsUtils.resetTheme();
+        JenkinsUtils.resetGlobalTheme();
     }
 
     public static void login(WebDriver driver, String userName, String password) {

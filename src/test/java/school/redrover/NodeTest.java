@@ -11,7 +11,7 @@ public class NodeTest extends BaseTest {
 
     private static final String NEW_NODE_NAME = "New Test Node";
     private static final String DESCRIPTION = "Use only for urgent tasks";
-    private static final String DIR = "D:\\Jenkins\\NewTestNode";
+    private static final String DIR = "non-existence-dir\\Jenkins\\NewTestNode";
     private static final String LABELS = "Urgent";
     private static final String USAGE = "EXCLUSIVE";
 

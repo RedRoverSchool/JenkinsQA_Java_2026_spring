@@ -5,6 +5,8 @@ on:
     branches:
       - main
 
+  workflow_dispatch:
+
 jobs:
   run-test:
     name: 'Run tests'
@@ -24,12 +26,14 @@ jobs:
           cache: 'maven'
 
       - name: Get list of changed files
+        if: github.event_name == 'pull_request'
         run: echo "LIST_OF_CHANGED_FILES=$(git diff --name-status $(git merge-base origin/$GITHUB_HEAD_REF origin/main) origin/$GITHUB_HEAD_REF | tr '\n' ';' | tr '\t' '=')" >> $GITHUB_ENV
 
       - name: Compile tests
         run: mvn test-compile
 
       - name: Get collections of class dependencies
+        if: github.event_name == 'pull_request'
         run: echo "LIST_OF_DEPENDENCIES_CLASSES=$(jdeps -verbose:class -filter:none -recursive ./target/test-classes | grep "school.redrover.*-> school.redrover" | awk '{print $3 "=" $1}' | tr '\n' ';')" >> $GITHUB_ENV
 
 # tar -cvf jenkins_backup.tar ./jenkins_backup

@@ -1,6 +1,5 @@
 package school.redrover.cucumber;
 
-
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -13,25 +12,23 @@ import school.redrover.page.project.FreestyleProjectPage;
 import school.redrover.page.project.config.FreestyleProjectConfigPage;
 
 public class FreestyleSteps {
+    private final CommonProjectSteps common;
 
+    public FreestyleSteps(CommonProjectSteps common) {
+        this.common = common;
+    }
     private HomePage homePage;
     private CreateProjectPage createProjectPage;
 
     private FreestyleProjectPage freestyleProjectPage;
     private FreestyleProjectConfigPage freestyleProjectConfigurationPage;
 
-    @When("Go to NewJob")
-    public void goToNewJob() {
-        createProjectPage = new HomePage(CucumberDriver.getDriver())
-                .clickItemNewJob();
-    }
-
     @And("Choose job type as {string}")
     public void setJobType(String jobType) {
         if ("FreestyleProject".equals(jobType)) {
-            createProjectPage = createProjectPage.selectFreeStyleProject();
+            createProjectPage = common.createProjectPage.selectFreeStyleProject();
         } else if ("Folder".equals(jobType)) {
-            createProjectPage = createProjectPage.selectFolder();
+            createProjectPage = common.createProjectPage.selectFolder();
         } else {
             throw new RuntimeException("Project type {%s} does not found.".formatted(jobType));
         }
@@ -39,12 +36,7 @@ public class FreestyleSteps {
 
     @And("Choose job type as Freestyle")
     public void setJobTypeAsFreestyle() {
-        createProjectPage = createProjectPage.selectFreeStyleProject();
-    }
-
-    @And("Type job name {string}")
-    public void enterItemName(String name) {
-        createProjectPage.setProjectName(name);
+        createProjectPage = common.createProjectPage.selectFreeStyleProject();
     }
 
     @And("Click Ok and go to config")

@@ -4,18 +4,16 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.AddCredentialsPage;
 import school.redrover.page.HomePage;
 
-import java.time.format.DecimalStyle;
 import java.util.List;
+import java.util.UUID;
 
 public class CredentialsTest extends BaseTest {
 
-    private String id;
+    private String credentialId;
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify modal window 'Add Credentials' is displayed")
@@ -36,21 +34,21 @@ public class CredentialsTest extends BaseTest {
     @Test
     public void testCreateUsernamePasswordCredential() {
 
-        long timestamp = System.currentTimeMillis();
-        id = "id" + timestamp;
-        String user = "user-" + timestamp;
-        String pass = "pass-" + timestamp;
-        String desc = "Test Description " + timestamp;
+        String uniqueId = UUID.randomUUID().toString().substring(0, 8);
+        credentialId = "test-" + uniqueId;
+        String user = "user-" + uniqueId;
+        String pass = "pass-" + uniqueId;
+        String desc = "Test Description " + uniqueId;
 
         boolean isCreated = new HomePage(getDriver())
                 .clickManageButton()
                 .clickCredentials()
                 .clickAddCredentialsButton()
-                .createUsernameWithPassword(user, pass, id, desc)
+                .createUsernameWithPassword(user, pass, credentialId, desc)
                 .clickCreateButton()
-                .isCredentialVisible(id);
+                .isCredentialVisible(credentialId);
 
-        Assert.assertTrue(isCreated,"Username with ID " + id + " is not found!");
+        Assert.assertTrue(isCreated,"Username with ID %s is not found!".formatted(credentialId));
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -61,11 +59,11 @@ public class CredentialsTest extends BaseTest {
         boolean isDeleted = new HomePage(getDriver())
                 .clickManageButton()
                 .clickCredentials()
-                .clickDeleteCredential(id)
-                .isCredentialDeleted(id);
+                .clickDeleteCredential(credentialId)
+                .isCredentialDeleted(credentialId);
 
         Assert.assertTrue(isDeleted,
-                "Username with ID " + id + " is still found!");
+                "Username with ID %s is still found!".formatted(credentialId));
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -88,10 +86,10 @@ public class CredentialsTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify secret test is created")
     @Test
-    public void addSecretTextCredentials() {
+    public void testAddSecretTextCredentials() {
 
-        long timestamp = System.currentTimeMillis();
-        id = "test-" + timestamp;
+        String uniqueId = UUID.randomUUID().toString();
+        credentialId = "test-" + uniqueId;
 
         boolean isCredentialsCreated = new HomePage(getDriver())
                 .clickManageButton()
@@ -100,9 +98,9 @@ public class CredentialsTest extends BaseTest {
                 .clickSecretTextButton()
                 .clickNextButton()
                 .typeSecretText("my-secret")
-                .typeID(id)
+                .typeID(credentialId)
                 .clickCreateButton()
-                .isCredentialVisible(id);
+                .isCredentialVisible(credentialId);
 
         Assert.assertTrue(isCredentialsCreated);
     }
@@ -112,17 +110,19 @@ public class CredentialsTest extends BaseTest {
     @Test
     public void testAddSecretFile() {
 
-        long timestamp = System.currentTimeMillis();
-        id = "test-" + timestamp;
+        String uniqueId = UUID.randomUUID().toString();
+        credentialId = "test-" + uniqueId;
 
                 boolean isCredentialsCreated = new HomePage(getDriver())
                 .clickManageButton()
                 .clickCredentials()
                 .clickAddCredentialsButton()
                 .clickSecretFileButton()
-                .addSecretFile(id, "desc")
+                .addSecretFile()
+                .typeID(credentialId)
+                .typeDescription("Desc")
                 .clickCreateButton()
-                .isCredentialVisible(id);
+                .isCredentialVisible(credentialId);
 
         Assert.assertTrue(isCredentialsCreated);
     }
@@ -132,15 +132,16 @@ public class CredentialsTest extends BaseTest {
     @Test
     public void testAddEmptySecretFile() {
 
-        long timestamp = System.currentTimeMillis();
-        id = "test-" + timestamp;
+        String uniqueId = UUID.randomUUID().toString().substring(0, 8);
+        credentialId = "test-" + uniqueId;
 
         boolean isValidationErrorDisplayed = new HomePage(getDriver())
                 .clickManageButton()
                 .clickCredentials()
                 .clickAddCredentialsButton()
                 .clickSecretFileButton()
-                .doNotAddSecretFile(id,"Empty file")
+                .typeID(credentialId)
+                .typeDescription("Desc")
                 .clickCreateButton()
                 .isErrorMessageVisible();
 

@@ -75,6 +75,27 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    public void testApplyButton() {
+        boolean isSelected = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreestyleProjectAndClickOk()
+                .goHomePage()
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .getSideMenu()
+                .clickConfigure(new FreestyleProjectConfigPage(getDriver()))
+                .setDeleteWorkspaceBeforeBuildStartsCheckbox(true)
+                .clickApply()
+                .goHomePage()
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .getSideMenu()
+                .clickConfigure(new FreestyleProjectConfigPage(getDriver()))
+                .isDeleteWorkspaceBeforeBuildStartsCheckboxChecked();
+
+        Assert.assertTrue(isSelected);
+    }
+
+    @Test
     public void testCheckboxIsUnchecked() {
         boolean isChecked = new HomePage(getDriver())
                 .clickItemNewJob()

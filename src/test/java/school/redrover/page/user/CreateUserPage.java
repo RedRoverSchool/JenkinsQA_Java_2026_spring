@@ -17,7 +17,6 @@ public class CreateUserPage extends BasePage {
     private final By emailField = By.name("email");
     private final By submitButton = By.name("Submit");
     private final By errorMessages = By.xpath("//div[@class = 'error jenkins-!-margin-bottom-2']");
-    private final By addUserButton = By.xpath("//div[@class='jenkins-app-bar__controls']");
 
     public CreateUserPage(WebDriver driver) {
         super(driver);
@@ -55,7 +54,7 @@ public class CreateUserPage extends BasePage {
 
     public <T> T clickCreateUserButton(T page) {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(submitButton)).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(addUserButton));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-app-bar__controls']")));
 
         return page;
     }
