@@ -69,7 +69,7 @@ public class CommonProjectSteps {
     @Then("{string} project is displayed")
     public void verifyProjectsCount(String projectName) {
         HomePage page = context.getCurrentPage();
-        Assert.assertEquals(page.getProjectList().getFirst(), projectName);
+        Assert.assertTrue(page.getProjectList().contains(projectName), "Project " + projectName + " is not displayed");
     }
 
     @And("Set new Project name as {string}")

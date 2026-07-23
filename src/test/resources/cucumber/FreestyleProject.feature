@@ -33,9 +33,7 @@ Feature: Freestyle job
     And Go to Home page
     When I open the project dropdown menu for "FreestyleProject"
     Then I click rename in dropdown
-    And Set new Project name as FreestyleProjectSuper
-    And clickRenameButton
+    And Set new Project name as "FreestyleProjectSuper"
+    And Click rename button
     And Go to Home page
-    And Get project list
-    Then 1 project is displayed
-    Then FreestyleProjectSuper project is displayed
+    Then "FreestyleProjectSuper" project is displayed

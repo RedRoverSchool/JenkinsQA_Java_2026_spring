@@ -81,12 +81,16 @@ public class FreestyleSteps {
         Assert.assertEquals(page.getDescription(), jobDescription);
     }
 
+    @And("Select Freestyle Project and click ok")
+    public void selectFreestyleProjectAndClickOk() {
+        CreateProjectPage page = context.getCurrentPage();
+        page.selectFreestyleProjectAndClickOk();
+    }
+
     @When("Freestyle project exists")
     public void ensureProjectExists() {
         commonProjectSteps.goToNewJob();
         commonProjectSteps.enterItemName("FreestyleProject");
-        commonProjectSteps.setJobType("FreestyleProject");
-        clickOkAndGoToConfig();
-        saveConfigAndGoToFreestyleJob();
+        selectFreestyleProjectAndClickOk();
     }
 }
