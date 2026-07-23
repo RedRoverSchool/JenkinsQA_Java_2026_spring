@@ -44,13 +44,15 @@ public abstract class BaseJobPage<SELF extends BaseJobPage<SELF>> extends BasePr
 
     public SELF waitForBuildtoFinish() {
         getWait10().until(driver -> {
-            List<WebElement> iconProgress = driver.findElements(By.xpath("//div[@class='jenkins-app-bar']//*[local-name()='svg' and contains(@tooltip, 'In progress')]"));
-            if (iconProgress.isEmpty()) {
+            boolean inProgress = !driver.findElements(By.xpath("//div[@class='jenkins-app-bar']//*[local-name()='svg' and contains(@tooltip, 'In progress')]")).isEmpty();
+            boolean permalinksReady = !driver.findElements(By.xpath("//ul[@class='permalinks-list']//a[contains(@class, 'permalink-link')]")).isEmpty();
+
+            if (!inProgress && permalinksReady) {
                 return true;
             }
+
             driver.navigate().refresh();
             return false;
-
         });
         return (SELF) this;
     }
