@@ -55,7 +55,6 @@ public class MultiConfigurationTest extends BaseTest {
         Assert.assertTrue(message.contains("No builds"));
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testChangesBeforeBuilding")
     public void testStatus() {
         List<String> linksList = new HomePage(getDriver())
