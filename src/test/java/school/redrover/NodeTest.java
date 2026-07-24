@@ -47,7 +47,7 @@ public class NodeTest extends BaseTest {
         Assert.assertEquals(actualAttributes, expectAttributes);
     }
 
-    @Ignore
+
     @Test(dependsOnMethods = "testCreateNewNode")
     public void testMarkNodeOffline() {
         boolean isNodeOffline = new HomePage(getDriver())
