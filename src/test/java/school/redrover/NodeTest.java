@@ -72,7 +72,7 @@ public class NodeTest extends BaseTest {
         Assert.assertTrue(isNodeOnline);
     }
 
-    @Test (dependsOnMethods = "testCreateNewNode")
+    @Test (dependsOnMethods = "testMarkNodeOffline")
     public void testDeleteNode() {
         List<String> actualNodeList = new HomePage(getDriver())
                 .clickManageButton()
