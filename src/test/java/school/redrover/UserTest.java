@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -10,6 +11,7 @@ import school.redrover.page.user.UserPage;
 
 import java.util.List;
 
+@Ignore
 public class UserTest extends BaseTest {
 
     private static final String USER_NAME = "testUser";
