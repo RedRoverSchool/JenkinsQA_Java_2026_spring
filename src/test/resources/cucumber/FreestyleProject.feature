@@ -31,8 +31,8 @@ Feature: Freestyle job
   Scenario: Rename Project Name
     When Freestyle project exists
     And Go to Home page
-    When I open the project dropdown menu for "FreestyleProject"
-    Then I click rename in dropdown
+    And I open the project dropdown menu for "FreestyleProject"
+    And I click rename in dropdown
     And Set new Project name as "FreestyleProjectSuper"
     And Click rename button
     And Go to Home page
