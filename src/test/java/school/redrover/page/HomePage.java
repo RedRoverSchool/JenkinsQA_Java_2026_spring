@@ -82,6 +82,7 @@ public class HomePage extends BasePage {
     }
 
     public List<String> getQueueProjectsList(){
+        getWait5().until(ExpectedConditions.visibilityOfAllElements(buildQueue));
         return buildQueue.stream()
                 .map(WebElement::getText)
                 .toList();
