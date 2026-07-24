@@ -6,9 +6,9 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
-import school.redrover.page.view.GlobalViewPage;
+import school.redrover.page.view.GeneralViewPage;
 
-public class GlobalViewTest extends BaseTest {
+public class GeneralViewTest extends BaseTest {
 
     private static final String DESCRIPTION_INPUT = "Test";
     private static final String UPDATED_DESC_MESSAGE = "Updated desc message";
@@ -29,7 +29,7 @@ public class GlobalViewTest extends BaseTest {
     }
 
     @Ignore
-    @Test(dependsOnMethods = "testAddViewDescription")
+    @Test
     public void testUpdateViewDescription() {
         String updatedDescriptionText = new HomePage(getDriver())
                 .clickDescription()
@@ -54,8 +54,7 @@ public class GlobalViewTest extends BaseTest {
         Assert.assertEquals(actualDescriptionText, UPDATED_DESC_MESSAGE);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testCancelUpdateViewDescription")
+    @Test
     public void testDeleteViewDescription() {
         String addDescriptionText = new HomePage(getDriver())
                 .clickDescription()
@@ -66,8 +65,7 @@ public class GlobalViewTest extends BaseTest {
         Assert.assertEquals(addDescriptionText, ADD_DESCRIPTION_BUTTON_TEXT);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testDeleteViewDescription")
+    @Test
     public void testSaveWithoutViewDescription() {
         String actualDescriptionText = new HomePage(getDriver())
                 .clickDescription()
@@ -90,13 +88,13 @@ public class GlobalViewTest extends BaseTest {
 
     @Test
     public void testClickHidePreviewOption() {
-        GlobalViewPage globalViewPage = new HomePage(getDriver())
+        GeneralViewPage generalViewPage = new HomePage(getDriver())
                 .clickDescription()
                 .inputDescription(DESCRIPTION_INPUT)
                 .clickPreviewButton()
                 .clickHideButton();
 
-        Assert.assertFalse(globalViewPage.isPreviewDisplayed());
+        Assert.assertFalse(generalViewPage.isPreviewDisplayed());
     }
 
     @Test
@@ -104,8 +102,7 @@ public class GlobalViewTest extends BaseTest {
         String nameView = TestUtils.createJob(getDriver(), PIPELINE_NAME, TestUtils.JobType.PIPELINE)
                 .clickForNewView()
                 .inputName(VIEW_NAME)
-                .chooseMyView()
-                .clickCreateButton()
+                .selectMyViewAndClickCreate()
                 .clickEditView()
                 .inputName(UPDATED_VIEW_NAME)
                 .clickSave()

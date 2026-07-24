@@ -6,12 +6,13 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.FolderProjectPage;
 
-public class ViewWithinFolderTest extends BaseTest {
+public class FolderViewTest extends BaseTest {
 
     private static final String FOLDER_NAME = "NewFolder";
     private static final String VIEW_NAME = "MyViewWithinFolder";
     private static final String VIEW_DESCRIPTION = "Saved description";
     private static final String NEW_VIEW_DESCRIPTION = "New description text";
+
 
     @Test
     public void testCreateMyView() {
@@ -22,8 +23,7 @@ public class ViewWithinFolderTest extends BaseTest {
                 .clickSave(new FolderProjectPage(getDriver()))
                 .clickNewView()
                 .inputName(VIEW_NAME)
-                .chooseMyView()
-                .clickCreateButton()
+                .selectMyViewAndClickCreate()
                 .getCurrentViewName();
 
         Assert.assertEquals(actualViewName, VIEW_NAME);

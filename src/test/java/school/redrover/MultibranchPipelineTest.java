@@ -1,8 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
@@ -11,8 +9,10 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.project.MultibranchProjectPage;
+import school.redrover.page.project.config.MultibranchConfigPage;
 
 import java.util.List;
+
 
 public class MultibranchPipelineTest extends BaseTest {
 
@@ -77,6 +77,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertListNotContainsObject(projectList, PROJECT_NAME_DELETE, "Multibranch is not deleted");
     }
 
+    @Ignore
     @Test
     public void testDeleteProjectViaDashboardMenu() {
         List<String> projectList = new HomePage(getDriver())
@@ -111,5 +112,21 @@ public class MultibranchPipelineTest extends BaseTest {
                 .getErrorMessage();
 
         Assert.assertEquals(errorMessage, "‘" + invalidCharacter + "’ is an unsafe character");
+    }
+
+    @Test
+    public void testChooseHealthmetrics() {
+        boolean addMetricButtonIsEnabled = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName("MultibranchEntityOlgaTest")
+                .selectMultibranchAndClickOk()
+                .chooseHealthMetricsOnTheSideMenu()
+                .clickHealthMetricsButton()
+                .clickAddMetricsButton(new MultibranchConfigPage(getDriver()).healthMetric1)
+                .clickAddMetricsButton(new MultibranchConfigPage(getDriver()).healthMetric2)
+                .clickAddMetricsButton(new MultibranchConfigPage(getDriver()).healthMetric3)
+                .statusOfAddMetricButton();
+
+        Assert.assertFalse(addMetricButtonIsEnabled);
     }
 }

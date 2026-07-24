@@ -8,8 +8,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
 import school.redrover.page.common.BaseProjectPage;
 import school.redrover.page.external.CommandPalettePage;
-import school.redrover.page.view.CreateGlobalViewPage;
-import school.redrover.page.view.GlobalViewPage;
+import school.redrover.page.view.create.CreateGeneralViewPage;
+import school.redrover.page.view.GeneralViewPage;
 import school.redrover.page.user.UserPage;
 
 import java.util.List;
@@ -29,16 +29,13 @@ public class HomePage extends BasePage {
     @FindBy(css = "#search-results")
     private List<WebElement> searchList;
 
-    @FindBy(id = "root-action-SearchAction")
-    private WebElement searchButton;
-
     @FindBy(xpath = "//input[@id='command-bar']")
     private WebElement searchInputField;
 
     @FindBy(xpath = "//button[contains(@href, 'doDelete')]")
     private WebElement buttonDelete;
 
-    @FindBy(xpath = "//a[contains(@href, 'rename')]")
+    @FindBy(xpath = "//a[contains(@href, 'confirm-rename')]")
     private WebElement elementRename;
 
     @FindBy(xpath = "//button[contains(@href,\"build\")]")
@@ -55,12 +52,6 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//button[@data-id='ok']")
     private WebElement buttonConfirmDelete;
-
-    @FindBy(xpath = "//a[@href='/view/all/builds']")
-    private WebElement buttonBuildHistory;
-
-    @FindBy(xpath = "//footer//a[contains(text(),'REST API')]")
-    private WebElement restApiLink;
 
     private static final String SEARCH_RESULT = "//*[@id='search-results']/a[@href='/job/%s/']";
 
@@ -199,9 +190,9 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public GlobalViewPage clickDescription() {
+    public GeneralViewPage clickDescription() {
         getWait10().until(ExpectedConditions.visibilityOf(elementDescription)).click();
-        return new GlobalViewPage(getDriver());
+        return new GeneralViewPage(getDriver());
     }
 
     public String getViewDescriptionText() {
@@ -212,9 +203,9 @@ public class HomePage extends BasePage {
         return elementDescription.getText();
     }
 
-    public CreateGlobalViewPage clickForNewView() {
+    public CreateGeneralViewPage clickForNewView() {
         getWait5().until(ExpectedConditions.visibilityOf(newView)).click();
-        return new CreateGlobalViewPage(getDriver());
+        return new CreateGeneralViewPage(getDriver());
     }
 
     public HomePage clickScheduleBuild(String jobName) {
@@ -223,7 +214,7 @@ public class HomePage extends BasePage {
     }
 
     public BuildHistoryPage clickBuildHistory() {
-        buttonBuildHistory.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/builds']"))).click();
         getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), "Build History of Jenkins"));
 
         return new BuildHistoryPage(getDriver());
@@ -236,18 +227,5 @@ public class HomePage extends BasePage {
         } catch (TimeoutException e) {
             return false;
         }
-    }
-
-    public UserPage searchUser(String userName) {
-        WebElement searchInput = getWait10().until(
-                ExpectedConditions.visibilityOf(searchInputField));
-
-        searchInput.sendKeys(userName);
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(
-                "//div[@id='search-results']//a[contains(@href, '/user/%s')]"
-                        .formatted(userName.toLowerCase())))).click();
-
-        return new UserPage(getDriver());
     }
 }

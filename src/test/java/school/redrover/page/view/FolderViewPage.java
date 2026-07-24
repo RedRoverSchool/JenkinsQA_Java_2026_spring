@@ -2,36 +2,11 @@ package school.redrover.page.view;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.page.common.BasePage;
 import school.redrover.page.components.ViewSideMenuComponent;
+import school.redrover.page.view.base.BaseViewPage;
 
-public class FolderViewPage extends BasePage {
-
-    @FindBy(id = "description-link")
-    private WebElement buttonDescription;
-
-    @FindBy(name = "description")
-    private WebElement fieldDescription;
-
-    @FindBy(xpath = "//*[@id='description-edit-form']//a[normalize-space()='Preview']")
-    private WebElement linkPreview;
-
-    @FindBy(css = "#description-edit-form .textarea-preview")
-    private WebElement areaPreview;
-
-    @FindBy(id = "description-content")
-    private WebElement content;
-
-    @FindBy(name = "Submit")
-    private WebElement buttonSave;
-
-    @FindBy(id = "description-link")
-    private WebElement editDescription;
-
-    @FindBy(css = "#description-edit-form .description-cancel-button")
-    private WebElement buttonCancel;
+public class FolderViewPage extends BaseViewPage {
 
     public FolderViewPage(WebDriver driver) {
         super(driver);
@@ -42,7 +17,7 @@ public class FolderViewPage extends BasePage {
     }
 
     public FolderViewPage addDescription(String expectedDescription) {
-        buttonDescription.click();
+        editDescription.click();
         getWait5().until(ExpectedConditions.visibilityOf(fieldDescription)).sendKeys(expectedDescription);
 
         return this;
@@ -59,7 +34,7 @@ public class FolderViewPage extends BasePage {
     }
 
     public String getDescriptionText() {
-        return getWait10().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(content))).getText();
+        return getWait10().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(descriptionMessage))).getText();
     }
 
     public FolderViewPage editDescription(String newDescriptionText) {

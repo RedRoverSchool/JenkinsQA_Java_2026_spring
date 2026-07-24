@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BasePage;
-import school.redrover.page.view.GlobalViewPage;
+import school.redrover.page.view.GeneralViewPage;
 
 public class ViewMyConfigPage extends BasePage {
 
@@ -51,9 +51,9 @@ public class ViewMyConfigPage extends BasePage {
         return this;
     }
 
-    public GlobalViewPage clickSave() {
+    public GeneralViewPage clickSave() {
         buttonSave.click();
-        return new GlobalViewPage(getDriver());
+        return new GeneralViewPage(getDriver());
     }
 
     public ViewMyConfigPage clickApply() {

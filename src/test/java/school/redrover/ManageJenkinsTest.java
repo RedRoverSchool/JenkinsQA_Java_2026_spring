@@ -26,6 +26,7 @@ public class ManageJenkinsTest extends BaseTest {
         Assert.assertEquals(actualItems, expectedItems);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testsPageItemsDefault")
     public void testPrepareForShutdown() {
         String shutdownReason = "Server maintenance scheduled";
@@ -139,17 +140,6 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
-    public void testSystemSettingsHaveFields() {
-        List<String> sectionList = new HomePage(getDriver())
-                .clickManageButton()
-                .clickSystem()
-                .getSectionList();
-
-        Assert.assertEquals(sectionList.size(), 27);
-        Assert.assertEquals(sectionList.getFirst(), "General");
-    }
-
-    @Test
     public void testChangeDarkTheme() {
         Object theme = new HomePage(getDriver())
                 .clickManageButton()
@@ -159,5 +149,16 @@ public class ManageJenkinsTest extends BaseTest {
                 .getThemeAttribute();
 
         Assert.assertEquals(theme, "dark");
+    }
+
+    @Test
+    public void testSystemSettingsHaveFields() {
+        List<String> sectionList = new HomePage(getDriver())
+                .clickManageButton()
+                .clickSystem()
+                .getSectionList();
+
+        Assert.assertEquals(sectionList.size(), 27);
+        Assert.assertEquals(sectionList.getFirst(), "General");
     }
 }

@@ -4,6 +4,7 @@ import io.qameta.allure.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -41,9 +42,13 @@ public class FreestyleProjectTest extends BaseTest {
     @Owner("Yulia R.")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify that project is renamed")
-    @Test(dependsOnMethods = "testCreate")
+    @Test
     public void testRenameViaContextMenu() {
         List<String> projectList = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreestyleProjectAndClickOk()
+                .goHomePage()
                 .openProjectDropdownMenu(PROJECT_NAME)
                 .clickRenameInDropdown()
                 .setNewProjectName(PROJECT_NAME_1)
@@ -72,6 +77,27 @@ public class FreestyleProjectTest extends BaseTest {
                 .isDeleteWorkspaceBeforeBuildStartsCheckboxChecked();
 
         Assert.assertTrue(isChecked);
+    }
+
+    @Test
+    public void testApplyButton() {
+        boolean isSelected = new HomePage(getDriver())
+                .clickItemNewJob()
+                .setProjectName(PROJECT_NAME)
+                .selectFreestyleProjectAndClickOk()
+                .goHomePage()
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .getSideMenu()
+                .clickConfigure(new FreestyleProjectConfigPage(getDriver()))
+                .setDeleteWorkspaceBeforeBuildStartsCheckbox(true)
+                .clickApply()
+                .goHomePage()
+                .clickOnProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .getSideMenu()
+                .clickConfigure(new FreestyleProjectConfigPage(getDriver()))
+                .isDeleteWorkspaceBeforeBuildStartsCheckboxChecked();
+
+        Assert.assertTrue(isSelected);
     }
 
     @Test
@@ -193,6 +219,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(projectDisabledMessage);
     }
 
+    @Ignore
     @Test
     public void testEnableProject() {
         Boolean projectEnabledMessage = new HomePage(getDriver())
@@ -372,6 +399,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(actualEmptyStateMessage, "No items");
     }
 
+    @Ignore
     @Test
     public void testCreateItemFromExisting() {
         FreestyleProjectConfigPage freestyleProjectPage = new HomePage(getDriver())

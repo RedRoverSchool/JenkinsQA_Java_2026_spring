@@ -49,13 +49,15 @@ public class BuildHistoryPage extends BasePage {
 
     @Step("Get the list of all build names from the history table")
     public List<String> getBuildHistoryList() {
+        List<WebElement> elements;
         try {
-            getWait5().until(ExpectedConditions.visibilityOfAllElements(buildTable));
+            elements = getWait5().until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+                    By.xpath("//a[@class='jenkins-table__link model-link']")));
         } catch (TimeoutException e) {
             return List.of();
         }
 
-        return buildTable.stream()
+        return elements.stream()
                 .map(WebElement::getText)
                 .map(String::trim)
                 .filter(text -> !text.isEmpty())

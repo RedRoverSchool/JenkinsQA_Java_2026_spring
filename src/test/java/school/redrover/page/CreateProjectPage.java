@@ -78,10 +78,10 @@ public class CreateProjectPage extends BasePage {
     }
 
     public MultibranchConfigPage selectMultibranchAndClickOk() {
-        getDriver().findElement(By.xpath("//span[text()='Multi-configuration project']")).click();
+        WebElement jobElement =getDriver().findElement(By.xpath("//*[contains(text(), 'Multibranch Pipeline')]"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", jobElement);
+        jobElement.click();
         okButton.click();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(BUTTON_OK));
 
         return new MultibranchConfigPage(getDriver());
     }
@@ -103,11 +103,13 @@ public class CreateProjectPage extends BasePage {
 
     @Step("Select Folder and click OK")
     public FolderConfigPage selectFolderProjectAndClickOk() {
-        folderOption.click();
+        WebElement jobElement = folderOption;
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", jobElement);
+        jobElement.click();
         okButton.click();
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
-
+        
         return new FolderConfigPage(getDriver());
     }
 

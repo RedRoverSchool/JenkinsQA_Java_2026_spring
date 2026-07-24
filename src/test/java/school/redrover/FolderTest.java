@@ -1,7 +1,9 @@
 package school.redrover;
 
+import io.cucumber.java.be.I;
 import io.qameta.allure.*;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -19,6 +21,7 @@ public class FolderTest extends BaseTest {
     private static final String NESTED_FOLDER = "NestedFolder";
     private static final String DESCRIPTION_TEXT = "DescriptionForTest";
     private static final String HEALTH_METRICS_CHILD_NAME = "ChildName";
+    private static final String LIBRARY_NAME = "pipe library";
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify that folder is created")
@@ -52,11 +55,27 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(jobnewlist.getFirst(), FOLDER_NEW_NAME);
     }
 
+    @Severity(SeverityLevel.NORMAL)
+    @Test(dependsOnMethods = "testRename")
+    public void testAddLibraries() {
+        String name = new HomePage(getDriver())
+                .clickOnProject(FOLDER_NEW_NAME, new FolderProjectPage(getDriver()))
+                .clickConfigure()
+                .addLibraries()
+                .setLibraryName(LIBRARY_NAME)
+                .selectCache()
+                .clickSave()
+                .clickConfigure()
+                .getLibraryName();
+
+        Assert.assertEquals(name, LIBRARY_NAME);
+    }
+
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify that we can't create folder with the same name")
-    @Test(dependsOnMethods = "testRename")
+    @Test(dependsOnMethods = "testAddLibraries")
     public void testCreateWithSameName() {
-       String errorText = new HomePage(getDriver())
+        String errorText = new HomePage(getDriver())
                 .clickItemNewJob()
                 .setProjectName(FOLDER_NEW_NAME)
                 .selectItemType(TestUtils.JobType.FOLDER)

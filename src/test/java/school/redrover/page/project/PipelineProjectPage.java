@@ -7,41 +7,16 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.common.BaseJobPage;
 import school.redrover.page.components.FreestylePipelineMulticonfigSideMenuComponent;
+import school.redrover.page.mixin.IDescription;
 
-public class PipelineProjectPage extends BaseJobPage<PipelineProjectPage> {
-
-    @FindBy(id = "description-link")
-    private WebElement descriptionLinkElement;
-
-    @FindBy(xpath = "//textarea[@name='description']")
-    private WebElement descriptionElement;
-
-    @FindBy(xpath = "//button[@value='Save']")
-    private WebElement saveButton;
-
-    @FindBy(id = "description-content")
-    private WebElement description;
-
-    @FindBy(xpath = "//a[contains(@href, 'configure')]")
-    private WebElement configureSidebar;
+public class PipelineProjectPage extends BaseJobPage<PipelineProjectPage>
+        implements IDescription<PipelineProjectPage> {
 
     @FindBy(xpath = "//div[@class='warning']")
     private WebElement warning;
 
     @FindBy(xpath = "(//span[normalize-space()='Build Now'])[1]")
     private WebElement buildNowButtonSidebar;
-
-    @FindBy(xpath = "//a[contains(@href, 'confirm-rename')]")
-    private WebElement renameButtonSidebar;
-
-    @FindBy(xpath = "//a[@data-title='Delete Pipeline']")
-    private WebElement deleteButtonSidebar;
-
-    @FindBy(xpath = "//button[@data-id='ok']")
-    private WebElement confirmButton;
-
-    @FindBy(xpath = "//a[@href='/view/all/newJob']")
-    private WebElement addNewItemButton;
 
     public PipelineProjectPage(WebDriver driver) {
         super(driver);
@@ -50,27 +25,6 @@ public class PipelineProjectPage extends BaseJobPage<PipelineProjectPage> {
     @Override
     public FreestylePipelineMulticonfigSideMenuComponent<PipelineProjectPage> getSideMenu() {
         return new FreestylePipelineMulticonfigSideMenuComponent<>(getDriver(), this);
-    }
-
-    public PipelineProjectPage clickAddDescription() {
-        descriptionLinkElement.click();
-        getWait5().until(ExpectedConditions.visibilityOf(descriptionElement));
-
-        return this;
-    }
-
-    public PipelineProjectPage enterDescription(String description) {
-        descriptionElement.sendKeys(description);
-        return this;
-    }
-
-    public PipelineProjectPage clickSaveDescription() {
-        saveButton.click();
-        return this;
-    }
-
-    public String getDescriptionText() {
-        return getWait5().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(description))).getText();
     }
 
     public String getDisabledWarningText() {

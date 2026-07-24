@@ -5,6 +5,17 @@ on:
     branches:
       - main
 
+  workflow_dispatch:
+    inputs:
+      run_all_tests:
+        description: 'Run all tests'
+        type: boolean
+        default: true
+      test_classes:
+        description: 'Specific test classes (comma-separated, e.g. FreestyleProjectTest,FolderTest). Ignored if "Run all tests" is checked.'
+        type: string
+        required: false
+
 jobs:
   run-test:
     name: 'Run tests'
@@ -24,12 +35,14 @@ jobs:
           cache: 'maven'
 
       - name: Get list of changed files
+        if: github.event_name == 'pull_request'
         run: echo "LIST_OF_CHANGED_FILES=$(git diff --name-status $(git merge-base origin/$GITHUB_HEAD_REF origin/main) origin/$GITHUB_HEAD_REF | tr '\n' ';' | tr '\t' '=')" >> $GITHUB_ENV
 
       - name: Compile tests
         run: mvn test-compile
 
       - name: Get collections of class dependencies
+        if: github.event_name == 'pull_request'
         run: echo "LIST_OF_DEPENDENCIES_CLASSES=$(jdeps -verbose:class -filter:none -recursive ./target/test-classes | grep "school.redrover.*-> school.redrover" | awk '{print $3 "=" $1}' | tr '\n' ';')" >> $GITHUB_ENV
 
 # tar -cvf jenkins_backup.tar ./jenkins_backup
@@ -58,8 +71,15 @@ jobs:
         run: ./.github/wait-for-jenkins.sh
 
       - name: Maven test
-        run: mvn test
+        run: |
+          if [ "$RUN_ALL_TESTS" = "false" ] && [ -n "$TEST_CLASSES" ]; then
+            mvn test -Dtest="$TEST_CLASSES"
+          else
+            mvn test
+          fi
         env:
+          RUN_ALL_TESTS: ${{ inputs.run_all_tests }}
+          TEST_CLASSES: ${{ inputs.test_classes }}
           JENKINS_USERNAME: ${{ secrets.ADMIN_USERNAME }}
           JENKINS_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
           JENKINS_HOST: localhost
