@@ -23,6 +23,9 @@ public class HomePage extends BasePage {
     @FindBy(css = ".jenkins-table__link > span:first-child")
     private List<WebElement> projects;
 
+    @FindBy(css = "[id =\"buildQueue\"] .pane.pane-grow")
+    private List<WebElement> buildQueue;
+
     @FindBy(css = "#search-results")
     private List<WebElement> searchList;
 
@@ -34,6 +37,9 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, 'confirm-rename')]")
     private WebElement elementRename;
+
+    @FindBy(xpath = "//button[contains(@href,\"build\")]")
+    private WebElement buildNowOption;
 
     @FindBy(id = "description-link")
     private WebElement elementDescription;
@@ -62,6 +68,13 @@ public class HomePage extends BasePage {
     @Step("Get list of projects on the main page")
     public List<String> getProjectList() {
         return projects.stream()
+                .map(WebElement::getText)
+                .toList();
+    }
+
+    public List<String> getQueueProjectsList(){
+        getWait5().until(ExpectedConditions.visibilityOfAllElements(buildQueue));
+        return buildQueue.stream()
                 .map(WebElement::getText)
                 .toList();
     }
@@ -163,6 +176,12 @@ public class HomePage extends BasePage {
     public RenameProjectPage clickRenameInDropdown() {
         getWait5().until(ExpectedConditions.elementToBeClickable(elementRename)).click();
         return new RenameProjectPage(getDriver());
+    }
+
+    @Step ("Click Build option in Drop-down menu")
+    public HomePage clickBuildInDropdown() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(buildNowOption)).click();
+        return this;
     }
 
     public HomePage confirmDelete(String projectName) {

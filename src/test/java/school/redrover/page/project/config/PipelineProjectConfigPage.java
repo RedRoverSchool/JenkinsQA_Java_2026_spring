@@ -1,6 +1,7 @@
 package school.redrover.page.project.config;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -75,5 +76,14 @@ public class PipelineProjectConfigPage extends BaseConfigPage<PipelineProjectCon
 
     public String getMaxNumberOfBuilds() {
         return getWait5().until(ExpectedConditions.visibilityOf(maxNumberOfBuilds)).getAttribute("value");
+    }
+
+    public PipelineProjectConfigPage setBuildTrigger1(String projectToWatchName){
+        WebElement trigger = getDriver().findElement(By.cssSelector("[id= 'cb8'] +.attach-previous"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", trigger);
+        trigger.click();
+        getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(projectToWatchName);
+
+        return this;
     }
 }
