@@ -219,7 +219,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(projectDisabledMessage);
     }
 
-    @Ignore
     @Test
     public void testEnableProject() {
         Boolean projectEnabledMessage = new HomePage(getDriver())
@@ -399,7 +398,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(actualEmptyStateMessage, "No items");
     }
 
-    @Ignore
     @Test
     public void testCreateItemFromExisting() {
         FreestyleProjectConfigPage freestyleProjectPage = new HomePage(getDriver())
