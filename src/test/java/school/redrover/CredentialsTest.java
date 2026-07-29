@@ -61,6 +61,33 @@ public class CredentialsTest extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
+    @Description()
+    @Test(dependsOnMethods ="testCreateUsernamePasswordCredential")
+    public void testUpdateCredentials() {
+
+        String newUsername = "Updated-user-" + UUID.randomUUID().toString().substring(0,5);
+        SoftAssert softAssert = new SoftAssert();
+
+        CredentialsPage credentialsPage = new HomePage(getDriver())
+                .clickManageButton()
+                .clickCredentials()
+                .clickUpdateCredentialButton(credentialId)
+                .updateUsername(newUsername)
+//                .clickChangePasswordButton()
+//                .UpdateDescriprion()
+                .clickSaveButton();
+
+        softAssert.assertTrue(credentialsPage.isCredentialVisible(credentialId),
+                "Username with ID %s is not found!".formatted(credentialId));
+
+//        softAssert.assertEquals(credentialsPage.getCredentialDescription(credentialId),desc);
+        softAssert.assertTrue(credentialsPage.isCredentialTagsVisible(credentialId),
+                "Login and password mask line  '%s' not found!".formatted(credentialId));
+
+        softAssert.assertAll();
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
     @Description("Verify Username with password could be deleted")
     @Test(dependsOnMethods = "testCreateUsernamePasswordCredential")
     public void testDeleteCredentials() {
