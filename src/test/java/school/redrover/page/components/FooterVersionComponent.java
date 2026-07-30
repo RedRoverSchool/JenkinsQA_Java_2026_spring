@@ -31,7 +31,7 @@ public class FooterVersionComponent extends BaseModel {
 
     public boolean isVersionMenuDisplayed() {
         try {
-            return getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+            return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                     By.xpath("//div[@class='jenkins-dropdown']"))).isDisplayed();
         } catch (Exception e) {
             return false;
