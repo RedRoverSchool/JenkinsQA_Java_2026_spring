@@ -16,6 +16,7 @@ import java.util.UUID;
 public class CredentialsTest extends BaseTest {
 
     private String credentialId;
+    private String desc;
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify modal window 'Add Credentials' is displayed")
@@ -40,7 +41,7 @@ public class CredentialsTest extends BaseTest {
         credentialId = "test-" + uniqueId;
         String user = "user-" + uniqueId;
         String pass = "pass-" + uniqueId;
-        String desc = "Test Description " + uniqueId;
+        desc = "Test Description " + uniqueId;
 
         SoftAssert softAssert = new SoftAssert();
 
@@ -57,6 +58,33 @@ public class CredentialsTest extends BaseTest {
         softAssert.assertEquals(credentialsPage.getCredentialDescription(credentialId),desc);
         softAssert.assertTrue(credentialsPage.isCredentialTagsVisible(credentialId),
                 "Login and password mask line  '%s' not found!".formatted(credentialId));
+        softAssert.assertAll();
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description()
+    @Test(dependsOnMethods ="testCreateUsernamePasswordCredential")
+    public void testUpdateCredentials() {
+
+        String newUsername = "newUsername";
+        SoftAssert softAssert = new SoftAssert();
+
+        CredentialsPage credentialsPage = new HomePage(getDriver())
+                .clickManageButton()
+                .clickCredentials()
+                .clickUpdateCredentialButton(credentialId)
+                .updateUsername(newUsername)
+//                .clickChangePasswordButton()
+//                .UpdateDescriprion()
+                .clickSaveButton();
+
+        softAssert.assertTrue(credentialsPage.isCredentialVisible(credentialId),
+                "Username with ID %s is not found!".formatted(credentialId));
+
+//        softAssert.assertEquals(credentialsPage.getCredentialDescription(credentialId),desc);
+        softAssert.assertTrue(credentialsPage.isCredentialTagsVisible(credentialId),
+                "Login and password mask line  '%s' not found!".formatted(credentialId));
+
         softAssert.assertAll();
     }
 

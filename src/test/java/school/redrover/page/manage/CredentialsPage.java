@@ -83,7 +83,7 @@ public class CredentialsPage extends BasePage {
 
     public List<String> getCredentialList(String credentialId) {
         getWait10()
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[contains(@href, '/manage/credentials/store/system/domain/_/credential/') and text()='" + credentialId + "']")));
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[contains(@href, '/manage/credentials/store/system/domain/_/credential/') and text()='%s']".formatted(credentialId))));
 
         return credentialLinks.stream()
                    .map(WebElement::getText)
@@ -92,7 +92,7 @@ public class CredentialsPage extends BasePage {
 
     public CredentialsPage clickDeleteCredential(String id) {
 
-        By moreActionsByRowId = By.xpath("//div[contains(@class, 'credentials-card')][.//a[contains(@href, '" + id + "')]]//button[@tooltip='More actions']");
+        By moreActionsByRowId = By.xpath("//div[contains(@class, 'credentials-card')][.//a[contains(@href, '%s')]]//button[@tooltip='More actions']".formatted(id));
 
         WebElement moreActions = getWait10().until(ExpectedConditions.elementToBeClickable(moreActionsByRowId));
                 moreActions.click();
@@ -111,5 +111,12 @@ public class CredentialsPage extends BasePage {
         return getWait5()
                 .until(ExpectedConditions.visibilityOf(errorMessage))
                 .isDisplayed();
+    }
+
+    public AddCredentialsPage clickUpdateCredentialButton(String credentialId) {
+        String updateCredentialLocator = "//div[@class='credentials-card__controls']/button[@data-type='credentials-update' and contains (@data-url, '/credential/%s')]"
+                .formatted(credentialId);
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(updateCredentialLocator))).click();
+        return new AddCredentialsPage(getDriver());
     }
 }

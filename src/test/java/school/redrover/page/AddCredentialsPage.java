@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
 import school.redrover.page.common.BasePage;
 import school.redrover.page.manage.CredentialsPage;
 
@@ -169,5 +170,17 @@ public class AddCredentialsPage extends BasePage {
             throw new RuntimeException("Failed to create fake file on disk", e);
         }
         return this;
+    }
+
+    public AddCredentialsPage updateUsername(String newUsername) {
+        getWait5().until(ExpectedConditions.visibilityOf(usernameTextField));
+        usernameTextField.clear();
+        usernameTextField.sendKeys(newUsername);
+        return this;
+    }
+
+    public CredentialsPage clickSaveButton() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(createButton)).click();
+        return new CredentialsPage(getDriver());
     }
 }
