@@ -16,6 +16,7 @@ import java.util.UUID;
 public class CredentialsTest extends BaseTest {
 
     private String credentialId;
+    private String desc;
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify modal window 'Add Credentials' is displayed")
@@ -40,7 +41,7 @@ public class CredentialsTest extends BaseTest {
         credentialId = "test-" + uniqueId;
         String user = "user-" + uniqueId;
         String pass = "pass-" + uniqueId;
-        String desc = "Test Description " + uniqueId;
+        desc = "Test Description " + uniqueId;
 
         SoftAssert softAssert = new SoftAssert();
 
@@ -65,7 +66,7 @@ public class CredentialsTest extends BaseTest {
     @Test(dependsOnMethods ="testCreateUsernamePasswordCredential")
     public void testUpdateCredentials() {
 
-        String newUsername = "Updated-user-" + UUID.randomUUID().toString().substring(0,5);
+        String newUsername = "newUsername";
         SoftAssert softAssert = new SoftAssert();
 
         CredentialsPage credentialsPage = new HomePage(getDriver())
