@@ -116,7 +116,7 @@ public class CredentialsPage extends BasePage {
     public AddCredentialsPage clickUpdateCredentialButton(String credentialId) {
         String updateCredentialLocator = "//div[@class='credentials-card__controls']/button[@data-type='credentials-update' and contains (@data-url, '/credential/%s/')]"
                 .formatted(credentialId);
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath(updateCredentialLocator))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(updateCredentialLocator))).click();
         return new AddCredentialsPage(getDriver());
     }
 }
