@@ -1,18 +1,15 @@
 package school.redrover.page.view.config;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import school.redrover.page.view.GeneralViewPage;
-import school.redrover.page.view.base.BaseGeneralViewConfigPage;
+import school.redrover.page.view.common.general.GeneralListViewPage;
 
-public class GeneralListViewConfigPage extends BaseGeneralViewConfigPage {
-
+public class GeneralListViewConfigPage extends BaseListViewConfigPage<GeneralListViewConfigPage> {
     public GeneralListViewConfigPage(WebDriver driver) {
         super(driver);
     }
 
-    public GeneralViewPage clickSave() {
-        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
-        return new GeneralViewPage(getDriver());
+    public GeneralListViewPage clickSaveAngGoToGeneralListView() {
+        clickButtonSave();
+        return new GeneralListViewPage(getDriver());
     }
 }

@@ -1,17 +1,24 @@
-package school.redrover.page.view;
+package school.redrover.page.view.common.base;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
-import school.redrover.page.view.base.BaseViewPage;
-import school.redrover.page.view.config.ViewMyConfigPage;
+import school.redrover.page.view.base.BaseGeneralViewConfigPage;
+import school.redrover.page.view.config.BaseViewConfigPage;
+import school.redrover.page.view.config.GeneralMyViewConfigPage;
 
 public class GeneralViewPage extends BaseViewPage {
 
     public GeneralViewPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    public BaseViewConfigPage<?> clickConfigure() {
+        clickConfigureButton();
+        return new GeneralMyViewConfigPage(getDriver());
     }
 
     @Step("Input description: '{textInput}'")
@@ -69,8 +76,13 @@ public class GeneralViewPage extends BaseViewPage {
     }
 
     @Step("Click 'Edit View' link in the side menu")
-    public ViewMyConfigPage clickEditView() {
+    @SuppressWarnings("unchecked")
+    public <T extends BaseGeneralViewConfigPage<T>> T clickEditView(Class<T> pageClass) {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("Edit View"))).click();
-        return new ViewMyConfigPage(getDriver());
+        try {
+            return pageClass.getConstructor(WebDriver.class).newInstance(getDriver());
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 }

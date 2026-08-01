@@ -1,4 +1,4 @@
-package school.redrover.page.view.base;
+package school.redrover.page.view.config;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -31,24 +31,39 @@ public abstract class BaseViewConfigPage<T extends BaseViewConfigPage<T>> extend
     }
 
     @SuppressWarnings("unchecked")
+    protected T self() {
+        return (T) this;
+    }
+
     public T inputName(String newName) {
         getWait5().until(ExpectedConditions.elementToBeClickable(elementName)).clear();
         elementName.sendKeys(newName);
 
-        return (T) this;
+        return self();
     }
 
-    public String getViewName() {
-        return getWait5()
-                .until(ExpectedConditions.visibilityOf(elementName))
-                .getAttribute("value");
-    }
-
-    @SuppressWarnings("unchecked")
     public T inputDescription(String newDescription) {
         elementDescription.clear();
         elementDescription.sendKeys(newDescription);
 
-        return (T) this;
+        return self();
+    }
+
+    public T clickFilterQueue() {
+        chekboxQueue.click();
+        return self();
+    }
+
+    public T clickFilterExecutions() {
+        chekboxExecutions.click();
+        return self();
+    }
+
+    protected void clickButtonSave() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(buttonSave)).click();
+    }
+
+    protected void clickButtonApply() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(buttonApply)).click();
     }
 }
