@@ -4,38 +4,38 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.page.view.FolderViewPage;
+import school.redrover.page.view.common.folder.FolderMyViewPage;
+import school.redrover.page.view.config.FolderGlobalViewConfigPage;
+import school.redrover.page.view.config.FolderListViewConfigPage;
 
-public class CreateFolderViewPage extends CreateViewBasePage<CreateFolderViewPage> {
+public class CreateFolderViewPage extends BaseCreateViewPage<CreateFolderViewPage> {
 
     @FindBy(xpath = "//label[@for='hudson.model.ProxyView']")
-    private WebElement ratioGlobalView;
+    private WebElement radioGlobalView;
 
     public CreateFolderViewPage(WebDriver driver) {
         super(driver);
     }
 
-    @Step("Select Global View (Folder) and click Create")
-    public FolderViewPage selectGlobalViewAndClickCreate() {
-        ratioGlobalView.click();
-        buttonCreate.click();
+    @Step("Select Global View (Folder) and click Create. Go to Configure")
+    public FolderGlobalViewConfigPage selectGlobalViewAndClickCreate() {
+        radioGlobalView.click();
+        clickButtonCreate();
 
-        return new FolderViewPage(getDriver());
+        return new FolderGlobalViewConfigPage(getDriver());
     }
 
-    @Step("Select List View (Folder) and click Create")
-    public FolderViewPage selectListViewAndClickCreate() {
-        ratioListView.click();
-        buttonCreate.click();
+    @Step("Select List View (Folder) and click Create. Go to Configure")
+    public FolderListViewConfigPage selectListViewAndClickCreate() {
+        selectListViewAndSubmit();
 
-        return new FolderViewPage(getDriver());
+        return new FolderListViewConfigPage(getDriver());
     }
 
-    @Step("Select My View (Folder) and click Create")
-    public FolderViewPage selectMyViewAndClickCreate() {
-        ratioMyView.click();
-        buttonCreate.click();
+    @Step("Select My View (Folder) and click Create. Go to View")
+    public FolderMyViewPage selectMyViewAndClickCreate() {
+        selectMyViewAndSubmit();
 
-        return new FolderViewPage(getDriver());
+        return new FolderMyViewPage(getDriver());
     }
 }

@@ -9,8 +9,8 @@ import school.redrover.page.common.BasePage;
 import school.redrover.page.common.BaseProjectPage;
 import school.redrover.page.external.CommandPalettePage;
 import school.redrover.page.view.create.CreateGeneralViewPage;
-import school.redrover.page.view.GeneralViewPage;
-import school.redrover.page.user.UserPage;
+import school.redrover.page.view.common.base.GeneralViewPage;
+import school.redrover.page.view.common.general.GeneralMyViewPage;
 
 import java.util.List;
 import java.util.Random;
@@ -192,7 +192,7 @@ public class HomePage extends BasePage {
 
     public GeneralViewPage clickDescription() {
         getWait10().until(ExpectedConditions.visibilityOf(elementDescription)).click();
-        return new GeneralViewPage(getDriver());
+        return new GeneralMyViewPage(getDriver());
     }
 
     public String getViewDescriptionText() {
@@ -227,5 +227,13 @@ public class HomePage extends BasePage {
         } catch (TimeoutException e) {
             return false;
         }
+    }
+
+    public <T extends GeneralViewPage> T clickOnGeneralView(T generalView, String projectName) {
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/%s/']".formatted(projectName))))
+                .click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), projectName));
+
+        return generalView;
     }
 }

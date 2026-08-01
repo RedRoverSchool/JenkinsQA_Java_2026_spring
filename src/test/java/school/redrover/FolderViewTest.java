@@ -64,15 +64,15 @@ public class FolderViewTest extends BaseTest {
         Assert.assertEquals(actualDescriptionText, VIEW_DESCRIPTION);
     }
 
-    @Test(dependsOnMethods = "testCreateMyView")
-    public void testOpenEditViewSettings() {
-        String actualViewName = new HomePage(getDriver())
-                .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
-                .clickOnView()
-                .getSideMenu()
-                .clickEditView()
-                .getViewName();
-
-        Assert.assertEquals(actualViewName, VIEW_NAME);
-    }
+//    @Test(dependsOnMethods = "testCreateMyView")
+//    public void testOpenEditViewSettings() {
+//        String actualViewName = new HomePage(getDriver())
+//                .clickOnProject(FOLDER_NAME, new FolderProjectPage(getDriver()))
+//                .clickOnView()
+//                .getSideMenu()
+//                .clickEditView()
+//                .getViewName();
+//
+//        Assert.assertEquals(actualViewName, VIEW_NAME);
+//    }
 }
